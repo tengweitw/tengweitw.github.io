@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://tengweitw.com/2020/07/16/Perceptron/</loc>
+    
+    <lastmod>2020-07-16T03:48:22.645Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://tengweitw.com/2020/12/12/test1/</loc>
     
     <lastmod>2020-07-16T03:08:33.727Z</lastmod>
@@ -40,13 +47,6 @@
     <loc>http://tengweitw.com/2020/07/16/hello-world/</loc>
     
     <lastmod>2020-07-16T02:19:32.850Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tengweitw.com/2020/07/16/Perceptron/</loc>
-    
-    <lastmod>2020-06-08T12:24:20.378Z</lastmod>
     
   </url>
   

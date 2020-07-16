@@ -48,18 +48,18 @@
   };
 </script>
 
-  <meta name="description" content="【图解例说机器学习】感知机 (Perceptron) 感知机是二分类的线性分类模型，是神经网络和支持向量机的基础。  引例一个常见的线性二分类问题如下：                 图1         如图1，假设有一个线性可分的训练集，其中有三个样例 ($\mathrm x_1,\mathrm x_2, \mathrm x_3$)，分别标记为正例(红色方块)，反例(蓝色圆圈)。这里的 $x">
+  <meta name="description" content="title: 【图解例说机器学习】感知机 (Perceptron)date: 2018-07-05 12:01:30tags: mathjax: true — 感知机是二分类的线性分类模型，是神经网络和支持向量机的基础。  引例一个常见的线性二分类问题如下：                 图1         如图1，假设有一个线性可分的训练集，其中有三个样例 ($\mathrm x_1,\m">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Perceptron">
 <meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2020&#x2F;07&#x2F;16&#x2F;Perceptron&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="【图解例说机器学习】感知机 (Perceptron) 感知机是二分类的线性分类模型，是神经网络和支持向量机的基础。  引例一个常见的线性二分类问题如下：                 图1         如图1，假设有一个线性可分的训练集，其中有三个样例 ($\mathrm x_1,\mathrm x_2, \mathrm x_3$)，分别标记为正例(红色方块)，反例(蓝色圆圈)。这里的 $x">
+<meta property="og:description" content="title: 【图解例说机器学习】感知机 (Perceptron)date: 2018-07-05 12:01:30tags: mathjax: true — 感知机是二分类的线性分类模型，是神经网络和支持向量机的基础。  引例一个常见的线性二分类问题如下：                 图1         如图1，假设有一个线性可分的训练集，其中有三个样例 ($\mathrm x_1,\m">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200505&#x2F;Perceptron_fig001.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200505&#x2F;Perceptron_fig002.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200505&#x2F;Perceptron_fig003.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200505&#x2F;Perceptron_fig004.jpg">
-<meta property="og:updated_time" content="2020-06-08T12:24:20.378Z">
+<meta property="og:updated_time" content="2020-07-16T03:48:22.645Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200505&#x2F;Perceptron_fig001.jpg">
 
@@ -238,16 +238,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-07-16 11:11:34" itemprop="dateCreated datePublished" datetime="2020-07-16T11:11:34+08:00">2020-07-16</time>
+              <time title="创建时间：2020-07-16 11:11:34 / 修改时间：11:48:22" itemprop="dateCreated datePublished" datetime="2020-07-16T11:11:34+08:00">2020-07-16</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-08 20:24:20" itemprop="dateModified" datetime="2020-06-08T20:24:20+08:00">2020-06-08</time>
-              </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -281,7 +275,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>【图解例说机器学习】感知机 (Perceptron)</p>
+        <hr>
+<p>title: 【图解例说机器学习】感知机 (Perceptron)<br>date: 2018-07-05 12:01:30<br>tags:</p>
+<p>mathjax: true</p>
+<p>—</p>
 <p>感知机是二分类的线性分类模型，是神经网络和支持向量机的基础。</p>
 <hr>
 <h2 id="引例"><a href="#引例" class="headerlink" title="引例"></a>引例</h2><p>一个常见的线性二分类问题如下：</p>

@@ -12,7 +12,10 @@
   <entry>
     <title>Perceptron</title>
     <url>/2020/07/16/Perceptron/</url>
-    <content><![CDATA[<p>【图解例说机器学习】感知机 (Perceptron)</p>
+    <content><![CDATA[<hr>
+<p>title: 【图解例说机器学习】感知机 (Perceptron)<br>date: 2018-07-05 12:01:30<br>tags:</p>
+<p>mathjax: true</p>
+<p>—</p>
 <p>感知机是二分类的线性分类模型，是神经网络和支持向量机的基础。</p>
 <hr>
 <h2 id="引例"><a href="#引例" class="headerlink" title="引例"></a>引例</h2><p>一个常见的线性二分类问题如下：</p>
