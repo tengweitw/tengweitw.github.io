@@ -15,9 +15,7 @@ tags:
 
 一个常见的线性二分类问题如下：
 
-<img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200505/Perceptron_fig001.jpg"  >
-
-
+<img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200505/Perceptron_fig001.jpg" width="400" height="300" title="图11" alt="图1test" >
 
 如图1，假设有一个线性可分的训练集，其中有三个样例 ($\mathrm x_1,\mathrm x_2, \mathrm x_3$)，分别标记为正例(红色方块)，反例(蓝色圆圈)。这里的 $x^{(1)},x^{(2)}$为训练样例的$2$个特征。我们的目的就是找到一个超平面 (在二维空间为一条直线) 能够将这三个样例分开。显然，这样的直线有无数条，比如图中的直线 $f(\mathrm x)=x^{(1)}+x^{(2)}-3=0, f(\mathrm x)=2x^{(1)}+x^{(2)}-5=0$ 就是其中的两条。我们发现$f(\mathrm x_1)>0,f(\mathrm x_2>0),f(\mathrm x_3)<0$，于是乎，我们可以用函数表达式$f(\mathrm x)$输出值的正负来判断新的样例$\mathrm x$属于哪一类。
 
@@ -157,7 +155,8 @@ $$
 
 ## 附录
 
-图1的python源代码：
+
+{% spoiler "图1的python源代码：" %}
 
 ```py
 # -*- coding: utf-8 -*-
@@ -217,9 +216,10 @@ plt.show()
 
 
 ```
+{% endspoiler %}
 
-图2的python源代码:
 
+{% spoiler "图2的python源代码:" %}
 ```python
 # -*- coding: utf-8 -*-
 # @Time : 2020/5/5 11:40
@@ -293,8 +293,10 @@ print('The point x={} whose true class is {}, is grouped as class {}.'.format(te
 
 
 ```
+{% endspoiler %}
 
-图3-图4的python源代码：
+{% spoiler "图3-图4的python源代码：" %}
+
 
 ```python
 # -*- coding: utf-8 -*-
@@ -435,7 +437,7 @@ plt.ylabel('$x^{(2)}$', font)
 plt.show()
 
 ```
-
+{% endspoiler %}
 
 
 
