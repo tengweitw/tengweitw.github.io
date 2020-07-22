@@ -49,18 +49,18 @@
   };
 </script>
 
-  <meta name="description" content="感知机是二分类的线性分类模型，是神经网络和支持向量机的基础。  引例一个常见的线性二分类问题如下：  如图1，假设有一个线性可分的训练集，其中有三个样例 ($\mathrm x_1,\mathrm x_2, \mathrm x_3$)，分别标记为正例(红色方块)，反例(蓝色圆圈)。这里的 $x^{(1)},x^{(2)}$为训练样例的$2$个特征。我们的目的就是找到一个超平面 (在二维空间为一条直">
+  <meta name="description" content="感知机是二分类的线性分类模型，是神经网络和支持向量机的基础。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【图解例说机器学习】感知机 (Perceptron)">
 <meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2018&#x2F;07&#x2F;05&#x2F;Perceptron&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="感知机是二分类的线性分类模型，是神经网络和支持向量机的基础。  引例一个常见的线性二分类问题如下：  如图1，假设有一个线性可分的训练集，其中有三个样例 ($\mathrm x_1,\mathrm x_2, \mathrm x_3$)，分别标记为正例(红色方块)，反例(蓝色圆圈)。这里的 $x^{(1)},x^{(2)}$为训练样例的$2$个特征。我们的目的就是找到一个超平面 (在二维空间为一条直">
+<meta property="og:description" content="感知机是二分类的线性分类模型，是神经网络和支持向量机的基础。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200505&#x2F;Perceptron_fig001.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200505&#x2F;Perceptron_fig002.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200505&#x2F;Perceptron_fig003.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200505&#x2F;Perceptron_fig004.jpg">
-<meta property="og:updated_time" content="2020-07-21T14:22:57.096Z">
+<meta property="og:updated_time" content="2020-07-22T12:22:26.964Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200505&#x2F;Perceptron_fig001.jpg">
 
@@ -247,7 +247,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-21 22:22:57" itemprop="dateModified" datetime="2020-07-21T22:22:57+08:00">2020-07-21</time>
+                <time title="修改时间：2020-07-22 20:22:26" itemprop="dateModified" datetime="2020-07-22T20:22:26+08:00">2020-07-22</time>
               </span>
 
           
@@ -284,6 +284,7 @@
       
         <p>感知机是二分类的线性分类模型，是神经网络和支持向量机的基础。</p>
 <hr>
+<a id="more"></a>
 <h2 id="引例"><a href="#引例" class="headerlink" title="引例"></a>引例</h2><p>一个常见的线性二分类问题如下：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200505/Perceptron_fig001.jpg" width="400" height="300" title="图11" alt="图1test" ></p>
 <p>如图1，假设有一个线性可分的训练集，其中有三个样例 ($\mathrm x_1,\mathrm x_2, \mathrm x_3$)，分别标记为正例(红色方块)，反例(蓝色圆圈)。这里的 $x^{(1)},x^{(2)}$为训练样例的$2$个特征。我们的目的就是找到一个超平面 (在二维空间为一条直线) 能够将这三个样例分开。显然，这样的直线有无数条，比如图中的直线 $f(\mathrm x)=x^{(1)}+x^{(2)}-3=0, f(\mathrm x)=2x^{(1)}+x^{(2)}-5=0$ 就是其中的两条。我们发现$f(\mathrm x_1)&gt;0,f(\mathrm x_2&gt;0),f(\mathrm x_3)&lt;0$，于是乎，我们可以用函数表达式$f(\mathrm x)$输出值的正负来判断新的样例$\mathrm x$属于哪一类。</p>
