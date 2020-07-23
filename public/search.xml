@@ -4,6 +4,7 @@
     <title>Hello World--2020</title>
     <url>/2020/07/19/hello-world2020/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>. $1$ $0\le1$</p>
+<a id="more"></a>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
 <h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
@@ -123,6 +124,102 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
   </entry>
   <entry>
+    <title>【C/C++】输入与输出(Cin &amp; Cout)</title>
+    <url>/2013/06/01/%5B20130601%5D/</url>
+    <content><![CDATA[<p>为成为国际语言，C++必须能处理需要16位的国际字符集Unicode,于是在传统的8位char型的基础上添加了wchar_t字符类型。在程序包含iostream文件时，将自动创建8个流对象：cin、cout、cerr、clog以及相对应的用于宽字符流的：wcin、wcout、wcerr、wclog。</p>
+<h4 id="Cin"><a href="#Cin" class="headerlink" title="Cin"></a>Cin</h4><p><strong>可以将hex oct dec与cin连用，用于指定将输入的整数的进制</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> a;</span><br><span class="line"><span class="built_in">cin</span>&gt;&gt;hex&gt;&gt;a;<span class="comment">//输入12h</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;a&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//输出18d</span></span><br></pre></td></tr></table></figure>
+<p><strong>当把输入传给字符数组时，会自动在后面加上一个空值字符，使之成为一个字符串。</strong></p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">char</span> name[<span class="number">10</span>];</span><br><span class="line"><span class="built_in">cin</span>&gt;&gt;name;<span class="comment">//当输入&gt;=10时，会出错，因为会自动加'\0'</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;name&lt;&lt;<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>cin检查输入</strong></p>
+ <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> a;</span><br><span class="line"><span class="built_in">cin</span>&gt;&gt;a;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;a&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> name[<span class="number">10</span>];</span><br><span class="line"><span class="built_in">cin</span>&gt;&gt;name;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;name&lt;&lt;<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>当输入123sdf或者123 sdf时，结果是a=123 name=sdf</p>
+<p><strong>流状态:</strong></p>
+<p>​        由3个ios_base元素组成：eofibtbadbit failbit。</p>
+<p>​        当cin到达文件末尾是，它将设置eofbit</p>
+<p>​        当cin未能读取预期的字符时（如类型不对），它将设置failbit</p>
+<p>​        当cin试图读取不可访问的文件时，可能设置failbit</p>
+<p>​        当有无法诊断的错误时，设置badbit</p>
+<p>​        当全部3个状态都设置为0时，说明一切正常</p>
+<p><strong>设置状态</strong></p>
+<p><em>clear:</em></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">clear</span>();<span class="comment">//将使用默认参数0，这将清楚全部3个状态位：eofibt badbit failbit</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">clear</span>(eofbit);<span class="comment">//将状态设置为eofbit，另外两个状态被清除</span></span><br></pre></td></tr></table></figure>
+<p>而setstate()只影响参数对应的位</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">setstate(eofbit);<span class="comment">//将设置eofbit,不会影响其它位</span></span><br></pre></td></tr></table></figure>
+<p><strong>get与getline</strong></p>
+<p>​        get(char&amp;)与get(void)不跳过空白的单字符</p>
+<p>​        get(char<em>,int,char)与getline(char</em>,int,char)默认情况下是读取整行而不是一个单词。</p>
+<p>​        get(void)返回的是int型,因为它可能返回EOF=-1,则下面是错误的</p>
+<p>​        cin.get().get()</p>
+<p><strong>到底采用哪一种输入方式?</strong></p>
+<ul>
+<li>如果希望跳过空白，则使用cin&gt;&gt;ch</li>
+<li>如果希望程序检查每一个字符，则用cin.get(ch)</li>
+</ul>
+<p><strong>get()与getline()的主要区别</strong>在于：get()将换行符或则者分界符留在输入流中，这样接下来的输入操作首先看到的将是换行符或者是分界符，而getline()抽取并丢弃输入流中的换行符</p>
+<p><strong>ignore(int n,char)将读取并丢弃接下来的n个字符或直到到达第一个char。</strong></p>
+ <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> a;</span><br><span class="line"></span><br><span class="line"> <span class="built_in">cin</span>.ignore(<span class="number">5</span>,<span class="string">'3'</span>);</span><br><span class="line"></span><br><span class="line"> <span class="built_in">cin</span>&gt;&gt;a;<span class="comment">//输入1312</span></span><br><span class="line"></span><br><span class="line"> <span class="built_in">cout</span>&lt;&lt;a&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//输出12</span></span><br></pre></td></tr></table></figure>
+<p>cin.read()与cin.get()不同的是，read()不会在输入之后加’\0’,因此不能将输入转为字符串</p>
+<p>cin.peek()用于返回下一个输入的字符，但是并不把这个字符从缓存中读取出来。</p>
+<p>Cin.putback()用于将一个字符插入到输入字符串中，即下一个要读取的字符就是你插入的字符。</p>
+<hr>
+<h4 id="Cout"><a href="#Cout" class="headerlink" title="Cout"></a>Cout</h4><ul>
+<li><strong>可以直接输出数组名和字符指针以及字符常量。</strong></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> name[<span class="number">10</span>]=<span class="string">"tengwei"</span>;</span><br><span class="line">	<span class="keyword">char</span> *p=<span class="string">"xidian university"</span>;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"hello world!\n"</span>;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;name&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;p&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//这里显示的是字符串而不是p的值（即不是字符串的地址）</span></span><br><span class="line"></span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;&amp;name&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//数组的首地址</span></span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;&amp;p&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//指针p的地址</span></span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;(<span class="keyword">void</span>*)p&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//这才是字符串的地址!需进行强制转化</span></span><br><span class="line">                         <span class="comment">//对于其它指针类型，cout认为是void*</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意如何输出字符串地址!</p>
+<ul>
+<li><p><strong>Ostream定义了put()和write()方法，分别用于字符的显示与字符串的显示</strong></p>
+<p>cout.put()是用来输出单个字符的 比如cout.put(‘\n’); cout.put(‘a’);<br>cout.write(<em>s,num);是用来输出字符串的。</em>s是字符串的地址，num是想要输出的字符串的长度,空格也算就算是空字符也算在内。</p>
+<p>例如：cout.write(“tengweitw”,4);将输出teng</p>
+</li>
+</ul>
+<ul>
+<li><p><strong>Write()方法也可用于数值数据：</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">longval=<span class="number">560031841</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">cout</span>.<span class="built_in">write</span>((<span class="keyword">char</span>*)&amp;val,<span class="keyword">sizeof</span>(<span class="keyword">int</span>));<span class="comment">//结果为aha!</span></span><br></pre></td></tr></table></figure>
+<p>Val被显示为4个字符的组合，由于val的十六进制为21616861，而61h变为十进制正好是97即a,68h=104d=h,21h=33=!</p>
+</li>
+</ul>
+<p>  Cout进行输出时，并不会立刻发送到目的地，而是先存储在缓存区，直到缓存区填满，然后程序刷新缓存区，把内容发出去，并清空缓存区。这样做可以节省大量时间，毕竟不希望每次有数据就立即发送，因为这样要存取硬盘很多次，浪费时间。我们可以调用flush来刷新，如下面都可以：</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"hello"</span>&lt;&lt;<span class="built_in">flush</span>;</span><br><span class="line">  </span><br><span class="line"><span class="built_in">flush</span>(<span class="built_in">cout</span>);</span><br><span class="line">  </span><br><span class="line"><span class="built_in">cout</span>.<span class="built_in">flush</span>();</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>进制间转换</strong></p>
+<p>十进制：dec</p>
+<p>八进制： oct</p>
+<p>十六进制： hex</p>
+<p>Dec oct hex 这些控制符不是成员函数。它们的作用是长期的，直达重新设置为止。</p>
+</li>
+</ul>
+<p>  <strong>调整字段宽度：</strong></p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">Int <span class="title">width</span><span class="params">()</span></span>;<span class="comment">//返回当前设置</span></span><br><span class="line"></span><br><span class="line"><span class="function">Int <span class="title">width</span><span class="params">(<span class="keyword">int</span> i)</span></span>;<span class="comment">//设置宽度为i</span></span><br></pre></td></tr></table></figure>
+<p>  注意width只影响接下来的一个项目而已,然后恢复默认值</p>
+<p>  <strong>填充字符:</strong></p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Cout.Fill(‘*’);<span class="comment">// 它们的作用是长期的，直达重新设置为止。</span></span><br></pre></td></tr></table></figure>
+<p>  <strong>精度设置</strong></p>
+<p>  在默认情况下，精度为显示的总位数，在定点模式和科学模式下，精度指的是小数点后面的位数,默认精度为6（末尾0不显示）</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Cout.precision(<span class="number">2</span>); <span class="comment">// 它们的作用是长期的，直达重新设置为止。</span></span><br></pre></td></tr></table></figure>
+<p>  <strong>打印末尾的0和小数点</strong></p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cout</span>.setf(ios_base::showpoint);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>Setf()的用法</strong><br>setf()用于控制小数点被显示是的其它几个格式选项。</p>
+<p>Setf()有两个函数原型:</p>
+<p><code>fmtflags setf (fmtflags fmtfl, fmtflags mask);``fmtflags setf (fmtflags fmtfl);</code></p>
+<p>其中fmtfl和mask的可选值如下：</p>
+<p>| <strong><em>fmtfl\</em>  format flag value</strong> | <strong><em>mask\</em>  field bitmask</strong> |<br>| ———————————————- | ————————————— |<br>| left, right or internal         | adjustfield                |<br>| dec, oct or hex                 | basefield                  |<br>| scientific or fixed             | floatfield                 |</p>
+<p>具体可以查看此链接：<a href="http://www.cplusplus.com/reference/ios/ios_base/setf/" target="_blank" rel="noopener">http://www.cplusplus.com/reference/ios/ios_base/setf/</a></p>
+<p>具体调用如下：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="literal">true</span>&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//1</span></span><br><span class="line">	<span class="built_in">cout</span>.setf(ios_base::boolalpha);<span class="comment">//输入输出bool值，可以为true或false</span></span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="literal">true</span>&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//true</span></span><br><span class="line"></span><br><span class="line">	<span class="built_in">cout</span>.setf(ios_base::showbase);<span class="comment">//对于输出，使用C++基数前缀</span></span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;hex&lt;&lt;<span class="number">63</span>&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//0x3f</span></span><br><span class="line"></span><br><span class="line">	<span class="built_in">cout</span>.setf(ios_base::showpoint);<span class="comment">//显示末尾的小数点</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;dec&lt;&lt;<span class="number">6.3</span>&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//6.30000</span></span><br><span class="line"></span><br><span class="line">	<span class="built_in">cout</span>.setf(ios_base::uppercase);<span class="comment">//对于进制输出，使用大写字母，E表示法</span></span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;hex&lt;&lt;<span class="number">63</span>&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//0X3F是大写</span></span><br><span class="line"></span><br><span class="line">	<span class="built_in">cout</span>.setf(ios_base::showpos);<span class="comment">//在整数前面加上+</span></span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;dec&lt;&lt;<span class="number">63</span>&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//+63</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*下面为有两个参数的输入*/</span></span><br><span class="line">	<span class="built_in">cout</span>.unsetf(ios_base::basefield);</span><br><span class="line">	<span class="built_in">cout</span>.unsetf(ios_base::adjustfield);</span><br><span class="line">	<span class="built_in">cout</span>.unsetf(ios_base::floatfield);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">cout</span>.setf(ios_base::dec,ios_base::basefield);<span class="comment">//使用基数,若输入是小数则无效</span></span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="number">12.34</span>&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//12.34,输入是小数则无效</span></span><br><span class="line">	<span class="built_in">cout</span>.setf(ios_base::oct,ios_base::basefield);<span class="comment">//使用基数,若输入是小数则无效</span></span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="number">12</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span>.setf(ios_base::hex,ios_base::basefield);<span class="comment">//使用基数,若输入是小数则无效</span></span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="number">12</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">cout</span>.setf(ios_base::fixed,ios_base::floatfield);<span class="comment">//使用定点计数法</span></span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="number">12.34</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span>.setf(ios_base::scientific,ios_base::floatfield);<span class="comment">//使用科学计数法</span></span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="number">12.34</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">cout</span>.unsetf(ios_base::basefield);<span class="comment">//消除指定域的设置，恢复默认状态</span></span><br><span class="line">	<span class="built_in">cout</span>.unsetf(ios_base::adjustfield);<span class="comment">//消除指定域的设置，恢复默认状态</span></span><br><span class="line">	<span class="built_in">cout</span>.unsetf(ios_base::floatfield);<span class="comment">//消除指定域的设置，恢复默认状态</span></span><br><span class="line">	<span class="built_in">cout</span>.unsetf(ios_base::showpoint);<span class="comment">//showpoint等个不在上面个域内,应该单独消除</span></span><br><span class="line"></span><br><span class="line">	<span class="built_in">cout</span>.setf(ios_base::left,ios_base::adjustfield);<span class="comment">//左对齐</span></span><br><span class="line">	<span class="built_in">cout</span>.setf(ios_base::right,ios_base::adjustfield);<span class="comment">//右对齐</span></span><br><span class="line">	<span class="built_in">cout</span>.setf(ios_base::internal,ios_base::adjustfield);<span class="comment">//符号或基数前缀左对齐，值右对齐</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>  上面所用的一些函数都可以用下面的标准控制符来调用：</p>
+  <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span><span class="comment">//与上面的相对应，就不写注释了</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">  	<span class="built_in">cout</span>&lt;&lt;boolalpha&lt;&lt;<span class="literal">true</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">  <span class="comment">//	cout&lt;&lt;noboolapha&lt;&lt;true&lt;&lt;endl;//在我的电脑上noboolapha不支持</span></span><br><span class="line">  </span><br><span class="line">  	<span class="built_in">cout</span>&lt;&lt;showbase&lt;&lt;hex&lt;&lt;<span class="number">63</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">  	<span class="built_in">cout</span>&lt;&lt;noshowbase&lt;&lt;hex&lt;&lt;<span class="number">63</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">  </span><br><span class="line">  	<span class="built_in">cout</span>&lt;&lt;showpoint&lt;&lt;<span class="number">12.34</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">  	<span class="built_in">cout</span>&lt;&lt;noshowpoint&lt;&lt;<span class="number">12.34</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">  </span><br><span class="line">  	<span class="built_in">cout</span>&lt;&lt;showpos&lt;&lt;<span class="number">12.34</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">  	<span class="built_in">cout</span>&lt;&lt;noshowpos&lt;&lt;<span class="number">12.34</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">  </span><br><span class="line">  	<span class="built_in">cout</span>&lt;&lt;uppercase&lt;&lt;hex&lt;&lt;<span class="number">63</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">  	<span class="built_in">cout</span>&lt;&lt;nouppercase&lt;&lt;hex&lt;&lt;<span class="number">63</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">  </span><br><span class="line">  	<span class="built_in">cout</span>&lt;&lt;internal&lt;&lt;<span class="number">63</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">  	<span class="built_in">cout</span>&lt;&lt;left&lt;&lt;<span class="number">63</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">  	<span class="built_in">cout</span>&lt;&lt;right&lt;&lt;<span class="number">63</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">  	<span class="built_in">cout</span>&lt;&lt;dec&lt;&lt;<span class="number">63</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">  	<span class="built_in">cout</span>&lt;&lt;hex&lt;&lt;<span class="number">63</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">  	<span class="built_in">cout</span>&lt;&lt;oct&lt;&lt;<span class="number">63</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">  	<span class="built_in">cout</span>&lt;&lt;fixed&lt;&lt;<span class="number">12.34</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">  	<span class="built_in">cout</span>&lt;&lt;scientific&lt;&lt;<span class="number">12.34</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">  </span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>  <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130601/20130601_fig001.jpg" width="400" height="300" title="图1" alt="图1" ></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>C/C++</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【C/C++】数组越界</title>
     <url>/2013/05/12/%5B20130512%5D/</url>
     <content><![CDATA[<p>在上篇文章<a href="http://www.tengweitw.com/2013/05/11/[20130511]/" target="_blank" rel="noopener">《内存对齐》</a>中说到了内存问题，今天我也遇到了可以用内存映射来解释的问题: 数组越界访问，出现死循环。</p>
@@ -208,9 +305,10 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
       </tags>
   </entry>
   <entry>
-    <title>编程常用命名方法</title>
+    <title>【C/C++】编程常用命名方法</title>
     <url>/2013/05/08/%5B20130508b%5D/</url>
-    <content><![CDATA[<ol>
+    <content><![CDATA[<a id="more"></a>
+<ol>
 <li><strong>匈牙利命名法</strong><br>通过在变量名之前增加小写字母的符号前缀，以标识变量的属性、类型、作用域等参数。简单地说，即“变量名＝属性＋类型＋对象描述”的形式。<br>示例：m_lpszStr，表示指向以 0 字符结尾的字符串的长指针成员变量</li>
 <li><strong>骆驼命名法</strong><br>也叫驼峰式大小写。其主要规范为，混合使用大小写字母来构造变量名或函数名。<br>示例：printEmployeePaychecks()，如代码所示，函数的每一个逻辑断点均用大写字母标识</li>
 <li><strong>帕斯卡命名法</strong><br>与骆驼命名法类似，骆驼命名法是首字母小写，而帕斯卡命名法则需要首字母大写。源自 Pascal 语言的命名惯例，也称为大驼峰式命名法。<br>示例：LoginCheck()，string UserName</li>
@@ -228,11 +326,12 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
       </tags>
   </entry>
   <entry>
-    <title>cctype中的字符函数</title>
+    <title>【C/C++】cctype中的字符函数</title>
     <url>/2013/05/08/%5B20130508%5D/</url>
     <content><![CDATA[<p>c++中头文件为<cctype> ，c中则是<ctype.h>。</p>
 <p>这些函数以一个数值或者字符作为参数并返回布尔值true或flase,或者是字符，具体因函数不同</p>
 <p>这里面的函数可以分为两类：</p>
+<a id="more"></a>
 <p><strong>判断函数</strong></p>
 <p>它们检查输入参数是否属于某个类别:</p>
 <p><strong><a href="http://www.cplusplus.com/reference/cctype/isalnum/" target="_blank" rel="noopener">isalnum</a></strong></p>
