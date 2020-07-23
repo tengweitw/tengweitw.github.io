@@ -49,16 +49,16 @@
   };
 </script>
 
-  <meta name="description" content="为成为国际语言，C++必须能处理需要16位的国际字符集Unicode,于是在传统的8位char型的基础上添加了wchar_t字符类型。在程序包含iostream文件时，将自动创建8个流对象：cin、cout、cerr、clog以及相对应的用于宽字符流的：wcin、wcout、wcerr、wclog。 Cin可以将hex oct dec与cin连用，用于指定将输入的整数的进制 123int a;ci">
+  <meta name="description" content="为成为国际语言，C++必须能处理需要16位的国际字符集Unicode,于是在传统的8位char型的基础上添加了wchar_t字符类型。在程序包含iostream文件时，将自动创建8个流对象：cin、cout、cerr、clog以及相对应的用于宽字符流的：wcin、wcout、wcerr、wclog。">
 <meta name="keywords" content="C&#x2F;C++">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【C&#x2F;C++】输入与输出(Cin &amp; Cout)">
 <meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2013&#x2F;06&#x2F;01&#x2F;[20130601]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="为成为国际语言，C++必须能处理需要16位的国际字符集Unicode,于是在传统的8位char型的基础上添加了wchar_t字符类型。在程序包含iostream文件时，将自动创建8个流对象：cin、cout、cerr、clog以及相对应的用于宽字符流的：wcin、wcout、wcerr、wclog。 Cin可以将hex oct dec与cin连用，用于指定将输入的整数的进制 123int a;ci">
+<meta property="og:description" content="为成为国际语言，C++必须能处理需要16位的国际字符集Unicode,于是在传统的8位char型的基础上添加了wchar_t字符类型。在程序包含iostream文件时，将自动创建8个流对象：cin、cout、cerr、clog以及相对应的用于宽字符流的：wcin、wcout、wcerr、wclog。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20130601&#x2F;20130601_fig001.jpg">
-<meta property="og:updated_time" content="2020-07-23T14:20:32.886Z">
+<meta property="og:updated_time" content="2020-07-23T14:22:27.394Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20130601&#x2F;20130601_fig001.jpg">
 
@@ -245,7 +245,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 22:20:32" itemprop="dateModified" datetime="2020-07-23T22:20:32+08:00">2020-07-23</time>
+                <time title="修改时间：2020-07-23 22:22:27" itemprop="dateModified" datetime="2020-07-23T22:22:27+08:00">2020-07-23</time>
               </span>
 
           
@@ -281,6 +281,7 @@
 
       
         <p>为成为国际语言，C++必须能处理需要16位的国际字符集Unicode,于是在传统的8位char型的基础上添加了wchar_t字符类型。在程序包含iostream文件时，将自动创建8个流对象：cin、cout、cerr、clog以及相对应的用于宽字符流的：wcin、wcout、wcerr、wclog。</p>
+<a id="more"></a>
 <h4 id="Cin"><a href="#Cin" class="headerlink" title="Cin"></a>Cin</h4><p><strong>可以将hex oct dec与cin连用，用于指定将输入的整数的进制</strong></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a;</span><br><span class="line"><span class="built_in">cin</span>&gt;&gt;hex&gt;&gt;a;<span class="comment">//输入12h</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;a&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//输出18d</span></span><br></pre></td></tr></table></figure>
 <p><strong>当把输入传给字符数组时，会自动在后面加上一个空值字符，使之成为一个字符串。</strong></p>

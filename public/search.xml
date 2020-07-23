@@ -127,6 +127,7 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
     <title>【C/C++】输入与输出(Cin &amp; Cout)</title>
     <url>/2013/06/01/%5B20130601%5D/</url>
     <content><![CDATA[<p>为成为国际语言，C++必须能处理需要16位的国际字符集Unicode,于是在传统的8位char型的基础上添加了wchar_t字符类型。在程序包含iostream文件时，将自动创建8个流对象：cin、cout、cerr、clog以及相对应的用于宽字符流的：wcin、wcout、wcerr、wclog。</p>
+<a id="more"></a>
 <h4 id="Cin"><a href="#Cin" class="headerlink" title="Cin"></a>Cin</h4><p><strong>可以将hex oct dec与cin连用，用于指定将输入的整数的进制</strong></p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> a;</span><br><span class="line"><span class="built_in">cin</span>&gt;&gt;hex&gt;&gt;a;<span class="comment">//输入12h</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;a&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//输出18d</span></span><br></pre></td></tr></table></figure>
 <p><strong>当把输入传给字符数组时，会自动在后面加上一个空值字符，使之成为一个字符串。</strong></p>
