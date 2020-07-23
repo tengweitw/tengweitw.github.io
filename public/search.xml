@@ -123,6 +123,110 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
   </entry>
   <entry>
+    <title>【C/C++】内存对齐</title>
+    <url>/2013/05/11/%5B20130511%5D/</url>
+    <content><![CDATA[<p>在了解内存对齐方式前，先介绍计算机的存储方式：Big Endian与Little Endian：</p>
+<ul>
+<li>Big Endian:  即数据的高位在低地址，地位在高地址，并且把最高字节的地址作为变量的首地址</li>
+<li><p>Little Endian: 即数据的高位在高地址，数据的低位在低地址，并且把最低字节的地址作为变量首地址。</p>
+<a id="more"></a>
+</li>
+</ul>
+<p>现实中，某些基于RISC(精简指令集)的cpu比如SPARC、PowerPC等，采用Big Endian，而Intel系列cpu采用Little Endian。如果想要知道自己的电脑是什么存储格式只需要输入以下代码： </p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	 <span class="keyword">char</span> ch[]=&#123;<span class="number">0x12</span>,<span class="number">0x34</span>,<span class="number">0x56</span>,<span class="number">0x78</span>&#125;;</span><br><span class="line">	 <span class="keyword">int</span>* p=(<span class="keyword">int</span>*)ch;</span><br><span class="line">	 <span class="built_in">cout</span>&lt;&lt;hex&lt;&lt;*p&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//如果是78563412，说明是 Little Endian,如果是12345678，则是Big Endian</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>​    自然对齐：如果一个变量的内存地址正好位于它字节长度的整数倍，它就被称做自然对齐</p>
+<p>​    对于标准数据类型，它的地址只要是它的长度的整数倍，而非标准数据类型按下面的原则对齐：<br>　　数组 ：按照基本数据类型对齐，只要第一个对齐后面的自然也就对齐。<br>　　联合 ：按其包含的长度最大的数据类型对齐。<br>　　结构体： 结构体中每个数据类型都要对齐。     </p>
+<p>字节对齐的好处：<br>　  字节对齐的根本原因在于CPU访问数据的效率问题。学过微机原理的都知道规则字和非规则字，8086cpu访问规则字只要一个周期，而访问非规则字需要两个周期。在这里原理也是一样的，只不过这里是32位的操作系统，最多一次访问4字节，而8086是16位的，一次最多访问2字节。假设上面整型变量的地址是自然对齐，比如为0x00000000，则CPU如果取它的值的话需要访问一次内存，一次直接取从0x00000000-0x00000003的一个int型，如果变量在0x00000001，则第一次访问0x00000001的char型，第二次取从0x00000002-0x00000003的short型，第三次是0x00000004的char型，然后组合得到所要的数据，如果变量在0x00000002地址上的话则要访问两次内存，第一次为short，第二次为short，然后组合得到整型数据。如果变量在0x00000003地址上的话，则与在 0x00000001类似。 </p>
+<p> 我们通过下面的例子来说明自然对齐：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a=<span class="number">0x0abcde11</span>;<span class="comment">//a b c 的地址依次减小</span></span><br><span class="line">	<span class="keyword">int</span> b=<span class="number">0x012345678</span>;</span><br><span class="line">	<span class="keyword">double</span> c=<span class="number">0x0f23456789abcdef1</span>;</span><br><span class="line">    <span class="keyword">char</span> d=<span class="number">0x0fa</span>;</span><br><span class="line"></span><br><span class="line">   	<span class="keyword">char</span> *ptr=(<span class="keyword">char</span>*)&amp;a;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"a b每个字节的内容：\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"  地址  :内容\n"</span>);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">8</span>;i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%x  :%x\n"</span>,ptr+<span class="number">3</span>-i,*(ptr+<span class="number">3</span>-i));<span class="comment">//说明整数是按 little-endian存储的</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\na b c d的首地址和地址与字节长度的余值：\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"a: %x :%d\n"</span>,&amp;a,<span class="keyword">long</span>(&amp;a)%<span class="keyword">sizeof</span>(a));<span class="comment">//从这里可以看成变量的内存地址按变量顺序递减的 </span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"b: %x :%d\n"</span>,&amp;b,<span class="keyword">long</span>(&amp;b)%<span class="keyword">sizeof</span>(b));<span class="comment">//各个变量并不一定存放在连续的内存单元</span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"c: %x :%d\n"</span>,&amp;c,<span class="keyword">long</span>(&amp;c)%<span class="keyword">sizeof</span>(c));</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"d: %x :%d\n"</span>,&amp;d,<span class="keyword">long</span>(&amp;d)%<span class="keyword">sizeof</span>(d));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>上面程序在我电脑的运行结果为：</p>
+<p><img src="https://img-blog.csdn.net/20130511103156346" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>由上面的结果可以知道：</p>
+<ul>
+<li>地址随变量顺序而减小（你可以通过改变变量定义顺序来测试）；</li>
+<li>我的电脑采用的是Little Endian；</li>
+<li>各个变量并不一定存放在连续的内存单元（由c d的地址可知）</li>
+</ul>
+<p>对于数组，无论是静态数组还是动态数组都是连续存储的，可以用下面程序来查看：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">array</span>[<span class="number">5</span>]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;&amp;<span class="built_in">array</span>[i]&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//输出静态数组的每个元素的地址</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> *pt=<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">5</span>];</span><br><span class="line">	<span class="keyword">for</span>( i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;hex&lt;&lt;(pt+i)&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//输出动态数组的每个元素的地址</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">delete</span> []pt;<span class="comment">//注意要释放内存</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>  上面我们讨论了基本数据类型的内存存储，下面我们来看看类的存储结构:</p>
+<p>首先我们看看下面这个类：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">person1</span></span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">		<span class="keyword">bool</span> m_isMan;</span><br><span class="line">		<span class="keyword">float</span> m_height;</span><br><span class="line">		<span class="keyword">bool</span> m_isFat;</span><br><span class="line">		<span class="keyword">double</span> m_weight;</span><br><span class="line">		<span class="keyword">unsigned</span> <span class="keyword">char</span> m_books;</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="keyword">sizeof</span>(person1)&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//32=4+4+8+8+8</span></span><br></pre></td></tr></table></figure>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>这里person类的长度为32，其内存单元示意图如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>asd</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>afds</td>
+</tr>
+<tr>
+<td>afsd</td>
+</tr>
+<tr>
+<td>afds</td>
+</tr>
+<tr>
+<td>afd</td>
+</tr>
+<tr>
+<td>afds</td>
+</tr>
+<tr>
+<td>afds</td>
+</tr>
+<tr>
+<td>afda</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><img src="https://img-blog.csdn.net/20130511111949351" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>在这里是按8字节边界来对齐的</p>
+<p>上述变量已经都自然对齐了，为什么person对象最后还要填充7字节？</p>
+<p>因为当你定义person类型的数组时，如果不填充7字节，则除了第一个元素外其它的元素就可能不是自然对齐了。</p>
+<p>下面通过使用编译指令来定义对齐方式：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> pack(push,4)<span class="comment">// 按4字节边界对齐</span></span></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">person2</span></span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">		<span class="keyword">bool</span> m_isMan;</span><br><span class="line">		<span class="keyword">float</span> m_height;</span><br><span class="line">		<span class="keyword">bool</span> m_isFat;</span><br><span class="line">		<span class="keyword">double</span> m_weight;</span><br><span class="line">		<span class="keyword">unsigned</span> <span class="keyword">char</span> m_books;</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="keyword">sizeof</span>(person2)&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//24=4+4+4+8+4</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> pack(pop)</span></span><br></pre></td></tr></table></figure>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>这里person类的长度为24，其内存单元示意图如下：<br><img src="https://img-blog.csdn.net/20130511113041646" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动">​</p>
+<p>显然，在这里m_weight的地址不一定能被8整除，即不一定是自然对齐的。</p>
+<p>从上面可以知道，内存的大小和存取的效率随编译方式和变量定义有关，最好的方法是：<strong>按照字节大小从大到小依次定义变量成员，并尽可能采用小的成员对齐方式。</strong></p>
+<ul>
+<li><p>从小到大定义变量：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//按照从小到大字节长度来定义变量</span></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">person4</span></span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">		<span class="keyword">bool</span> m_isMan;</span><br><span class="line">		<span class="keyword">bool</span> m_isFat;</span><br><span class="line">		<span class="keyword">unsigned</span> <span class="keyword">char</span> m_books;</span><br><span class="line">		<span class="keyword">float</span> m_height;</span><br><span class="line">		<span class="keyword">double</span> m_weight;</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="keyword">sizeof</span>(person4)&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//16=1+1+1+1字节的填充+4+8</span></span><br></pre></td></tr></table></figure>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>这里person类的长度为16，其内存单元示意图如下：</p>
+<p><img src="https://img-blog.csdn.net/20130511115013573" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+</li>
+<li><p>从大到小定义变量：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//按照从大到小字节长度来定义变量</span></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">person3</span></span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">		<span class="keyword">double</span> m_weight;</span><br><span class="line">		<span class="keyword">float</span> m_height;</span><br><span class="line">		<span class="keyword">unsigned</span> <span class="keyword">char</span> m_books;</span><br><span class="line">		<span class="keyword">bool</span> m_isMan;</span><br><span class="line">		<span class="keyword">bool</span> m_isFat;</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="keyword">sizeof</span>(person3)&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//16=8+4+1+1+1+1字节的填充</span></span><br></pre></td></tr></table></figure>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>这里person类的长度为16，其内存单元示意图如下：</p>
+<p><img src="https://img-blog.csdn.net/20130511115206273" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+</li>
+</ul>
+<p>​     从上面可以看出两者所占内存一样，但是稳定度不同，从小到大的方式的对齐方式而发生有的成员变量不会自然对齐。如下所示</p>
+<p>​     </p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"> <span class="meta">#<span class="meta-keyword">pragma</span> pack(push,1)<span class="comment">// 按4字节边界对齐</span></span></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">person5</span></span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">		<span class="keyword">bool</span> m_isMan;</span><br><span class="line">		<span class="keyword">bool</span> m_isFat;</span><br><span class="line">		<span class="keyword">unsigned</span> <span class="keyword">char</span> m_books;</span><br><span class="line"> 		<span class="keyword">float</span> m_height;</span><br><span class="line">  		<span class="keyword">double</span> m_weight;</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="keyword">sizeof</span>(person5)&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//15=1+1+1+4+8</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> pack(pop)</span></span><br></pre></td></tr></table></figure>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>这里person类的长度为15，其内存单元示意图如下：     </p>
+<p>  <img src="https://img-blog.csdn.net/20130511115258503" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>在上面的程序中，double的偏移量为1+1+1+4=7，很有可能不会自然对齐,所以最好采用从大到小的方式来定义成员变量。</p>
+<p>​        </p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>C/C++</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>编程常用命名方法</title>
     <url>/2013/05/08/%5B20130508b%5D/</url>
     <content><![CDATA[<ol>
