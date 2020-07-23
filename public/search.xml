@@ -142,7 +142,7 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a=<span class="number">0x0abcde11</span>;<span class="comment">//a b c 的地址依次减小</span></span><br><span class="line">	<span class="keyword">int</span> b=<span class="number">0x012345678</span>;</span><br><span class="line">	<span class="keyword">double</span> c=<span class="number">0x0f23456789abcdef1</span>;</span><br><span class="line">    <span class="keyword">char</span> d=<span class="number">0x0fa</span>;</span><br><span class="line"></span><br><span class="line">   	<span class="keyword">char</span> *ptr=(<span class="keyword">char</span>*)&amp;a;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"a b每个字节的内容：\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"  地址  :内容\n"</span>);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">8</span>;i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%x  :%x\n"</span>,ptr+<span class="number">3</span>-i,*(ptr+<span class="number">3</span>-i));<span class="comment">//说明整数是按 little-endian存储的</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\na b c d的首地址和地址与字节长度的余值：\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"a: %x :%d\n"</span>,&amp;a,<span class="keyword">long</span>(&amp;a)%<span class="keyword">sizeof</span>(a));<span class="comment">//从这里可以看成变量的内存地址按变量顺序递减的 </span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"b: %x :%d\n"</span>,&amp;b,<span class="keyword">long</span>(&amp;b)%<span class="keyword">sizeof</span>(b));<span class="comment">//各个变量并不一定存放在连续的内存单元</span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"c: %x :%d\n"</span>,&amp;c,<span class="keyword">long</span>(&amp;c)%<span class="keyword">sizeof</span>(c));</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"d: %x :%d\n"</span>,&amp;d,<span class="keyword">long</span>(&amp;d)%<span class="keyword">sizeof</span>(d));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
 <p>上面程序在我电脑的运行结果为：</p>
-<p><img src="https://img-blog.csdn.net/20130511103156346" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130511/20130511_fig001.jpg" width="400" height="300" title="图1" alt="图1" ><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
 <p>由上面的结果可以知道：</p>
 <ul>
 <li>地址随变量顺序而减小（你可以通过改变变量定义顺序来测试）；</li>
@@ -157,46 +157,14 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">person1</span></span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">		<span class="keyword">bool</span> m_isMan;</span><br><span class="line">		<span class="keyword">float</span> m_height;</span><br><span class="line">		<span class="keyword">bool</span> m_isFat;</span><br><span class="line">		<span class="keyword">double</span> m_weight;</span><br><span class="line">		<span class="keyword">unsigned</span> <span class="keyword">char</span> m_books;</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="keyword">sizeof</span>(person1)&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//32=4+4+8+8+8</span></span><br></pre></td></tr></table></figure>
 <p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
 <p>这里person类的长度为32，其内存单元示意图如下：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>asd</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>afds</td>
-</tr>
-<tr>
-<td>afsd</td>
-</tr>
-<tr>
-<td>afds</td>
-</tr>
-<tr>
-<td>afd</td>
-</tr>
-<tr>
-<td>afds</td>
-</tr>
-<tr>
-<td>afds</td>
-</tr>
-<tr>
-<td>afda</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><img src="https://img-blog.csdn.net/20130511111949351" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="D:\Documents\writing\FigureBed\20130511\20130511_fig002.jpg" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
 <p>在这里是按8字节边界来对齐的</p>
 <p>上述变量已经都自然对齐了，为什么person对象最后还要填充7字节？</p>
 <p>因为当你定义person类型的数组时，如果不填充7字节，则除了第一个元素外其它的元素就可能不是自然对齐了。</p>
 <p>下面通过使用编译指令来定义对齐方式：</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> pack(push,4)<span class="comment">// 按4字节边界对齐</span></span></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">person2</span></span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">		<span class="keyword">bool</span> m_isMan;</span><br><span class="line">		<span class="keyword">float</span> m_height;</span><br><span class="line">		<span class="keyword">bool</span> m_isFat;</span><br><span class="line">		<span class="keyword">double</span> m_weight;</span><br><span class="line">		<span class="keyword">unsigned</span> <span class="keyword">char</span> m_books;</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="keyword">sizeof</span>(person2)&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//24=4+4+4+8+4</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> pack(pop)</span></span><br></pre></td></tr></table></figure>
 <p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
-<p>这里person类的长度为24，其内存单元示意图如下：<br><img src="https://img-blog.csdn.net/20130511113041646" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动">​</p>
+<p>这里person类的长度为24，其内存单元示意图如下：<br><img src="D:\Documents\writing\FigureBed\20130511\20130511_fig003.jpg" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动">​</p>
 <p>显然，在这里m_weight的地址不一定能被8整除，即不一定是自然对齐的。</p>
 <p>从上面可以知道，内存的大小和存取的效率随编译方式和变量定义有关，最好的方法是：<strong>按照字节大小从大到小依次定义变量成员，并尽可能采用小的成员对齐方式。</strong></p>
 <ul>
@@ -204,13 +172,13 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//按照从小到大字节长度来定义变量</span></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">person4</span></span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">		<span class="keyword">bool</span> m_isMan;</span><br><span class="line">		<span class="keyword">bool</span> m_isFat;</span><br><span class="line">		<span class="keyword">unsigned</span> <span class="keyword">char</span> m_books;</span><br><span class="line">		<span class="keyword">float</span> m_height;</span><br><span class="line">		<span class="keyword">double</span> m_weight;</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="keyword">sizeof</span>(person4)&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//16=1+1+1+1字节的填充+4+8</span></span><br></pre></td></tr></table></figure>
 <p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
 <p>这里person类的长度为16，其内存单元示意图如下：</p>
-<p><img src="https://img-blog.csdn.net/20130511115013573" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="D:\Documents\writing\FigureBed\20130511\20130511_fig004.jpg" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
 </li>
 <li><p>从大到小定义变量：</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//按照从大到小字节长度来定义变量</span></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">person3</span></span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">		<span class="keyword">double</span> m_weight;</span><br><span class="line">		<span class="keyword">float</span> m_height;</span><br><span class="line">		<span class="keyword">unsigned</span> <span class="keyword">char</span> m_books;</span><br><span class="line">		<span class="keyword">bool</span> m_isMan;</span><br><span class="line">		<span class="keyword">bool</span> m_isFat;</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="keyword">sizeof</span>(person3)&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//16=8+4+1+1+1+1字节的填充</span></span><br></pre></td></tr></table></figure>
 <p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
 <p>这里person类的长度为16，其内存单元示意图如下：</p>
-<p><img src="https://img-blog.csdn.net/20130511115206273" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="D:\Documents\writing\FigureBed\20130511\20130511_fig005.jpg" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
 </li>
 </ul>
 <p>​     从上面可以看出两者所占内存一样，但是稳定度不同，从小到大的方式的对齐方式而发生有的成员变量不会自然对齐。如下所示</p>
@@ -218,7 +186,7 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"> <span class="meta">#<span class="meta-keyword">pragma</span> pack(push,1)<span class="comment">// 按4字节边界对齐</span></span></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">person5</span></span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">		<span class="keyword">bool</span> m_isMan;</span><br><span class="line">		<span class="keyword">bool</span> m_isFat;</span><br><span class="line">		<span class="keyword">unsigned</span> <span class="keyword">char</span> m_books;</span><br><span class="line"> 		<span class="keyword">float</span> m_height;</span><br><span class="line">  		<span class="keyword">double</span> m_weight;</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="keyword">sizeof</span>(person5)&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//15=1+1+1+4+8</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> pack(pop)</span></span><br></pre></td></tr></table></figure>
 <p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
 <p>这里person类的长度为15，其内存单元示意图如下：     </p>
-<p>  <img src="https://img-blog.csdn.net/20130511115258503" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>  <img src="D:\Documents\writing\FigureBed\20130511\20130511_fig006.jpg" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
 <p>在上面的程序中，double的偏移量为1+1+1+4=7，很有可能不会自然对齐,所以最好采用从大到小的方式来定义成员变量。</p>
 <p>​        </p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
