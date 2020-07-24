@@ -126,8 +126,8 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
   <entry>
     <title>【算法导论】插入排序法</title>
     <url>/2013/06/02/%5B2013-06-02%5D/</url>
-    <content><![CDATA[<a id="more"></a>
-<p>插入排序法的时间复杂度为n的平方，<strong>对于较小的输入规模来说，插入排序法比合并排序法更快些</strong>。在最佳情况下，即输入数组已经排序好，则时间复杂度可表示为n,是一个线性函数；在最差情况下，即输入数组是逆序排列时，时间复杂度为 $an^2+bn+c$. 插入排序法的具体实现方法如下：</p>
+    <content><![CDATA[<p>插入排序法的时间复杂度为n的平方，<strong>对于较小的输入规模来说，插入排序法比合并排序法更快些</strong>。在最佳情况下，即输入数组已经排序好，则时间复杂度可表示为n,是一个线性函数；在最差情况下，即输入数组是逆序排列时，时间复杂度为 $an^2+bn+c$. 插入排序法的具体实现方法如下：</p>
+<a id="more"></a>
 <p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130602/20130602_fig001.jpg" width="660" height="440" title="图1" alt="图1" ></p>
 <p><strong>具体的c/c++语言实现如下：</strong></p>
 <div class='spoiler collapsed'>
