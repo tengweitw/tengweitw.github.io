@@ -49,18 +49,17 @@
   };
 </script>
 
-  <meta name="description" content="匈牙利命名法通过在变量名之前增加小写字母的符号前缀，以标识变量的属性、类型、作用域等参数。简单地说，即“变量名＝属性＋类型＋对象描述”的形式。示例：m_lpszStr，表示指向以 0 字符结尾的字符串的长指针成员变量 骆驼命名法也叫驼峰式大小写。其主要规范为，混合使用大小写字母来构造变量名或函数名。示例：printEmployeePaychecks()，如代码所示，函数的每一个逻辑断点均用大写">
-<meta name="keywords" content="C&#x2F;C++">
+  <meta name="description" content="对于秒&#x2F;毫秒级计时，我们可以使用其自带库函数。在头文件time.h中，clock() 函数返回从 开启这个程序进程 到 程序中调用clock（）函数 时之间的CPU时钟计时单元数，返回单位是毫秒。另外，系统还定义了一个符号常量CLOCKS_PER_SEC。该常量等于每秒钟包括的系统时间单位数。因此，除以这个单位数，就可以得到秒数。time.h中将clock_t作为clock()作为clock()返">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【C&#x2F;C++】编程常用命名方法">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2013&#x2F;05&#x2F;08&#x2F;[20130508b]&#x2F;index.html">
+<meta property="og:title" content="【C&#x2F;C++】精确系统计时：秒，毫秒，微秒">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2013&#x2F;06&#x2F;02&#x2F;[20130602b]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="匈牙利命名法通过在变量名之前增加小写字母的符号前缀，以标识变量的属性、类型、作用域等参数。简单地说，即“变量名＝属性＋类型＋对象描述”的形式。示例：m_lpszStr，表示指向以 0 字符结尾的字符串的长指针成员变量 骆驼命名法也叫驼峰式大小写。其主要规范为，混合使用大小写字母来构造变量名或函数名。示例：printEmployeePaychecks()，如代码所示，函数的每一个逻辑断点均用大写">
+<meta property="og:description" content="对于秒&#x2F;毫秒级计时，我们可以使用其自带库函数。在头文件time.h中，clock() 函数返回从 开启这个程序进程 到 程序中调用clock（）函数 时之间的CPU时钟计时单元数，返回单位是毫秒。另外，系统还定义了一个符号常量CLOCKS_PER_SEC。该常量等于每秒钟包括的系统时间单位数。因此，除以这个单位数，就可以得到秒数。time.h中将clock_t作为clock()作为clock()返">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-23T13:47:42.186Z">
+<meta property="og:updated_time" content="2020-07-25T04:36:14.757Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://tengweitw.com/2013/05/08/[20130508b]/">
+<link rel="canonical" href="http://tengweitw.com/2013/06/02/[20130602b]/">
 
 
 <script id="page-configurations">
@@ -74,7 +73,7 @@
   };
 </script>
 
-  <title>【C/C++】编程常用命名方法 | 青峰碧陋室</title>
+  <title>【C/C++】精确系统计时：秒，毫秒，微秒 | 青峰碧陋室</title>
   
 
 
@@ -213,7 +212,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/05/08/%5B20130508b%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/06/02/%5B20130602b%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/authorpic.png">
@@ -226,7 +225,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【C/C++】编程常用命名方法
+          【C/C++】精确系统计时：秒，毫秒，微秒
         </h1>
 
         <div class="post-meta">
@@ -236,14 +235,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2013-05-08 23:36:32" itemprop="dateCreated datePublished" datetime="2013-05-08T23:36:32+08:00">2013-05-08</time>
+              <time title="创建时间：2013-06-02 16:54:35" itemprop="dateCreated datePublished" datetime="2013-06-02T16:54:35+08:00">2013-06-02</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 21:47:42" itemprop="dateModified" datetime="2020-07-23T21:47:42+08:00">2020-07-23</time>
+                <time title="修改时间：2020-07-25 12:36:14" itemprop="dateModified" datetime="2020-07-25T12:36:14+08:00">2020-07-25</time>
               </span>
 
           
@@ -259,7 +258,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>624</span>
+              <span>1.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -278,19 +277,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <a id="more"></a>
-<ol>
-<li><strong>匈牙利命名法</strong><br>通过在变量名之前增加小写字母的符号前缀，以标识变量的属性、类型、作用域等参数。简单地说，即“变量名＝属性＋类型＋对象描述”的形式。<br>示例：m_lpszStr，表示指向以 0 字符结尾的字符串的长指针成员变量</li>
-<li><strong>骆驼命名法</strong><br>也叫驼峰式大小写。其主要规范为，混合使用大小写字母来构造变量名或函数名。<br>示例：printEmployeePaychecks()，如代码所示，函数的每一个逻辑断点均用大写字母标识</li>
-<li><strong>帕斯卡命名法</strong><br>与骆驼命名法类似，骆驼命名法是首字母小写，而帕斯卡命名法则需要首字母大写。源自 Pascal 语言的命名惯例，也称为大驼峰式命名法。<br>示例：LoginCheck()，string UserName</li>
-</ol>
-<p>下面介绍一种比较适用的程序命名方法：</p>
-<ul>
-<li>类型名和函数名均以大写字母开头的单词组合而成 eg: class Node; class LeftNode; void Set(int value); void SetValue(int value);</li>
-<li>变量名和参数名的第一个单词小写，后面的单词首字母大写 eg: int flag; int flagShip;</li>
-<li>符号常量和宏名全大写，并且单词之间用下划线连接 eg: const int MAX=100; const int MAX_LENGTH=1024;</li>
-<li>静态变量加前缀s_ eg: static int s_num;<br>全局变量加前缀g_ eg: int g_Total=100;<br>类的成员变量加前缀m_ eg: class Node { int m_length; int m_width; }</li>
-</ul>
+        <p>对于<strong>秒/毫秒级</strong>计时，我们可以使用其自带库函数。在头文件time.h中，clock() 函数返回从 开启这个程序进程 到 程序中调用clock（）函数 时之间的CPU时钟计时单元数，返回单位是毫秒。另外，系统还定义了一个符号常量CLOCKS_PER_SEC。该常量等于每秒钟包括的系统时间单位数。因此，除以这个单位数，就可以得到秒数。time.h中将clock_t作为clock()作为clock()返回类型的别名。</p>
+<p>对于<strong>微秒级</strong>计时，我们可以使用windows.h中的库函数QueryPerformanceCounter()。这个函数返回高精确度性能计数器的值,它可以以微妙为单位计时。由于该函数的精确计时的最小单位是与系统有关的，所以我们必须使用QueryPerformanceFrequency() 查询系统以得到QueryPerformanceCounter()返回的嘀哒声的频率，即返回每秒嘀哒声的个数。</p>
+<a id="more"></a>
+<hr>
+<p>下面具体举例说明：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;Windows.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//---------秒级计时----------//</span></span><br><span class="line"><span class="comment">//void main()</span></span><br><span class="line"><span class="comment">//&#123;</span></span><br><span class="line"><span class="comment">//	clock_t start, end;</span></span><br><span class="line"><span class="comment">//	start = clock();</span></span><br><span class="line"><span class="comment">//	Sleep(2300);</span></span><br><span class="line"><span class="comment">//	end = clock();</span></span><br><span class="line"><span class="comment">//	cout &lt;&lt; (end - start)/ double(CLOCKS_PER_SEC) &lt;&lt; " s" &lt;&lt; endl; </span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//---------毫秒级计时----------//</span></span><br><span class="line"><span class="comment">//void main() </span></span><br><span class="line"><span class="comment">//&#123;</span></span><br><span class="line"><span class="comment">//	clock_t start,end;</span></span><br><span class="line"><span class="comment">//	start = clock();</span></span><br><span class="line"><span class="comment">//	Sleep(2300);</span></span><br><span class="line"><span class="comment">//	end = clock();</span></span><br><span class="line"><span class="comment">//	cout &lt;&lt; end - start &lt;&lt; " ms" &lt;&lt; endl;</span></span><br><span class="line"><span class="comment">//	</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//---------微秒级计时----------//</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	LARGE_INTEGER cpu_freqence;</span><br><span class="line">	LARGE_INTEGER start;</span><br><span class="line">	LARGE_INTEGER <span class="built_in">end</span>;</span><br><span class="line">	<span class="keyword">double</span> run_time = <span class="number">0.0</span>;</span><br><span class="line">	QueryPerformanceFrequency(&amp;cpu_freqence);</span><br><span class="line">	QueryPerformanceCounter(&amp;start);</span><br><span class="line">	Sleep(<span class="number">2300</span>);</span><br><span class="line">	QueryPerformanceCounter(&amp;<span class="built_in">end</span>);</span><br><span class="line">	run_time = (((<span class="built_in">end</span>.QuadPart - start.QuadPart) * <span class="number">1000.0f</span>) / cpu_freqence.QuadPart);</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; run_time &lt;&lt; <span class="string">" ms"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -326,7 +318,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2013/05/08/[20130508b]/" title="【C&#x2F;C++】编程常用命名方法">http://tengweitw.com/2013/05/08/[20130508b]/</a>
+    <a href="http://tengweitw.com/2013/06/02/[20130602b]/" title="【C&#x2F;C++】精确系统计时：秒，毫秒，微秒">http://tengweitw.com/2013/06/02/[20130602b]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -336,9 +328,6 @@
 
 
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/C-C/" rel="tag"># C/C++</a>
-          </div>
 
         
 
@@ -346,12 +335,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2013/05/08/%5B20130508%5D/" rel="prev" title="【C/C++】cctype中的字符函数">
-      <i class="fa fa-chevron-left"></i> 【C/C++】cctype中的字符函数
+    <a href="/2013/06/02/%5B20130602%5D/" rel="prev" title="【算法导论】插入排序法">
+      <i class="fa fa-chevron-left"></i> 【算法导论】插入排序法
     </a></div>
       <div class="post-nav-item">
-    <a href="/2013/05/11/%5B20130511%5D/" rel="next" title="【C/C++】内存对齐">
-      【C/C++】内存对齐 <i class="fa fa-chevron-right"></i>
+    <a href="/2018/07/05/Perceptron/" rel="next" title="【图解例说机器学习】感知机 (Perceptron)">
+      【图解例说机器学习】感知机 (Perceptron) <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -542,6 +531,54 @@
   
 
   
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
 
   
 

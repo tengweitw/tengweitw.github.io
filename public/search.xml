@@ -125,7 +125,7 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
   </entry>
   <entry>
     <title>【C/C++】精确系统计时：秒，毫秒，微秒</title>
-    <url>/2013/06/02/%5B2013-06-02b%5D/</url>
+    <url>/2013/06/02/%5B20130602b%5D/</url>
     <content><![CDATA[<p>对于<strong>秒/毫秒级</strong>计时，我们可以使用其自带库函数。在头文件time.h中，clock() 函数返回从 开启这个程序进程 到 程序中调用clock（）函数 时之间的CPU时钟计时单元数，返回单位是毫秒。另外，系统还定义了一个符号常量CLOCKS_PER_SEC。该常量等于每秒钟包括的系统时间单位数。因此，除以这个单位数，就可以得到秒数。time.h中将clock_t作为clock()作为clock()返回类型的别名。</p>
 <p>对于<strong>微秒级</strong>计时，我们可以使用windows.h中的库函数QueryPerformanceCounter()。这个函数返回高精确度性能计数器的值,它可以以微妙为单位计时。由于该函数的精确计时的最小单位是与系统有关的，所以我们必须使用QueryPerformanceFrequency() 查询系统以得到QueryPerformanceCounter()返回的嘀哒声的频率，即返回每秒嘀哒声的个数。</p>
 <a id="more"></a>
@@ -136,7 +136,7 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
   </entry>
   <entry>
     <title>【算法导论】插入排序法</title>
-    <url>/2013/06/02/%5B2013-06-02%5D/</url>
+    <url>/2013/06/02/%5B20130602%5D/</url>
     <content><![CDATA[<p>插入排序法的时间复杂度为n的平方，<strong>对于较小的输入规模来说，插入排序法比合并排序法更快些</strong>。在最佳情况下，即输入数组已经排序好，则时间复杂度可表示为n,是一个线性函数；在最差情况下，即输入数组是逆序排列时，时间复杂度为 $an^2+bn+c$. 插入排序法的具体实现方法如下：</p>
 <a id="more"></a>
 <p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130602/20130602_fig001.jpg" width="660" height="440" title="图1" alt="图1" ></p>
@@ -695,6 +695,234 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
       <tags>
         <tag>C/C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【C/C++】基本数据类型</title>
+    <url>/2013/05/06/%5B20130506%5D/</url>
+    <content><![CDATA[<p>标准C基本数据类型：int char long short float double void以及它们与signed、unsigned的组合。标准C++增加了bool型和wchar_t型，在32位操作系统上，它们的长度如下表：</p>
+<a id="more"></a>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>类型标识符</th>
+<th>类型说明</th>
+<th>长度（字节）</th>
+<th>范围</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>char</td>
+<td>字符型</td>
+<td>1</td>
+<td>-128 ~ 127</td>
+<td>-27 ~ (27 -1)</td>
+</tr>
+<tr>
+<td>unsigned char</td>
+<td>无符字符型</td>
+<td>1</td>
+<td>0 ~ 255</td>
+<td>0 ~ (28 -1)</td>
+</tr>
+<tr>
+<td>short int</td>
+<td>短整型</td>
+<td>2</td>
+<td>-32768 ~ 32767</td>
+<td>2-15 ~ (215 - 1)</td>
+</tr>
+<tr>
+<td>unsigned short int</td>
+<td>无符短整型</td>
+<td>2</td>
+<td>0 ~ 65535</td>
+<td>0 ~ (216 - 1)</td>
+</tr>
+<tr>
+<td>long int</td>
+<td>长整型</td>
+<td>4</td>
+<td>-2147483648 ~ 2147483646</td>
+<td>-231 ~ (231 - 0)</td>
+</tr>
+<tr>
+<td>int</td>
+<td>整型</td>
+<td>4</td>
+<td>-2147483648 ~ 2147483647</td>
+<td>-231 ~ (231 - 1)</td>
+</tr>
+<tr>
+<td>unsigned int</td>
+<td>无符整型</td>
+<td>4</td>
+<td>0 ~ 4294967295</td>
+<td>0 ~ (232-1)</td>
+</tr>
+<tr>
+<td>float</td>
+<td>实型（单精度）</td>
+<td>4</td>
+<td>1.18<em>10-38 ~ 3.40</em>1038</td>
+<td>7位有效位</td>
+</tr>
+<tr>
+<td>double</td>
+<td>实型（双精度）</td>
+<td>8</td>
+<td>2.23<em>10-308 ~ 1.79</em>10308</td>
+<td>15位有效位</td>
+</tr>
+<tr>
+<td>long double</td>
+<td>实型（长双精度）</td>
+<td>10</td>
+<td>3.37<em>10-4932 ~ 1.18</em>104932</td>
+<td>19位有效位</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>在不同的平台下，字长不同，具体可以通过以下代码查看：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;  </span></span></span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="comment">//字符型 有符号和无符号的字节数一样 只是范围不同  </span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"char is %d\n"</span>,<span class="keyword">sizeof</span>(<span class="keyword">char</span>));  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"unsigned char is %d\n"</span>,<span class="keyword">sizeof</span>(<span class="keyword">unsigned</span> <span class="keyword">char</span>));  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">//整数型  </span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"short int is %d\n"</span>,<span class="keyword">sizeof</span>(<span class="keyword">short</span> <span class="keyword">int</span>));  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"unsigned short int is %d\n"</span>,<span class="keyword">sizeof</span>(<span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span>));  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"long int is %d\n"</span>,<span class="keyword">sizeof</span>(<span class="keyword">long</span> <span class="keyword">int</span>));  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"int is %d\n"</span>,<span class="keyword">sizeof</span>(<span class="keyword">int</span>));  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"unsigned int is %d\n"</span>,<span class="keyword">sizeof</span>(<span class="keyword">unsigned</span> <span class="keyword">int</span>));  </span><br><span class="line">      </span><br><span class="line">    <span class="comment">//浮点型  </span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"float is %d\n"</span>,<span class="keyword">sizeof</span>(<span class="keyword">float</span>));  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"double is %d\n"</span>,<span class="keyword">sizeof</span>(<span class="keyword">double</span>));  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"long double is %d\n"</span>,<span class="keyword">sizeof</span>(<span class="keyword">long</span> <span class="keyword">double</span>));  </span><br><span class="line">      </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在头文件climits.h中，定义了符号常量来表示类型的限制。其列表如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>expresses</th>
+<th>value*</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CHAR_BIT</td>
+<td>Number of bits in a <code>char</code> object (byte)</td>
+<td><code>8</code> or greater</td>
+</tr>
+<tr>
+<td>SCHAR_MIN</td>
+<td>Minimum value for an object of type <code>signed char</code></td>
+<td><code>-127</code> (<code>-27+1</code>) or less</td>
+</tr>
+<tr>
+<td>SCHAR_MAX</td>
+<td>Maximum value for an object of type <code>signed char</code></td>
+<td><code>127</code> (<code>27-1</code>) or greater</td>
+</tr>
+<tr>
+<td>UCHAR_MAX</td>
+<td>Maximum value for an object of type <code>unsigned char</code></td>
+<td><code>255</code> (<code>28-1</code>) or greater</td>
+</tr>
+<tr>
+<td>CHAR_MIN</td>
+<td>Minimum value for an object of type <code>char</code></td>
+<td>either SCHAR_MIN or <code>0</code></td>
+</tr>
+<tr>
+<td>CHAR_MAX</td>
+<td>Maximum value for an object of type <code>char</code></td>
+<td>either SCHAR_MAX or UCHAR_MAX</td>
+</tr>
+<tr>
+<td>MB_LEN_MAX</td>
+<td>Maximum number of bytes in a multibyte character, for any locale</td>
+<td><code>1</code> or greater</td>
+</tr>
+<tr>
+<td>SHRT_MIN</td>
+<td>Minimum value for an object of type <code>short int</code></td>
+<td><code>-32767</code> (<code>-215+1</code>) or less</td>
+</tr>
+<tr>
+<td>SHRT_MAX</td>
+<td>Maximum value for an object of type <code>short int</code></td>
+<td><code>32767</code> (<code>215-1</code>) or greater</td>
+</tr>
+<tr>
+<td>USHRT_MAX</td>
+<td>Maximum value for an object of type <code>unsigned short int</code></td>
+<td><code>65535</code> (<code>216-1</code>) or greater</td>
+</tr>
+<tr>
+<td>INT_MIN</td>
+<td>Minimum value for an object of type <code>int</code></td>
+<td><code>-32767</code> (<code>-215+1</code>) or less</td>
+</tr>
+<tr>
+<td>INT_MAX</td>
+<td>Maximum value for an object of type <code>int</code></td>
+<td><code>32767</code> (<code>215-1</code>) or greater</td>
+</tr>
+<tr>
+<td>UINT_MAX</td>
+<td>Maximum value for an object of type <code>unsigned int</code></td>
+<td><code>65535</code> (<code>216-1</code>) or greater</td>
+</tr>
+<tr>
+<td>LONG_MIN</td>
+<td>Minimum value for an object of type <code>long int</code></td>
+<td><code>-2147483647</code> (<code>-231+1</code>) or less</td>
+</tr>
+<tr>
+<td>LONG_MAX</td>
+<td>Maximum value for an object of type <code>long int</code></td>
+<td><code>2147483647</code> (<code>231-1</code>) or greater</td>
+</tr>
+<tr>
+<td>ULONG_MAX</td>
+<td>Maximum value for an object of type <code>unsigned long int</code></td>
+<td><code>4294967295</code> (<code>232-1</code>) or greater</td>
+</tr>
+<tr>
+<td>LLONG_MIN</td>
+<td>Minimum value for an object of type <code>long long int</code></td>
+<td><code>-9223372036854775807</code> (<code>-263+1</code>) or less</td>
+</tr>
+<tr>
+<td>LLONG_MAX</td>
+<td>Maximum value for an object of type <code>long long int</code></td>
+<td><code>9223372036854775807</code> (<code>263-1</code>) or greater</td>
+</tr>
+<tr>
+<td>ULLONG_MAX</td>
+<td>Maximum value for an object of type <code>unsigned long long int</code></td>
+<td><code>18446744073709551615</code> (<code>264-1</code>) or greater</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>* 其精确值依赖于你的系统和库的实现</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>C/C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【生活随笔】决定</title>
+    <url>/2013/05/05/%5B20130505%5D/</url>
+    <content><![CDATA[<p>注册csdn已经有一年多了，从来也没有进这个论坛看看，当初也只是因为要下载资料而注册的。现在决定转战到这里，一是因为QQ号前不久被盗，一些资料幸好没丢，于是想来将一些个人的文档、程序保存在这里；二是因为csdn中国最大的程序员论坛，想向一些大牛请教请教，毕竟QQ空间的技术大牛并不多，也极少有人会将技术贴发在QQ空间。</p>
+<a id="more"></a>
+<p>  今天是五四青年节，希望我现在的决定不是一时的兴趣，希望每个月都能发几篇像样的伪技术贴。业精于勤，荒于嬉；行成于思，毁于随。今天看林锐的高质量程序设计指南，发现本书的作者之一韩永泉的csdn帐号是northwest_wolf,于是我便取了个名字-nineheaded_bird。从今天起，每个月都写一些东西，将来会对自己的科研会有一定的帮助的。贵在坚持！回首过去，大学的时光都虚度了，乘现在还有时间，好好弥补，希望还来得及。</p>
+<p>  Yesterday is History,Tomorry is a Mystery,Today is a gift,That’s why we call it the present！</p>
+<hr>
+<p><strong>更新于2020-06-30：</strong></p>
+<p>从今天开始，我将转战到自己的个人博客：tengweitw.com 。之所以想要转移，一方面是因为个人博客的可自定义程度高，另一方面，csdn好多改变已经不符合我的价值观：</p>
+<ul>
+<li>推出了博文付费功能，看个文章都需要付费。虽然，我也认可知识付费。</li>
+<li>尽管个人设置不要c币，但有时下载仍强制需要c币。虽然，我有很多c币。</li>
+<li>官方鼓励那些博人眼球的标题，好多被推荐的文章都是标题党。虽然，有些质量也比较高。</li>
+</ul>
+<p>这个个人博客是始建于2015年，是基于github和hexo部署的。我将把我所有的博客的内容重新编辑保存为markown格式，陆续上传到个人博客。我希望在今后能够写出一些有深度的文章，而不是和以前一样写的十分浅显。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Life Thoughts</tag>
       </tags>
   </entry>
 </search>
