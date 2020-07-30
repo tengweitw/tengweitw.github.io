@@ -155,6 +155,61 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
   </entry>
   <entry>
+    <title>【算法导论】快速排序</title>
+    <url>/2013/08/02/%5B20130802b%5D/</url>
+    <content><![CDATA[<p>​    从六月初开始看算法导论，陆陆续续看了有2个月了，但实际看的时间只有半个月左右。这期间都忙着找导师、期末考试，同时还回家修养了十来天。真正专心的看算法是在离家返校后，由于没有考试和作业的烦恼，天天都沉浸在算法中，感觉效率较高。这段时间学到的东西较多，下面来总结一下：</p>
+<a id="more"></a>
+<p>​    <strong>学到的排序算法可以分为两类：比较排序、非比较排序。</strong>(这些排序算法的详细介绍及c程序实现在本文末都给出了链接，欢迎参考与指正！)</p>
+<p>​    比较排序有：插入排序法、合并排序法、堆排序法、冒泡排序法、选择排序法、快速排序法等等、</p>
+<p>​    非比较排序有：计数排序法、基数排序法、桶排序法。</p>
+<p>​    下面以我的理解来分别说说它们各自的特点。不过在此之前，我先阐述两个概念： <strong>原地排序  稳定排序</strong></p>
+<p>​    <strong>原地排序</strong>：如果对数组A进行排序，则这些数据是在A中进行重新排序的，在任何时候，至多只有其中的常数个数字是存储在数组之外的。</p>
+<p>​    <strong>稳定排序</strong>：原数组中相同元素的相对位置（即前后关系）在经过排序后仍然不变。例如$a[5]=\{3,2,3,1,5\}$,经过稳定排序后为：$a[5]=\{1,2,3,3,5\}$.</p>
+<p>​    谁最实用？对于较短的数组，比如说元素个数才十几二十个，用冒泡排序法就可以了，因为我们大多数人对冒泡排序法可谓是信手拈来，可以不假思索就可以写出，尽管其时间复杂度比较大。当然快速排序法是非常值得推荐的，他的适用范围很广，用的十分普遍。</p>
+<p>​    <strong>插入排序</strong>：时间复杂度：$O(n*n)$，是原定排序，稳定排序(在本文中所有说稳定排序的意思是可以是稳定排序，对于是否是稳定排序，还取决于具体的程序，看进行数据间比较时是否带等号，但是快速排序肯定不是稳定排序)。其实我们玩斗地主，摸牌的过程就是在进行插入排序！当原始数组为正序排列时，所用时间最短；当原始数组为逆序排序时，所用时间最长。所以插入排序适合于原数组大多数元素已经排好的情况。(所谓正序、逆序只是相对的概念，如果要对数组从小到大排序，则如果原数组本身是从大到小排列的，则称为逆序，否则称为正序)。</p>
+<p>​    <strong>合并排序</strong>：时间复杂度：$O(nlogn)$， 不是原地排序，可以是稳定排序。它和快速排序一样是基于分而治之的思想的（稍有不同），但是它比快速排序要快一点。尽管如此，由于它不是原地排序，需要占用较多空间，所以运用没有快速排序广泛。它和插入排序相比，它的最坏运行情况是$O(nlogn)$，插入排序的最坏运行情况为$O(n*n)$，但插入排序中的常数因子使得在$n$比较小时，运行要更快一点。</p>
+<p>​    <strong>冒泡排序</strong>：时间复杂度为：$O(n*n)$，原地排序，稳定排序。由于平常遇到的排序都很简单，并且大家可以对冒泡排序信手拈来，因此用的十分普遍。</p>
+<p>​    <strong>选择排序</strong>：时间复杂度为：$O(n*n)$，原地排序，稳定排序。实际上，选择排序和冒泡排序的思想上是一致的，只是在具体操作中使用了一点技巧，避免了数据的多次交换，因此运行时间比冒泡排序快一点。</p>
+<p>​    <strong>堆排序</strong>：时间复杂度：$O(nlogn)$，是原地排序。它是将插入排序和合并排序的优点集于一身。像插入排序一样是原地排序，像合并排序一样运行时间为$O(nlogn)$。虽然堆排序是一个漂亮的算法，但是实际中，快速排序的一个好的实现往往要优于堆排序。但是堆有个很常见的应用：作为高效的优先级队列。</p>
+<p>​    <strong>快速排序</strong>：时间复杂度：$O(nlogn)$，不稳定排序，原地排序。最坏的运行时间为$O(n*n)$，它的运行时间与划分的对称性有关。加入随机化后，在平均情况下，划分就能比较均匀，从而就能获得较好性能。</p>
+<p>​    <strong>由定理可知，比较排序时间复杂度最好为$O(nlogn)$</strong>，在上述的比较排序算法中，时间复杂度为$O(nlogn)$较好的算法有：合并排序、堆排序、快速排序。其中快速排序运用最广泛，因为合并排序不是原地排序，需占用较多空间，堆排序的数据交换比较多。</p>
+<p>​    <strong>计数排序</strong>：$O(n)$，稳定排序、不是原地排序。其思想比较独特，运用条件是数组的元素的值域在某一个范围内，并且由于不是原地排序，需要占用额外的内存，所以运用不是很广。</p>
+<p>​    <strong>基数排序</strong>：$O(n)$，稳定排序、不是原地排序。基数排序就是不断地调用计数排序。其思想比较新颖，在进行比较两个数的大小是反其道而行之，先从个位数开始比较。相比于从高位开始比较，它避免了记录中间过程的值。</p>
+<p>​    <strong>桶排序</strong>：$O(n)$，稳定排序、不是原地排序。也是基于分而治之的思想，先将序列进行分类，然后分别处理，最后再合并。与合并算法不同的是，合并的时候不需要进行比较。</p>
+<p>​    上述的非比较排序中，其时间复杂度都是线性的，由于是非比较的排序，所以比较排序算法的下界$O(nlogn)$就不适用了。他们都只有在一些特定的条件下使用，因此运用不是很广泛，但是这些思想却是值得我们学习的。</p>
+<p><strong>下面附上上述各个排序算法的详细介绍及C程序实现的链接，欢迎各位拍砖</strong>！</p>
+<p>  比较排序：  <a href="http://blog.csdn.net/tengweitw/article/details/9006943" target="_blank" rel="noopener">插入排序</a>  <a href="http://blog.csdn.net/tengweitw/article/details/9056485" target="_blank" rel="noopener">合并排序</a>  <a href="http://blog.csdn.net/tengweitw/article/details/9152899" target="_blank" rel="noopener">堆排序</a> <a href="http://blog.csdn.net/tengweitw/article/details/9707525" target="_blank" rel="noopener">冒泡排序</a> <a href="http://blog.csdn.net/tengweitw/article/details/9707801" target="_blank" rel="noopener">选择排序</a> <a href="http://blog.csdn.net/tengweitw/article/details/9627659" target="_blank" rel="noopener">快速排序</a></p>
+<p>非比较排序：  <a href="http://blog.csdn.net/tengweitw/article/details/9629567" target="_blank" rel="noopener">计数排序</a>  <a href="http://blog.csdn.net/tengweitw/article/details/9670303" target="_blank" rel="noopener">基数排序</a>  <a href="http://blog.csdn.net/tengweitw/article/details/9713333" target="_blank" rel="noopener">桶排序</a></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Algorithm Design</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【算法导论】桶排序</title>
+    <url>/2013/08/02/%5B20130802%5D/</url>
+    <content><![CDATA[<p><strong>时间复杂度为</strong>：O(n)</p>
+<p><strong>基本思想</strong>：将要排列的序列分成n组，每组分别进行排序，然后在合并到一起，这里面有分而治之的思想。</p>
+<a id="more"></a>
+<p><strong>实例说明</strong>：大家学c语言肯定学过switch-case结构，最常见的题型就是对成绩进行分类，但是这里我们是对其进行排名。假设有十个学生的成绩如下：78,17,39,26,72,94,21,12,23,68。我们可以把成绩先进行分段（称为桶），每十分分为一段，共分为10段。然后在每段内进行排序，每一段的排序可以采用插入排序，最后再进行合并即可。各段的内容为：</p>
+<p> 桶编号：桶中元素</p>
+<p>​      0： </p>
+<p>​      1：12 、17</p>
+<p>​      2：21 、23 、26</p>
+<p>​      3：39</p>
+<p>​      4：</p>
+<p>​      5：</p>
+<p>​      6：68</p>
+<p>​      7：72 、 78</p>
+<p>​      8：</p>
+<p>​      9：94</p>
+<p>具体的程序实现如下：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;malloc.h&gt;  </span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">inc_sort</span><span class="params">(<span class="keyword">int</span> arrayA[],<span class="keyword">int</span> size,<span class="keyword">int</span> bucket_size)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">node</span></span></span><br><span class="line"><span class="class">&#123;</span>  </span><br><span class="line">    <span class="keyword">int</span> key;  </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span> * <span class="title">next</span>;</span>  </span><br><span class="line">&#125;KeyNode;  </span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">int</span> raw[]=&#123;<span class="number">78</span>,<span class="number">17</span>,<span class="number">39</span>,<span class="number">26</span>,<span class="number">72</span>,<span class="number">94</span>,<span class="number">21</span>,<span class="number">12</span>,<span class="number">23</span>,<span class="number">68</span>&#125;;   </span><br><span class="line">    <span class="keyword">int</span> size=<span class="keyword">sizeof</span>(raw)/<span class="keyword">sizeof</span>(<span class="keyword">int</span>);     </span><br><span class="line">    inc_sort(raw,size,<span class="number">10</span>);  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/****************************************************\</span></span><br><span class="line"><span class="comment">函数功能：对输入数组进行桶排序</span></span><br><span class="line"><span class="comment">输入：数组及其大小、桶的大小</span></span><br><span class="line"><span class="comment">输出：无</span></span><br><span class="line"><span class="comment">\****************************************************/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">inc_sort</span><span class="params">(<span class="keyword">int</span> arrayA[],<span class="keyword">int</span> size,<span class="keyword">int</span> bucket_size)</span></span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    KeyNode **bucket=(KeyNode **)<span class="built_in">malloc</span>(bucket_size*<span class="keyword">sizeof</span>(KeyNode *)); <span class="comment">//指向指针的指针，bucket相当于二维数组 </span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;bucket_size;i++)</span><br><span class="line">	&#123;  </span><br><span class="line">        bucket[i]=(KeyNode *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(KeyNode));<span class="comment">//动态开辟空间  </span></span><br><span class="line">        bucket[i]-&gt;key=<span class="number">0</span>; <span class="comment">//初始化桶中的数据  </span></span><br><span class="line">        bucket[i]-&gt;next=<span class="literal">NULL</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;size;j++)</span><br><span class="line">	&#123;  </span><br><span class="line">        KeyNode *node=(KeyNode *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(KeyNode));<span class="comment">//创立节点</span></span><br><span class="line">        node-&gt;key=arrayA[j];  </span><br><span class="line">        node-&gt;next=<span class="literal">NULL</span>;  </span><br><span class="line">       </span><br><span class="line">        <span class="keyword">int</span> index=arrayA[j]/<span class="number">10</span>; <span class="comment">//映射函数计算桶号和散列函数相似    </span></span><br><span class="line">          </span><br><span class="line">        KeyNode *p=bucket[index];<span class="comment">//初始化p成为桶中数据链表的头指针  </span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(p-&gt;key==<span class="number">0</span>)<span class="comment">//当桶中还没有数据   </span></span><br><span class="line">            bucket[index]-&gt;next=node;  </span><br><span class="line">   		<span class="keyword">else</span></span><br><span class="line">		&#123;  </span><br><span class="line">            <span class="comment">//链表结构的插入排序  </span></span><br><span class="line">            <span class="keyword">while</span>((p-&gt;next!=<span class="literal">NULL</span>)&amp;&amp;(p-&gt;next-&gt;key&lt;=node-&gt;key))<span class="comment">//插入的数据大于当前数据时，从头结点开始</span></span><br><span class="line">                p=p-&gt;next;                                   <span class="comment">//直到找到大于它的节点为止</span></span><br><span class="line">            node-&gt;next=p-&gt;next;  </span><br><span class="line">            p-&gt;next=node;        </span><br><span class="line">        &#125; </span><br><span class="line">		(bucket[index]-&gt;key)++;</span><br><span class="line">    &#125;  </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;bucket_size;i++)  </span><br><span class="line">	&#123;</span><br><span class="line">        <span class="keyword">for</span>(KeyNode *k=bucket[i]-&gt;next; k!=<span class="literal">NULL</span>; k=k-&gt;next)  </span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"%d "</span>,k-&gt;key); </span><br><span class="line">	<span class="comment">//	printf("\n");</span></span><br><span class="line">	&#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>); </span><br><span class="line"></span><br><span class="line">	<span class="built_in">free</span>(bucket);<span class="comment">//记得释放申请的内存空间</span></span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Algorithm Design</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【算法导论】选择排序</title>
     <url>/2013/08/01/%5B20130801b%5D/</url>
     <content><![CDATA[<p>​    <strong>选择排序</strong>其实是冒泡法的一种改进，<strong>其基本思路</strong>也是：先确定最小元素，再找次最小元素，最后确定最大元素。</p>

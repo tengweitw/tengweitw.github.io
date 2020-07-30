@@ -49,20 +49,18 @@
   };
 </script>
 
-  <meta name="description" content="时间复杂度：O(n*n) 基本思想：从数组最后一个元素开始，依次与前一个元素比较，若比前一个元素小，则与之交换位置，然后再与当前前一个元素比较，直到遇到比它大的元素为止。例如：假设数组为：$a[5]=\{3,4,2,5,1\}$;则运算过程为：首先$1$与$5$比较，由于$1&amp;lt;5$，从而交换位置，数组变为$a[5]=\{3,4,2,1,5\}$;然后$1$与当前前一个元素$2$比较，一直重复">
+  <meta name="description" content="时间复杂度为：O(n) 基本思想：将要排列的序列分成n组，每组分别进行排序，然后在合并到一起，这里面有分而治之的思想。">
 <meta name="keywords" content="Algorithm Design">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【算法导论】冒泡排序">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2013&#x2F;08&#x2F;01&#x2F;[20130801]&#x2F;index.html">
+<meta property="og:title" content="【算法导论】桶排序">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2013&#x2F;08&#x2F;02&#x2F;[20130802]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="时间复杂度：O(n*n) 基本思想：从数组最后一个元素开始，依次与前一个元素比较，若比前一个元素小，则与之交换位置，然后再与当前前一个元素比较，直到遇到比它大的元素为止。例如：假设数组为：$a[5]=\{3,4,2,5,1\}$;则运算过程为：首先$1$与$5$比较，由于$1&amp;lt;5$，从而交换位置，数组变为$a[5]=\{3,4,2,1,5\}$;然后$1$与当前前一个元素$2$比较，一直重复">
+<meta property="og:description" content="时间复杂度为：O(n) 基本思想：将要排列的序列分成n组，每组分别进行排序，然后在合并到一起，这里面有分而治之的思想。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20130801&#x2F;20130801_fig001.jpg">
-<meta property="og:updated_time" content="2020-07-29T06:51:18.153Z">
+<meta property="og:updated_time" content="2020-07-30T09:32:12.656Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20130801&#x2F;20130801_fig001.jpg">
 
-<link rel="canonical" href="http://tengweitw.com/2013/08/01/[20130801]/">
+<link rel="canonical" href="http://tengweitw.com/2013/08/02/[20130802]/">
 
 
 <script id="page-configurations">
@@ -76,7 +74,7 @@
   };
 </script>
 
-  <title>【算法导论】冒泡排序 | 青峰碧陋室</title>
+  <title>【算法导论】桶排序 | 青峰碧陋室</title>
   
 
 
@@ -210,7 +208,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/08/01/%5B20130801%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/08/02/%5B20130802%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -223,7 +221,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【算法导论】冒泡排序
+          【算法导论】桶排序
         </h1>
 
         <div class="post-meta">
@@ -233,14 +231,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2013-08-01 21:00:43" itemprop="dateCreated datePublished" datetime="2013-08-01T21:00:43+08:00">2013-08-01</time>
+              <time title="创建时间：2013-08-02 10:15:54" itemprop="dateCreated datePublished" datetime="2013-08-02T10:15:54+08:00">2013-08-02</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-29 14:51:18" itemprop="dateModified" datetime="2020-07-29T14:51:18+08:00">2020-07-29</time>
+                <time title="修改时间：2020-07-30 17:32:12" itemprop="dateModified" datetime="2020-07-30T17:32:12+08:00">2020-07-30</time>
               </span>
 
           
@@ -256,14 +254,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>858</span>
+              <span>1.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -275,14 +273,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><strong>时间复杂度</strong>：O(n*n)</p>
-<p><strong>基本思想</strong>：从数组最后一个元素开始，依次与前一个元素比较，若比前一个元素小，则与之交换位置，然后再与当前前一个元素比较，直到遇到比它大的元素为止。例如：假设数组为：$a[5]=\{3,4,2,5,1\}$;则运算过程为：首先$1$与$5$比较，由于$1&lt;5$，从而交换位置，数组变为$a[5]=\{3,4,2,1,5\}$;然后$1$与当前前一个元素$2$比较，一直重复上述操作，经过一次循环后，数组变为$a[5]=\{1,3,4,2,5\}$;第二次循环从倒数第二个元素开始……，总共循环$n-1$次就可以得到正确结果。总的来说，首先将最小的元素放在数组前面，然后放次最小的元素，依此类推。</p>
+        <p><strong>时间复杂度为</strong>：O(n)</p>
+<p><strong>基本思想</strong>：将要排列的序列分成n组，每组分别进行排序，然后在合并到一起，这里面有分而治之的思想。</p>
 <a id="more"></a>
-<p>上述过程的图解为：</p>
-<p>​     <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130801/20130801_fig001.jpg" width="550" height="200" title="图1" alt="图1" ></p>
-<p>注：这里的红色为要进行比较的元素。</p>
-<p>具体实现如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BubbleSort</span><span class="params">(<span class="keyword">int</span>* arrayA,<span class="keyword">int</span> n)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> arrayA[]=&#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">7</span>,<span class="number">1</span>,<span class="number">5</span>&#125;;</span><br><span class="line">	<span class="keyword">int</span> n=<span class="keyword">sizeof</span>(arrayA)/<span class="keyword">sizeof</span>(<span class="keyword">int</span>);</span><br><span class="line"></span><br><span class="line">	BubbleSort(arrayA,n);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%d "</span>,arrayA[i]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BubbleSort</span><span class="params">(<span class="keyword">int</span>* arrayA,<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n<span class="number">-1</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=n<span class="number">-1</span>;j&gt;i;j--)<span class="comment">//j&gt;i即可是因为前面的元素已经排好了</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> temp=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">if</span>(arrayA[j]&lt;arrayA[j<span class="number">-1</span>])</span><br><span class="line">			&#123;</span><br><span class="line">				temp=arrayA[j];</span><br><span class="line">				arrayA[j]=arrayA[j<span class="number">-1</span>];</span><br><span class="line">				arrayA[j<span class="number">-1</span>]=temp;</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line"></span><br><span class="line">		&#125;	</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+<p><strong>实例说明</strong>：大家学c语言肯定学过switch-case结构，最常见的题型就是对成绩进行分类，但是这里我们是对其进行排名。假设有十个学生的成绩如下：78,17,39,26,72,94,21,12,23,68。我们可以把成绩先进行分段（称为桶），每十分分为一段，共分为10段。然后在每段内进行排序，每一段的排序可以采用插入排序，最后再进行合并即可。各段的内容为：</p>
+<p> 桶编号：桶中元素</p>
+<p>​      0： </p>
+<p>​      1：12 、17</p>
+<p>​      2：21 、23 、26</p>
+<p>​      3：39</p>
+<p>​      4：</p>
+<p>​      5：</p>
+<p>​      6：68</p>
+<p>​      7：72 、 78</p>
+<p>​      8：</p>
+<p>​      9：94</p>
+<p>具体的程序实现如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;malloc.h&gt;  </span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">inc_sort</span><span class="params">(<span class="keyword">int</span> arrayA[],<span class="keyword">int</span> size,<span class="keyword">int</span> bucket_size)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">node</span></span></span><br><span class="line"><span class="class">&#123;</span>  </span><br><span class="line">    <span class="keyword">int</span> key;  </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span> * <span class="title">next</span>;</span>  </span><br><span class="line">&#125;KeyNode;  </span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">int</span> raw[]=&#123;<span class="number">78</span>,<span class="number">17</span>,<span class="number">39</span>,<span class="number">26</span>,<span class="number">72</span>,<span class="number">94</span>,<span class="number">21</span>,<span class="number">12</span>,<span class="number">23</span>,<span class="number">68</span>&#125;;   </span><br><span class="line">    <span class="keyword">int</span> size=<span class="keyword">sizeof</span>(raw)/<span class="keyword">sizeof</span>(<span class="keyword">int</span>);     </span><br><span class="line">    inc_sort(raw,size,<span class="number">10</span>);  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/****************************************************\</span></span><br><span class="line"><span class="comment">函数功能：对输入数组进行桶排序</span></span><br><span class="line"><span class="comment">输入：数组及其大小、桶的大小</span></span><br><span class="line"><span class="comment">输出：无</span></span><br><span class="line"><span class="comment">\****************************************************/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">inc_sort</span><span class="params">(<span class="keyword">int</span> arrayA[],<span class="keyword">int</span> size,<span class="keyword">int</span> bucket_size)</span></span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    KeyNode **bucket=(KeyNode **)<span class="built_in">malloc</span>(bucket_size*<span class="keyword">sizeof</span>(KeyNode *)); <span class="comment">//指向指针的指针，bucket相当于二维数组 </span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;bucket_size;i++)</span><br><span class="line">	&#123;  </span><br><span class="line">        bucket[i]=(KeyNode *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(KeyNode));<span class="comment">//动态开辟空间  </span></span><br><span class="line">        bucket[i]-&gt;key=<span class="number">0</span>; <span class="comment">//初始化桶中的数据  </span></span><br><span class="line">        bucket[i]-&gt;next=<span class="literal">NULL</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;size;j++)</span><br><span class="line">	&#123;  </span><br><span class="line">        KeyNode *node=(KeyNode *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(KeyNode));<span class="comment">//创立节点</span></span><br><span class="line">        node-&gt;key=arrayA[j];  </span><br><span class="line">        node-&gt;next=<span class="literal">NULL</span>;  </span><br><span class="line">       </span><br><span class="line">        <span class="keyword">int</span> index=arrayA[j]/<span class="number">10</span>; <span class="comment">//映射函数计算桶号和散列函数相似    </span></span><br><span class="line">          </span><br><span class="line">        KeyNode *p=bucket[index];<span class="comment">//初始化p成为桶中数据链表的头指针  </span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(p-&gt;key==<span class="number">0</span>)<span class="comment">//当桶中还没有数据   </span></span><br><span class="line">            bucket[index]-&gt;next=node;  </span><br><span class="line">   		<span class="keyword">else</span></span><br><span class="line">		&#123;  </span><br><span class="line">            <span class="comment">//链表结构的插入排序  </span></span><br><span class="line">            <span class="keyword">while</span>((p-&gt;next!=<span class="literal">NULL</span>)&amp;&amp;(p-&gt;next-&gt;key&lt;=node-&gt;key))<span class="comment">//插入的数据大于当前数据时，从头结点开始</span></span><br><span class="line">                p=p-&gt;next;                                   <span class="comment">//直到找到大于它的节点为止</span></span><br><span class="line">            node-&gt;next=p-&gt;next;  </span><br><span class="line">            p-&gt;next=node;        </span><br><span class="line">        &#125; </span><br><span class="line">		(bucket[index]-&gt;key)++;</span><br><span class="line">    &#125;  </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;bucket_size;i++)  </span><br><span class="line">	&#123;</span><br><span class="line">        <span class="keyword">for</span>(KeyNode *k=bucket[i]-&gt;next; k!=<span class="literal">NULL</span>; k=k-&gt;next)  </span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"%d "</span>,k-&gt;key); </span><br><span class="line">	<span class="comment">//	printf("\n");</span></span><br><span class="line">	&#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>); </span><br><span class="line"></span><br><span class="line">	<span class="built_in">free</span>(bucket);<span class="comment">//记得释放申请的内存空间</span></span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
     
@@ -317,7 +324,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2013/08/01/[20130801]/" title="【算法导论】冒泡排序">http://tengweitw.com/2013/08/01/[20130801]/</a>
+    <a href="http://tengweitw.com/2013/08/02/[20130802]/" title="【算法导论】桶排序">http://tengweitw.com/2013/08/02/[20130802]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -338,12 +345,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2013/07/31/%5B20130731c%5D/" rel="prev" title="【算法导论】基数排序">
-      <i class="fa fa-chevron-left"></i> 【算法导论】基数排序
+    <a href="/2013/08/01/%5B20130801b%5D/" rel="prev" title="【算法导论】选择排序">
+      <i class="fa fa-chevron-left"></i> 【算法导论】选择排序
     </a></div>
       <div class="post-nav-item">
-    <a href="/2013/08/01/%5B20130801b%5D/" rel="next" title="【算法导论】选择排序">
-      【算法导论】选择排序 <i class="fa fa-chevron-right"></i>
+    <a href="/2013/08/02/%5B20130802b%5D/" rel="next" title="【算法导论】快速排序">
+      【算法导论】快速排序 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
