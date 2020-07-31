@@ -49,18 +49,20 @@
   };
 </script>
 
-  <meta name="description" content="注册csdn已经有一年多了，从来也没有进这个论坛看看，当初也只是因为要下载资料而注册的。现在决定转战到这里，一是因为QQ号前不久被盗，一些资料幸好没丢，于是想来将一些个人的文档、程序保存在这里；二是因为csdn中国最大的程序员论坛，想向一些大牛请教请教，毕竟QQ空间的技术大牛并不多，也极少有人会将技术贴发在QQ空间。">
-<meta name="keywords" content="Life Thoughts">
+  <meta name="description" content="基本概念： ​    有序树与无序树：若将树中的每个节点的各个子树都看成是从左到右有次序的，则称该树为有序树，否则为无序数。">
+<meta name="keywords" content="Algorithm Design">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【生活随笔】决定">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2013&#x2F;05&#x2F;05&#x2F;[20130505]&#x2F;index.html">
+<meta property="og:title" content="【算法导论】二叉树的建立">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2013&#x2F;08&#x2F;06&#x2F;[20130806]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="注册csdn已经有一年多了，从来也没有进这个论坛看看，当初也只是因为要下载资料而注册的。现在决定转战到这里，一是因为QQ号前不久被盗，一些资料幸好没丢，于是想来将一些个人的文档、程序保存在这里；二是因为csdn中国最大的程序员论坛，想向一些大牛请教请教，毕竟QQ空间的技术大牛并不多，也极少有人会将技术贴发在QQ空间。">
+<meta property="og:description" content="基本概念： ​    有序树与无序树：若将树中的每个节点的各个子树都看成是从左到右有次序的，则称该树为有序树，否则为无序数。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-26T06:59:30.819Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20130806&#x2F;20130806_fig001.jpg">
+<meta property="og:updated_time" content="2020-07-31T01:11:55.846Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20130806&#x2F;20130806_fig001.jpg">
 
-<link rel="canonical" href="http://tengweitw.com/2013/05/05/[20130505]/">
+<link rel="canonical" href="http://tengweitw.com/2013/08/06/[20130806]/">
 
 
 <script id="page-configurations">
@@ -74,7 +76,7 @@
   };
 </script>
 
-  <title>【生活随笔】决定 | 青峰碧陋室</title>
+  <title>【算法导论】二叉树的建立 | 青峰碧陋室</title>
   
 
 
@@ -208,7 +210,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/05/05/%5B20130505%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/08/06/%5B20130806%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -221,7 +223,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【生活随笔】决定
+          【算法导论】二叉树的建立
         </h1>
 
         <div class="post-meta">
@@ -231,14 +233,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2013-05-05 00:06:09" itemprop="dateCreated datePublished" datetime="2013-05-05T00:06:09+08:00">2013-05-05</time>
+              <time title="创建时间：2013-08-06 09:58:13" itemprop="dateCreated datePublished" datetime="2013-08-06T09:58:13+08:00">2013-08-06</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-26 14:59:30" itemprop="dateModified" datetime="2020-07-26T14:59:30+08:00">2020-07-26</time>
+                <time title="修改时间：2020-07-31 09:11:55" itemprop="dateModified" datetime="2020-07-31T09:11:55+08:00">2020-07-31</time>
               </span>
 
           
@@ -254,14 +256,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>759</span>
+              <span>1.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -273,19 +275,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>注册csdn已经有一年多了，从来也没有进这个论坛看看，当初也只是因为要下载资料而注册的。现在决定转战到这里，一是因为QQ号前不久被盗，一些资料幸好没丢，于是想来将一些个人的文档、程序保存在这里；二是因为csdn中国最大的程序员论坛，想向一些大牛请教请教，毕竟QQ空间的技术大牛并不多，也极少有人会将技术贴发在QQ空间。</p>
+        <h3 id=""><a href="#" class="headerlink" title=" "></a> </h3><p><strong>基本概念：</strong></p>
+<p>​    <em>有序树与无序树</em>：若将树中的每个节点的各个子树都看成是从左到右有次序的，则称该树为有序树，否则为无序数。</p>
 <a id="more"></a>
-<p>  今天是五四青年节，希望我现在的决定不是一时的兴趣，希望每个月都能发几篇像样的伪技术贴。业精于勤，荒于嬉；行成于思，毁于随。今天看林锐的高质量程序设计指南，发现本书的作者之一韩永泉的csdn帐号是northwest_wolf,于是我便取了个名字-nineheaded_bird。从今天起，每个月都写一些东西，将来会对自己的科研会有一定的帮助的。贵在坚持！回首过去，大学的时光都虚度了，乘现在还有时间，好好弥补，希望还来得及。</p>
-<p>  Yesterday is History,Tomorry is a Mystery,Today is a gift,That’s why we call it the present！</p>
-<hr>
-<p><strong>更新于2020-06-30：</strong></p>
-<p>从今天开始，我将转战到自己的个人博客：tengweitw.com 。之所以想要转移，一方面是因为个人博客的可自定义程度高，另一方面，csdn好多改变已经不符合我的价值观：</p>
+<p>​    <em>顺序存储</em>：从根节点起，自上而下，从左至右的方式对节点进行顺序编号，编号即对应为要存储的数组的下标。于是节点与数组元素就一一对应了。</p>
+<p>​    <em>满二叉树、完全二叉树、非完全二叉树</em>的区别：</p>
+<p>​        <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130806/20130806_fig001.jpg" width="500" height="250" title="图1" alt="图1" ></p>
+<p><strong>二叉树的性质：</strong></p>
 <ul>
-<li>推出了博文付费功能，看个文章都需要付费。虽然，我也认可知识付费。</li>
-<li>尽管个人设置不要c币，但有时下载仍强制需要c币。虽然，我有很多c币。</li>
-<li>官方鼓励那些博人眼球的标题，好多被推荐的文章都是标题党。虽然，有些质量也比较高。</li>
+<li><strong>性质1</strong> 在二叉树的第i层上至多有$2i-1$个结点($i≥1$)</li>
+<li><strong>性质2</strong> 深度为k的二叉树至多有$2k－1$个结点($k≥1$)</li>
+<li><strong>性质3</strong> 对任何一棵二叉树，如果其终端结点数为$n_0$，度为2的结点数为$n_2$，则$n_0=n_2+1$</li>
+<li><strong>性质4</strong> 具有n个结点的完全二叉树的深度为$\lceil \log_2n\rceil+1$或$\lfloor\log_2(n+1)\rfloor$。</li>
 </ul>
-<p>这个个人博客是始建于2015年，是基于github和hexo部署的。我将把我所有的博客的内容重新编辑保存为markown格式，陆续上传到个人博客。我希望在今后能够写出一些有深度的文章，而不是和以前一样写的十分浅显。</p>
+<p><strong>二叉树建立的基本思想：</strong>依次从原数组中读取结点信息，建立一个新结点来存储这个元素信息。若新结点是第一个结点，则令其为根结点，否则将新结点作为孩子链接到它的双亲结点上。如此反复进行，直到数组元素全部读完为止。为了使新结点能够与双亲结点正确相连，并考虑到这种方法中先建立的结点其孩子结点也一定先建立的特点，可以设置一个指针类型的数组构成的队列来保存已输入结点的地址，并使队尾(rear)指向当前输入的结点，队头(front)指向这个结点的双亲结点。由于根结点的地址放在队列的第一个单元里，所以当rear为偶数时（<strong>注意根节点不是数组的第一个元素</strong>），则rear所指的结点应作为左孩子与其双亲链接，否则rear所指的结点应作为右孩子与其双亲链接。若一个双亲结点与两个孩子链接完毕，则进行出队操作，使队头指针指向下一个待链接的双亲结点。</p>
+<p><strong>具体算法如下：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;malloc.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> maxsize 10</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> datatype;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	datatype data;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">lchild</span>,*<span class="title">rchild</span>;</span></span><br><span class="line">&#125; bitree;<span class="comment">//二叉树的节点结构</span></span><br><span class="line"></span><br><span class="line"><span class="function">bitree* <span class="title">CreatBitree</span><span class="params">(<span class="keyword">int</span>* arrayA,<span class="keyword">int</span> n)</span></span>;<span class="comment">//创建二叉树（以顺序存储方式）</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">preorder</span><span class="params">(bitree *p)</span></span>;<span class="comment">//先序遍历算法</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">midorder</span><span class="params">(bitree *p)</span></span>;<span class="comment">//中序遍历算法</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">postorder</span><span class="params">(bitree *p)</span></span>;<span class="comment">//后序遍历算法</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> arrayA[<span class="number">9</span>]=&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>&#125;;<span class="comment">//第一个节点没有用于存储数据，是为了方便计算</span></span><br><span class="line">	<span class="keyword">int</span> n=<span class="keyword">sizeof</span>(arrayA)/<span class="keyword">sizeof</span>(<span class="keyword">int</span>);</span><br><span class="line"></span><br><span class="line">	bitree *head=<span class="literal">NULL</span>;<span class="comment">//初始化指向链表的头指针</span></span><br><span class="line"></span><br><span class="line">	head=CreatBitree(arrayA,n);<span class="comment">//建立链表</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">bitree* <span class="title">CreatBitree</span><span class="params">(<span class="keyword">int</span>* arrayA,<span class="keyword">int</span> n)</span><span class="comment">//顺序存储 建立二叉树</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	bitree *root;</span><br><span class="line">	bitree *<span class="built_in">queue</span>[maxsize];<span class="comment">//队列用于保存已输入节点的地址</span></span><br><span class="line">	bitree *p;</span><br><span class="line">	<span class="keyword">int</span> front,rear;</span><br><span class="line">	front=<span class="number">1</span>;rear=<span class="number">0</span>;<span class="comment">//指向队列的头尾</span></span><br><span class="line">	root=<span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;n;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		p=(bitree*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(bitree));<span class="comment">//创立节点并赋值</span></span><br><span class="line">		p-&gt;data=arrayA[i];</span><br><span class="line">		p-&gt;lchild=<span class="literal">NULL</span>;</span><br><span class="line">		p-&gt;rchild=<span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">		rear++;</span><br><span class="line">		<span class="built_in">queue</span>[rear]=p;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>(rear==<span class="number">1</span>)<span class="comment">//判断是否为输入的第一个节点</span></span><br><span class="line">			root=p;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(i%<span class="number">2</span>==<span class="number">0</span>)<span class="comment">//新节点为左孩子</span></span><br><span class="line">				<span class="built_in">queue</span>[front]-&gt;lchild=p;</span><br><span class="line">			<span class="keyword">else</span><span class="comment">//新节点为右孩子</span></span><br><span class="line">			&#123;</span><br><span class="line">				<span class="built_in">queue</span>[front]-&gt;rchild=p;</span><br><span class="line">				front=front+<span class="number">1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -321,7 +326,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2013/05/05/[20130505]/" title="【生活随笔】决定">http://tengweitw.com/2013/05/05/[20130505]/</a>
+    <a href="http://tengweitw.com/2013/08/06/[20130806]/" title="【算法导论】二叉树的建立">http://tengweitw.com/2013/08/06/[20130806]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -333,7 +338,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/Life-Thoughts/" rel="tag"><i class="fa fa-tag"></i> Life Thoughts</a>
+              <a href="/tags/Algorithm-Design/" rel="tag"><i class="fa fa-tag"></i> Algorithm Design</a>
           </div>
 
         
@@ -341,10 +346,13 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2013/05/06/%5B20130506%5D/" rel="next" title="【C/C++】基本数据类型">
-      【C/C++】基本数据类型 <i class="fa fa-chevron-right"></i>
+    <a href="/2013/08/02/%5B20130802b%5D/" rel="prev" title="【算法导论】排序算法总结">
+      <i class="fa fa-chevron-left"></i> 【算法导论】排序算法总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/07/05/Perceptron/" rel="next" title="【图解例说机器学习】感知机 (Perceptron)">
+      【图解例说机器学习】感知机 (Perceptron) <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -383,6 +391,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#null"><span class="nav-number">1.</span> <span class="nav-text"> </span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
