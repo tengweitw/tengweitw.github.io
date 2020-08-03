@@ -388,8 +388,7 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
 <p>删除顶节点后的广度遍历：<br>key=7 color=1<br>key=2 color=0<br>key=11 color=0<br>key=1 color=1<br>key=4 color=1<br>key=8 color=1<br>key=14 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=15 color=0<br>请按任意键继续. . .</p>
 <p>删除节点5后的红黑树为：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig013.jpg" width="400" height="250" title="图13" alt="图13" ></p>
-<p>本文<code>参考资料</code>：《算法导论》</p>
-<table><tr><td bgcolor=orange> 背景色是 1 orange</td></tr></table>
+<p>本文参考资料：《算法导论》</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
       <tags>
         <tag>Algorithm Design</tag>

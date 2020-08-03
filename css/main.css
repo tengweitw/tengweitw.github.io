@@ -408,8 +408,10 @@ code {
   font-family: consolas, Menlo, monospace, "Microsoft YaHei", "PingFang SC";
 }
 code {
-  color: #d500fc;
-  padding: 2px 4px;
+  background: #7f828a;
+  color: #eee;
+  padding: 1px 1px;
+  border-radius: 5px;
   overflow-wrap: break-word;
   word-wrap: break-word;
 }
@@ -1204,7 +1206,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ffb3ad;
+  background: #d25bff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
