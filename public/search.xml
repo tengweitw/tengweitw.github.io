@@ -371,9 +371,10 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
 </li>
 </ul>
 <ul>
-<li><strong>利用两个半加器实现全加器</strong>：</li>
-</ul>
+<li><p><strong>利用两个半加器实现全加器</strong>：</p>
 <figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> halfadder(a,b,sum,cout);</span><br><span class="line"></span><br><span class="line">         outputcout,sum; <span class="comment">//不申明，默认是wire变量</span></span><br><span class="line"></span><br><span class="line">         <span class="keyword">input</span>  a,b;</span><br><span class="line"></span><br><span class="line">         <span class="keyword">assign</span>&#123;cout,sum&#125;=a+b;</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> fulladder(x,y,c_in,sum,c_out);</span><br><span class="line"></span><br><span class="line">         inputx;</span><br><span class="line"></span><br><span class="line">         inputy;</span><br><span class="line"></span><br><span class="line">         inputc_in;</span><br><span class="line"></span><br><span class="line">         outputsum;</span><br><span class="line"></span><br><span class="line">         outputc_out;</span><br><span class="line"></span><br><span class="line">         wirea_sum;</span><br><span class="line"></span><br><span class="line">         wirea_out;</span><br><span class="line"></span><br><span class="line">         wireb_out;    </span><br><span class="line"></span><br><span class="line">         assignc_out=a_out|b_out;</span><br><span class="line"></span><br><span class="line">         halfadderhalf(x,y,a_sum,a_out);</span><br><span class="line"></span><br><span class="line">         halfadderhalf1(c_in,a_sum,sum,b_out);</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 <p><strong>测试文件的编写技巧</strong></p>
 <p>就拿上面的半加器来说，我们需要添加的就是输入信号a,b.可以采用下列方法：</p>
 <ul>
