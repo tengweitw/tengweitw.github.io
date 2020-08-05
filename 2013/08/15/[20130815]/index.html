@@ -49,21 +49,18 @@
   };
 </script>
 
-  <meta name="description" content="插入排序法的时间复杂度为n的平方，对于较小的输入规模来说，插入排序法比合并排序法更快些。在最佳情况下，即输入数组已经排序好，则时间复杂度可表示为n,是一个线性函数；在最差情况下，即输入数组是逆序排列时，时间复杂度为 $an^2+bn+c$. 插入排序法的具体实现方法如下：">
+  <meta name="description" content="在暑假的上一阶段，我终于完成了算法导论中有关排序算法和树结构的学习及具体的程序实践。回头想想，收获不小，由于我是学通信的，以后可能很少用得到，但是我觉得我学习到的不是算法本身，而是算法的思想。它可能在我日后的科研过程中有着深刻的影响。现在这段时间忙着opnet软件的学习，算法导论中图论的学习可能要暂时搁置了。图论想必在我们通信上应该用的比较多吧，比如什么最短路径问题，最大流问题，最小费用问题等等。">
 <meta name="keywords" content="Algorithm Design">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【算法导论】插入排序法">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2013&#x2F;06&#x2F;02&#x2F;[20130602]&#x2F;index.html">
+<meta property="og:title" content="【妄言之言】随笔一">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2013&#x2F;08&#x2F;15&#x2F;[20130815]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="插入排序法的时间复杂度为n的平方，对于较小的输入规模来说，插入排序法比合并排序法更快些。在最佳情况下，即输入数组已经排序好，则时间复杂度可表示为n,是一个线性函数；在最差情况下，即输入数组是逆序排列时，时间复杂度为 $an^2+bn+c$. 插入排序法的具体实现方法如下：">
+<meta property="og:description" content="在暑假的上一阶段，我终于完成了算法导论中有关排序算法和树结构的学习及具体的程序实践。回头想想，收获不小，由于我是学通信的，以后可能很少用得到，但是我觉得我学习到的不是算法本身，而是算法的思想。它可能在我日后的科研过程中有着深刻的影响。现在这段时间忙着opnet软件的学习，算法导论中图论的学习可能要暂时搁置了。图论想必在我们通信上应该用的比较多吧，比如什么最短路径问题，最大流问题，最小费用问题等等。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20130602&#x2F;20130602_fig001.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20130602&#x2F;20130602_fig002.jpg">
-<meta property="og:updated_time" content="2020-07-24T08:01:42.549Z">
+<meta property="og:updated_time" content="2020-08-05T07:40:23.960Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20130602&#x2F;20130602_fig001.jpg">
 
-<link rel="canonical" href="http://tengweitw.com/2013/06/02/[20130602]/">
+<link rel="canonical" href="http://tengweitw.com/2013/08/15/[20130815]/">
 
 
 <script id="page-configurations">
@@ -77,7 +74,7 @@
   };
 </script>
 
-  <title>【算法导论】插入排序法 | 青峰碧陋室</title>
+  <title>【妄言之言】随笔一 | 青峰碧陋室</title>
   
 
 
@@ -211,7 +208,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/06/02/%5B20130602%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/08/15/%5B20130815%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -224,7 +221,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【算法导论】插入排序法
+          【妄言之言】随笔一
         </h1>
 
         <div class="post-meta">
@@ -234,14 +231,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2013-06-02 16:42:05" itemprop="dateCreated datePublished" datetime="2013-06-02T16:42:05+08:00">2013-06-02</time>
+              <time title="创建时间：2013-08-15 11:29:55" itemprop="dateCreated datePublished" datetime="2013-08-15T11:29:55+08:00">2013-08-15</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-24 16:01:42" itemprop="dateModified" datetime="2020-07-24T16:01:42+08:00">2020-07-24</time>
+                <time title="修改时间：2020-08-05 15:40:23" itemprop="dateModified" datetime="2020-08-05T15:40:23+08:00">2020-08-05</time>
               </span>
 
           
@@ -257,14 +254,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.1k</span>
+              <span>361</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -276,26 +273,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>插入排序法的时间复杂度为n的平方，<strong>对于较小的输入规模来说，插入排序法比合并排序法更快些</strong>。在最佳情况下，即输入数组已经排序好，则时间复杂度可表示为n,是一个线性函数；在最差情况下，即输入数组是逆序排列时，时间复杂度为 $an^2+bn+c$. 插入排序法的具体实现方法如下：</p>
+        <p>在暑假的上一阶段，我终于完成了算法导论中有关排序算法和树结构的学习及具体的程序实践。回头想想，收获不小，由于我是学通信的，以后可能很少用得到，但是我觉得我学习到的不是算法本身，而是算法的思想。它可能在我日后的科研过程中有着深刻的影响。现在这段时间忙着opnet软件的学习，算法导论中图论的学习可能要暂时搁置了。图论想必在我们通信上应该用的比较多吧，比如什么最短路径问题，最大流问题，最小费用问题等等。因此学习图论是很有必要的。</p>
 <a id="more"></a>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130602/20130602_fig001.jpg" width="660" height="440" title="图1" alt="图1" ></p>
-<p><strong>具体的c/c++语言实现如下：</strong></p>
-<div class='spoiler collapsed'>
-    <div class='spoiler-title'>
-        c/c++语言实现：
-    </div>
-    <div class='spoiler-content'>
-        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;ctime&gt; </span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">InsectionSortAscend</span><span class="params">(<span class="keyword">int</span>* arrayA,<span class="keyword">int</span> Length)</span></span>;<span class="comment">//插入排序法：升序</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">InsectionSortDescend</span><span class="params">(<span class="keyword">int</span>* arrayA,<span class="keyword">int</span> Length)</span></span>;<span class="comment">//插入排序法：降序</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">clock_t</span> start,finish;</span><br><span class="line">    <span class="keyword">double</span> totaltime;</span><br><span class="line">    start=clock();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> arrayA[<span class="number">6</span>]=&#123;<span class="number">5</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">1</span>,<span class="number">3</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> Length=<span class="keyword">sizeof</span>(arrayA)/<span class="keyword">sizeof</span>(<span class="keyword">int</span>);</span><br><span class="line"></span><br><span class="line">    InsectionSortDescend(arrayA,Length);</span><br><span class="line">    InsectionSortAscend(arrayA,Length);</span><br><span class="line">    </span><br><span class="line">    finish=clock();</span><br><span class="line">    totaltime=(<span class="keyword">double</span>)(finish-start)/CLOCKS_PER_SEC;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"此两个程序的运行时间为"</span>&lt;&lt;totaltime&lt;&lt;<span class="string">"秒！"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*****************************************</span></span><br><span class="line"><span class="comment">/            插入排序</span></span><br><span class="line"><span class="comment">/输入：数组arrayA、数组长度</span></span><br><span class="line"><span class="comment">/输出：由小到大已排列好的数组</span></span><br><span class="line"><span class="comment">/时间复杂度：n的平方</span></span><br><span class="line"><span class="comment">/*****************************************/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">InsectionSortAscend</span><span class="params">(<span class="keyword">int</span>* arrayA,<span class="keyword">int</span> Length)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> j=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> temp=<span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;Length;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        temp=arrayA[i];</span><br><span class="line">        j=i<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">while</span>(j&gt;=<span class="number">0</span>&amp;&amp;arrayA[j]&gt;temp)</span><br><span class="line">        &#123;</span><br><span class="line">            arrayA[j+<span class="number">1</span>]=arrayA[j];</span><br><span class="line">            j=j<span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        arrayA[j+<span class="number">1</span>]=temp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;Length;i++)</span><br><span class="line">       <span class="built_in">cout</span>&lt;&lt;arrayA[i];</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*****************************************</span></span><br><span class="line"><span class="comment">/            插入排序</span></span><br><span class="line"><span class="comment">/输入：数组arrayA、数组长度</span></span><br><span class="line"><span class="comment">/输出：由大到小已排列好的数组</span></span><br><span class="line"><span class="comment">/时间复杂度：n的平方</span></span><br><span class="line"><span class="comment">/*****************************************/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">InsectionSortDescend</span><span class="params">(<span class="keyword">int</span>* arrayA,<span class="keyword">int</span> Length)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> j=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> temp=<span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(i=Length<span class="number">-2</span>;i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">    &#123;</span><br><span class="line">        temp=arrayA[i];</span><br><span class="line">        j=i+<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(j&lt;Length&amp;&amp;arrayA[j]&gt;temp)</span><br><span class="line">        &#123;</span><br><span class="line">            arrayA[j<span class="number">-1</span>]=arrayA[j];</span><br><span class="line">            j=j+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        arrayA[j<span class="number">-1</span>]=temp;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;Length;i++)</span><br><span class="line">       <span class="built_in">cout</span>&lt;&lt;arrayA[i];</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-    </div>
-</div>
-<p><strong>注意：我是在vs2008上运行的，与vc 6.0有点区别，主要是循环体中的循环变量的作用域，出错体现在循环变量的重复定义上。例如：在vs2008或vs2010上 (现在都已经VS2019啦！— tengweitw于2020年07月24日)，程序为：</strong></p>
-<p><strong>#include<stdio.h><br>void main()<br>{<br>int i=0;<br>for(int i=0;i&lt;5;i++)<br>printf(“%d “,i);<br>}</strong></p>
-<p><strong>则在VC 6.0上需改为：</strong></p>
-<p><strong>#include<stdio.h><br>void main()<br>{<br>int i=0;<br>for(i=0;i&lt;5;i++)<br>printf(“%d “,i);<br>}</strong>　</p>
-<p>排序法除了上述所说的之外还有大家都经常用的冒泡排序法，其时间复杂度为 $n$ 的平方。在这里我就不具体介绍了 (其实，后面也介绍了，哈哈哈！ — tengweitw于2020年07月24日)。</p>
-<p>(我也不清楚，当初为什么加了下面这一段，难道是为了凑字数？— tengweitw于2020年07月24日)</p>
-<p>下面简单介绍一下如何高效的计算多项式：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130602/20130602_fig002.jpg" width="600" height="300" title="图2" alt="图2" ></p>
+<p>到目前为止，我只是将最近的文章上传到了这里，而文章类别也只有关于算法导论的c语言实现，我将逐步的将我以前发表在QQ空间的文章转移到这里来，毕竟这里才是讨论学术的主要阵地，而QQ空间只是娱乐的地方。</p>
+<hr>
+<p>时隔这么多年，早已不玩QQ了，CSDN也没准备更新了，现在逐步转移到个人博客了—2020.08.05</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -331,7 +313,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2013/06/02/[20130602]/" title="【算法导论】插入排序法">http://tengweitw.com/2013/06/02/[20130602]/</a>
+    <a href="http://tengweitw.com/2013/08/15/[20130815]/" title="【妄言之言】随笔一">http://tengweitw.com/2013/08/15/[20130815]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -352,12 +334,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2013/06/01/%5B20130601%5D/" rel="prev" title="【C/C++】输入与输出(Cin & Cout)">
-      <i class="fa fa-chevron-left"></i> 【C/C++】输入与输出(Cin & Cout)
+    <a href="/2013/08/09/%5B20130809b%5D/" rel="prev" title="【算法导论】红黑树">
+      <i class="fa fa-chevron-left"></i> 【算法导论】红黑树
     </a></div>
       <div class="post-nav-item">
-    <a href="/2013/06/02/%5B20130602b%5D/" rel="next" title="【C/C++】精确系统计时：秒，毫秒，微秒">
-      【C/C++】精确系统计时：秒，毫秒，微秒 <i class="fa fa-chevron-right"></i>
+    <a href="/2013/09/07/%5B20130907%5D/" rel="next" title="【杂文散记】Verilog之加法器">
+      【杂文散记】Verilog之加法器 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>

@@ -3,7 +3,7 @@
   <entry>
     <title>【Vim】Vim常用配置</title>
     <url>/2020/08/01/%5B20200801%5D/</url>
-    <content><![CDATA[<p>疫情在家期间，也在新电脑上准备用vim写科研论文。但是之前配置好的.vimrc文件中的配置在实验室的电脑上，我自己又懒得再配置一遍，于是作罢，选择了sublime来进行科研写作，顺便写了一篇《》。现在已经在实验室了，于是乎我将我的vim配置文件介绍介绍，放在网上，以防万一。同时，也给有需要的人借鉴参考。虽然去年在文章《》介绍了如何利用vim编写论文，只是介绍了与LaTex相关的插件。这里，我们将介绍一般性的编辑工作所需要的配置。</p>
+    <content><![CDATA[<p>疫情在家期间，也在新电脑上准备用vim写科研论文。但是之前配置好的.vimrc文件中的配置在实验室的电脑上，我自己又懒得再配置一遍，于是作罢，选择了sublime来进行科研写作，顺便写了一篇《使用Sublime Text3撰写科研论文》。现在已经在实验室了，于是乎我将我的vim配置文件介绍介绍，放在网上，以防万一。同时，也给有需要的人借鉴参考。虽然去年在文章《使用Vim撰写科研论文》介绍了如何利用vim编写论文，只是介绍了与LaTex相关的插件。这里，我们将介绍一般性的编辑工作所需要的配置。</p>
 <hr>
 <a id="more"></a>
 <h2 id="状态栏设置"><a href="#状态栏设置" class="headerlink" title="状态栏设置"></a>状态栏设置</h2><p>安装插件代码如下：</p>
@@ -90,7 +90,7 @@
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">objects=test.o hello.o</span><br><span class="line">cc=g++</span><br><span class="line"></span><br><span class="line">test:$(objects)</span><br><span class="line">	cc -o test $(objects)</span><br><span class="line"></span><br><span class="line">test.o:test.c  </span><br><span class="line">hello.o:hello.h</span><br><span class="line"></span><br><span class="line">run: test</span><br><span class="line">	./test</span><br><span class="line">.PHONY:clean</span><br><span class="line">clean:</span><br><span class="line">	rm test $(objects)</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<p>这样我们就有四个文件：<code>hello.h</code>，<code>hello.c</code>,<code>test.c</code> 和 <code>makefile</code>。这时，我们按下<code>&lt;leader&gt;b</code>编译项目可得：</p>
+<p>这样我们就有四个文件：<code>hello.h</code>，<code>hello.c</code>, <code>test.c</code> 和 <code>makefile</code>。这时，我们按下<code>&lt;leader&gt;b</code>编译项目可得：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig008.jpg" width="600" height="380" title="图8" alt="图8" ></p>
 <p>最后按键<code>&lt;leader&gt;r</code>运行该项目可得：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig009.jpg" width="600" height="380" title="图9" alt="图9" ></p>
@@ -354,6 +354,54 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
     </div>
 </div>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+  </entry>
+  <entry>
+    <title>【杂文散记】Verilog之加法器</title>
+    <url>/2013/09/07/%5B20130907%5D/</url>
+    <content><![CDATA[<p>  在fpga工程应用设计中，随处可见加法器，乘法器等等。现在将一些常用模块和心得体会先记录下来，以便日后使用。</p>
+<a id="more"></a>
+<ul>
+<li><p><strong>一位半加器</strong>：</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> halfadder(cout,sum,a,b);</span><br><span class="line"></span><br><span class="line">         outputcout,sum; <span class="comment">//不申明，默认是wire变量</span></span><br><span class="line"></span><br><span class="line">         <span class="keyword">input</span>  a,b;</span><br><span class="line"></span><br><span class="line">         <span class="keyword">assign</span>&#123;cout,sum&#125;=a+b;<span class="comment">//cout为进位，sum为和</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p><strong>一位全加器</strong>：</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> fulladder(a,b,cin,cout,sum);</span><br><span class="line"></span><br><span class="line">         inputa,b,cin;</span><br><span class="line"></span><br><span class="line">         outputcout,sum;</span><br><span class="line"></span><br><span class="line">         <span class="keyword">assign</span>&#123;cout,sum&#125;=a+b+cin;</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><strong>利用两个半加器实现全加器</strong>：</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> halfadder(a,b,sum,cout);</span><br><span class="line"></span><br><span class="line">         outputcout,sum; <span class="comment">//不申明，默认是wire变量</span></span><br><span class="line"></span><br><span class="line">         <span class="keyword">input</span>  a,b;</span><br><span class="line"></span><br><span class="line">         <span class="keyword">assign</span>&#123;cout,sum&#125;=a+b;</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> fulladder(x,y,c_in,sum,c_out);</span><br><span class="line"></span><br><span class="line">         inputx;</span><br><span class="line"></span><br><span class="line">         inputy;</span><br><span class="line"></span><br><span class="line">         inputc_in;</span><br><span class="line"></span><br><span class="line">         outputsum;</span><br><span class="line"></span><br><span class="line">         outputc_out;</span><br><span class="line"></span><br><span class="line">         wirea_sum;</span><br><span class="line"></span><br><span class="line">         wirea_out;</span><br><span class="line"></span><br><span class="line">         wireb_out;    </span><br><span class="line"></span><br><span class="line">         assignc_out=a_out|b_out;</span><br><span class="line"></span><br><span class="line">         halfadderhalf(x,y,a_sum,a_out);</span><br><span class="line"></span><br><span class="line">         halfadderhalf1(c_in,a_sum,sum,b_out);</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+<p><strong>测试文件的编写技巧</strong></p>
+<p>就拿上面的半加器来说，我们需要添加的就是输入信号a,b.可以采用下列方法：</p>
+<ul>
+<li><p>第一种：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#100 a=0;</span><br><span class="line"></span><br><span class="line">#100 b=0;</span><br><span class="line"></span><br><span class="line">#100 a=1;</span><br><span class="line"></span><br><span class="line">#100 b=1;</span><br></pre></td></tr></table></figure>
+<p>这种编辑方式虽然十分方便，可是对于很多情况的测试编写困难。</p>
+</li>
+<li><p>第二种：</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line">Integer I;</span><br><span class="line"></span><br><span class="line">For(i=<span class="number">0</span>;i&lt;=<span class="number">15</span>;i=i+<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">a=I;<span class="comment">//注意这里a是一位，因此输出为0101010101010101</span></span><br><span class="line"></span><br><span class="line">第三种：</span><br><span class="line"></span><br><span class="line">Repeat(<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"> a =&#123;<span class="built_in">$random</span>&#125;%<span class="number">2</span>;<span class="comment">//这里产生随机的0 1比特流。</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Algorithm Design</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【妄言之言】随笔一</title>
+    <url>/2013/08/15/%5B20130815%5D/</url>
+    <content><![CDATA[<p>在暑假的上一阶段，我终于完成了算法导论中有关排序算法和树结构的学习及具体的程序实践。回头想想，收获不小，由于我是学通信的，以后可能很少用得到，但是我觉得我学习到的不是算法本身，而是算法的思想。它可能在我日后的科研过程中有着深刻的影响。现在这段时间忙着opnet软件的学习，算法导论中图论的学习可能要暂时搁置了。图论想必在我们通信上应该用的比较多吧，比如什么最短路径问题，最大流问题，最小费用问题等等。因此学习图论是很有必要的。</p>
+<a id="more"></a>
+<p>到目前为止，我只是将最近的文章上传到了这里，而文章类别也只有关于算法导论的c语言实现，我将逐步的将我以前发表在QQ空间的文章转移到这里来，毕竟这里才是讨论学术的主要阵地，而QQ空间只是娱乐的地方。</p>
+<hr>
+<p>时隔这么多年，早已不玩QQ了，CSDN也没准备更新了，现在逐步转移到个人博客了—2020.08.05</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Algorithm Design</tag>
+      </tags>
   </entry>
   <entry>
     <title>【算法导论】红黑树</title>
