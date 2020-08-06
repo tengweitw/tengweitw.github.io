@@ -49,18 +49,20 @@
   };
 </script>
 
-  <meta name="description" content="在fpga工程应用设计中，随处可见加法器，乘法器等等。现在将一些常用模块和心得体会先记录下来，以便日后使用。">
+  <meta name="description" content="​    子序列：一个给定序列的子序列就是该给定序列去掉零个或者多个元素后的序列。例如：$Z=\{B, C, D, B\}$是$X=\{A, B, C, B, D, A, B\}$的一个子序列。注意顺序不能改变。 ​    公共子序列：既是序列$X$的子序列，又是序列$Y$的子序列。例如：$X=\{A, B, C, B, D, A, B\}$，$Y=\{B, D, C, A, B, A\}$,则序">
 <meta name="keywords" content="Algorithm Design">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【杂文散记】Verilog之加法器">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2013&#x2F;09&#x2F;07&#x2F;[20130907]&#x2F;index.html">
+<meta property="og:title" content="【算法导论】动态规划之最长公共子序列">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2013&#x2F;11&#x2F;25&#x2F;[20131125]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="在fpga工程应用设计中，随处可见加法器，乘法器等等。现在将一些常用模块和心得体会先记录下来，以便日后使用。">
+<meta property="og:description" content="​    子序列：一个给定序列的子序列就是该给定序列去掉零个或者多个元素后的序列。例如：$Z=\{B, C, D, B\}$是$X=\{A, B, C, B, D, A, B\}$的一个子序列。注意顺序不能改变。 ​    公共子序列：既是序列$X$的子序列，又是序列$Y$的子序列。例如：$X=\{A, B, C, B, D, A, B\}$，$Y=\{B, D, C, A, B, A\}$,则序">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-08-05T07:55:50.083Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131125&#x2F;20131125_fig001.jpg">
+<meta property="og:updated_time" content="2020-08-06T12:42:46.654Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131125&#x2F;20131125_fig001.jpg">
 
-<link rel="canonical" href="http://tengweitw.com/2013/09/07/[20130907]/">
+<link rel="canonical" href="http://tengweitw.com/2013/11/25/[20131125]/">
 
 
 <script id="page-configurations">
@@ -74,7 +76,7 @@
   };
 </script>
 
-  <title>【杂文散记】Verilog之加法器 | 青峰碧陋室</title>
+  <title>【算法导论】动态规划之最长公共子序列 | 青峰碧陋室</title>
   
 
 
@@ -208,7 +210,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/09/07/%5B20130907%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/11/25/%5B20131125%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -221,7 +223,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【杂文散记】Verilog之加法器
+          【算法导论】动态规划之最长公共子序列
         </h1>
 
         <div class="post-meta">
@@ -231,14 +233,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2013-09-07 11:01:59" itemprop="dateCreated datePublished" datetime="2013-09-07T11:01:59+08:00">2013-09-07</time>
+              <time title="创建时间：2013-11-25 21:02:54" itemprop="dateCreated datePublished" datetime="2013-11-25T21:02:54+08:00">2013-11-25</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-05 15:55:50" itemprop="dateModified" datetime="2020-08-05T15:55:50+08:00">2020-08-05</time>
+                <time title="修改时间：2020-08-06 20:42:46" itemprop="dateModified" datetime="2020-08-06T20:42:46+08:00">2020-08-06</time>
               </span>
 
           
@@ -254,14 +256,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>970</span>
+              <span>2.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -273,34 +275,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>  在fpga工程应用设计中，随处可见加法器，乘法器等等。现在将一些常用模块和心得体会先记录下来，以便日后使用。</p>
+        <p>​    <strong>子序列</strong>：一个给定序列的子序列就是该给定序列去掉零个或者多个元素后的序列。例如：$Z=\{B, C, D, B\}$是$X=\{A, B, C, B, D, A, B\}$的一个子序列。注意顺序不能改变。</p>
+<p>​    <strong>公共子序列</strong>：既是序列$X$的子序列，又是序列$Y$的子序列。例如：$X=\{A, B, C, B, D, A, B\}$，$Y=\{B, D, C, A, B, A\}$,则序列 $\{B, C, A\}$ 是$X$和$Y$的一个公共子序列，长度为$4$；序列$\{B, C, B, A\}$ 是$X$和$Y$的一个最长公共子序列（$LCS$），长度为$4$.</p>
 <a id="more"></a>
-<ul>
-<li><p><strong>一位半加器</strong>：</p>
-<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> halfadder(cout,sum,a,b);</span><br><span class="line"></span><br><span class="line">         outputcout,sum; <span class="comment">//不申明，默认是wire变量</span></span><br><span class="line"></span><br><span class="line">         <span class="keyword">input</span>  a,b;</span><br><span class="line"></span><br><span class="line">         <span class="keyword">assign</span>&#123;cout,sum&#125;=a+b;<span class="comment">//cout为进位，sum为和</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><p><strong>一位全加器</strong>：</p>
-<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> fulladder(a,b,cin,cout,sum);</span><br><span class="line"></span><br><span class="line">         inputa,b,cin;</span><br><span class="line"></span><br><span class="line">         outputcout,sum;</span><br><span class="line"></span><br><span class="line">         <span class="keyword">assign</span>&#123;cout,sum&#125;=a+b+cin;</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><p><strong>利用两个半加器实现全加器</strong>：</p>
-<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> halfadder(a,b,sum,cout);</span><br><span class="line"></span><br><span class="line">         outputcout,sum; <span class="comment">//不申明，默认是wire变量</span></span><br><span class="line"></span><br><span class="line">         <span class="keyword">input</span>  a,b;</span><br><span class="line"></span><br><span class="line">         <span class="keyword">assign</span>&#123;cout,sum&#125;=a+b;</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> fulladder(x,y,c_in,sum,c_out);</span><br><span class="line"></span><br><span class="line">         inputx;</span><br><span class="line"></span><br><span class="line">         inputy;</span><br><span class="line"></span><br><span class="line">         inputc_in;</span><br><span class="line"></span><br><span class="line">         outputsum;</span><br><span class="line"></span><br><span class="line">         outputc_out;</span><br><span class="line"></span><br><span class="line">         wirea_sum;</span><br><span class="line"></span><br><span class="line">         wirea_out;</span><br><span class="line"></span><br><span class="line">         wireb_out;    </span><br><span class="line"></span><br><span class="line">         assignc_out=a_out|b_out;</span><br><span class="line"></span><br><span class="line">         halfadderhalf(x,y,a_sum,a_out);</span><br><span class="line"></span><br><span class="line">         halfadderhalf1(c_in,a_sum,sum,b_out);</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><strong>测试文件的编写技巧</strong></p>
-<p>就拿上面的半加器来说，我们需要添加的就是输入信号a,b.可以采用下列方法：</p>
-<ul>
-<li><p>第一种：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#100 a=0;</span><br><span class="line"></span><br><span class="line">#100 b=0;</span><br><span class="line"></span><br><span class="line">#100 a=1;</span><br><span class="line"></span><br><span class="line">#100 b=1;</span><br></pre></td></tr></table></figure>
-<p>这种编辑方式虽然十分方便，可是对于很多情况的测试编写困难。</p>
-</li>
-<li><p>第二种：</p>
-<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Integer I;</span><br><span class="line"></span><br><span class="line">For(i=<span class="number">0</span>;i&lt;=<span class="number">15</span>;i=i+<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">a=I;<span class="comment">//注意这里a是一位，因此输出为0101010101010101</span></span><br><span class="line"></span><br><span class="line">第三种：</span><br><span class="line"></span><br><span class="line">Repeat(<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"> a =&#123;<span class="built_in">$random</span>&#125;%<span class="number">2</span>;<span class="comment">//这里产生随机的0 1比特流。</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
+<p>​    当然，我们可以查用穷举法来解决问题，但是，对于一个长度为$n$的序列，其子序列为$2^n$，因此时间复杂度为指数形式，当$n$很大时，显然不合实际。由观察和推导可知，最长公共子序列具有最优子结构性质和重叠子问题性质。因此我们可以通过动态规划算法来找到最长公共子序列,其时间复杂度为$O(mn+m+n)$。（$m,n$ 分别为两个序列的元素个数）</p>
+<p>​    在下面的程序实现中，我假设两个序列为上面提到的$X=\{A,B,C,B,D,A,B\}, Y=\{B, D, C, A, B, A\}$，数组$b$对应于在计算$c[i][j]$时所选择的最优子问题的解，数组$c[i][j]$为$X_i$和$Y_j$的一个$LCS$的长度，$X_i$为序列的前$i$个元素组成的序列，$Y_j$为序列的前$j$个元素组成的序列.</p>
+<p><strong>具体程序如下：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Lcs_Length</span><span class="params">(<span class="keyword">char</span> *X,<span class="keyword">char</span> *Y,<span class="keyword">int</span> n1,<span class="keyword">int</span> n2,<span class="keyword">int</span> b[][<span class="number">7</span>],<span class="keyword">int</span> c[][<span class="number">7</span>])</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Print_Lcs</span><span class="params">(<span class="keyword">char</span> *X,<span class="keyword">int</span> b[][<span class="number">7</span>],<span class="keyword">int</span> i,<span class="keyword">int</span> j)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> X[]=&#123;<span class="string">'A'</span>,<span class="string">'B'</span>,<span class="string">'C'</span>,<span class="string">'B'</span>,<span class="string">'D'</span>,<span class="string">'A'</span>,<span class="string">'B'</span>&#125;;</span><br><span class="line">	<span class="keyword">char</span> Y[]=&#123;<span class="string">'B'</span>,<span class="string">'D'</span>,<span class="string">'C'</span>,<span class="string">'A'</span>,<span class="string">'B'</span>,<span class="string">'A'</span>&#125;;</span><br><span class="line">	<span class="keyword">int</span> n1=<span class="keyword">sizeof</span>(X)/<span class="keyword">sizeof</span>(<span class="keyword">char</span>);</span><br><span class="line">	<span class="keyword">int</span> n2=<span class="keyword">sizeof</span>(Y)/<span class="keyword">sizeof</span>(<span class="keyword">char</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">int</span> b[<span class="number">8</span>][<span class="number">7</span>]=&#123;<span class="number">0</span>&#125;;<span class="comment">//b[i][j]对应于在计算c[i][j]时所选择的最优子问题的解</span></span><br><span class="line">	<span class="keyword">int</span> c[<span class="number">8</span>][<span class="number">7</span>]=&#123;<span class="number">0</span>&#125;;<span class="comment">//c[i][j]为Xi和Yi的一个LCS的长度</span></span><br><span class="line">	</span><br><span class="line">	Lcs_Length(X,Y,n1,n2,b,c);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"最长公共子序列为："</span>);</span><br><span class="line">    Print_Lcs(X,b,n1,n2);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*******************************************************************\</span></span><br><span class="line"><span class="comment">函数功能：计算最长公共子序列的长度，并将结果存储在数组c中</span></span><br><span class="line"><span class="comment">输入：    两个序列X、Y 待存储的数组b,c</span></span><br><span class="line"><span class="comment">输出：    无</span></span><br><span class="line"><span class="comment">\*******************************************************************/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Lcs_Length</span><span class="params">(<span class="keyword">char</span> *X,<span class="keyword">char</span> *Y,<span class="keyword">int</span> n1,<span class="keyword">int</span> n2,<span class="keyword">int</span> b[][<span class="number">7</span>],<span class="keyword">int</span> c[][<span class="number">7</span>])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n1;i++)</span><br><span class="line">		c[i][<span class="number">0</span>]=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n2;i++)</span><br><span class="line">		c[<span class="number">0</span>][i]=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n1;i++)</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=n2;j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(X[i<span class="number">-1</span>]==Y[j<span class="number">-1</span>])</span><br><span class="line">			&#123;</span><br><span class="line">				c[i][j]=c[i<span class="number">-1</span>][j<span class="number">-1</span>]+<span class="number">1</span>;</span><br><span class="line">				b[i][j]=<span class="number">1</span>;<span class="comment">//b用于做标记，便于打印</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span>(c[i<span class="number">-1</span>][j]&gt;=c[i][j<span class="number">-1</span>])</span><br><span class="line">			&#123;</span><br><span class="line">				c[i][j]=c[i<span class="number">-1</span>][j];</span><br><span class="line">				b[i][j]=<span class="number">2</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">				c[i][j]=c[i][j<span class="number">-1</span>];</span><br><span class="line">				b[i][j]=<span class="number">3</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*******************************************************************\</span></span><br><span class="line"><span class="comment">函数功能：打印最长公共子序列</span></span><br><span class="line"><span class="comment">输入：    原始序列X、已存储的数组b，i j表示是求X的前i个元素和Y的前j个元素的LCS</span></span><br><span class="line"><span class="comment">输出：    无</span></span><br><span class="line"><span class="comment">\*******************************************************************/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Print_Lcs</span><span class="params">(<span class="keyword">char</span> *X,<span class="keyword">int</span> b[][<span class="number">7</span>],<span class="keyword">int</span> i,<span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(i==<span class="number">0</span>||j==<span class="number">0</span>)</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	<span class="keyword">if</span>(b[i][j]==<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		Print_Lcs(X,b,i<span class="number">-1</span>,j<span class="number">-1</span>);<span class="comment">//递归打印</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%c "</span>,X[i<span class="number">-1</span>]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(b[i][j]==<span class="number">2</span>)</span><br><span class="line">        Print_Lcs(X,b,i<span class="number">-1</span>,j);</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		Print_Lcs(X,b,i,j<span class="number">-1</span>);</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面程序得到的结果数组$c$和$b$如下图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131125/20131125_fig001.jpg" width="600" height="250" title="图1" alt="图1" ></p>
+<p>上表中的数字代表长度，例如$c[7][6]=4$代表序列$X$的前$7$个元素组成的序列和序列$Y$前$6$个元素组成的序列的最长公共子序列的长度为$4$.</p>
+<p>在程序中为了方便起见，$b$数组用数字$1, 2, 3$分别代表$↖，↑，←$。</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -336,7 +321,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2013/09/07/[20130907]/" title="【杂文散记】Verilog之加法器">http://tengweitw.com/2013/09/07/[20130907]/</a>
+    <a href="http://tengweitw.com/2013/11/25/[20131125]/" title="【算法导论】动态规划之最长公共子序列">http://tengweitw.com/2013/11/25/[20131125]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -357,12 +342,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2013/08/15/%5B20130815%5D/" rel="prev" title="【妄言之言】随笔一">
-      <i class="fa fa-chevron-left"></i> 【妄言之言】随笔一
+    <a href="/2013/11/24/%5B20131124%5D/" rel="prev" title="【算法导论】动态规划之矩阵链乘法">
+      <i class="fa fa-chevron-left"></i> 【算法导论】动态规划之矩阵链乘法
     </a></div>
       <div class="post-nav-item">
-    <a href="/2013/11/23/%5B20131123%5D/" rel="next" title="【算法导论】动态规划算法之装配线调度">
-      【算法导论】动态规划算法之装配线调度 <i class="fa fa-chevron-right"></i>
+    <a href="/2018/07/05/Perceptron/" rel="next" title="【图解例说机器学习】感知机 (Perceptron)">
+      【图解例说机器学习】感知机 (Perceptron) <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
