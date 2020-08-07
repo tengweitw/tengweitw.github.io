@@ -416,7 +416,7 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
     <content><![CDATA[<p>​    如果我们想写一个单词查询的软件的话，我们的目的就是让查询的总时间最短，我们首先想到用之前的二叉查找树。我们可以用红黑树或者其它的平衡二叉树来保证每个单词的搜索时间。但是每个单词出现的频率一般不同，因此我们希望把频率较大的单词放在离根比较近的地方，频率较小的放在离叶子较近的地方。而且，我们所要查询的单词词库中没有，这也值得考虑。</p>
 <a id="more"></a>
 <p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131126/20131126_fig001.jpg" width="700" height="120" title="图1" alt="图1" ></p>
-<p> <img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动">  <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131126/20131126_fig002.jpg" width="600" height="380" title="图2" alt="图2" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131126/20131126_fig002.jpg" width="600" height="380" title="图2" alt="图2" ></p>
 <p>​    由上文可知，$k_i$表示单词，$d_i$表示不能查到的情况。由上面的例子可知，一棵最优二叉树不一定是高度最小的树。我们也不一定总把频率最大的放在根部。</p>
 <p>​    和矩阵链乘法一样，穷举所有的可能行肯定不是一个好的算法。由于具有动态规划的特征，毫无疑问，我们将使用动态规划法。</p>
 <p>​    对于原序列，我们假设第k个元素(采用遍历的方法)作为根时可以得到最优解，由于是二叉查询树，则前$k-1$个元素在左子树，剩余元素在右子树。接下来，我们要分别在左、右子树中找到最优二叉树，于是我们可以用相同的方法：假设左、右子树中第$m, n$个为根时，可以得到最优解，依此类推，就可以求得整体最优解。上面的解法中，可能存在左或者右子树为空的情况：</p>
