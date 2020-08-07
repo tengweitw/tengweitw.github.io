@@ -49,17 +49,25 @@
   };
 </script>
 
-  <meta name="description" content="对于秒&#x2F;毫秒级计时，我们可以使用其自带库函数。在头文件time.h中，clock() 函数返回从 开启这个程序进程 到 程序中调用clock（）函数 时之间的CPU时钟计时单元数，返回单位是毫秒。另外，系统还定义了一个符号常量CLOCKS_PER_SEC。该常量等于每秒钟包括的系统时间单位数。因此，除以这个单位数，就可以得到秒数。time.h中将clock_t作为clock()作为clock()返">
+  <meta name="description" content="​    如果我们想写一个单词查询的软件的话，我们的目的就是让查询的总时间最短，我们首先想到用之前的二叉查找树。我们可以用红黑树或者其它的平衡二叉树来保证每个单词的搜索时间。但是每个单词出现的频率一般不同，因此我们希望把频率较大的单词放在离根比较近的地方，频率较小的放在离叶子较近的地方。而且，我们所要查询的单词词库中没有，这也值得考虑。">
+<meta name="keywords" content="Algorithm Design">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【C&#x2F;C++】精确系统计时：秒，毫秒，微秒">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2013&#x2F;06&#x2F;02&#x2F;[20130602b]&#x2F;index.html">
+<meta property="og:title" content="【算法导论】动态规划之最优二叉查找树">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2013&#x2F;11&#x2F;26&#x2F;[20131126]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="对于秒&#x2F;毫秒级计时，我们可以使用其自带库函数。在头文件time.h中，clock() 函数返回从 开启这个程序进程 到 程序中调用clock（）函数 时之间的CPU时钟计时单元数，返回单位是毫秒。另外，系统还定义了一个符号常量CLOCKS_PER_SEC。该常量等于每秒钟包括的系统时间单位数。因此，除以这个单位数，就可以得到秒数。time.h中将clock_t作为clock()作为clock()返">
+<meta property="og:description" content="​    如果我们想写一个单词查询的软件的话，我们的目的就是让查询的总时间最短，我们首先想到用之前的二叉查找树。我们可以用红黑树或者其它的平衡二叉树来保证每个单词的搜索时间。但是每个单词出现的频率一般不同，因此我们希望把频率较大的单词放在离根比较近的地方，频率较小的放在离叶子较近的地方。而且，我们所要查询的单词词库中没有，这也值得考虑。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-25T04:36:14.757Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131126&#x2F;20131126_fig001.jpg">
+<meta property="og:image" content="data:image&#x2F;gif;base64,R0lGODlhAQABAPABAP&#x2F;&#x2F;&#x2F;wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131126&#x2F;20131126_fig002.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131126&#x2F;20131126_fig003.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131126&#x2F;20131126_fig004.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131126&#x2F;20131126_fig005.jpg">
+<meta property="og:updated_time" content="2020-08-07T08:07:25.861Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131126&#x2F;20131126_fig001.jpg">
 
-<link rel="canonical" href="http://tengweitw.com/2013/06/02/[20130602b]/">
+<link rel="canonical" href="http://tengweitw.com/2013/11/26/[20131126]/">
 
 
 <script id="page-configurations">
@@ -73,7 +81,7 @@
   };
 </script>
 
-  <title>【C/C++】精确系统计时：秒，毫秒，微秒 | 青峰碧陋室</title>
+  <title>【算法导论】动态规划之最优二叉查找树 | 青峰碧陋室</title>
   
 
 
@@ -207,7 +215,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/06/02/%5B20130602b%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/11/26/%5B20131126%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -220,7 +228,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【C/C++】精确系统计时：秒，毫秒，微秒
+          【算法导论】动态规划之最优二叉查找树
         </h1>
 
         <div class="post-meta">
@@ -230,14 +238,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2013-06-02 16:54:35" itemprop="dateCreated datePublished" datetime="2013-06-02T16:54:35+08:00">2013-06-02</time>
+              <time title="创建时间：2013-11-26 22:00:02" itemprop="dateCreated datePublished" datetime="2013-11-26T22:00:02+08:00">2013-11-26</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-25 12:36:14" itemprop="dateModified" datetime="2020-07-25T12:36:14+08:00">2020-07-25</time>
+                <time title="修改时间：2020-08-07 16:07:25" itemprop="dateModified" datetime="2020-08-07T16:07:25+08:00">2020-08-07</time>
               </span>
 
           
@@ -253,7 +261,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.3k</span>
+              <span>1.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -272,12 +280,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>对于<strong>秒/毫秒级</strong>计时，我们可以使用其自带库函数。在头文件time.h中，clock() 函数返回从 开启这个程序进程 到 程序中调用clock（）函数 时之间的CPU时钟计时单元数，返回单位是毫秒。另外，系统还定义了一个符号常量CLOCKS_PER_SEC。该常量等于每秒钟包括的系统时间单位数。因此，除以这个单位数，就可以得到秒数。time.h中将clock_t作为clock()作为clock()返回类型的别名。</p>
-<p>对于<strong>微秒级</strong>计时，我们可以使用windows.h中的库函数QueryPerformanceCounter()。这个函数返回高精确度性能计数器的值,它可以以微妙为单位计时。由于该函数的精确计时的最小单位是与系统有关的，所以我们必须使用QueryPerformanceFrequency() 查询系统以得到QueryPerformanceCounter()返回的嘀哒声的频率，即返回每秒嘀哒声的个数。</p>
+        <p>​    如果我们想写一个单词查询的软件的话，我们的目的就是让查询的总时间最短，我们首先想到用之前的二叉查找树。我们可以用红黑树或者其它的平衡二叉树来保证每个单词的搜索时间。但是每个单词出现的频率一般不同，因此我们希望把频率较大的单词放在离根比较近的地方，频率较小的放在离叶子较近的地方。而且，我们所要查询的单词词库中没有，这也值得考虑。</p>
 <a id="more"></a>
-<hr>
-<p>下面具体举例说明：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;Windows.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//---------秒级计时----------//</span></span><br><span class="line"><span class="comment">//void main()</span></span><br><span class="line"><span class="comment">//&#123;</span></span><br><span class="line"><span class="comment">//	clock_t start, end;</span></span><br><span class="line"><span class="comment">//	start = clock();</span></span><br><span class="line"><span class="comment">//	Sleep(2300);</span></span><br><span class="line"><span class="comment">//	end = clock();</span></span><br><span class="line"><span class="comment">//	cout &lt;&lt; (end - start)/ double(CLOCKS_PER_SEC) &lt;&lt; " s" &lt;&lt; endl; </span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//---------毫秒级计时----------//</span></span><br><span class="line"><span class="comment">//void main() </span></span><br><span class="line"><span class="comment">//&#123;</span></span><br><span class="line"><span class="comment">//	clock_t start,end;</span></span><br><span class="line"><span class="comment">//	start = clock();</span></span><br><span class="line"><span class="comment">//	Sleep(2300);</span></span><br><span class="line"><span class="comment">//	end = clock();</span></span><br><span class="line"><span class="comment">//	cout &lt;&lt; end - start &lt;&lt; " ms" &lt;&lt; endl;</span></span><br><span class="line"><span class="comment">//	</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//---------微秒级计时----------//</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	LARGE_INTEGER cpu_freqence;</span><br><span class="line">	LARGE_INTEGER start;</span><br><span class="line">	LARGE_INTEGER <span class="built_in">end</span>;</span><br><span class="line">	<span class="keyword">double</span> run_time = <span class="number">0.0</span>;</span><br><span class="line">	QueryPerformanceFrequency(&amp;cpu_freqence);</span><br><span class="line">	QueryPerformanceCounter(&amp;start);</span><br><span class="line">	Sleep(<span class="number">2300</span>);</span><br><span class="line">	QueryPerformanceCounter(&amp;<span class="built_in">end</span>);</span><br><span class="line">	run_time = (((<span class="built_in">end</span>.QuadPart - start.QuadPart) * <span class="number">1000.0f</span>) / cpu_freqence.QuadPart);</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; run_time &lt;&lt; <span class="string">" ms"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131126/20131126_fig001.jpg" width="700" height="120" title="图1" alt="图1" ></p>
+<p> <img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动">  <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131126/20131126_fig002.jpg" width="600" height="380" title="图2" alt="图2" ></p>
+<p>​    由上文可知，$k_i$表示单词，$d_i$表示不能查到的情况。由上面的例子可知，一棵最优二叉树不一定是高度最小的树。我们也不一定总把频率最大的放在根部。</p>
+<p>​    和矩阵链乘法一样，穷举所有的可能行肯定不是一个好的算法。由于具有动态规划的特征，毫无疑问，我们将使用动态规划法。</p>
+<p>​    对于原序列，我们假设第k个元素(采用遍历的方法)作为根时可以得到最优解，由于是二叉查询树，则前$k-1$个元素在左子树，剩余元素在右子树。接下来，我们要分别在左、右子树中找到最优二叉树，于是我们可以用相同的方法：假设左、右子树中第$m, n$个为根时，可以得到最优解，依此类推，就可以求得整体最优解。上面的解法中，可能存在左或者右子树为空的情况：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131126/20131126_fig003.jpg" width="700" height="220" title="图3" alt="图3" ></p>
+<p>通过推导，可以递推公式：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131126/20131126_fig004.jpg" width="600" height="60" title="图4" alt="图4" ></p>
+<p>其中$e$表示搜索的代价，$q[i]$为$d[i]$的出现频率，$w$为子树总的概率。</p>
+<p><strong>具体程序实现如下：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 7</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Optimal_Bst</span><span class="params">(<span class="keyword">float</span> *p,<span class="keyword">float</span> *q,<span class="keyword">int</span> n,<span class="keyword">float</span> e[][N],<span class="keyword">int</span> root[][N])</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">float</span> p[]=&#123;<span class="number">0</span>,<span class="number">0.15</span>,<span class="number">0.1</span>,<span class="number">0.05</span>,<span class="number">0.1</span>,<span class="number">0.2</span>&#125;;<span class="comment">//关键字出现的概率</span></span><br><span class="line">	<span class="keyword">float</span> q[]=&#123;<span class="number">0.05</span>,<span class="number">0.1</span>,<span class="number">0.05</span>,<span class="number">0.05</span>,<span class="number">0.05</span>,<span class="number">0.1</span>&#125;;<span class="comment">//搜索不到关键字的几种情况的概率</span></span><br><span class="line">	<span class="keyword">int</span> n=<span class="number">6</span>;<span class="comment">//关键字个数</span></span><br><span class="line">	<span class="keyword">float</span> e[N][N]=&#123;<span class="number">0</span>&#125;;<span class="comment">//存储搜索的代价</span></span><br><span class="line">	<span class="keyword">int</span> root[N][N]=&#123;<span class="number">0</span>&#125;;<span class="comment">//子树的根，便于重构最优二叉树</span></span><br><span class="line">	Optimal_Bst(p,q,n,e,root);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;<span class="number">6</span>;i++)</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">5</span>;j&gt;=i;j--)</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"从第%d个元素到第%d个元素的最优二叉查找树的顶点为：%d\n"</span>,i,j,root[i][j]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Optimal_Bst</span><span class="params">(<span class="keyword">float</span> *p,<span class="keyword">float</span> *q,<span class="keyword">int</span> n,<span class="keyword">float</span> e[][N],<span class="keyword">int</span> root[][N])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">float</span> w[N][N]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">	<span class="keyword">float</span> t=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)<span class="comment">//左右子树为空的情况</span></span><br><span class="line">	&#123;</span><br><span class="line">		e[i][i<span class="number">-1</span>]=q[i<span class="number">-1</span>];</span><br><span class="line">		w[i][i<span class="number">-1</span>]=q[i<span class="number">-1</span>];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> l=<span class="number">1</span>;l&lt;=n;l++)</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n-l+<span class="number">1</span>;i++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> j=<span class="number">0</span>;</span><br><span class="line">			j=i+l<span class="number">-1</span>;</span><br><span class="line">			e[i][j]=<span class="number">10000</span>;<span class="comment">//初始化为很大的值，可以随意设置</span></span><br><span class="line">			w[i][j]=w[i][j<span class="number">-1</span>]+p[j]+q[j];<span class="comment">//</span></span><br><span class="line">			</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> r=i;r&lt;=j;r++)<span class="comment">//r代表以下标r为根，r在所有的子树节点中遍历</span></span><br><span class="line">			&#123;</span><br><span class="line">				t=e[i][r<span class="number">-1</span>]+e[r+<span class="number">1</span>][j]+w[i][j];</span><br><span class="line">				<span class="keyword">if</span>(t&lt;e[i][j])</span><br><span class="line">				&#123;</span><br><span class="line">					e[i][j]=t;</span><br><span class="line">					root[i][j]=r;<span class="comment">//得到最优二叉树时的根</span></span><br><span class="line">					</span><br><span class="line">				&#125;</span><br><span class="line">					</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>上述程序运行后，数组e,w,root的结果如下：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131126/20131126_fig005.jpg" width="600" height="320" title="图5" alt="图5" ></p>
+<p><strong>上述程序的运行时间为$O(n^3)$</strong>，这和前面的矩阵链乘法是一样的。</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -313,7 +331,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2013/06/02/[20130602b]/" title="【C&#x2F;C++】精确系统计时：秒，毫秒，微秒">http://tengweitw.com/2013/06/02/[20130602b]/</a>
+    <a href="http://tengweitw.com/2013/11/26/[20131126]/" title="【算法导论】动态规划之最优二叉查找树">http://tengweitw.com/2013/11/26/[20131126]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -323,6 +341,10 @@
 
 
       <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Algorithm-Design/" rel="tag"><i class="fa fa-tag"></i> Algorithm Design</a>
+          </div>
 
         
 
@@ -330,12 +352,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2013/06/02/%5B20130602%5D/" rel="prev" title="【算法导论】插入排序法">
-      <i class="fa fa-chevron-left"></i> 【算法导论】插入排序法
+    <a href="/2013/11/25/%5B20131125%5D/" rel="prev" title="【算法导论】动态规划之最长公共子序列">
+      <i class="fa fa-chevron-left"></i> 【算法导论】动态规划之最长公共子序列
     </a></div>
       <div class="post-nav-item">
-    <a href="/2013/06/08/%5B20130608%5D/" rel="next" title="【算法导论】合并排序法">
-      【算法导论】合并排序法 <i class="fa fa-chevron-right"></i>
+    <a href="/2018/07/05/Perceptron/" rel="next" title="【图解例说机器学习】感知机 (Perceptron)">
+      【图解例说机器学习】感知机 (Perceptron) <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
