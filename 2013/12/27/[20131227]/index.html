@@ -49,18 +49,22 @@
   };
 </script>
 
-  <meta name="description" content="注册csdn已经有一年多了，从来也没有进这个论坛看看，当初也只是因为要下载资料而注册的。现在决定转战到这里，一是因为QQ号前不久被盗，一些资料幸好没丢，于是想来将一些个人的文档、程序保存在这里；二是因为csdn中国最大的程序员论坛，想向一些大牛请教请教，毕竟QQ空间的技术大牛并不多，也极少有人会将技术贴发在QQ空间。">
-<meta name="keywords" content="Life Thoughts">
+  <meta name="description" content="​    有时候，我们关注的不是从一个地点到另一个地点的费用，而是能否从一个顶点到达另一个顶点。因此我们可以假设所有边的权值为单位1，在下面的算法中，我们可以在$O(n^3)$的时间内计算出图中任意两点是否可达，我用可达矩阵来表示有向图中两者是否可达。如果可以从$i$到$j$，则定义$t_{ij}=1$,否则$t_{ij}=0$。因此我们可以得到下式：  我们以下面的有向图进行具体实现：  下图给">
+<meta name="keywords" content="Algorithm Design">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【生活随笔】决定">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2013&#x2F;05&#x2F;05&#x2F;[20130505]&#x2F;index.html">
+<meta property="og:title" content="【算法导论】有向图的可达矩阵">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2013&#x2F;12&#x2F;27&#x2F;[20131227]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="注册csdn已经有一年多了，从来也没有进这个论坛看看，当初也只是因为要下载资料而注册的。现在决定转战到这里，一是因为QQ号前不久被盗，一些资料幸好没丢，于是想来将一些个人的文档、程序保存在这里；二是因为csdn中国最大的程序员论坛，想向一些大牛请教请教，毕竟QQ空间的技术大牛并不多，也极少有人会将技术贴发在QQ空间。">
+<meta property="og:description" content="​    有时候，我们关注的不是从一个地点到另一个地点的费用，而是能否从一个顶点到达另一个顶点。因此我们可以假设所有边的权值为单位1，在下面的算法中，我们可以在$O(n^3)$的时间内计算出图中任意两点是否可达，我用可达矩阵来表示有向图中两者是否可达。如果可以从$i$到$j$，则定义$t_{ij}=1$,否则$t_{ij}=0$。因此我们可以得到下式：  我们以下面的有向图进行具体实现：  下图给">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-26T06:59:30.819Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131227&#x2F;20131227_fig001.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131227&#x2F;20131227_fig002.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131227&#x2F;20131227_fig003.jpg">
+<meta property="og:updated_time" content="2020-08-12T11:04:38.509Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131227&#x2F;20131227_fig001.jpg">
 
-<link rel="canonical" href="http://tengweitw.com/2013/05/05/[20130505]/">
+<link rel="canonical" href="http://tengweitw.com/2013/12/27/[20131227]/">
 
 
 <script id="page-configurations">
@@ -74,7 +78,7 @@
   };
 </script>
 
-  <title>【生活随笔】决定 | 青峰碧陋室</title>
+  <title>【算法导论】有向图的可达矩阵 | 青峰碧陋室</title>
   
 
 
@@ -208,7 +212,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/05/05/%5B20130505%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/12/27/%5B20131227%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -221,7 +225,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【生活随笔】决定
+          【算法导论】有向图的可达矩阵
         </h1>
 
         <div class="post-meta">
@@ -231,14 +235,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2013-05-05 00:06:09" itemprop="dateCreated datePublished" datetime="2013-05-05T00:06:09+08:00">2013-05-05</time>
+              <time title="创建时间：2013-12-27 11:05:07" itemprop="dateCreated datePublished" datetime="2013-12-27T11:05:07+08:00">2013-12-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-26 14:59:30" itemprop="dateModified" datetime="2020-07-26T14:59:30+08:00">2020-07-26</time>
+                <time title="修改时间：2020-08-12 19:04:38" itemprop="dateModified" datetime="2020-08-12T19:04:38+08:00">2020-08-12</time>
               </span>
 
           
@@ -254,14 +258,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>759</span>
+              <span>1.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -273,19 +277,34 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>注册csdn已经有一年多了，从来也没有进这个论坛看看，当初也只是因为要下载资料而注册的。现在决定转战到这里，一是因为QQ号前不久被盗，一些资料幸好没丢，于是想来将一些个人的文档、程序保存在这里；二是因为csdn中国最大的程序员论坛，想向一些大牛请教请教，毕竟QQ空间的技术大牛并不多，也极少有人会将技术贴发在QQ空间。</p>
-<a id="more"></a>
-<p>  今天是五四青年节，希望我现在的决定不是一时的兴趣，希望每个月都能发几篇像样的伪技术贴。业精于勤，荒于嬉；行成于思，毁于随。今天看林锐的高质量程序设计指南，发现本书的作者之一韩永泉的csdn帐号是northwest_wolf,于是我便取了个名字-nineheaded_bird。从今天起，每个月都写一些东西，将来会对自己的科研会有一定的帮助的。贵在坚持！回首过去，大学的时光都虚度了，乘现在还有时间，好好弥补，希望还来得及。</p>
-<p>  Yesterday is History,Tomorry is a Mystery,Today is a gift,That’s why we call it the present！</p>
+        <p>​    有时候，我们关注的不是从一个地点到另一个地点的费用，而是能否从一个顶点到达另一个顶点。因此我们可以假设所有边的权值为单位1，在下面的算法中，我们可以在$O(n^3)$的时间内计算出图中任意两点是否可达，我用可达矩阵来表示有向图中两者是否可达。如果可以从$i$到$j$，则定义$t_{ij}=1$,否则$t_{ij}=0$。因此我们可以得到下式：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131227/20131227_fig001.jpg" width="500" height="150" title="图1" alt="图1" ></p>
+<p><strong>我们以下面的有向图进行具体实现：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131227/20131227_fig002.jpg" width="300" height="250" title="图2" alt="图2" ></p>
+<p>下图给出了计算所得的每一个$T^{(k)}$矩阵：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131227/20131227_fig003.jpg" width="600" height="250" title="图3" alt="图3" ></p>
+<p><strong>具体程序实现如下：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX 10000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 4 <span class="comment">//顶点个数</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">TransitiveClosure</span><span class="params">(<span class="keyword">int</span> dist[N][N],<span class="keyword">int</span> t[N][N])</span><span class="comment">//寻找可达矩阵</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)<span class="comment">//进行遍历</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;N;j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>((i==j)||(dist[i][j])==<span class="number">1</span>)<span class="comment">//发现可达</span></span><br><span class="line">				t[i][j]=<span class="number">1</span>;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">				t[i][j]=<span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;N;k++)</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;N;j++)</span><br><span class="line">				t[i][j]=t[i][j]||(t[i][k]&amp;&amp;t[k][j]);<span class="comment">//由文中公式可得</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> dist[N][N]=&#123;&#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;,<span class="comment">//邻接矩阵</span></span><br><span class="line">					&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>&#125;,</span><br><span class="line">					&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>&#125;,</span><br><span class="line">					&#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> t[N][N]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">	TransitiveClosure( dist, t);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)</span><br><span class="line">	&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;N;j++)</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">"%d "</span>,t[i][j]);</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>在上面的程序中，我用了逻辑运算来计算可达矩阵，因为在某些计算机上，对单位的值，逻辑操作的执行速度快于对整数字长数据的算术运算操作，其空间要求也比整数要小。</strong></p>
 <hr>
-<p><strong>更新于2020-06-30：</strong></p>
-<p>从今天开始，我将转战到自己的个人博客：tengweitw.com 。之所以想要转移，一方面是因为个人博客的可自定义程度高，另一方面，csdn好多改变已经不符合我的价值观：</p>
-<ul>
-<li>推出了博文付费功能，看个文章都需要付费。虽然，我也认可知识付费。</li>
-<li>尽管个人设置不要c币，但有时下载仍强制需要c币。虽然，我有很多c币。</li>
-<li>官方鼓励那些博人眼球的标题，好多被推荐的文章都是标题党。虽然，有些质量也比较高。</li>
-</ul>
-<p>这个个人博客是始建于2015年，是基于github和hexo部署的。我将把我所有的博客的内容重新编辑保存为markown格式，陆续上传到个人博客。我希望在今后能够写出一些有深度的文章，而不是和以前一样写的十分浅显。</p>
+<p>​    学过图论的可能知道，一个邻接矩阵$A$（若边的权值都为单位$1$）表示两个顶点经过一步的可达情况, $A_{ij}$表示经过一步，$i$能到达$j$的次数。同理$A^{(2)}$表示两个顶点经过两部步的可达情况,$A_{ij}$表示经过两步，$i$能到达$j$的次数，一次类推……。还是以上面的图为例：</p>
+<script type="math/tex; mode=display">
+A=\begin{pmatrix}
+1 & 0 & 0 & 0\\
+0 & 1 & 1 & 1\\
+0 & 1 & 1 & 0\\
+1 & 0 & 1 & 1
+\end{pmatrix}
+\quad
+A^{(2)}=\begin{pmatrix}
+1 & 0 & 0 & 0\\
+1 & 2 & 3 & 2\\
+0 & 2 & 2 & 1\\
+2 & 1 & 2 & 1
+\end{pmatrix}</script><p>比如$A^{(2)}$中$A_{12}=2$，表示从顶点$2$到顶点$3$经过两步可以到达的次数为$3$。 <strong>注意:自己到达自己可以是任意步！</strong></p>
+<p><strong>由相关知识可知，可达矩阵$B=A+A^{(2)}+A^{(3)}+\cdots+A^{(n)}$ ，$n$为顶点个数</strong>。具体的C​语言实现比上面的算法要复杂，<strong>下面用matlab实现</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function P = canget( A )</span><br><span class="line">%计算可达矩阵</span><br><span class="line">%B=A+A^2+A^3+……+A^n   A为邻接矩阵</span><br><span class="line">n=length(A);</span><br><span class="line">P=A;</span><br><span class="line">for i=2:n</span><br><span class="line">    P=P+A^i;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">P=(P~=0);</span><br></pre></td></tr></table></figure>
+<p>结算可以得到相同的结果。由于matlab擅长矩阵运算，因此程序计算十分简单。</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -321,7 +340,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2013/05/05/[20130505]/" title="【生活随笔】决定">http://tengweitw.com/2013/05/05/[20130505]/</a>
+    <a href="http://tengweitw.com/2013/12/27/[20131227]/" title="【算法导论】有向图的可达矩阵">http://tengweitw.com/2013/12/27/[20131227]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -333,7 +352,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/Life-Thoughts/" rel="tag"><i class="fa fa-tag"></i> Life Thoughts</a>
+              <a href="/tags/Algorithm-Design/" rel="tag"><i class="fa fa-tag"></i> Algorithm Design</a>
           </div>
 
         
@@ -341,10 +360,13 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2013/05/06/%5B20130506%5D/" rel="next" title="【C/C++】基本数据类型">
-      【C/C++】基本数据类型 <i class="fa fa-chevron-right"></i>
+    <a href="/2013/12/26/%5B20131226%5D/" rel="prev" title="【算法导论】每对顶点之间的最短路径算法">
+      <i class="fa fa-chevron-left"></i> 【算法导论】每对顶点之间的最短路径算法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/07/05/Perceptron/" rel="next" title="【图解例说机器学习】感知机 (Perceptron)">
+      【图解例说机器学习】感知机 (Perceptron) <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
