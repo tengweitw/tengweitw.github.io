@@ -49,20 +49,22 @@
   };
 </script>
 
-  <meta name="description" content="时间复杂度：$O(n)$. 基本思路：两个数比较大小，我们的直观感觉是先比较高位，若相同则比较低位。但是这样做需要记录额外的数据，浪费空间。而基数排序则是先比较低位，再比较高位。通过各个位的比较进行排序，如果数组元素最大有$N$位，则总共需要$N$次排序。注意：按位排序必须是稳定排序（两个相等的数其在序列的前后位置顺序，在排序前后不改变），所以在这我选择了计数排序。">
+  <meta name="description" content="​    地图染色问题可以根据四色定理来解决。所谓四色定理，就是指可以用不多于四种的颜色对地图着色，使相邻的行政区域不重色，因此我们可以用四色定理的结论，用回溯算法对一幅给定的地图染色。 ​    算法的基本思想是：从第(1)号行政区域开始染色，每个区域逐次用颜色1#、2#、3#、4#进行试探，若当前所取的颜色与周围已染色的行政区域不重色，则用栈记下该区域的颜色序号，否则依次用下一颜色进行试探；若">
 <meta name="keywords" content="Algorithm Design">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【算法导论】基数排序">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2013&#x2F;07&#x2F;31&#x2F;[20130731c]&#x2F;index.html">
+<meta property="og:title" content="【算法导论】地图染色算法">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2013&#x2F;12&#x2F;28&#x2F;[20131228]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="时间复杂度：$O(n)$. 基本思路：两个数比较大小，我们的直观感觉是先比较高位，若相同则比较低位。但是这样做需要记录额外的数据，浪费空间。而基数排序则是先比较低位，再比较高位。通过各个位的比较进行排序，如果数组元素最大有$N$位，则总共需要$N$次排序。注意：按位排序必须是稳定排序（两个相等的数其在序列的前后位置顺序，在排序前后不改变），所以在这我选择了计数排序。">
+<meta property="og:description" content="​    地图染色问题可以根据四色定理来解决。所谓四色定理，就是指可以用不多于四种的颜色对地图着色，使相邻的行政区域不重色，因此我们可以用四色定理的结论，用回溯算法对一幅给定的地图染色。 ​    算法的基本思想是：从第(1)号行政区域开始染色，每个区域逐次用颜色1#、2#、3#、4#进行试探，若当前所取的颜色与周围已染色的行政区域不重色，则用栈记下该区域的颜色序号，否则依次用下一颜色进行试探；若">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20130731c&#x2F;20130731c_fig001.jpg">
-<meta property="og:updated_time" content="2020-07-29T01:47:47.102Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131228&#x2F;20131228_fig001.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131228&#x2F;20131228_fig002.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131228&#x2F;20131228_fig003.jpg">
+<meta property="og:updated_time" content="2020-08-13T01:22:44.106Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20130731c&#x2F;20130731c_fig001.jpg">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131228&#x2F;20131228_fig001.jpg">
 
-<link rel="canonical" href="http://tengweitw.com/2013/07/31/[20130731c]/">
+<link rel="canonical" href="http://tengweitw.com/2013/12/28/[20131228]/">
 
 
 <script id="page-configurations">
@@ -76,7 +78,7 @@
   };
 </script>
 
-  <title>【算法导论】基数排序 | 青峰碧陋室</title>
+  <title>【算法导论】地图染色算法 | 青峰碧陋室</title>
   
 
 
@@ -210,7 +212,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/07/31/%5B20130731c%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/12/28/%5B20131228%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -223,7 +225,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【算法导论】基数排序
+          【算法导论】地图染色算法
         </h1>
 
         <div class="post-meta">
@@ -233,14 +235,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2013-07-31 17:05:58" itemprop="dateCreated datePublished" datetime="2013-07-31T17:05:58+08:00">2013-07-31</time>
+              <time title="创建时间：2013-12-28 22:54:29" itemprop="dateCreated datePublished" datetime="2013-12-28T22:54:29+08:00">2013-12-28</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-29 09:47:47" itemprop="dateModified" datetime="2020-07-29T09:47:47+08:00">2020-07-29</time>
+                <time title="修改时间：2020-08-13 09:22:44" itemprop="dateModified" datetime="2020-08-13T09:22:44+08:00">2020-08-13</time>
               </span>
 
           
@@ -256,7 +258,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.7k</span>
+              <span>1.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -275,13 +277,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><strong>时间复杂度</strong>：$O(n)$.</p>
-<p><strong>基本思路</strong>：两个数比较大小，我们的直观感觉是先比较高位，若相同则比较低位。但是这样做需要记录额外的数据，浪费空间。而基数排序则是先比较低位，再比较高位。通过各个位的比较进行排序，如果数组元素最大有$N$位，则总共需要$N$次排序。注意：按位排序必须是稳定排序（两个相等的数其在序列的前后位置顺序，在排序前后不改变），所以在这我选择了计数排序。</p>
+        <p>​    地图染色问题可以根据四色定理来解决。所谓<strong>四色定理</strong>，就是指可以用不多于四种的颜色对地图着色，使相邻的行政区域不重色，因此我们可以用四色定理的结论，用回溯算法对一幅给定的地图染色。</p>
+<p>​    <strong>算法的基本思想是</strong>：从第(1)号行政区域开始染色，每个区域逐次用颜色1#、2#、3#、4#进行试探，若当前所取的颜色与周围已染色的行政区域不重色，则用栈记下该区域的颜色序号，否则依次用下一颜色进行试探；若出现用1#到4#颜色均与相邻区域的颜色重色，则需退栈回溯，修改当前栈顶的颜色序号，再进行试探。直到所有行政区域都已分配合适的颜色。</p>
 <a id="more"></a>
-<p>具体操作见下图：</p>
-<p>​     <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130731c/20130731c_fig001.jpg" width="400" height="300" title="图1" alt="图1" ></p>
-<p><strong>具体实现如下</strong>：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;malloc.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CountSort</span><span class="params">(<span class="keyword">int</span>* arrayA,<span class="keyword">int</span>* arrayD,<span class="keyword">int</span> n,<span class="keyword">int</span> k)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">RadixSort</span><span class="params">(<span class="keyword">int</span>* arrayA,<span class="keyword">int</span> n)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> arrayD[]=&#123;<span class="number">1046</span>,<span class="number">2084</span>,<span class="number">9046</span>,<span class="number">12074</span>,<span class="number">56</span>,<span class="number">7026</span>,<span class="number">8099</span>,<span class="number">17059</span>,<span class="number">33</span>,<span class="number">1</span>&#125;;</span><br><span class="line">	<span class="keyword">int</span> n=<span class="keyword">sizeof</span>(arrayD)/<span class="keyword">sizeof</span>(<span class="keyword">int</span>);</span><br><span class="line">	RadixSort(arrayD,n);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%d "</span>,arrayD[i]);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/****************************************\</span></span><br><span class="line"><span class="comment">函数功能：进行非比较的计数排序</span></span><br><span class="line"><span class="comment">输入：数组D为原始数组</span></span><br><span class="line"><span class="comment">输出：无</span></span><br><span class="line"><span class="comment">\****************************************/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">RadixSort</span><span class="params">(<span class="keyword">int</span>* arrayD,<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> base=<span class="number">1</span>;<span class="comment">//用于取出各个位</span></span><br><span class="line">	<span class="keyword">int</span>* arrayA=(<span class="keyword">int</span>*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>)*n);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;<span class="number">5</span>;k++)<span class="comment">//这里的5由原始数组最大数据位数确定</span></span><br><span class="line">	&#123;	</span><br><span class="line">		base*=<span class="number">10</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)<span class="comment">//这里用来取各个位上的数</span></span><br><span class="line">		&#123;</span><br><span class="line">			arrayA[i]=arrayD[i]%base;</span><br><span class="line">			arrayA[i]/=base/<span class="number">10</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		CountSort(arrayA,arrayD,n,<span class="number">10</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">free</span>(arrayA);<span class="comment">//记得释放空间</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/****************************************\</span></span><br><span class="line"><span class="comment">函数功能：进行非比较的计数排序</span></span><br><span class="line"><span class="comment">输入：数组A、D，D为原始数组</span></span><br><span class="line"><span class="comment">输出：无</span></span><br><span class="line"><span class="comment">\****************************************/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CountSort</span><span class="params">(<span class="keyword">int</span>* arrayA,<span class="keyword">int</span>*arrayD,<span class="keyword">int</span> n,<span class="keyword">int</span> k)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span>* arrayB=(<span class="keyword">int</span>*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>)*n);</span><br><span class="line">	<span class="keyword">int</span>* arrayC=(<span class="keyword">int</span>*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>)*k);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=k;i++)</span><br><span class="line">		arrayC[i]=<span class="number">0</span>;<span class="comment">//数组C初始化</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;n;j++)</span><br><span class="line">		arrayC[arrayA[j]]=arrayC[arrayA[j]]+<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=k;i++)</span><br><span class="line">		arrayC[i]=arrayC[i]+arrayC[i<span class="number">-1</span>];<span class="comment">//得到各个元素的位置</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> j=n<span class="number">-1</span>;j&gt;=<span class="number">0</span>;j--)</span><br><span class="line">	&#123;</span><br><span class="line">		arrayB[arrayC[arrayA[j]]<span class="number">-1</span>]=arrayD[j];</span><br><span class="line">		arrayC[arrayA[j]]=arrayC[arrayA[j]]<span class="number">-1</span>;<span class="comment">//进行计数排序</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		arrayD[i]=arrayB[i];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>行政地图如下：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131228/20131228_fig001.jpg" width="500" height="300" title="图1" alt="图1" ></p>
+<p><strong>具体程序实现如下：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 7<span class="comment">//区域个数</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MapColor</span><span class="params">(<span class="keyword">int</span> dist[N][N],<span class="keyword">int</span> s[N])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> color,area,k;<span class="comment">//总共有4种颜色</span></span><br><span class="line">	s[<span class="number">0</span>]=<span class="number">1</span>;<span class="comment">//第一个区域先着色为颜色1</span></span><br><span class="line">	area=<span class="number">1</span>;<span class="comment">//从第二区域开始试探染色</span></span><br><span class="line">	color=<span class="number">1</span>;<span class="comment">//从第一种颜色开始试探</span></span><br><span class="line">	<span class="keyword">while</span>(area&lt;N)<span class="comment">//是否全部染色完毕</span></span><br><span class="line">	&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">while</span>(color&lt;=<span class="number">4</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(area&gt;=N)</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			k=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">while</span>((k&lt;area)&amp;&amp;(s[k]*dist[area][k]!=color))<span class="comment">//判断是否重色</span></span><br><span class="line">				k++;</span><br><span class="line">			<span class="keyword">if</span>(k&lt;area)</span><br><span class="line">				color++;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">				s[area]=color;</span><br><span class="line">				area++;</span><br><span class="line">				color=<span class="number">1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(color&gt;<span class="number">4</span>)<span class="comment">//没有找到合适的颜色，需要进行回溯</span></span><br><span class="line">		&#123;</span><br><span class="line">			area=area<span class="number">-1</span>;</span><br><span class="line">			color=s[area]+<span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> dist[N][N]=&#123;&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>&#125;,<span class="comment">//地图的邻接矩阵</span></span><br><span class="line">					&#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>&#125;,</span><br><span class="line">					&#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>&#125;,</span><br><span class="line">					&#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>&#125;,</span><br><span class="line">					&#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>&#125;,</span><br><span class="line">					&#123;<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>&#125;,</span><br><span class="line">					&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;&#125;;</span><br><span class="line">	<span class="keyword">int</span> s[N]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">	MapColor(dist,s);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"地图区域标号为1~7的染色情况为："</span>);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%d "</span>,s[i]);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>结果显示如下：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131228/20131228_fig002.jpg" width="600" height="400" title="图2" alt="图2" ></p>
+<p><strong>其中栈S的变化情况如下：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131228/20131228_fig003.jpg" width="500" height="400" title="图3" alt="图3" ></p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -317,7 +323,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2013/07/31/[20130731c]/" title="【算法导论】基数排序">http://tengweitw.com/2013/07/31/[20130731c]/</a>
+    <a href="http://tengweitw.com/2013/12/28/[20131228]/" title="【算法导论】地图染色算法">http://tengweitw.com/2013/12/28/[20131228]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -338,12 +344,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2013/07/31/%5B20130731b%5D/" rel="prev" title="【算法导论】第$i$小的元素">
-      <i class="fa fa-chevron-left"></i> 【算法导论】第$i$小的元素
+    <a href="/2013/12/27/%5B20131227%5D/" rel="prev" title="【算法导论】有向图的可达矩阵">
+      <i class="fa fa-chevron-left"></i> 【算法导论】有向图的可达矩阵
     </a></div>
       <div class="post-nav-item">
-    <a href="/2013/08/01/%5B20130801%5D/" rel="next" title="【算法导论】冒泡排序">
-      【算法导论】冒泡排序 <i class="fa fa-chevron-right"></i>
+    <a href="/2018/07/05/Perceptron/" rel="next" title="【图解例说机器学习】感知机 (Perceptron)">
+      【图解例说机器学习】感知机 (Perceptron) <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
