@@ -49,20 +49,20 @@
   };
 </script>
 
-  <meta name="description" content="​    在图论中，树是指无回路存在的连通图。一个连通图的生成树是指包含了所有顶点的树。如果把生成树的边的权值总和作为生成树的权，那么权值最小的生成树就称为最小生成树。因为最小生成树在实际中有很多应用，所以我们有必要了解怎样生成最小生成树。构造最小生成树的两种常用方法：Kruskal算法、Prim算法。本文介绍Kruskal算法，Prim算法在下篇文章中介绍。">
-<meta name="keywords" content="Algorithm Design">
+  <meta name="description" content="在创建项目时，项目名和路径中都不能出现中文。  可以使用Ctrl + “+”和Ctrl + “-”来改变程序的字体大小（Ctrl+鼠标滑轮可达到同样效果），使用Ctrl + “0”可以恢复到默认字体大小。  在设计模式下有几个过滤器，就是写着Filter的行输入框，可以帮助你更快的找到所需要的部件。  如果生成的.exe文件不能运行，并且提示丢失.dll文件，可以按照提示在Qt的安装目录的bin">
+<meta name="keywords" content="Qt Coding">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【算法导论】最小生成树之Kruskal法">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2013&#x2F;12&#x2F;17&#x2F;[20131217]&#x2F;index.html">
+<meta property="og:title" content="【Qt编程】Qt学习笔记">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2014&#x2F;02&#x2F;27&#x2F;[20140227]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="​    在图论中，树是指无回路存在的连通图。一个连通图的生成树是指包含了所有顶点的树。如果把生成树的边的权值总和作为生成树的权，那么权值最小的生成树就称为最小生成树。因为最小生成树在实际中有很多应用，所以我们有必要了解怎样生成最小生成树。构造最小生成树的两种常用方法：Kruskal算法、Prim算法。本文介绍Kruskal算法，Prim算法在下篇文章中介绍。">
+<meta property="og:description" content="在创建项目时，项目名和路径中都不能出现中文。  可以使用Ctrl + “+”和Ctrl + “-”来改变程序的字体大小（Ctrl+鼠标滑轮可达到同样效果），使用Ctrl + “0”可以恢复到默认字体大小。  在设计模式下有几个过滤器，就是写着Filter的行输入框，可以帮助你更快的找到所需要的部件。  如果生成的.exe文件不能运行，并且提示丢失.dll文件，可以按照提示在Qt的安装目录的bin">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131217&#x2F;20131217_fig001.jpg">
-<meta property="og:updated_time" content="2020-08-11T08:56:38.589Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140227&#x2F;20140227_fig001.jpg">
+<meta property="og:updated_time" content="2020-08-14T07:36:06.585Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131217&#x2F;20131217_fig001.jpg">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140227&#x2F;20140227_fig001.jpg">
 
-<link rel="canonical" href="http://tengweitw.com/2013/12/17/[20131217]/">
+<link rel="canonical" href="http://tengweitw.com/2014/02/27/[20140227]/">
 
 
 <script id="page-configurations">
@@ -76,7 +76,7 @@
   };
 </script>
 
-  <title>【算法导论】最小生成树之Kruskal法 | 青峰碧陋室</title>
+  <title>【Qt编程】Qt学习笔记 | 青峰碧陋室</title>
   
 
 
@@ -210,7 +210,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/12/17/%5B20131217%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/02/27/%5B20140227%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -223,7 +223,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【算法导论】最小生成树之Kruskal法
+          【Qt编程】Qt学习笔记
         </h1>
 
         <div class="post-meta">
@@ -233,14 +233,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2013-12-17 17:41:15" itemprop="dateCreated datePublished" datetime="2013-12-17T17:41:15+08:00">2013-12-17</time>
+              <time title="创建时间：2014-02-27 20:14:26" itemprop="dateCreated datePublished" datetime="2014-02-27T20:14:26+08:00">2014-02-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-11 16:56:38" itemprop="dateModified" datetime="2020-08-11T16:56:38+08:00">2020-08-11</time>
+                <time title="修改时间：2020-08-14 15:36:06" itemprop="dateModified" datetime="2020-08-14T15:36:06+08:00">2020-08-14</time>
               </span>
 
           
@@ -256,14 +256,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.1k</span>
+              <span>1.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -275,14 +275,46 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>​    在图论中，树是指无回路存在的连通图。一个连通图的生成树是指包含了所有顶点的树。如果把生成树的边的权值总和作为生成树的权，那么权值最小的生成树就称为最小生成树。因为最小生成树在实际中有很多应用，所以我们有必要了解怎样生成最小生成树。<strong>构造最小生成树的两种常用方法</strong>：Kruskal算法、Prim算法。本文介绍Kruskal算法，Prim算法在下篇文章中介绍。</p>
-<a id="more"></a>
-<p>   <strong>Kruskal算法</strong>是从另一条途径来求网络的的最小生成树。设$G=(V, E)$是一个有$n$个顶点的连通图，则令最小生成树的初值状态为只有$n$个顶点而无任何边的非连通图$T=(V, {\emptyset})$，此时图中每个顶点自成一个连通分量。按照权值递增的顺序依次选择$E$中的边，若该边依附于$T$中两个不同的连通分量，则将此边加入$TE$中，否则舍去此边而选择下一条代价最小的边，直到$T$中所有顶点都在同一连通分量上为止。这时的$T$，便是$G$的一棵最小生成树。 </p>
-<p>​    物理老师曾说过，图像比文字的信息量大得多，这可以从一幅图像和一篇文章所占电脑的存储空间大小明显得出。因此我们可以同下面的图解过程了解Kruskal算法的思想：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131217/20131217_fig001.jpg" width="600" height="400" title="图1" alt="图1" ></p>
-<p>​    在该算法中，每次都要寻找最短边，如果用邻接矩阵实现的话，则需要对整个矩阵扫描一遍，时间复杂度较高，如果采用邻接表的话，由于每条边都被连接两次，使得寻找时间加倍。所以采用如下结构体：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> M 8 <span class="comment">//边数</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 6  <span class="comment">//顶点数 </span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//图的存储结构体</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">int</span> startvex,endvex;<span class="comment">//边的两个顶点</span></span><br><span class="line">	<span class="keyword">int</span> length;<span class="comment">//边长</span></span><br><span class="line">	<span class="keyword">int</span> sign;<span class="comment">//是否被选择,1表示被选择，0表示未被选择，2表示选择后形成环，被抛弃</span></span><br><span class="line">&#125;edge;</span><br><span class="line">	edge T[M];</span><br><span class="line">	<span class="keyword">int</span> flag1[N];<span class="comment">//标记顶点是否已被选中</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Kruskal</span><span class="params">(edge T[M],<span class="keyword">int</span> *flag1)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i,j,k,l,min;</span><br><span class="line">	<span class="keyword">int</span> a[M]=&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">4</span>&#125;;<span class="comment">//边的两个顶点及边的长度</span></span><br><span class="line">	<span class="keyword">int</span> b[M]=&#123;<span class="number">1</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">5</span>&#125;;</span><br><span class="line">	<span class="keyword">int</span> c[M]=&#123;<span class="number">10</span>,<span class="number">19</span>,<span class="number">21</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">11</span>,<span class="number">6</span>,<span class="number">18</span>,<span class="number">14</span>,<span class="number">33</span>&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//int a[M]=&#123;0,0,0,1,1,2,3,4&#125;;//边的两个顶点及边的长度</span></span><br><span class="line">	<span class="comment">//int b[M]=&#123;1,3,5,2,4,3,4,5&#125;;</span></span><br><span class="line">	<span class="comment">//int c[M]=&#123;7,3,5,6,9,8,4,2&#125;;</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;N;i++)</span><br><span class="line">		flag1[i]=i;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;M;i++)<span class="comment">//初始化</span></span><br><span class="line">	&#123;</span><br><span class="line">		T[i].startvex=a[i];</span><br><span class="line">		T[i].endvex=b[i];</span><br><span class="line">		T[i].length=c[i];</span><br><span class="line">		T[i].sign=<span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	j=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> flag=<span class="number">0</span>;<span class="comment">//记录最小边的序号</span></span><br><span class="line">	<span class="keyword">while</span>(j&lt;N<span class="number">-1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		flag=<span class="number">0</span>;</span><br><span class="line">		min=<span class="number">10000</span>;</span><br><span class="line">		<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;M;i++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(T[i].sign==<span class="number">0</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">if</span>(T[i].length&lt;min)</span><br><span class="line">				&#123;</span><br><span class="line">					k=T[i].startvex;</span><br><span class="line">					l=T[i].endvex;</span><br><span class="line">					flag=i;</span><br><span class="line">					min=T[i].length;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		T[flag].sign=<span class="number">1</span>;<span class="comment">//标记被选中</span></span><br><span class="line">		<span class="comment">//printf("k=%d,l=%d:  ",k,l);</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">//printf("\n");</span></span><br><span class="line">		<span class="keyword">if</span>(flag1[k]==flag1[l])<span class="comment">//当边的两个顶点都已经被选择，说明若选择该边就会形成环</span></span><br><span class="line">		&#123;</span><br><span class="line">			T[flag].sign=<span class="number">2</span>;<span class="comment">//表示抛弃该边</span></span><br><span class="line">			<span class="comment">//printf("ok ");</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			j++;</span><br><span class="line">			<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;N;i++)</span><br><span class="line">				<span class="keyword">if</span>(flag1[i]==l)</span><br><span class="line">					flag1[i]=flag1[k];</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="comment">//for(int ii=0;ii&lt;M;ii++)</span></span><br><span class="line">	<span class="comment">//	printf(" %d ",T[ii].sign);</span></span><br><span class="line">	<span class="comment">//printf("\n\n");</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">	Kruskal(T,flag1);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;M;i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%d "</span>,T[i].sign);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>程序的结果与上面的图解的结果稍有不同，但是正确的，因为最小生成树有时候是不唯一的。</p>
+        <ul>
+<li><p>在创建项目时，项目名和路径中都不能出现中文。</p>
+</li>
+<li><p>可以使用<code>Ctrl + “+”</code>和<code>Ctrl + “-”</code>来改变程序的字体大小（Ctrl+鼠标滑轮可达到同样效果），使用<code>Ctrl + “0”</code>可以恢复到默认字体大小。</p>
+</li>
+<li><p>在设计模式下有几个过滤器，就是写着<code>Filter</code>的行输入框，可以帮助你更快的找到所需要的部件。</p>
+</li>
+<li><p>如果生成的.exe文件不能运行，并且提示丢失.dll文件，可以按照提示在Qt的安装目录的bin目录下寻找这些.dll文件。还有一种一劳永逸的方法是：将Qt的安装目录的bin目录加到系统的Path环境变量中去，这样程序运行是就可以自动找到那些dll文件。</p>
+</li>
+<li><p>在Qt Creator 默认下，编译的程序要想发布就需要dll文件，这种编译方式就称为动态编译。静态编译是指将Qt 的库进行重新编译，发布时不需要dll文件.</p>
+</li>
+<li><p>设置应用程序的图标：</p>
+<ul>
+<li>将myico.ico(名字可以自己取)图标文件放入工程的目录下，在目录里建立文本文档并写入下面代码<code>IDI_ICON1 ICON DISCARDABLE&quot;myico.ico&quot;</code>然后将该文本文档改为myico.rc (注意更改后缀名)</li>
+<li>在项目文件中的pro文件中的最后添加下面代码：<code>RC_FILE += myico.rc</code></li>
+</ul>
+</li>
+<li><p>任何一个QtGUI都需要一个QApplication类对象来管理应用程序的资源。</p>
+</li>
+<li><p>在默认情况下，新建的可视部件对象是不可见的，我们可以通过<code>show()</code>来显示。</p>
+</li>
+<li><p>中文显示乱码的解决办法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">QTextCodec::setCodecForTr(QTextCodec::codecForName(<span class="string">"UTF-8"</span>));   QTextCodec::setCodecForTr(QTextCodec::codecForLocale());</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>  在Windows系统下，其中一个能正常显示，最好两者都写上。</p>
+<ul>
+<li><p>Qt Creator的代码补全功能<br>当输入一个比较长得函数或变量名时，可以通过其中的几个字母来定位。比如说，要输入前面讲到的<code>setFocus()</code>函数，那么只需输入首字母s和后面的大写字母F即可，这样可以大大缩减提示列表，如果还没有定位到，那么可以输入F后面的字母。如下图1所示。<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140227/20140227_fig001.jpg" width="400" height="150" title="图1" alt="图1" ></p>
+</li>
+<li><p>默认的情况下，对话框的左上角是（0，0）。</p>
+</li>
+<li><p>Ui文件生成的默认头文件的名称是ui_加ui文件的名称；ui文件是使用uic编译工具来编译的。</p>
+</li>
+<li><p>当有多个项目并存时，我们可以在项目文件右击来设定活动项目。</p>
+</li>
+<li><p>在项目发布时，不需要包含user文件，如果要打开别人的项目文件，我们应该去掉这种类型的文件。</p>
+</li>
+<li><p>我们可以将pro文件直接拖向Qt Creator图标来打开项目。</p>
+</li>
+</ul>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -318,7 +350,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2013/12/17/[20131217]/" title="【算法导论】最小生成树之Kruskal法">http://tengweitw.com/2013/12/17/[20131217]/</a>
+    <a href="http://tengweitw.com/2014/02/27/[20140227]/" title="【Qt编程】Qt学习笔记">http://tengweitw.com/2014/02/27/[20140227]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -330,7 +362,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/Algorithm-Design/" rel="tag"><i class="fa fa-tag"></i> Algorithm Design</a>
+              <a href="/tags/Qt-Coding/" rel="tag"><i class="fa fa-tag"></i> Qt Coding</a>
           </div>
 
         
@@ -339,12 +371,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2013/12/15/%5B20131215%5D/" rel="prev" title="【算法导论】有向图的深度优先搜索遍历">
-      <i class="fa fa-chevron-left"></i> 【算法导论】有向图的深度优先搜索遍历
+    <a href="/2014/01/05/%5B20140105%5D/" rel="prev" title="【算法导论】我的2013--一切从心开始">
+      <i class="fa fa-chevron-left"></i> 【算法导论】我的2013--一切从心开始
     </a></div>
       <div class="post-nav-item">
-    <a href="/2013/12/19/%5B20131219%5D/" rel="next" title="【算法导论】最小生成树之Prime法">
-      【算法导论】最小生成树之Prime法 <i class="fa fa-chevron-right"></i>
+    <a href="/2018/07/05/Perceptron/" rel="next" title="【图解例说机器学习】感知机 (Perceptron)">
+      【图解例说机器学习】感知机 (Perceptron) <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
