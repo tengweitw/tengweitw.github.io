@@ -411,6 +411,305 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
       </tags>
   </entry>
   <entry>
+    <title>【Java编程】Java基本数据类型</title>
+    <url>/2014/04/13/%5B20140413%5D/</url>
+    <content><![CDATA[<p>​    在较前面的一篇博文<a href="http://blog.csdn.net/tengweitw/article/details/8891754" target="_blank" rel="noopener">《C/C++基本数据类型》</a>中，我主要介绍了c/c++的基本数据类型。我们知道C语言没有具体规定各类数据类型所占内存的字节数，只要求long型数据长度不小于int型，short型不大于int型。具体的实现如何，由各计算机系统自行决定。</p>
+<p>​    一般情况下，在Turbo C++中，int型和short型都是16位，而long型是32位。而有的c语言编译器给short型分配16位，而int型和long型分配32位。通常的做法是：把long型定为32位，把short型定为16位，而int型可以为16位，也可以是32位。</p>
+<a id="more"></a>
+<p>​    相比C语言而言，Java的8种基本数据类型的长度与平台无关。因此Java语言具有 “一次编译，到处运行” 的优点。本文主要介绍Java的基本数据类型。<strong>Java语言的基本数据类型总共有以下8种，下面是按照用途划分出的4个类别：</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>类型名</th>
+<th>关键字</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>整数型</td>
+<td>byte  short  int  long</td>
+</tr>
+<tr>
+<td>小数型</td>
+<td>float         double</td>
+</tr>
+<tr>
+<td>字符型</td>
+<td>char</td>
+</tr>
+<tr>
+<td>布尔型</td>
+<td>boolean</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<p><strong>下面分别介绍这4种类别：</strong></p>
+<p><strong>1.整数型</strong></p>
+<p>​    整数型是一类代表整数值的类型。当需要代表一个整数的值时，可以根据需要从4种类型中挑选合适的，如果没有特殊要求的话，一般选择int类型。4种整数型区别主要在每个数据在内存中占用的空间大小和代表的数值的范围。具体说明参看下表： </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>类型名称</th>
+<th>关键字</th>
+<th>占用字节</th>
+<th>取值范围</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>字节型</td>
+<td>byte</td>
+<td>1</td>
+<td>$-2^7\sim 2^7-1$</td>
+<td>0</td>
+</tr>
+<tr>
+<td>短整型</td>
+<td>short</td>
+<td>2</td>
+<td>$-2^{15}\sim 2^{15}-1$</td>
+<td>0</td>
+</tr>
+<tr>
+<td>整型</td>
+<td>int</td>
+<td>4</td>
+<td>$-2^{31}\sim 2^{31}-1$</td>
+<td>0</td>
+</tr>
+<tr>
+<td>长整型</td>
+<td>long</td>
+<td>8</td>
+<td>$-2^{63}\sim 2^{63}-1$</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p> <strong>说明</strong>：</p>
+<ul>
+<li>Java中的整数都是有符号数，也就是有正有负。</li>
+<li>默认值指在特定的情况下才自动初始化，具体的情况后续将有叙述。</li>
+<li>程序中的整数数值默认是int以及int以下类型，如果需要书写long型的值，则需要在数值后面添加字母L，大小写均可。</li>
+</ul>
+<p><strong>2.小数型</strong></p>
+<p>​    小数型是一类代表小数值的类型。当需要代表一个小数的值时，可以根据需要从以下2种类型中挑选合适的。如果没有特殊要求，一般选择double类型。由于小数的存储方式和整数不同，所以小数都有一定的精度，所以在计算机中运算时不够精确。根据精度和存储区间的不同，设计了两种小数类型，具体见下表：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>类型名称</th>
+<th>关键字</th>
+<th>占用字节</th>
+<th>取值范围</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>单精度</td>
+<td>float</td>
+<td>4</td>
+<td>$-3.4\cdot 10^{+38}\sim 3.4\cdot 10^{+38}$</td>
+<td>0.0f</td>
+</tr>
+<tr>
+<td>双精度</td>
+<td>double</td>
+<td>8</td>
+<td>$-1.7\cdot 10^{+308}\sim 1.7\cdot 10^{+308}$</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p> <strong>说明：</strong></p>
+<ul>
+<li>取值范围以科学计数法形式进行描述。</li>
+<li>在程序中，小数的运算速度要低于整数运算。</li>
+<li>float类型的小数，需要在小数后加字母f，不区分大小写，例如1.01f。</li>
+</ul>
+<p><strong>3.字符型</strong></p>
+<p>​    字符型代表特定的某个字符，按照前面介绍的知识，计算机中都是以字符集的形式来保存字符的，所以字符型的值实际只是字符集中的编号，而不是实际代表的字符，由计算机完成从编号转换成对应字符的工作。<strong>Java语言中为了更加方便国际化，使用Unicode字符集作为默认的字符集</strong>，该字符集包含各种语言中常见的字符。在程序代码中，字符使用一对单引号加上需要表达的字符来标识，例如”A”, “a”等，当然也可以直接使用字符编码，也就是一个非负整数进行表示。具体见下表：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>类型名称</th>
+<th>关键字</th>
+<th>占用字节</th>
+<th>取值范围</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>字符型</td>
+<td>char</td>
+<td>2</td>
+<td>$0\sim 2^{16}-1$</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>  <strong>说明</strong>：</p>
+<ul>
+<li>字符型的编号中不包含负数。</li>
+<li>字符型由于存储的是编号的数值，所以可以参与数学运算。</li>
+<li>字符型可以作为Java语言中的无符号整数使用。</li>
+<li>字符型的默认值是编号为0的字符，而不是字符0</li>
+</ul>
+<p><strong>4.布尔型</strong></p>
+<p>​    布尔型代表逻辑中的成立和不成立。Java语言中使用关键字true代表成立，false代表不成立。布尔型是存储逻辑值的类型，其实很多程序中都有逻辑值的概念，Java把逻辑的值用布尔型来进行表达。具体见下表：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>类型名称</th>
+<th>关键字</th>
+<th>占用字节</th>
+<th>取值范围</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>布尔型</td>
+<td>boolean</td>
+<td></td>
+<td>true or false</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>类型名称</th>
+<th>关键字</th>
+<th>占用空间(字节)</th>
+<th>取值范围</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>布尔型</td>
+<td>boolean</td>
+<td></td>
+<td>true或false</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>说明：</strong> 布尔型占用的空间取决于Java虚拟机(JVM)的实现，可能是1位也可能是1个字节。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Java Coding</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Java编程】Java学习笔记&lt;二&gt;</title>
+    <url>/2014/04/11/%5B20140411b%5D/</url>
+    <content><![CDATA[<ol>
+<li>Java中类的域共有4种访问权限，而类的访问控制级别只有public和缺省的，当为public时，可以被任何包的其他类访问，当为缺省时，只能被同一包的其他类访问。如果类自身对另一个类是不可见的，即使类的成员声明为public，也没有一个成员是可见的。</li>
+<li>Final变量一旦被显式的赋值（不能默认初始化），就不能再赋值了。</li>
+<li>用final修辞的应用变量，不能重新引用另一个变量，但是可以所引用对象的数据。</li>
+<li>一个类中，静态方法只能处理静态变量；静态方法只能调用静态方法。</li>
+<li>方法修饰符abstract和final不能同时使用</li>
+<li>每个源文件只能有一个公共类，没有公共类的源文件名可以与其中任意类同名。</li>
+<li>子类覆盖父类的同名方法时，访问限制必须相同和更弱，但是不能更强。</li>
+<li>子类对象可以自动向父类对象转化，但父类对象转化为子类对象时必须强制转换。</li>
+<li>不用abstract修饰的类不能有抽象方法。</li>
+<li>Java只有单继承，即一个类只有一个直接的父类。因此Java的类层次结构是树状的，而不是网状的。</li>
+<li>Java语言的接口中，只能定义静态常量和抽象方法。接口可以看成一个没有具体实现的类。</li>
+<li>接口可以多继承，因此接口使得Java程序实现了与类的多继承相似的功能。</li>
+<li>如果接口中有多个抽象方法，类继承时必须为所有的抽象方法编写方法体。接口的定义中通常省略public等修饰符，但是在实现时必须显式地使用public修饰符。</li>
+<li>如果实现接口的类是一个抽象类，则接口中的抽象方法可以不被实现。</li>
+<li>是谁的实例调用谁的方法和变量。</li>
+</ol>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Java Coding</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Java编程】Java学习笔记&lt;一&gt;</title>
+    <url>/2014/04/11/%5B20140411%5D/</url>
+    <content><![CDATA[<ol>
+<li>高级语言的编译和执行方法可以归为两大基本技术：编译执行和解释执行。C/C++/Delphi是编译执行，basic/java/matlab是解释执行。</li>
+<li>尽管Java是解释执行的，也需要对源文件进行编译，与c语言的全编译（生成可执行文件）不同的是，Java具有半编译、半执行的特性（生成字节码）。</li>
+<li>字节码文件格式是与平台无关的。Java程序并不是直接在操作系统的控制之下运行，而是在JVM的控制之下运行。</li>
+<li>//是一行注释、/<em> </em>/是多行注释、/<em>* </em>/是文档注释</li>
+<li>Java是严格区分大小写的，但html语言并不区分大小写。</li>
+<li>Java应用程序是本机上由Java解释程序激活Java虚拟机，而Java小程序是通过浏览器激活Java虚拟机。</li>
+<li>Java的命名规则<br>1）包名：用小写英文单词<br>2）类名和接口名：名词，每个首字母大写<br>3）方法名：动词 驼峰命名<br>4）变量名：与方法名一样<br>5）常量名：字母全大写 单词间下划线</li>
+<li>Java语言中的字符型占16位，而c中占8位；Java中整型都是有符号的，c中有无符号的。Java中的基本数据类型的大小是固定的，而c中与平台有关。</li>
+<li>布尔常量不能转化成任何数据类型，即不能与1、0比相等。</li>
+<li>如果只是声明了一个类的具体对象，而没有使用构造函数，则该对象的值为null，不指向空间。</li>
+<li>Java源程序的文件名必须与public类的类名一致</li>
+<li>判断两个字符串的内容是否相等，不能用==，只能使用字符串类的equals方法</li>
+<li>定义一个方法时，其方法体中不能再定义其它方法；调用一个方法时，其方法体中可以再调用其它方法。即不可重复定义，可以重复调用。</li>
+<li>一个Java源文件包含几个类定义时，只能有一个public类，文件名与public类名完全一致。</li>
+<li>抽象类没有具体实例，最终类不能有子类</li>
+</ol>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Java Coding</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Qt编程】Qt学习笔记&lt;二&gt;</title>
+    <url>/2014/03/04/%5B20140304%5D/</url>
+    <content><![CDATA[<ul>
+<li><p>QApplication类和QWidget类都包含在QtGui模块中。所以我们可以只包含这个头文件即可。</p>
+</li>
+<li><p>在c++中，用new分配了内存空间就需要用delete来释放空间，而在Qt中，释放父对象时，会自动销毁子对象。</p>
+</li>
+<li><p>将光标定位到函数上时，会浮现出提示，按提示按f1就可以进入该函数的帮助文档。</p>
+</li>
+<li><p>在main.c文件中，程序只有进入了主事件循环后才能接受事件，而show函数会触发显示事件，所以只有在完成a.exe()函数调用进入消息循环后才能正常显示。</p>
+</li>
+<li><p>使用qDebug(“x:%d”,x)不需要添加<QDebug>头文件的。使用qDebug&lt;&lt;x则需要包含该头文件。</p>
+</li>
+<li><p>按照运行对话框时，是否还可以和该程序的其它窗口进行交互，可以分为模态和非模态。</p>
+</li>
+<li><p>在一个函数中定义的变量，等这个函数执行结束后，就自动释放内存了。因此我们一般将子部件定义为指针类型。</p>
+</li>
+<li><p>要想使一个对话框成为模态对话框，只需要调用它的exec()函数，而要使其成为非模态对话框，可以使用new操作来创建，然后使用show()函数来显示。</p>
+</li>
+<li><p>信号和槽都是函数，信号只需声明不需要定义。</p>
+</li>
+<li><p>信号和槽的关联可以分为自动关联和手动关联。自动关联就是使用规定的槽命名，而且必须使用Qt部件已经提供的信号。</p>
+</li>
+<li><p>快捷更改函数名：在函数上右击，选择重构-&gt;Rename Symbol Under Cursor</p>
+</li>
+<li><p>Qt 设计器直接生成的槽是自动关联，我们必须在调用setupUi()函数前定义子部件和对象名。因为setupUi调用connectSlotsByName()函数用来支持信号和槽的自动关联，调用时需要使用对象名。</p>
+</li>
+<li><p>信号和槽的特点：类型是安全的、松耦合的、参数灵活、比回调机制稍慢。</p>
+</li>
+<li><p>行编辑器的属性栏中还可以设置占位符，就是没有输入信息前的一些提示语句，就是更改编辑器的placeholderText属性。</p>
+</li>
+<li><p>加速键与快捷键的不同之处：如下图：我们设置’’新建’’的快捷键为<code>ctrl+N</code>,加速键为N，那么我们可以按下<code>ctrl+N</code>来新建文件，也可以先按<code>alt+F</code>激活’’文件’’菜单，然后按N来新建文件。<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140304/20140304_fig001.jpg" width="300" height="150" title="图1" alt="图1" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140304/20140304_fig002.jpg" width="300" height="200" title="图2" alt="图2" ></p>
+</li>
+</ul>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Qt Coding</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【Matlab编程】Matlab版扫雷</title>
     <url>/2014/03/01/%5B20140301%5D/</url>
     <content><![CDATA[<p>​    我发现有些人平常闲着的时候会玩window自带的游戏，其中最常见的就是扫雷和纸牌。本来想用matlab编写全自动扫雷程序用来作弊，可是后来发现扫雷问题是NP完全问题（正如：旅行商NP难问题一样不能被解决），便放弃了。于是编写了类似扫雷游戏（没有经过大量测试，可能有bug，效率也不高，作弊：在命令窗口输入minefield 其中，值为1的地方为雷区）。大致规则和原来一样，只是做了些改进:加入了音乐和语音提示。具体代码如下（下面有两个文件：一个脚本文件，一个函数文件,只需运行第一个脚本文件即可）：</p>
