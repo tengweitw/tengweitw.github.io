@@ -674,7 +674,6 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
     <content><![CDATA[<p>​    在年前的一篇文章中，我提到要学习Qt.于是在这学期看了一个月的qt。现在大致对qt有了一些了解。但是现在导师又把我调到了android应用开发平台，所以说qt的学习要搁置了。本打算这学期做一个单词查询软件的，目测只有在暑假完成了，现在才刚刚完成了本地词库的查询。目前的工作解决了词库的来源、本地词典的查询功能。日后的工作还有访问网络词库、记单词的算法实现等等。下面来说一说我在本地查词功能实现的问题—显示音标！</p>
 <p>我们知道，qt中讲的比较多的是如何显示中文。一般情况都可以用下面代码来解决：</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">QTextCodec::setCodecForTr(QTextCodec::codecForName(<span class="string">"UTF-8"</span>));</span><br><span class="line">QTextCodec::setCodecForTr(QTextCodec::codecForLocale());</span><br></pre></td></tr></table></figure>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
 <p>但是，我们<strong>本文解决的是显示国际音标</strong>。因为当我们从词库中搜索到我们查的单词时，便会显示其音标和意思。但是有一些音标却无法显示，举例如下：</p>
 <p>  <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140409/20140409_fig001.jpg" width="360" height="400" title="图1" alt="图1" ></p>
 <p> <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140409/20140409_fig002.jpg" width="360" height="400" title="图2" alt="图2" ></p>
@@ -683,7 +682,6 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
 <p>θ ð ʃ ʒ tʃ dʒ ŋ ɪ æ ɔ ʌ ʊ ə ɛ  ɑ:  ʊ:  ɔ  eɪ ɑɪ ɔɪ əʊ oʊ ɑʊ  ɪə eə ʊə ɪə</p>
 <p><strong>我们可以通过下面程序来测试：</strong></p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">QString str2=<span class="string">"&lt;font face=\"Times New Roman\"&gt; θ  ð  ʃ  ʒ  tʃ  dʒ  ŋ ɪ æ  ɔ  ʌ   ʊ  ə  ɛ ɑ: ʊ: ɔ eɪ  ɑɪ  ɔɪ  əʊ  oʊ  ɑʊ ɪə  eə  ʊə  ɪə&lt;/font&gt;"</span>;</span><br></pre></td></tr></table></figure>
-<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
 <p>然后将上面的字符串放入Qlabel等部件进行显示，在这里就不给出具体程序了。<strong>测试结果如下：</strong></p>
 <p> <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140409/20140409_fig003.jpg" width="360" height="400" title="图3" alt="图3" ></p>
 <p>经过测试如上图，上述特殊音标都可以正常显示。学习过html语言的可以看出上面的字符串是html语言，并且将字体设置为Time New Roman。</p>
