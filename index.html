@@ -989,7 +989,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/03/27/%5B20140327%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/04/09/%5B20140409%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -1003,7 +1003,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2014/03/27/%5B20140327%5D/" class="post-title-link" itemprop="url">【Qt编程】Qt 小时钟</a>
+            <a href="/2014/04/09/%5B20140409%5D/" class="post-title-link" itemprop="url">【Qt编程】基于Qt的词典开发系列--国际音标的显示</a>
         </h1>
 
         <div class="post-meta">
@@ -1013,14 +1013,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2014-03-27 19:13:52" itemprop="dateCreated datePublished" datetime="2014-03-27T19:13:52+08:00">2014-03-27</time>
+              <time title="创建时间：2014-04-09 20:26:34" itemprop="dateCreated datePublished" datetime="2014-04-09T20:26:34+08:00">2014-04-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-16 09:36:08" itemprop="dateModified" datetime="2020-08-16T09:36:08+08:00">2020-08-16</time>
+                <time title="修改时间：2020-08-16 10:02:18" itemprop="dateModified" datetime="2020-08-16T10:02:18+08:00">2020-08-16</time>
               </span>
 
           <br>
@@ -1029,14 +1029,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.3k</span>
+              <span>1.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -1048,15 +1048,46 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>​    Hello World! 学习编程语言的最简单最经典的小程序，当然Qt也不例外。在学习画图时，我觉得写个时钟小程序也是个比较好的开始。在之前的《Matlab及Java小时钟》一文中，我也从写时钟程序作为学习画图的开始。三者之间的不同点在于，matlab是通过while循环来进行重绘，Java和Qt事件来处理。实时显示时钟，都是通过改变指针与坐标轴的相对位置来实现的。前两者都是改变指针，而Qt是旋转坐标轴。具体代码如下：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2014/03/27/%5B20140327%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+          <p>​    在年前的一篇文章中，我提到要学习Qt.于是在这学期看了一个月的qt。现在大致对qt有了一些了解。但是现在导师又把我调到了android应用开发平台，所以说qt的学习要搁置了。本打算这学期做一个单词查询软件的，目测只有在暑假完成了，现在才刚刚完成了本地词库的查询。目前的工作解决了词库的来源、本地词典的查询功能。日后的工作还有访问网络词库、记单词的算法实现等等。下面来说一说我在本地查词功能实现的问题—显示音标！</p>
+<p>我们知道，qt中讲的比较多的是如何显示中文。一般情况都可以用下面代码来解决：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">QTextCodec::setCodecForTr(QTextCodec::codecForName(<span class="string">"UTF-8"</span>));</span><br><span class="line">QTextCodec::setCodecForTr(QTextCodec::codecForLocale());</span><br></pre></td></tr></table></figure>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>但是，我们<strong>本文解决的是显示国际音标</strong>。因为当我们从词库中搜索到我们查的单词时，便会显示其音标和意思。但是有一些音标却无法显示，举例如下：</p>
+<p>  <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140409/20140409_fig001.jpg" width="360" height="400" title="图1" alt="图1" ></p>
+<p> <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140409/20140409_fig002.jpg" width="360" height="400" title="图2" alt="图2" ></p>
+<p><strong>对比两张图就可以看出有一些音标无法显示。</strong></p>
+<p><strong>由于Qt可以解析html语言，因此我们可以通过在html语言中设置字体来显示这些特殊的音标</strong>。<strong>一些常用的音标有：</strong></p>
+<p>θ ð ʃ ʒ tʃ dʒ ŋ ɪ æ ɔ ʌ ʊ ə ɛ  ɑ:  ʊ:  ɔ  eɪ ɑɪ ɔɪ əʊ oʊ ɑʊ  ɪə eə ʊə ɪə</p>
+<p><strong>我们可以通过下面程序来测试：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">QString str2=<span class="string">"&lt;font face=\"Times New Roman\"&gt; θ  ð  ʃ  ʒ  tʃ  dʒ  ŋ ɪ æ  ɔ  ʌ   ʊ  ə  ɛ ɑ: ʊ: ɔ eɪ  ɑɪ  ɔɪ  əʊ  oʊ  ɑʊ ɪə  eə  ʊə  ɪə&lt;/font&gt;"</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>然后将上面的字符串放入Qlabel等部件进行显示，在这里就不给出具体程序了。<strong>测试结果如下：</strong></p>
+<p> <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140409/20140409_fig003.jpg" width="360" height="400" title="图3" alt="图3" ></p>
+<p>经过测试如上图，上述特殊音标都可以正常显示。学习过html语言的可以看出上面的字符串是html语言，并且将字体设置为Time New Roman。</p>
+<p>举一反三，如果要显示其它特殊字符，只需找出其所在的字体。当然，如果你学过html,你可以在上面的语句中包含多个字体（有备无患）。</p>
+<p><strong>基于Qt的词典开发系列</strong></p>
+<ol>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/44757875" target="_blank" rel="noopener">词典框架设计及成品展示</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45014771" target="_blank" rel="noopener">本地词典的设计</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45099867" target="_blank" rel="noopener">开始菜单的设计</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38758051" target="_blank" rel="noopener">无边框窗口的缩放与拖动</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38817595" target="_blank" rel="noopener">无边框窗口的拖动</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45223931" target="_blank" rel="noopener">界面美化设计</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45484803" target="_blank" rel="noopener">调用网络API</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45932429" target="_blank" rel="noopener">用户登录及API调用的实现</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45932429" target="_blank" rel="noopener">JSON数据解析</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/23294533" target="_blank" rel="noopener">国际音标的显示</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38237203" target="_blank" rel="noopener">系统托盘的显示</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38306803" target="_blank" rel="noopener">调用讲述人</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38555787" target="_blank" rel="noopener">音频播放</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38689745" target="_blank" rel="noopener">自动补全功能</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38734201" target="_blank" rel="noopener">HTML特殊字符及正则表达式</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/46563781" target="_blank" rel="noopener">后序</a></li>
+</ol>
+<p><strong>作品下载地址（发布版）</strong>：<a href="http://download.csdn.net/detail/tengweitw/8548767" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8548767</a></p>
+<p><strong>作品下载地址（绿色版）</strong>：<a href="http://download.csdn.net/detail/tengweitw/8830495" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8830495</a></p>
+<p><strong>源码下载地址</strong>：<a href="http://download.csdn.net/detail/tengweitw/8830503" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8830503</a></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
       
     </div>
 
@@ -1121,7 +1152,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">70</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1177,12 +1208,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">222k</span>
+    <span title="站点总字数">225k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:18</span>
+    <span title="站点阅读时长">5:21</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
