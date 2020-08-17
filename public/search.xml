@@ -411,6 +411,150 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
       </tags>
   </entry>
   <entry>
+    <title>【Java编程】Java中的大整数计算</title>
+    <url>/2014/04/20/%5B20140420%5D/</url>
+    <content><![CDATA[<p>在上一篇文章中，我们实现了c语言中的大整数的运算，并且用Miller-Rabin算法实现了对大素数的测试。本来我准备用Java代码实现大整数的运算，查了一下资料发现Java中java.math的BigInteger可以实现大整数的表示和计算。BigInteger 还提供以下运算：模算术、GCD 计算、质数测试、素数生成、位操作以及一些其他操作。</p>
+<a id="more"></a>
+<p>下面通过程序来看看具体用法：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.math.BigInteger;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BigInt</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		<span class="keyword">long</span> x=<span class="number">123456789987654321L</span>;</span><br><span class="line">		<span class="keyword">long</span> y=<span class="number">123456789999999L</span>;</span><br><span class="line">		System.out.println(<span class="string">"x*y= "</span>+(x*y));</span><br><span class="line">		</span><br><span class="line">		BigInteger bigX= <span class="keyword">new</span> BigInteger(<span class="string">"123456789987654321"</span>);</span><br><span class="line">		BigInteger bigY= <span class="keyword">new</span> BigInteger(<span class="string">"123456789999999"</span>);</span><br><span class="line">		</span><br><span class="line">		BigInteger bigXY=bigX.multiply(bigY);</span><br><span class="line">		System.out.println(<span class="string">"bigXY= "</span>+bigXY);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">boolean</span> flag=<span class="keyword">false</span>;</span><br><span class="line">		BigInteger primenum=<span class="keyword">new</span> BigInteger(<span class="string">"18446744073709551557"</span>);</span><br><span class="line">		flag=primenum.isProbablePrime(<span class="number">10</span>);<span class="comment">//参数10用于控制准确性</span></span><br><span class="line">		<span class="comment">//如果该调用返回 true，则此 BigInteger 是素数的概率超出 (1 - 1/2^10)。此方法的执行时间与此参数的值是成比例的。</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(flag==<span class="keyword">true</span>)</span><br><span class="line">			System.out.println(primenum+<span class="string">"可能是素数！"</span>);</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			System.out.println(primenum+<span class="string">"肯定不是素数"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>结果显示如下：</strong></p>
+<p>x*y= -2700643659534631217<br>bigXY= 15241578995579818643499602345679<br>18446744073709551557可能是素数！</p>
+<p>​        通过结果我们可以看到，两个长整数相乘的结果超出了long型数据64位的表示范围，截断后的结果出现了负值。通过使用大整数类BigInteger很好的解决了这个问题。我们在前一篇文章中找到了64位的最大的可能素数是18446744073709551557 ，现在通过大整数类测试同样说明这个数是素数，这也间接说明前一篇算法实现的正确性。</p>
+<p>附录：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>返回类型</th>
+<th>函数名</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>int</td>
+<td><strong><a href="">getLowestSetBit</a></strong>() 返回此 BigInteger 最右端（最低位）1 比特的索引（即从此字节的右端开始到本字节中最右端 1 比特之间的 0 比特的位数）。</td>
+</tr>
+<tr>
+<td>int</td>
+<td><strong><a href="">hashCode</a></strong>() 返回此 BigInteger 的哈希码。</td>
+</tr>
+<tr>
+<td>int</td>
+<td><strong><a href="">intValue</a></strong>() 将此 BigInteger 转换为 int。</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td><strong><a href="">isProbablePrime</a></strong>(int certainty) 如果此 BigInteger 可能为素数，则返回 true，如果它一定为合数，则返回 false。</td>
+</tr>
+<tr>
+<td>long</td>
+<td><strong><a href="">longValue</a></strong>() 将此 BigInteger 转换为 long。</td>
+</tr>
+<tr>
+<td><a href="">BigInteger</a></td>
+<td><strong><a href="">max</a></strong>(<a href="">BigInteger</a> val) 返回此 BigInteger 和 val 的最大值。</td>
+</tr>
+<tr>
+<td><a href="">BigInteger</a></td>
+<td><strong><a href="">min</a></strong>(<a href="">BigInteger</a> val) 返回此 BigInteger 和 val 的最小值。</td>
+</tr>
+<tr>
+<td><a href="">BigInteger</a></td>
+<td><strong><a href="">mod</a></strong>(<a href="">BigInteger</a> m) 返回其值为 (this mod m) 的 BigInteger。</td>
+</tr>
+<tr>
+<td><a href="">BigInteger</a></td>
+<td><strong><a href="">modInverse</a></strong>(<a href="">BigInteger</a> m) 返回其值为 (this-1 mod m) 的 BigInteger。</td>
+</tr>
+<tr>
+<td><a href="">BigInteger</a></td>
+<td><strong><a href="">modPow</a></strong>(<a href="">BigInteger</a> exponent, <a href="">BigInteger</a> m) 返回其值为 (thisexponent mod m) 的 BigInteger。</td>
+</tr>
+<tr>
+<td><a href="">BigInteger</a></td>
+<td><strong><a href="">multiply</a></strong>(<a href="">BigInteger</a> val) 返回其值为 (this * val) 的 BigInteger。</td>
+</tr>
+<tr>
+<td><a href="">BigInteger</a></td>
+<td><strong><a href="">negate</a></strong>() 返回其值是 (-this) 的 BigInteger。</td>
+</tr>
+<tr>
+<td><a href="">BigInteger</a></td>
+<td><strong><a href="">nextProbablePrime</a></strong>() 返回大于此 BigInteger 的可能为素数的第一个整数。</td>
+</tr>
+<tr>
+<td><a href="">BigInteger</a></td>
+<td><strong><a href="">not</a></strong>() 返回其值为 (~this) 的 BigInteger。</td>
+</tr>
+<tr>
+<td><a href="">BigInteger</a></td>
+<td><strong><a href="">or</a></strong>(<a href="">BigInteger</a> val) 返回其值为 (this &#124;  val) 的 BigInteger。</td>
+</tr>
+<tr>
+<td><a href="">BigInteger</a></td>
+<td><strong><a href="">pow</a></strong>(int exponent) 返回其值为 (thisexponent) 的 BigInteger。</td>
+</tr>
+<tr>
+<td>static <a href="">BigInteger</a></td>
+<td><strong><a href="">probablePrime</a></strong>(int bitLength, <a href="">Random</a> rnd) 返回有可能是素数的、具有指定长度的正 BigInteger。</td>
+</tr>
+<tr>
+<td><a href="">BigInteger</a></td>
+<td><strong><a href="">remainder</a></strong>(<a href="">BigInteger</a> val) 返回其值为 (this % val) 的 BigInteger。</td>
+</tr>
+<tr>
+<td><a href="">BigInteger</a></td>
+<td><strong><a href="">setBit</a></strong>(int n) 返回其值与设置了指定位的此 BigInteger 等效的 BigInteger。</td>
+</tr>
+<tr>
+<td><a href="">BigInteger</a></td>
+<td><strong><a href="">shiftLeft</a></strong>(int n) 返回其值为 (this &lt;&lt; n) 的 BigInteger。</td>
+</tr>
+<tr>
+<td><a href="">BigInteger</a></td>
+<td><strong><a href="">shiftRight</a></strong>(int n) 返回其值为 (this &gt;&gt; n) 的 BigInteger。</td>
+</tr>
+<tr>
+<td>int</td>
+<td><strong><a href="">signum</a></strong>() 返回此 BigInteger 的正负号函数。</td>
+</tr>
+<tr>
+<td><a href="">BigInteger</a></td>
+<td><strong><a href="">subtract</a></strong>(<a href="">BigInteger</a> val) 返回其值为 (this - val) 的 BigInteger。</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td><strong><a href="">testBit</a></strong>(int n) 当且仅当设置了指定的位时，返回 true。</td>
+</tr>
+<tr>
+<td>byte[]</td>
+<td><strong><a href="">toByteArray</a></strong>() 返回一个 byte 数组，该数组包含此 BigInteger 的二进制补码表示形式。</td>
+</tr>
+<tr>
+<td><a href="">String</a></td>
+<td><strong><a href="">toString</a></strong>() 返回此 BigInteger 的十进制字符串表示形式。</td>
+</tr>
+<tr>
+<td><a href="">String</a></td>
+<td><strong><a href="">toString</a></strong>(int radix) 返回此 BigInteger 的给定基数的字符串表示形式。</td>
+</tr>
+<tr>
+<td>static <a href="">BigInteger</a></td>
+<td><strong><a href="">valueOf</a></strong>(long val) 返回其值等于指定 long 的值的 BigInteger。</td>
+</tr>
+<tr>
+<td><a href="">BigInteger</a></td>
+<td><strong><a href="">xor</a></strong>(<a href="">BigInteger</a> val) 返回其值为 (this ^ val) 的 BigInteger。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Java Coding</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【算法编程】基于Miller-Rabin的大素数测试</title>
     <url>/2014/04/17/%5B20140417%5D/</url>
     <content><![CDATA[<p>基本原理：</p>
