@@ -411,6 +411,49 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
       </tags>
   </entry>
   <entry>
+    <title>【Java编程】Java中的字符串匹配</title>
+    <url>/2014/04/29/%5B20140429%5D/</url>
+    <content><![CDATA[<p><strong>在Java中，字符串的匹配可以使用下面两种方法：</strong></p>
+<p>​    1、使用正则表达式判断字符串匹配</p>
+<p>​    2、使用Pattern类和Matcher类判断字符串匹配</p>
+<a id="more"></a>
+<p><strong>正则表达式的字符串匹配：</strong></p>
+<p>​    <strong>正则表达式</strong>：定义一组字符串的一系列字符和符号，它由常量字符和特殊符号构成。</p>
+<p>​    下面是正则表达式的一些预定义字符类，实际上是一些转义字符序列：</p>
+<p>​        1、\d  代表任何数字</p>
+<p>​        2、\D  代表任何非数字字符</p>
+<p>​        3、\w  代表任何单字字符(如：字母、数字、下划线等等)</p>
+<p>​        4、\W  代表任何非单字字符</p>
+<p>​        5、\s  代表任何空白字符</p>
+<p>​        6、\S  代表任何非空白字符</p>
+<p>​    <strong>为了匹配一组没有预定义字符类的字符，可以用[]指明</strong></p>
+<p>​    正则表达式常用*、+、？等来表示匹配字符的个数</p>
+<p>​        1、*  表示匹配字符个数为0个或多个</p>
+<p>​        2、+  表示匹配字符个数为1个或多个</p>
+<p>​        3、？ 表示匹配字符个数为0个或1个</p>
+<p>​        4、{n} 表示匹配字符的个数正好为n个</p>
+<p>​        5、{n,} 表示匹配字符个数至少为n个</p>
+<p>​        6、{n,m} 表示匹配字符个数至少为n个，最多为m个</p>
+<p>​    <strong>上面简要的介绍了正则表达式的语法，下面通过实例来说明具体用法</strong>：</p>
+<p>​        定义如下的正则表达式regex:</p>
+<p>​        String  regex=”[0]\\d{2,3}$[-][1-9]$\\d{6,7}​”</p>
+<p>​        含义说明如下：</p>
+<p>​            1、[0]表示字符串中第一个字符必须是0</p>
+<p>​            2、\\d{2,3}数字0后面最少2个数字、最多3个数字</p>
+<p>​            3、[-]表明这里必须是连字符-</p>
+<p>​            4、[1-9]表示只能是数字1~9</p>
+<p>​            5、\\d{6,7}表示这里最少6个数字，最多7个数字</p>
+<p><strong>下面通过Java程序来实现下述实例</strong>：使用正则表达式判断用户输入的电子邮件地址是否有效，假设要求的格式为：大小写字母开头，后0个或则多个单字符(\\w*)，然后是[@]，其后是一个或多个单字字符，接着是[.]，然后是至少两个单字字符。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> tengwei.com;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.regex.Pattern;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.swing.JOptionPane;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UseMatchesMethod</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		String input = JOptionPane.showInputDialog(<span class="string">"请输入有效的电子邮件！"</span>);</span><br><span class="line">		String reg = <span class="string">"[a-zA-Z]\\w*[@]\\w+[.]\\w&#123;2,&#125;"</span>;</span><br><span class="line">		<span class="keyword">if</span>(input.matches(reg))</span><br><span class="line">			System.out.println(<span class="string">"是有效的电子邮件！"</span>);</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			System.out.println(<span class="string">"不是有效的电子邮件！"</span>);</span><br><span class="line">				</span><br><span class="line">		<span class="keyword">if</span>(Pattern.matches(reg, input))</span><br><span class="line">			System.out.println(<span class="string">"是有效的电子邮件"</span>);</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			System.out.println(<span class="string">"不是有效的电子邮件！"</span>);</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>使用Pattern类和Matcher类判断字符串匹配</strong></p>
+<p>​    类java.util.regex.Pattern用于创建匹配模式(Pattern)和匹配器(Match)。在上面的程序中，我们使用了该类的静态方法matches(reg,input)判断input是否与给定的正则表达式匹配。<strong>对于多次匹配，需要重复调用该方法，因此对于重复匹配而言，它的效率不高</strong>。如果需要多次使用一种模式，<strong>编译一次后重用此模式比每次都调用此方法效率更高</strong>。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> tengwei.com;</span><br><span class="line"><span class="keyword">import</span> java.util.regex.Matcher;</span><br><span class="line"><span class="keyword">import</span> java.util.regex.Pattern;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UsePattern</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		String str=<span class="string">"We call this the live-code approach."</span></span><br><span class="line">				+<span class="string">"These examples are available from three locations-they are "</span></span><br><span class="line">				+<span class="string">"on the CD that accompanies this book"</span>;</span><br><span class="line">		Pattern expression = Pattern.compile(<span class="string">"[a-zA-Z]+"</span>);<span class="comment">//创建匹配模式</span></span><br><span class="line">		Matcher matcher=expression.matcher(str);<span class="comment">//通过匹配模式得到匹配器</span></span><br><span class="line">		<span class="comment">//通过这种方式来进行重复匹配的效率较高</span></span><br><span class="line">		String word=<span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">int</span> n=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">while</span>(matcher.find())<span class="comment">//扫描是否有匹配的子串,如果匹配器没有重置，则从当前下一个还没进行匹配的字符开始匹配</span></span><br><span class="line">		&#123;</span><br><span class="line">			word=matcher.group();<span class="comment">//得到匹配的子串</span></span><br><span class="line">			System.out.println(word+<span class="string">"\t"</span>);</span><br><span class="line">			<span class="keyword">if</span>((n+<span class="number">1</span>)%<span class="number">4</span>==<span class="number">0</span>)<span class="comment">//每行显示四个单词</span></span><br><span class="line">				System.out.println();</span><br><span class="line">			n++;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		System.out.print(<span class="string">"\n单词总数："</span>+n);</span><br><span class="line">		System.out.println(<span class="string">"\n单词字母9个及以上的单词有："</span>);</span><br><span class="line">		Pattern expression1 = Pattern.compile(<span class="string">"[a-zA-Z]&#123;9,&#125;"</span>);</span><br><span class="line">		Matcher matcher1=expression1.matcher(str);</span><br><span class="line">		<span class="keyword">while</span>(matcher1.find())</span><br><span class="line">		&#123;</span><br><span class="line">			word=matcher1.group();</span><br><span class="line">			System.out.println(word+<span class="string">"\n"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Java Coding</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【算法编程】随机数的不重复选择</title>
     <url>/2014/04/24/%5B20140424b%5D/</url>
     <content><![CDATA[<p>​    前一篇文章中，我们在Java中用实现两种不同接口的类，解决了不重复选择随机数的问题。现在我们在C++中，通过几种不同的算法来解决上述问题。在下面的四种算法实现中，用的随机函数都是C的库函数，这个函数产生的随机数的范围是限定的，[0, 32767]。当然我们可以通过四则运算来改变取值范围。具体的算法实现如下：</p>
