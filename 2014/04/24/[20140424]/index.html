@@ -49,18 +49,18 @@
   };
 </script>
 
-  <meta name="description" content="​    在较前面的一篇博文《C&#x2F;C++基本数据类型》中，我主要介绍了c&#x2F;c++的基本数据类型。我们知道C语言没有具体规定各类数据类型所占内存的字节数，只要求long型数据长度不小于int型，short型不大于int型。具体的实现如何，由各计算机系统自行决定。 ​    一般情况下，在Turbo C++中，int型和short型都是16位，而long型是32位。而有的c语言编译器给short型分配">
+  <meta name="description" content="随机数的不重复选择就是从$n$个数中随机选取$m(m&amp;lt;n)$个数。在本文中，我们用Java来实现。因此我们先介绍Java的相关知识。 在Java中，Java.util.Set接口和Java.util.List接口一样，都是继承自Java.util.Collection接口。但是两者有不同的特点：  List接口：一种能包含重复元素的有序集合，具体实现该接口的类有：Vector、Stac">
 <meta name="keywords" content="Java Coding">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【Java编程】Java基本数据类型">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2014&#x2F;04&#x2F;13&#x2F;[20140413]&#x2F;index.html">
+<meta property="og:title" content="【Java编程】随机数的不重复选择">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2014&#x2F;04&#x2F;24&#x2F;[20140424]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="​    在较前面的一篇博文《C&#x2F;C++基本数据类型》中，我主要介绍了c&#x2F;c++的基本数据类型。我们知道C语言没有具体规定各类数据类型所占内存的字节数，只要求long型数据长度不小于int型，short型不大于int型。具体的实现如何，由各计算机系统自行决定。 ​    一般情况下，在Turbo C++中，int型和short型都是16位，而long型是32位。而有的c语言编译器给short型分配">
+<meta property="og:description" content="随机数的不重复选择就是从$n$个数中随机选取$m(m&amp;lt;n)$个数。在本文中，我们用Java来实现。因此我们先介绍Java的相关知识。 在Java中，Java.util.Set接口和Java.util.List接口一样，都是继承自Java.util.Collection接口。但是两者有不同的特点：  List接口：一种能包含重复元素的有序集合，具体实现该接口的类有：Vector、Stac">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-08-15T09:31:19.847Z">
+<meta property="og:updated_time" content="2020-08-17T08:53:15.230Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://tengweitw.com/2014/04/13/[20140413]/">
+<link rel="canonical" href="http://tengweitw.com/2014/04/24/[20140424]/">
 
 
 <script id="page-configurations">
@@ -74,7 +74,7 @@
   };
 </script>
 
-  <title>【Java编程】Java基本数据类型 | 青峰碧陋室</title>
+  <title>【Java编程】随机数的不重复选择 | 青峰碧陋室</title>
   
 
 
@@ -208,7 +208,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/04/13/%5B20140413%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/04/24/%5B20140424%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -221,7 +221,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【Java编程】Java基本数据类型
+          【Java编程】随机数的不重复选择
         </h1>
 
         <div class="post-meta">
@@ -231,14 +231,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2014-04-13 15:27:16" itemprop="dateCreated datePublished" datetime="2014-04-13T15:27:16+08:00">2014-04-13</time>
+              <time title="创建时间：2014-04-24 10:33:15" itemprop="dateCreated datePublished" datetime="2014-04-24T10:33:15+08:00">2014-04-24</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-15 17:31:19" itemprop="dateModified" datetime="2020-08-15T17:31:19+08:00">2020-08-15</time>
+                <time title="修改时间：2020-08-17 16:53:15" itemprop="dateModified" datetime="2020-08-17T16:53:15+08:00">2020-08-17</time>
               </span>
 
           
@@ -254,14 +254,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.8k</span>
+              <span>2.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -273,206 +273,26 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>​    在较前面的一篇博文<a href="http://blog.csdn.net/tengweitw/article/details/8891754" target="_blank" rel="noopener">《C/C++基本数据类型》</a>中，我主要介绍了c/c++的基本数据类型。我们知道C语言没有具体规定各类数据类型所占内存的字节数，只要求long型数据长度不小于int型，short型不大于int型。具体的实现如何，由各计算机系统自行决定。</p>
-<p>​    一般情况下，在Turbo C++中，int型和short型都是16位，而long型是32位。而有的c语言编译器给short型分配16位，而int型和long型分配32位。通常的做法是：把long型定为32位，把short型定为16位，而int型可以为16位，也可以是32位。</p>
+        <p>   随机数的不重复选择就是从$n$个数中随机选取$m(m&lt;n)$个数。在本文中，我们用Java来实现。因此我们先介绍Java的相关知识。</p>
+<p>在Java中，Java.util.Set接口和Java.util.List接口一样，都是继承自Java.util.Collection接口。但是两者有不同的特点：</p>
+<ul>
+<li><p><strong>List接口</strong>：一种<strong>能包含重复元素</strong>的有序集合，具体实现该接口的类有：Vector、Stack、ArrayList、LinkedList等等.</p>
+</li>
+<li><p><strong>Set接口</strong>：一种<strong>不包含重复元素</strong>的集合，常见的实现该接口的类有：HashSet、LinkedHashSet、TreeSet。</p>
+</li>
+</ul>
 <a id="more"></a>
-<p>​    相比C语言而言，Java的8种基本数据类型的长度与平台无关。因此Java语言具有 “一次编译，到处运行” 的优点。本文主要介绍Java的基本数据类型。<strong>Java语言的基本数据类型总共有以下8种，下面是按照用途划分出的4个类别：</strong></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>类型名</th>
-<th>关键字</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>整数型</td>
-<td>byte  short  int  long</td>
-</tr>
-<tr>
-<td>小数型</td>
-<td>float         double</td>
-</tr>
-<tr>
-<td>字符型</td>
-<td>char</td>
-</tr>
-<tr>
-<td>布尔型</td>
-<td>boolean</td>
-</tr>
-</tbody>
-</table>
-</div>
+<p>​    为什么要想决解这个问题呢？因为在我仿真过程中，经常要用到随机数。比如随机的选取几个信道，随机的选取一定范围内的几个值。当然如果只是随机的选取一个值，直接用随机函数就可以了。但是当要选取多个值的时候，就可能出现重复的值（这不是我们所期望的）！<strong>下面分别通过实现上述两个接口的类来实现随机数的不重复选择。</strong></p>
+<p><strong>1.用实现List接口的向量来实现：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> tengwei.com;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UseVector</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		Vector&lt;Integer&gt; vec=selectSeven();<span class="comment">//调用函数</span></span><br><span class="line">		Enumeration&lt;Integer&gt; enu=vec.elements();<span class="comment">//得到向量中所有元素的枚举</span></span><br><span class="line">		<span class="keyword">while</span>(enu.hasMoreElements())<span class="comment">//遍历向量中的所有元素</span></span><br><span class="line">			System.out.println(enu.nextElement()+<span class="string">"\t"</span>);</span><br><span class="line">		Object obj[]=vec.toArray();<span class="comment">//把向量vec转化为Oject数组</span></span><br><span class="line">		Arrays.sort(obj);<span class="comment">//升序排序</span></span><br><span class="line">		System.out.println(<span class="string">"升序排列后："</span>);</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;obj.length;i++)</span><br><span class="line">			System.out.println(obj[i]+<span class="string">"\t"</span>);</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/**从1-36中随机选择7个不重复的数 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector&lt;Integer&gt; <span class="title">selectSeven</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		Random rd= <span class="keyword">new</span> Random();<span class="comment">//创建随机数对象</span></span><br><span class="line">		Vector&lt;Integer&gt; allNum = <span class="keyword">new</span> Vector&lt;Integer&gt;();<span class="comment">//存放1-36</span></span><br><span class="line">		Vector&lt;Integer&gt; sevenNum = <span class="keyword">new</span> Vector&lt;Integer&gt;();<span class="comment">//存放选择的7个数</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">36</span>;i++)</span><br><span class="line">			allNum.add(<span class="keyword">new</span> Integer(i+<span class="number">1</span>));<span class="comment">//向向量allNum中添加36个数</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">int</span> x;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">7</span>;i++)</span><br><span class="line">		&#123;</span><br><span class="line">			x=rd.nextInt(<span class="number">36</span>-i);<span class="comment">//得到0-（36-i）中随机数，不包含36-i</span></span><br><span class="line">			sevenNum.add(allNum.get(x));</span><br><span class="line">			allNum.remove(x);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> sevenNum;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>   本算法的基本思想就是先用Vector保存你的样本空间（36个数），然后产生一个随机数，以随机数为下标来取出样本空间的数，并且将该数从样本空间删除。<strong>该算法的缺点是原始样本空间不能有重复的数</strong>，当样本空间很大的时候，会占用很多内存空间。当然还有几种算法也可以选择，具体请查看下一篇文章。</p>
 <hr>
-<p><strong>下面分别介绍这4种类别：</strong></p>
-<p><strong>1.整数型</strong></p>
-<p>​    整数型是一类代表整数值的类型。当需要代表一个整数的值时，可以根据需要从4种类型中挑选合适的，如果没有特殊要求的话，一般选择int类型。4种整数型区别主要在每个数据在内存中占用的空间大小和代表的数值的范围。具体说明参看下表： </p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>类型名称</th>
-<th>关键字</th>
-<th>占用字节</th>
-<th>取值范围</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>字节型</td>
-<td>byte</td>
-<td>1</td>
-<td>$-2^7\sim 2^7-1$</td>
-<td>0</td>
-</tr>
-<tr>
-<td>短整型</td>
-<td>short</td>
-<td>2</td>
-<td>$-2^{15}\sim 2^{15}-1$</td>
-<td>0</td>
-</tr>
-<tr>
-<td>整型</td>
-<td>int</td>
-<td>4</td>
-<td>$-2^{31}\sim 2^{31}-1$</td>
-<td>0</td>
-</tr>
-<tr>
-<td>长整型</td>
-<td>long</td>
-<td>8</td>
-<td>$-2^{63}\sim 2^{63}-1$</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p> <strong>说明</strong>：</p>
-<ul>
-<li>Java中的整数都是有符号数，也就是有正有负。</li>
-<li>默认值指在特定的情况下才自动初始化，具体的情况后续将有叙述。</li>
-<li>程序中的整数数值默认是int以及int以下类型，如果需要书写long型的值，则需要在数值后面添加字母L，大小写均可。</li>
-</ul>
-<p><strong>2.小数型</strong></p>
-<p>​    小数型是一类代表小数值的类型。当需要代表一个小数的值时，可以根据需要从以下2种类型中挑选合适的。如果没有特殊要求，一般选择double类型。由于小数的存储方式和整数不同，所以小数都有一定的精度，所以在计算机中运算时不够精确。根据精度和存储区间的不同，设计了两种小数类型，具体见下表：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>类型名称</th>
-<th>关键字</th>
-<th>占用字节</th>
-<th>取值范围</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>单精度</td>
-<td>float</td>
-<td>4</td>
-<td>$-3.4\cdot 10^{+38}\sim 3.4\cdot 10^{+38}$</td>
-<td>0.0f</td>
-</tr>
-<tr>
-<td>双精度</td>
-<td>double</td>
-<td>8</td>
-<td>$-1.7\cdot 10^{+308}\sim 1.7\cdot 10^{+308}$</td>
-<td>0.0</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p> <strong>说明：</strong></p>
-<ul>
-<li>取值范围以科学计数法形式进行描述。</li>
-<li>在程序中，小数的运算速度要低于整数运算。</li>
-<li>float类型的小数，需要在小数后加字母f，不区分大小写，例如1.01f。</li>
-</ul>
-<p><strong>3.字符型</strong></p>
-<p>​    字符型代表特定的某个字符，按照前面介绍的知识，计算机中都是以字符集的形式来保存字符的，所以字符型的值实际只是字符集中的编号，而不是实际代表的字符，由计算机完成从编号转换成对应字符的工作。<strong>Java语言中为了更加方便国际化，使用Unicode字符集作为默认的字符集</strong>，该字符集包含各种语言中常见的字符。在程序代码中，字符使用一对单引号加上需要表达的字符来标识，例如”A”, “a”等，当然也可以直接使用字符编码，也就是一个非负整数进行表示。具体见下表：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>类型名称</th>
-<th>关键字</th>
-<th>占用字节</th>
-<th>取值范围</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>字符型</td>
-<td>char</td>
-<td>2</td>
-<td>$0\sim 2^{16}-1$</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>  <strong>说明</strong>：</p>
-<ul>
-<li>字符型的编号中不包含负数。</li>
-<li>字符型由于存储的是编号的数值，所以可以参与数学运算。</li>
-<li>字符型可以作为Java语言中的无符号整数使用。</li>
-<li>字符型的默认值是编号为0的字符，而不是字符0</li>
-</ul>
-<p><strong>4.布尔型</strong></p>
-<p>​    布尔型代表逻辑中的成立和不成立。Java语言中使用关键字true代表成立，false代表不成立。布尔型是存储逻辑值的类型，其实很多程序中都有逻辑值的概念，Java把逻辑的值用布尔型来进行表达。具体见下表：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>类型名称</th>
-<th>关键字</th>
-<th>占用字节</th>
-<th>取值范围</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>布尔型</td>
-<td>boolean</td>
-<td></td>
-<td>true or false</td>
-<td>false</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>类型名称</th>
-<th>关键字</th>
-<th>占用空间(字节)</th>
-<th>取值范围</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>布尔型</td>
-<td>boolean</td>
-<td></td>
-<td>true或false</td>
-<td>false</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>说明：</strong> 布尔型占用的空间取决于Java虚拟机(JVM)的实现，可能是1位也可能是1个字节。</p>
+<p><strong>2.用实现Set接口的HashSet、TreeSet类来实现</strong></p>
+<p>​    首先分别介绍HashSet、TreeSet类：</p>
+<p>​    <strong>HashSet类</strong>：该类实现了Set接口，由哈希表支持。它不保证集合的迭代顺序。该类不含参数的构造方法构造了一个空的哈希集，默认初始容量是16，加载因子是0.75。</p>
+<p>​    <strong>TreeSet类</strong>：该类实现了Set接口的子接口SortedSet。它保证迭代器按照元素递增顺序遍历。插入该类的所有元素必须是可相互比较的,因为它必须保证递增顺序。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> tengwei.com;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UseHashSetTreeSet</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		Set&lt;Integer&gt; hashset = hashSelect(<span class="number">7</span>);<span class="comment">//调用函数，返回哈希集</span></span><br><span class="line">		System.out.println(<span class="string">"HashSet中所有元素（未排列）"</span>);</span><br><span class="line">		System.out.println(<span class="string">"\t"</span>+hashset);</span><br><span class="line">		</span><br><span class="line">		SortedSet&lt;Integer&gt; treeset = treeSelect(<span class="number">7</span>);<span class="comment">//调用函数，返回数集</span></span><br><span class="line">		System.out.println(<span class="string">"TreeSet中所有元素（升序）"</span>);</span><br><span class="line">		System.out.println(<span class="string">"\t"</span>+treeset);</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Set&lt;Integer&gt; <span class="title">hashSelect</span><span class="params">(<span class="keyword">int</span> k)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		Random rd = <span class="keyword">new</span> Random();</span><br><span class="line">		Set&lt;Integer&gt; hs= <span class="keyword">new</span> HashSet&lt;Integer&gt;();</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">while</span>(hs.size()&lt;k)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> x=<span class="number">1</span>+rd.nextInt(<span class="number">36</span>);<span class="comment">//随机1-36之间的数，包括两边</span></span><br><span class="line">			hs.add(<span class="keyword">new</span> Integer(x));</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> hs;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SortedSet&lt;Integer&gt; <span class="title">treeSelect</span><span class="params">(<span class="keyword">int</span> k)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		Random rd = <span class="keyword">new</span> Random();</span><br><span class="line">		SortedSet&lt;Integer&gt; ts= <span class="keyword">new</span> TreeSet&lt;Integer&gt;();</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">while</span>(ts.size()&lt;k)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> x=<span class="number">1</span>+rd.nextInt(<span class="number">36</span>);</span><br><span class="line">			ts.add(<span class="keyword">new</span> Integer(x));<span class="comment">//当重复时不会添加</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> ts;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的算法比较简单，比较巧妙的用到了Set接口的特性。</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -508,7 +328,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2014/04/13/[20140413]/" title="【Java编程】Java基本数据类型">http://tengweitw.com/2014/04/13/[20140413]/</a>
+    <a href="http://tengweitw.com/2014/04/24/[20140424]/" title="【Java编程】随机数的不重复选择">http://tengweitw.com/2014/04/24/[20140424]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -529,12 +349,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2014/04/11/%5B20140411b%5D/" rel="prev" title="【Java编程】Java学习笔记<二>">
-      <i class="fa fa-chevron-left"></i> 【Java编程】Java学习笔记<二>
+    <a href="/2014/04/20/%5B20140420%5D/" rel="prev" title="【Java编程】Java中的大整数计算">
+      <i class="fa fa-chevron-left"></i> 【Java编程】Java中的大整数计算
     </a></div>
       <div class="post-nav-item">
-    <a href="/2014/04/17/%5B20140417%5D/" rel="next" title="【算法编程】基于Miller-Rabin的大素数测试">
-      【算法编程】基于Miller-Rabin的大素数测试 <i class="fa fa-chevron-right"></i>
+    <a href="/2014/04/24/%5B20140424b%5D/" rel="next" title="【算法编程】随机数的不重复选择">
+      【算法编程】随机数的不重复选择 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
