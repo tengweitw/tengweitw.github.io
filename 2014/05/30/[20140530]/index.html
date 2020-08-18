@@ -49,18 +49,18 @@
   };
 </script>
 
-  <meta name="description" content="问题：如何将一个数组循环左移或者右移k位？   在下面的解决方案中，我们以循环左移为例。 我们最容易想到的是，将前k个元素复制到一个临时的数组中，然后将剩下的n-k个元素向左移动k个位置，然后将之前的k个元素复制到剩下的位置。这种方法使用了k个额外的存储空间。我们想到到另一种方法是，只借助一个临时空间，每次只向左移动1位，循环k次。这种方法产生了多于的运行时间。前面一篇文章中用程序实现了循环右移一">
-<meta name="keywords" content="Algorithm Design">
+  <meta name="description" content="不用截图工具就可以将图保存成图像格式，并且没有背景颜色：saveas(gcf ,’outputname’,’png&#x2F;jpg’)，第三项省略时默认为fig.m文件">
+<meta name="keywords" content="Matlab Coding">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【算法思想】循环移动一个数组">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2014&#x2F;05&#x2F;07&#x2F;[20140507]&#x2F;index.html">
+<meta property="og:title" content="【Matlab编程】matlab 画图">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2014&#x2F;05&#x2F;30&#x2F;[20140530]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="问题：如何将一个数组循环左移或者右移k位？   在下面的解决方案中，我们以循环左移为例。 我们最容易想到的是，将前k个元素复制到一个临时的数组中，然后将剩下的n-k个元素向左移动k个位置，然后将之前的k个元素复制到剩下的位置。这种方法使用了k个额外的存储空间。我们想到到另一种方法是，只借助一个临时空间，每次只向左移动1位，循环k次。这种方法产生了多于的运行时间。前面一篇文章中用程序实现了循环右移一">
+<meta property="og:description" content="不用截图工具就可以将图保存成图像格式，并且没有背景颜色：saveas(gcf ,’outputname’,’png&#x2F;jpg’)，第三项省略时默认为fig.m文件">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-08-17T12:22:57.953Z">
+<meta property="og:updated_time" content="2020-08-18T12:18:17.544Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://tengweitw.com/2014/05/07/[20140507]/">
+<link rel="canonical" href="http://tengweitw.com/2014/05/30/[20140530]/">
 
 
 <script id="page-configurations">
@@ -74,7 +74,7 @@
   };
 </script>
 
-  <title>【算法思想】循环移动一个数组 | 青峰碧陋室</title>
+  <title>【Matlab编程】matlab 画图 | 青峰碧陋室</title>
   
 
 
@@ -208,7 +208,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/05/07/%5B20140507%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/05/30/%5B20140530%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -221,7 +221,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【算法思想】循环移动一个数组
+          【Matlab编程】matlab 画图
         </h1>
 
         <div class="post-meta">
@@ -231,14 +231,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2014-05-07 19:33:35" itemprop="dateCreated datePublished" datetime="2014-05-07T19:33:35+08:00">2014-05-07</time>
+              <time title="创建时间：2014-05-30 19:38:05" itemprop="dateCreated datePublished" datetime="2014-05-30T19:38:05+08:00">2014-05-30</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-17 20:22:57" itemprop="dateModified" datetime="2020-08-17T20:22:57+08:00">2020-08-17</time>
+                <time title="修改时间：2020-08-18 20:18:17" itemprop="dateModified" datetime="2020-08-18T20:18:17+08:00">2020-08-18</time>
               </span>
 
           
@@ -254,14 +254,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1k</span>
+              <span>1.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -273,13 +273,48 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>问题：如何将一个数组循环左移或者右移k位？</p>
-<p>  在下面的解决方案中，<strong>我们以循环左移为例</strong>。 我们最容易想到的是，将前k个元素复制到一个临时的数组中，然后将剩下的n-k个元素向左移动k个位置，然后将之前的k个元素复制到剩下的位置。这种方法使用了k个额外的存储空间。我们想到到另一种方法是，只借助一个临时空间，每次只向左移动1位，循环k次。这种方法产生了多于的运行时间。<strong>前面一篇文章中用程序实现了循环右移一个数组的算法。前面提到的都是比较常规的算法，下面从其它角度来考虑这一问题：</strong></p>
+        <ol>
+<li><p>不用截图工具就可以将图保存成图像格式，并且没有背景颜色：<code>saveas(gcf ,’outputname’,’png/jpg’)</code>，第三项省略时默认为fig.m文件</p>
 <a id="more"></a>
-<p>  循环数组x其实就是交换数组x的子数组a、b得到b、a。例如假设数组x为int x[]={1,2,3,4,5,6,7,8,9,10}; int a[]={1,2,3,4,5}; int b[]={6,7,8,9,10};那么将x循环左移5位则是x1={6,7,8,9,10,1,2,3,4,5};显然就将数组a,b交换后进行拼接在一起。当然这里举的是特例，是为了方便理解。下面是一般情况的分析：假设数组x为int x[]={1,2,3,4,5,6,7,8,9,10}; int a[]={1,2,3,}; int b[]={4,5,6,7,8,9,10};那么将x循环左移3位则是x1={4,5,6,7,8,9,10,1,2,3};因此移动k位，我们就假设a的大小是k位，剩下是b。如果直接交换，那就和上面提到的第一中方法一样了。<strong>下面是一种新的交换方法</strong>：这里假设a的元素比b少，则将b分为两个数组bl,br，其中br与a长度相同，bl为b的左边部分，br为b的右边部分。在上面例子中，bl={4,5,6,7}，br={8,9,10}。</p>
-<p>则数组x是由a，bl，br拼接而成。经过左移k位后，结果数组x1是由bl，br，a拼接而成。因此这里需要进行两步交换，首先a与br交换，变成br，bl，a；然后br与bl交换，变成bl，br，a。</p>
-<p>  <strong>上面问题的重中之重是进行交换。我们还可以这样进行交换：我们定义a={1,2,3}的反为a’{3,2,1}。那么由ab变成ba,可以通过(a’b’)’得到</strong>。因此我们可以写一个求反的子函数，用于求数组中特定部分元素的反。先对a求反，再对b求反，最后对整体求反，就可以得到结果。这里需要调用求反子函数3次即可。</p>
-<p>  本文提到的方法较常规的方法的优点是不用计算移动k位后应该到达的位置。本文提到的方法并不是最好的方法，只是说明我们可以这么做，遇见一个问题，我们可以找到多种方法解决。本文主要是介绍一种思路，程序比较简单，就不具体实现了。</p>
+</li>
+<li><p>计算形如$(-1)^{2/3}$，应该是默认先算$(-1)^{(1/3)}$，plot的时候命令窗会警告略去了虚部, 为了避免不必要的麻烦$((-1)^2)^{1/3}$这样写,例子如下：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">clear</span><br><span class="line">clc</span><br><span class="line">subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>);</span><br><span class="line">ezplot(<span class="string">'x^2+(y-(x^2)^(1/3))^2-1'</span>,[<span class="number">-2</span>,<span class="number">2</span>]);</span><br><span class="line">subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">ezplot(<span class="string">'x^2+(y-x^(2/3))^2-1'</span>,[<span class="number">-2</span>,<span class="number">2</span>]);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取图片纵轴刻度间隔：<code>b=get(gca,&#39;ytick&#39;), y_tick=b(2)-b(1)</code></p>
+</li>
+<li><p>excel中有三列数据，第一列是横坐标，第二列是纵坐标，第三列是所要画图的点的颜色深浅，第三列的值只有一个，但是如果表示成color，需要三个值，如[0 1 0]表示纯绿色。我在程序中用的是绿色的深浅，你也可以改成别的如红色、蓝色等。<code>Plot(x,y,’*’,’color’,[0 z(i) 0])</code></p>
+</li>
+<li><p>画出来的总是实线穿过了这些小正方形，标识符，能不能设置成不穿过小正方形markerfacecolor 改成和你的背景颜色一样。<code>plot(0,0,&#39;-b^&#39;,&#39;visible&#39;,&#39;off&#39;)</code>;</p>
+</li>
+<li><p>原点在右侧：<code>set(gca,&#39;XDir&#39;,&#39;rev&#39;)</code></p>
+</li>
+<li><p>将第一个图和第三个图合并为一个图</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">subplot(<span class="number">2</span>,<span class="number">2</span>,[<span class="number">1</span> <span class="number">3</span>])</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">2</span>,<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Ezplot应该写成函数式fplot可以写成等式，例如：<code>ezplot(&#39;exp(x)-3*x^2&#39;)</code>,不要写=0</p>
+</li>
+<li><p>画图纵坐标全部显示为分数（当然这个可以直接在图像上修改）：<code>set(gca,&#39;XTickLabel&#39;,{&#39;1/2&#39;,&#39;1/5&#39;,&#39;1/10&#39;,&#39;1/15&#39;,&#39;1/20&#39;})</code></p>
+</li>
+<li><p>ezplot()简易绘图函数，每次绘图的时候会自动清空当前坐标系 ，因此不支持<code>hold on</code>函数。例如：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ezplot(<span class="string">'x^2'</span>,[<span class="number">-1</span>,<span class="number">0</span>]);</span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line">ezplot(<span class="string">'x^2+1'</span>,[<span class="number">0</span>,<span class="number">1</span>]);</span><br></pre></td></tr></table></figure>
+<p>可以修改为：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f=@(x)x.^<span class="number">2.</span>*(x&gt;=<span class="number">-1</span>&amp;x&lt;=<span class="number">0</span>)+(x.^<span class="number">2</span>+<span class="number">1</span>).*(x&gt;=<span class="number">0</span>&amp;x&lt;=<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>把colorbar的标度变成log型：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">clear,clc</span><br><span class="line">[x,y] = <span class="built_in">meshgrid</span>(<span class="number">0</span>:<span class="number">.1</span>:<span class="number">10</span>);</span><br><span class="line">z = <span class="number">10.</span>^((x<span class="number">-5</span>).^<span class="number">2</span>+(y<span class="number">-5</span>).^<span class="number">2</span>);</span><br><span class="line">contourf(x,y,<span class="built_in">log10</span>(z))</span><br><span class="line">h = colorbar;</span><br><span class="line">l = get(h,<span class="string">'yticklabel'</span>);</span><br><span class="line">set(h,<span class="string">'yticklabel'</span>,<span class="string">''</span>);</span><br><span class="line">t = arrayfun(@(<span class="built_in">i</span>)[<span class="string">'10^&#123;'</span> l(<span class="built_in">i</span>,:) <span class="string">'&#125;'</span>],<span class="number">1</span>:<span class="built_in">size</span>(l,<span class="number">1</span>),<span class="string">'un'</span>,<span class="built_in">false</span>);</span><br><span class="line">text(<span class="number">2.5</span>*<span class="built_in">ones</span>(<span class="built_in">size</span>(l,<span class="number">1</span>),<span class="number">1</span>),get(h,<span class="string">'ytick'</span>),t,<span class="string">'parent'</span>,h)*</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>画立体心形：<code>ezsurf(&#39;5-sqrt(1-x^2-(y-abs(x))^2)*cos(30*(1-x^2-(y-abs(x))^2))&#39;,[-1,1,-1,2],100)</code></p>
+</li>
+<li><p>将横纵坐标改为天数、日期、年份等等，简便的方法就是直接在图形窗口进行可视化修改。如果画的图比较多，可以利用XTickLabel等相关程序语句编写。</p>
+</li>
+<li><p>坐标的标签：<code>set(gca,&#39;XTick&#39;,-pi:pi/2:pi)</code><br><code>set(gca,&#39;XTickLabel&#39;,{&#39;-pi&#39;,&#39;-pi/2&#39;,&#39;0&#39;,&#39;pi/2&#39;,&#39;pi&#39;})</code></p>
+</li>
+<li><p>用imagesc函数画图时，出来的图y轴坐标都是反的，解决办法：<code>axis xy</code></p>
+</li>
+<li><p>画五角星：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">n=<span class="number">1</span>:<span class="number">2</span>:<span class="number">11</span>;</span><br><span class="line">x=<span class="built_in">sin</span>(<span class="number">0.4</span>*n*<span class="built_in">pi</span>);</span><br><span class="line">y=<span class="built_in">cos</span>(<span class="number">0.4</span>*n*<span class="built_in">pi</span>);</span><br><span class="line"><span class="built_in">plot</span>(x,y);</span><br><span class="line">axis([<span class="number">-1.5</span>,<span class="number">1.5</span>,<span class="number">-1.5</span>,<span class="number">1.5</span>]);</span><br><span class="line">axis square</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -315,7 +350,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2014/05/07/[20140507]/" title="【算法思想】循环移动一个数组">http://tengweitw.com/2014/05/07/[20140507]/</a>
+    <a href="http://tengweitw.com/2014/05/30/[20140530]/" title="【Matlab编程】matlab 画图">http://tengweitw.com/2014/05/30/[20140530]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -327,7 +362,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/Algorithm-Design/" rel="tag"><i class="fa fa-tag"></i> Algorithm Design</a>
+              <a href="/tags/Matlab-Coding/" rel="tag"><i class="fa fa-tag"></i> Matlab Coding</a>
           </div>
 
         
@@ -336,12 +371,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2014/05/03/%5B20140503%5D/" rel="prev" title="【算法编程】循环右移一个数组">
-      <i class="fa fa-chevron-left"></i> 【算法编程】循环右移一个数组
+    <a href="/2014/05/29/%5B20140529%5D/" rel="prev" title="【LaTeX排版】LaTeX使用--入门基础">
+      <i class="fa fa-chevron-left"></i> 【LaTeX排版】LaTeX使用--入门基础
     </a></div>
       <div class="post-nav-item">
-    <a href="/2014/05/08/%5B20140508%5D/" rel="next" title="【算法编程】过河问题">
-      【算法编程】过河问题 <i class="fa fa-chevron-right"></i>
+    <a href="/2018/07/05/Perceptron/" rel="next" title="【图解例说机器学习】感知机 (Perceptron)">
+      【图解例说机器学习】感知机 (Perceptron) <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
