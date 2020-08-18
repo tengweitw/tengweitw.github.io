@@ -454,7 +454,7 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
 <p><strong>如果导入的包是ctex而不是ctexcap的话，章标题会变成英文：</strong></p>
 <p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140529/20140529_fig003.jpg" width="250" height="200" title="图3" alt="图3" ></p>
 <hr>
-<p>如果不想在表示这是第几章，我们只需要加上<em>号就可以了。<em>*由于book类型没有摘要选项，我们可以通过这种方式来加入摘要</em></em>。结果显示如下：</p>
+<p>如果不想在表示这是第几章，我们只需要加上<code>*</code>号就可以了。<strong>由于book类型没有摘要选项，我们可以通过这种方式来加入摘要</strong>。结果显示如下：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140529/20140529_fig004.jpg" width="350" height="180" title="图4" alt="图4" ></p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
       <tags>
