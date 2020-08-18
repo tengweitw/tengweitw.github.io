@@ -49,20 +49,23 @@
   };
 </script>
 
-  <meta name="description" content="在创建项目时，项目名和路径中都不能出现中文。  可以使用Ctrl + “+”和Ctrl + “-”来改变程序的字体大小（Ctrl+鼠标滑轮可达到同样效果），使用Ctrl + “0”可以恢复到默认字体大小。  在设计模式下有几个过滤器，就是写着Filter的行输入框，可以帮助你更快的找到所需要的部件。  如果生成的.exe文件不能运行，并且提示丢失.dll文件，可以按照提示在Qt的安装目录的bin">
-<meta name="keywords" content="Qt Coding">
+  <meta name="description" content="​    经过两个多星期，毕业论文终于写完了。由于自己对Word软件并不是很熟悉，再加上在数模时见识过LaTex的强大之处，于是就决定用LaTex进行论文的排版。使用LaTex可以避免像Word那样换台机器而出现格式错乱的问题。">
+<meta name="keywords" content="LaTeX Coding">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【Qt编程】Qt学习笔记">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2014&#x2F;02&#x2F;27&#x2F;[20140227]&#x2F;index.html">
+<meta property="og:title" content="【LaTeX排版】LaTeX使用--入门基础">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2014&#x2F;05&#x2F;29&#x2F;[20140529]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="在创建项目时，项目名和路径中都不能出现中文。  可以使用Ctrl + “+”和Ctrl + “-”来改变程序的字体大小（Ctrl+鼠标滑轮可达到同样效果），使用Ctrl + “0”可以恢复到默认字体大小。  在设计模式下有几个过滤器，就是写着Filter的行输入框，可以帮助你更快的找到所需要的部件。  如果生成的.exe文件不能运行，并且提示丢失.dll文件，可以按照提示在Qt的安装目录的bin">
+<meta property="og:description" content="​    经过两个多星期，毕业论文终于写完了。由于自己对Word软件并不是很熟悉，再加上在数模时见识过LaTex的强大之处，于是就决定用LaTex进行论文的排版。使用LaTex可以避免像Word那样换台机器而出现格式错乱的问题。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140227&#x2F;20140227_fig001.jpg">
-<meta property="og:updated_time" content="2020-08-14T07:36:06.585Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140529&#x2F;20140529_fig001.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140529&#x2F;20140529_fig002.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140529&#x2F;20140529_fig003.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140529&#x2F;20140529_fig004.jpg">
+<meta property="og:updated_time" content="2020-08-18T08:16:15.026Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140227&#x2F;20140227_fig001.jpg">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140529&#x2F;20140529_fig001.jpg">
 
-<link rel="canonical" href="http://tengweitw.com/2014/02/27/[20140227]/">
+<link rel="canonical" href="http://tengweitw.com/2014/05/29/[20140529]/">
 
 
 <script id="page-configurations">
@@ -76,7 +79,7 @@
   };
 </script>
 
-  <title>【Qt编程】Qt学习笔记 | 青峰碧陋室</title>
+  <title>【LaTeX排版】LaTeX使用--入门基础 | 青峰碧陋室</title>
   
 
 
@@ -210,7 +213,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/02/27/%5B20140227%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/05/29/%5B20140529%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -223,7 +226,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【Qt编程】Qt学习笔记
+          【LaTeX排版】LaTeX使用--入门基础
         </h1>
 
         <div class="post-meta">
@@ -233,14 +236,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2014-02-27 20:14:26" itemprop="dateCreated datePublished" datetime="2014-02-27T20:14:26+08:00">2014-02-27</time>
+              <time title="创建时间：2014-05-29 16:52:18" itemprop="dateCreated datePublished" datetime="2014-05-29T16:52:18+08:00">2014-05-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-14 15:36:06" itemprop="dateModified" datetime="2020-08-14T15:36:06+08:00">2020-08-14</time>
+                <time title="修改时间：2020-08-18 16:16:15" itemprop="dateModified" datetime="2020-08-18T16:16:15+08:00">2020-08-18</time>
               </span>
 
           
@@ -256,14 +259,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
+              <span>1.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -275,46 +278,49 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <ul>
-<li><p>在创建项目时，项目名和路径中都不能出现中文。</p>
-</li>
-<li><p>可以使用<code>Ctrl + “+”</code>和<code>Ctrl + “-”</code>来改变程序的字体大小（Ctrl+鼠标滑轮可达到同样效果），使用<code>Ctrl + “0”</code>可以恢复到默认字体大小。</p>
-</li>
-<li><p>在设计模式下有几个过滤器，就是写着<code>Filter</code>的行输入框，可以帮助你更快的找到所需要的部件。</p>
-</li>
-<li><p>如果生成的.exe文件不能运行，并且提示丢失.dll文件，可以按照提示在Qt的安装目录的bin目录下寻找这些.dll文件。还有一种一劳永逸的方法是：将Qt的安装目录的bin目录加到系统的Path环境变量中去，这样程序运行是就可以自动找到那些dll文件。</p>
-</li>
-<li><p>在Qt Creator 默认下，编译的程序要想发布就需要dll文件，这种编译方式就称为动态编译。静态编译是指将Qt 的库进行重新编译，发布时不需要dll文件.</p>
-</li>
-<li><p>设置应用程序的图标：</p>
+        <p>​    经过两个多星期，毕业论文终于写完了。由于自己对Word软件并不是很熟悉，再加上在数模时见识过LaTex的强大之处，于是就决定用LaTex进行论文的排版。使用LaTex可以避免像Word那样换台机器而出现格式错乱的问题。</p>
+<a id="more"></a>
+<p>  <strong>首先，我们来讲一讲LaTex的优缺点：</strong></p>
+<p>  <strong>优点：</strong></p>
+<p>​     1.排版质量高： 通过LaTex可以对字距、词距、行距、段距以及版面的精确控制。当插入公式时，不会出现Word中出现的行距不同的情况。</p>
+<p>​     2.具有注释功能：在写作和修改论文时，有时会将某些语句、段落和公式删除，可以事后有觉得不妥，这样在Word中恢复是很困难的(撤销操作可能将现有的内容删除)，在LaTex中可以通过注释的方式将这些内容保存下来。</p>
+<p>​     3.格式自动处理：LaTex的内容处理和格式处理是分开的，我们只要选定论文的类型，那么论文整体的格式就设计好了，当然，我们也可以修改某些章节的格式。</p>
+<p>​     4.数学式精美：Word中不自带公式编辑器，需要借助MathType。在LaTex中，可以自己编辑公式，并且系统可以自动为公式排序编号。</p>
+<p>​     5.目录生成与超链接：目录的生成、超链接都只需要一条语句就可以完成，比Word方便的多。</p>
+<p>​     6.安全稳定：在Word中如果插入的图十分多，则很打开会非常慢，有可能造成死机。在LaTex中，LaTex的源文件都是纯文本文件，所有插图都是在最后编译时才调用，所以当打开源文件是并不会出现卡机的现象。</p>
+<p>​     7.通用性强：LaTex源文件经过编译生成PDF文件，而PDF是一种通用的文件格式，可以无障碍的在各个系统中运行。虽然说，Word也可以转为PDF，可以有可能出现格式错乱的问题。</p>
+<p>  <strong>缺点：</strong></p>
+<p>​     1.起点门槛高：不像Word那样是“所见即所得”（What You See Is What You Get,WYSIWYG），LaTex需要使用命令来进行操作，即使是编写很简单的文章，也需要花时间学习命令和使用方法。</p>
+<p>​     2.可视性差：LaTex写论文需要编译生成PDF后才能看到排版结果。而且当语法不对时会出错，Debug需要自己学会判断分析，所以LaTex也被形容为“所思即所得”（What You Think Is What You Get,WYTIWYG）</p>
+<p>源文件的结构：</p>
+<p>  <strong>源文件分为导言和正文两部分：</strong></p>
 <ul>
-<li>将myico.ico(名字可以自己取)图标文件放入工程的目录下，在目录里建立文本文档并写入下面代码<code>IDI_ICON1 ICON DISCARDABLE&quot;myico.ico&quot;</code>然后将该文本文档改为myico.rc (注意更改后缀名)</li>
-<li>在项目文件中的pro文件中的最后添加下面代码：<code>RC_FILE += myico.rc</code></li>
+<li>​    <code>\documentclass[a4paper,12pt]{book}</code>到<code>\begin{document}</code>之间的所有语句都是导言；</li>
+<li>​    <code>\begin{document}</code>到<code>\end{document}</code>之间的所有内容都是正文；</li>
+<li>​    <code>\end{document}</code>之后的所有内容在编译时都会忽略;</li>
+<li>​    导言中的任何设置命令都会对全局造成影响;</li>
+<li>​    正文中的设置命令只会对该语句后面的内容造成影响;</li>
+<li>​    当内容比较长时，比如写毕设论文时，我们可以以章为单位，每个子文件负责一个章节的内容，然后通过<code>\include</code>包含进来;</li>
 </ul>
-</li>
-<li><p>任何一个QtGUI都需要一个QApplication类对象来管理应用程序的资源。</p>
-</li>
-<li><p>在默认情况下，新建的可视部件对象是不可见的，我们可以通过<code>show()</code>来显示。</p>
-</li>
-<li><p>中文显示乱码的解决办法：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">QTextCodec::setCodecForTr(QTextCodec::codecForName(<span class="string">"UTF-8"</span>));   QTextCodec::setCodecForTr(QTextCodec::codecForLocale());</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>  在Windows系统下，其中一个能正常显示，最好两者都写上。</p>
-<ul>
-<li><p>Qt Creator的代码补全功能<br>当输入一个比较长得函数或变量名时，可以通过其中的几个字母来定位。比如说，要输入前面讲到的<code>setFocus()</code>函数，那么只需输入首字母s和后面的大写字母F即可，这样可以大大缩减提示列表，如果还没有定位到，那么可以输入F后面的字母。如下图1所示。<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140227/20140227_fig001.jpg" width="400" height="150" title="图1" alt="图1" ></p>
-</li>
-<li><p>默认的情况下，对话框的左上角是（0，0）。</p>
-</li>
-<li><p>Ui文件生成的默认头文件的名称是ui_加ui文件的名称；ui文件是使用uic编译工具来编译的。</p>
-</li>
-<li><p>当有多个项目并存时，我们可以在项目文件右击来设定活动项目。</p>
-</li>
-<li><p>在项目发布时，不需要包含user文件，如果要打开别人的项目文件，我们应该去掉这种类型的文件。</p>
-</li>
-<li><p>我们可以将pro文件直接拖向Qt Creator图标来打开项目。</p>
-</li>
-</ul>
+<p>​    注意：子文件不要有导言部分和 <code>\begin{document}</code>和<code>\end{document}</code>语句。</p>
+<p><strong>下面举例说明</strong>：假设有两个文件：main.tex和chapter1.tex,内容分别如下：</p>
+<p><strong>1.main.tex文件：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">\documentclass[a4paper,12pt]&#123;book&#125;%采用book类型（中篇论文一般采用这种类型），A4纸，字体为12磅，默认为10磅</span><br><span class="line">\usepackage&#123;ctexcap&#125;%采用中文标题宏包（标题是中文的）</span><br><span class="line">%\usepackage&#123;ctex&#125;%采用中文字体宏包（标题是英文的）与ctexcap不能同时使用</span><br><span class="line"></span><br><span class="line">\begin&#123;document&#125;</span><br><span class="line"></span><br><span class="line">\include&#123;chapter1&#125;</span><br><span class="line"></span><br><span class="line">\end&#123;document&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>2.chapter1.tex文件：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Hello,\LaTeX%空一行代表另起一段，还可以使用命令\\ 和\par</span><br><span class="line"></span><br><span class="line">你好，\LaTeX</span><br></pre></td></tr></table></figure>
+<p><strong>显示结果如下：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140529/20140529_fig001.jpg" width="150" height="80" title="图1" alt="图1" ></p>
+<hr>
+<p><strong>如果要加上章标题的话，只需要更改chapter1.tex的内容为：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">\chapter&#123;绪论&#125;</span><br><span class="line">Hello,\LaTeX</span><br><span class="line"></span><br><span class="line">你好，\LaTeX</span><br></pre></td></tr></table></figure>
+<p><strong>结果显示为：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140529/20140529_fig002.jpg" width="350" height="180" title="图2" alt="图2" ></p>
+<hr>
+<p><strong>如果导入的包是ctex而不是ctexcap的话，章标题会变成英文：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140529/20140529_fig003.jpg" width="250" height="200" title="图3" alt="图3" ></p>
+<hr>
+<p>如果不想在表示这是第几章，我们只需要加上<em>号就可以了。<em>*由于book类型没有摘要选项，我们可以通过这种方式来加入摘要</em></em>。结果显示如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140529/20140529_fig004.jpg" width="350" height="180" title="图4" alt="图4" ></p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -350,7 +356,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2014/02/27/[20140227]/" title="【Qt编程】Qt学习笔记">http://tengweitw.com/2014/02/27/[20140227]/</a>
+    <a href="http://tengweitw.com/2014/05/29/[20140529]/" title="【LaTeX排版】LaTeX使用--入门基础">http://tengweitw.com/2014/05/29/[20140529]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -362,7 +368,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/Qt-Coding/" rel="tag"><i class="fa fa-tag"></i> Qt Coding</a>
+              <a href="/tags/LaTeX-Coding/" rel="tag"><i class="fa fa-tag"></i> LaTeX Coding</a>
           </div>
 
         
@@ -371,12 +377,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2014/01/05/%5B20140105%5D/" rel="prev" title="【算法导论】我的2013--一切从心开始">
-      <i class="fa fa-chevron-left"></i> 【算法导论】我的2013--一切从心开始
+    <a href="/2014/05/24/%5B20140524%5D/" rel="prev" title="【Matlab编程】生日快乐歌(显示歌词)">
+      <i class="fa fa-chevron-left"></i> 【Matlab编程】生日快乐歌(显示歌词)
     </a></div>
       <div class="post-nav-item">
-    <a href="/2014/03/01/%5B20140301%5D/" rel="next" title="【Matlab编程】Matlab版扫雷">
-      【Matlab编程】Matlab版扫雷 <i class="fa fa-chevron-right"></i>
+    <a href="/2018/07/05/Perceptron/" rel="next" title="【图解例说机器学习】感知机 (Perceptron)">
+      【图解例说机器学习】感知机 (Perceptron) <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
