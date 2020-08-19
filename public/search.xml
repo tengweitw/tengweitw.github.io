@@ -411,6 +411,30 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
       </tags>
   </entry>
   <entry>
+    <title>【组合数学】36军官问题</title>
+    <url>/2014/06/12/%5B20140612%5D/</url>
+    <content><![CDATA[<h2 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h2><p>  据说普鲁士的腓特列大帝曾组成一支仪仗队，仪仗队共有$36$名军官，来自$6$支部队，每支部队中，上校、中校、少校、上尉、中尉、少尉各一名。他希望这$36$名军官排成$6\times 6$的方阵，方阵的每一行，每一列的$6$名军官来自不同的部队并且军衔各不相同。令他恼火的是，无论怎么绞尽脑汁也排不成。</p>
+<p>后来，他去求教瑞士著名的大数学家欧拉。欧拉发现这是一个不可能完成的任务。</p>
+<p>来自$n$个部队的$n$种军衔的$n\times n$名军官，如果能排成一个正方形，每一行，每一列的$n$名军官来自不同的部队并且军衔各不相同，那么就称这个方阵叫正交拉丁方阵。欧拉猜测在</p>
+<p>$n=2, 6, 10, 14, 18,\cdots$</p>
+<p>时，正交拉丁方阵不存在。然而到了上世纪$60$年代，人们用计算机造出了$n=10$的正交拉丁方阵，推翻了欧拉的猜测。现在已经知道，除了$n=2,6$以外，其余的正交拉丁方阵都存在，而且有多种构造的方法</p>
+<a id="more"></a>
+<h2 id="数学模型的建立："><a href="#数学模型的建立：" class="headerlink" title="数学模型的建立："></a>数学模型的建立：</h2><p>  为了解决上面的排列组合问题，我们可以建立数学模型，将上述问题转化为：能不能把$36$个有序对$(i, j)(i=1, 2, \cdots, 6; j=1, 2, \cdots, 6)$排列成一个$6\times 6$的矩阵，使得该矩阵的每一行每一列上整数$1, 2, \cdots, 6$能够以某种顺序出现？（觉得和数独是不是有点类似，但是有附加条件）</p>
+<h2 id="模型的求解："><a href="#模型的求解：" class="headerlink" title="模型的求解："></a>模型的求解：</h2><p>  我们可以将这样的矩阵分割为两个$6\times 6$的矩阵，一个对应于有序对的第一个位置（军衔矩阵），另一个对应有序对的另一个位置（军团矩阵）。这样问题可以描述如下：</p>
+<p>  1）这两个矩阵的每一行每一列上整数$1, 2, \cdots, 6$能够以某种顺序出现</p>
+<p>  2）当并置这两个矩阵时，所有有序对$(i, j)(i=1, 2, \cdots, 6; j=1, 2, \cdots, 6)$全部出现</p>
+<p>上面矩阵比较大，我们以来自$3$个军团$3$个级别军衔的$9$个军官为例，可以得到问题的解（可以笔算得到）如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140612/20140612_fig001.jpg" width="400" height="150" title="图1" alt="图1" ></p>
+<p>从上图可以看出，军衔矩阵和军团矩阵都是$3$阶拉丁方阵，并且两者并置得到的并置矩阵得到了所有可能的$9$个有序对$(i,j)$。这种情况下，我们称军衔矩阵和军团矩阵是正交的，并置矩阵称为正交拉丁方阵。</p>
+<p>  很明显，$3$阶正交拉丁方阵是存在的，对于$36$军官问题，也就是要求证$6$阶正交拉丁仿真是否存在。前面已经提到，除了阶数$n=2, 6$以外，其余的正交拉丁方阵都存在，而且有多种构造的方法</p>
+<p>对于正交拉丁方阵的构造，由于比较复杂，有时间再研究，下面给出拉丁方阵的具体实现：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="keyword">int</span> n,i,j,count;</span><br><span class="line"> <span class="keyword">int</span> Num[<span class="number">20</span>];<span class="comment">//这里可以输入的阶数n的最大值是，可以自己修改</span></span><br><span class="line"> <span class="built_in">cout</span>&lt;&lt;<span class="string">"请输入方阵阶数:"</span>;</span><br><span class="line"> <span class="built_in">cin</span>&gt;&gt;n;</span><br><span class="line"> <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)      <span class="comment">//给数组赋初始值</span></span><br><span class="line"> &#123;</span><br><span class="line">    Num[i]=i+<span class="number">1</span>;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">for</span> (i = <span class="number">0</span>;i &lt; n;i++)     <span class="comment">//外循环输出n行</span></span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">for</span> (j = i,count=<span class="number">1</span>;count&lt;= n;count++)     <span class="comment">//内循环输出一行的每个数字</span></span><br><span class="line">  &#123;</span><br><span class="line">   <span class="built_in">cout</span>&lt;&lt;Num[j%n]&lt;&lt;<span class="string">'\t'</span>;</span><br><span class="line">    j++;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Mathematics</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【LaTeX排版】LaTeX论文排版&lt;三&gt;</title>
     <url>/2014/06/11/%5B20140611%5D/</url>
     <content><![CDATA[<p><strong>A picture is worth a thousand words(一图胜千言)。图在论文中的重要性不言而喻，本文主要讲解图的制作与插入。</strong></p>
