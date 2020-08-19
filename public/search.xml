@@ -411,7 +411,7 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
       </tags>
   </entry>
   <entry>
-    <title>【LaTeX排版】LaTeX论文排版</title>
+    <title>【LaTeX排版】LaTeX论文排版&lt;二&gt;</title>
     <url>/2014/06/10/%5B201406010%5D/</url>
     <content><![CDATA[<h2 id="目录的生成"><a href="#目录的生成" class="headerlink" title="目录的生成"></a>目录的生成</h2><p>  直接使用命令<code>\tableofcontents</code>即可。其默认格式如下：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140610/20140610_fig001.jpg" width="500" height="200" title="图1" alt="图1" ></p>
