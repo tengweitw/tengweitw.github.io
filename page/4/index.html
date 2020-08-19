@@ -206,6 +206,92 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/03/18/%5B20140318%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/03/18/%5B20140318%5D/" class="post-title-link" itemprop="url">【Matlab编程】Matlab及Java小时钟</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-03-18 16:58:54" itemprop="dateCreated datePublished" datetime="2014-03-18T16:58:54+08:00">2014-03-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-15 19:36:16" itemprop="dateModified" datetime="2020-08-15T19:36:16+08:00">2020-08-15</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>​    一年前曾经用matlab的gui做了一个时钟，由于是直接用GUIDE和ActiveX控件写的，程序虽说有许多行，大多数都是自动生成的，自己写的只有十几行而已。闲着没事，就耗费了下午的时间用matlab和Java分别又写了写。<strong>具体代码如下：<br>1.matlab脚本文件：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">%%%%%%%%%%%%%%%设置图像属性并获取图像句柄%%%%%%%%%%%%%%%%%%%%%%%%%%%</span><br><span class="line">h=figure('name','我的时钟','NumberTitle','off','color',[1 1 0]);</span><br><span class="line">set(h,'menubar','none','position',[200,200,400,450]);</span><br><span class="line">%%%%%%%%%%%%画出时钟的外轮廓%%%%%%%%%%%%%%</span><br><span class="line">s1=[<span class="number">0</span>:pi/<span class="number">1000</span>:<span class="number">2</span>*pi];</span><br><span class="line">hl=plot(2*cos(s1),2*sin(s1),'black','linewidth',1.5);</span><br><span class="line">axis equal</span><br><span class="line">title('我的时钟');</span><br><span class="line">hold on</span><br><span class="line">%%%%%%%%%%%绘制表盘刻度%%%%%%%%%%%%%%%%%%</span><br><span class="line"><span class="keyword">for</span> n=pi*<span class="number">2</span>:-pi/<span class="number">30</span>:pi/<span class="number">30</span>              %绘制表盘，绘制分钟的刻度</span><br><span class="line">    a1=<span class="number">0.95</span>*<span class="built_in">cos</span>(n):<span class="number">0.000005</span>*<span class="built_in">cos</span>(n)/<span class="number">2</span>:<span class="built_in">cos</span>(n);b1=<span class="number">0.95</span>*<span class="built_in">sin</span>(n):<span class="number">0.000005</span>*<span class="built_in">sin</span>(n)/<span class="number">2</span>:<span class="built_in">sin</span>(n);</span><br><span class="line">    plot(2*a1,2*b1,'r-');</span><br><span class="line">end</span><br><span class="line"><span class="keyword">for</span> n=pi*<span class="number">2</span>:-pi/<span class="number">6</span>:pi/<span class="number">30</span>               %绘制表盘，绘制小时的刻度</span><br><span class="line">    a1=<span class="number">0.9</span>*<span class="built_in">cos</span>(n):<span class="number">0.1</span>*<span class="built_in">cos</span>(n)/<span class="number">2</span>:<span class="built_in">cos</span>(n);b1=<span class="number">0.9</span>*<span class="built_in">sin</span>(n):<span class="number">0.1</span>*<span class="built_in">sin</span>(n)/<span class="number">2</span>:<span class="built_in">sin</span>(n);</span><br><span class="line">    plot(2*a1,2*b1,'r-');</span><br><span class="line">end</span><br><span class="line">text(1.5,0,'3','FontSize',12)</span><br><span class="line">text(-0.05,-1.7,'6','FontSize',12)</span><br><span class="line">text(-1.7,0,'9','FontSize',12)</span><br><span class="line">text(-0.1,1.7,'12','FontSize',12)</span><br><span class="line">%%%%%%%%%%%%%%%%获取当前时间并进行角度与弧度转换%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span><br><span class="line"> axis([<span class="number">-2.1</span> <span class="number">2.1</span> <span class="number">-2.1</span> <span class="number">2.1</span>])</span><br><span class="line">     time=datestr(now);</span><br><span class="line">    sec=pi/<span class="number">2</span>-str2num(time(<span class="number">19</span>:<span class="number">20</span>))*pi/<span class="number">30</span>;   </span><br><span class="line">    min=pi/<span class="number">2</span>-(str2num(time(<span class="number">16</span>:<span class="number">17</span>))+sec/<span class="number">60</span>)*pi/<span class="number">30</span>;                                                      </span><br><span class="line">    hour=pi/<span class="number">2</span>-(str2num(time(<span class="number">13</span>:<span class="number">14</span>))+min/<span class="number">60</span>)*pi/<span class="number">6</span>; </span><br><span class="line"> w1=-pi/<span class="number">30</span>; </span><br><span class="line"> w2=-pi/<span class="number">1800</span>;  </span><br><span class="line"> w3=-pi/<span class="number">108000</span>; </span><br><span class="line"> pausetime=<span class="number">1</span>;</span><br><span class="line"> %%%%%%%%%%%%%%%%开始绘图并不断刷新%%%%%%%%%%%%</span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span></span><br><span class="line">    axis off    </span><br><span class="line">    x1=<span class="number">0</span>:<span class="number">0.75</span>*<span class="built_in">cos</span>(sec)/<span class="number">2</span>:<span class="number">0.75</span>*<span class="built_in">cos</span>(sec);y1=<span class="number">0</span>:<span class="number">0.75</span>*<span class="built_in">sin</span>(sec)/<span class="number">2</span>:<span class="number">0.75</span>*<span class="built_in">sin</span>(sec); %根据秒针的位置绘制分针</span><br><span class="line">    x2=<span class="number">0</span>:<span class="number">0.6</span>*<span class="built_in">cos</span>(min)/<span class="number">2</span>:<span class="number">0.6</span>*<span class="built_in">cos</span>(min);y2=<span class="number">0</span>:<span class="number">0.6</span>*<span class="built_in">sin</span>(min)/<span class="number">2</span>:<span class="number">0.6</span>*<span class="built_in">sin</span>(min);  %根据分针的位置绘制分针  </span><br><span class="line">    x3=<span class="number">0</span>:<span class="number">0.45</span>*<span class="built_in">cos</span>(hour)/<span class="number">2</span>:<span class="number">0.45</span>*<span class="built_in">cos</span>(hour);y3=<span class="number">0</span>:<span class="number">0.45</span>*<span class="built_in">sin</span>(hour)/<span class="number">2</span>:<span class="number">0.45</span>*<span class="built_in">sin</span>(hour);  %根据时针的位置绘制分针</span><br><span class="line">    hp1=plot(2*x1,2*y1,'r-','linewidth',1.5);</span><br><span class="line">    hp2=plot(2*x2,2*y2,'b-','linewidth',2);</span><br><span class="line">    hp3=plot(2*x3,2*y3,'g-','linewidth',3.5);</span><br><span class="line">    sec=sec+w1*pausetime;        %计算一秒以后秒针的角度位置</span><br><span class="line">    min=min+w2*pausetime;        %计算一秒以后分针的角度位置</span><br><span class="line">    hour=hour+w3*pausetime;</span><br><span class="line">    pause(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">delete</span>(hp1);</span><br><span class="line">    <span class="keyword">delete</span>(hp2);</span><br><span class="line">    <span class="keyword">delete</span>(hp3);</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p><strong>2.Java应用文件(文件名为MyClock.java)</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.awt.*;</span><br><span class="line"><span class="keyword">import</span> java.util.GregorianCalendar;</span><br><span class="line"><span class="keyword">import</span> javax.swing.*;</span><br><span class="line"><span class="keyword">import</span> javax.swing.Timer;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">import</span> java.awt.event.*;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyClock</span> <span class="title">extends</span> <span class="title">JPanel</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"> </span><br><span class="line"> final <span class="keyword">double</span> RAD=Math.PI/<span class="number">180</span>;<span class="comment">//角度与弧度的转化</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">paint</span><span class="params">(Graphics g)</span></span></span><br><span class="line"><span class="function"> </span>&#123;</span><br><span class="line">  super.paint(g);<span class="comment">//调用父类方法</span></span><br><span class="line">     Graphics2D g2=(Graphics2D)g;<span class="comment">//主要用于改变线条粗细</span></span><br><span class="line">     <span class="keyword">int</span>  h=getSize().height;<span class="comment">//获取窗口的长和宽，主要用于当用鼠标改变窗口时，时钟也跟着变化</span></span><br><span class="line">     <span class="keyword">int</span>  w=getSize().width;</span><br><span class="line">  <span class="keyword">int</span> hour,min,sec,hh,mm,ss;</span><br><span class="line">  <span class="keyword">double</span> x,y;</span><br><span class="line">  setBackground(Color.yellow);<span class="comment">//设置背景值</span></span><br><span class="line">        g.setColor(Color.black);<span class="comment">//画笔颜色</span></span><br><span class="line">        <span class="keyword">int</span> r=(Math.min(h, w)/<span class="number">2</span><span class="number">-50</span>);</span><br><span class="line">        <span class="keyword">float</span> x0=w/<span class="number">2</span>;<span class="comment">//时钟中心位置</span></span><br><span class="line">        <span class="keyword">float</span> y0=h/<span class="number">2</span>;</span><br><span class="line">   </span><br><span class="line">        g2.setFont(<span class="keyword">new</span> Font(<span class="string">"楷体"</span>,Font.PLAIN,<span class="number">20</span>));</span><br><span class="line">        g2.drawString(<span class="string">"我的时钟"</span>,<span class="number">165</span>, <span class="number">50</span>);</span><br><span class="line">        g2.setFont(<span class="keyword">new</span> Font(<span class="string">"Times New Roman"</span>,Font.PLAIN,<span class="number">20</span>));</span><br><span class="line">        g2.drawString(<span class="string">"Designed by TW"</span>,<span class="number">235</span>, <span class="number">420</span>);</span><br><span class="line">        </span><br><span class="line">        g.drawString(<span class="string">"12"</span>,(<span class="keyword">int</span>)(w/<span class="number">2</span>)<span class="number">-5</span>,(<span class="keyword">int</span>)(h/<span class="number">2</span>)-r+<span class="number">30</span>);</span><br><span class="line">        g.drawString(<span class="string">"3"</span>,(<span class="keyword">int</span>)(w/<span class="number">2</span>)<span class="number">-25</span>+r,Math.round(h/<span class="number">2</span>)+<span class="number">10</span>);</span><br><span class="line">        g.drawString(<span class="string">"6"</span>,(<span class="keyword">int</span>)(w/<span class="number">2</span>),(<span class="keyword">int</span>)(h/<span class="number">2</span>)+r<span class="number">-20</span>);</span><br><span class="line">        g.drawString(<span class="string">"9"</span>,(<span class="keyword">int</span>)(w/<span class="number">2</span>)-r+<span class="number">20</span>,Math.round(h/<span class="number">2</span>)+<span class="number">10</span>);</span><br><span class="line">      </span><br><span class="line">        <span class="comment">//设置分钟刻度  之所以没有用线条，主要是因为drawline的参数要求是整数，因此刻度会不准确</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=<span class="number">12</span>;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">double</span> buffer=Math.PI*(<span class="number">0.5</span>-i/<span class="number">6.0</span>);</span><br><span class="line">            <span class="keyword">int</span> posX = (<span class="keyword">int</span>)Math.round(x0+r*Math.<span class="built_in">cos</span>(buffer));</span><br><span class="line">            <span class="keyword">int</span> posY = (<span class="keyword">int</span>)Math.round(y0-r*Math.<span class="built_in">sin</span>(buffer));</span><br><span class="line">            g.setColor(Color.red);</span><br><span class="line">            g.fill3DRect(posX, posY, <span class="number">8</span>, <span class="number">8</span>, <span class="literal">true</span>);</span><br><span class="line">           &#125;</span><br><span class="line">        <span class="comment">//设置秒钟刻度</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;<span class="number">60</span>;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(i%<span class="number">5</span>!=<span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">             <span class="keyword">double</span> buffer= Math.PI*i/<span class="number">30.0</span>;</span><br><span class="line">             <span class="keyword">int</span> posX = (<span class="keyword">int</span>)Math.round(x0+r*Math.<span class="built_in">cos</span>(buffer));</span><br><span class="line">             <span class="keyword">int</span> posY = (<span class="keyword">int</span>)Math.round(y0-r*Math.<span class="built_in">sin</span>(buffer));</span><br><span class="line">             g.setColor(Color.black);</span><br><span class="line">             g.fill3DRect(posX, posY, <span class="number">6</span>, <span class="number">6</span>, <span class="literal">false</span>);</span><br><span class="line">            &#125;</span><br><span class="line">       &#125;</span><br><span class="line">      <span class="comment">//获取当前系统时间</span></span><br><span class="line">    </span><br><span class="line">        GregorianCalendar date=<span class="keyword">new</span> GregorianCalendar();</span><br><span class="line">  hour=(<span class="keyword">int</span>)date.get(Calendar.HOUR); </span><br><span class="line">  min=(<span class="keyword">int</span>)date.get(Calendar.MINUTE); </span><br><span class="line">  sec=(<span class="keyword">int</span>)date.get(Calendar.SECOND); </span><br><span class="line"> <span class="comment">// System.out.println(hour);</span></span><br><span class="line"> <span class="comment">// System.out.println(min);</span></span><br><span class="line"> <span class="comment">// System.out.println(sec);</span></span><br><span class="line">  <span class="comment">//进行角度换算</span></span><br><span class="line">  ss=<span class="number">90</span>-sec*<span class="number">6</span>;</span><br><span class="line">        mm=<span class="number">90</span>-min*<span class="number">6</span>;</span><br><span class="line">        hh=<span class="number">90</span>-hour*<span class="number">30</span>-min/<span class="number">2</span>;</span><br><span class="line">       <span class="comment">//画出时分秒的指针 </span></span><br><span class="line">        g2.setStroke(<span class="keyword">new</span> BasicStroke(<span class="number">1.0f</span>));</span><br><span class="line">        x=(<span class="keyword">int</span>)(r*<span class="number">0.9</span>*Math.<span class="built_in">cos</span>(RAD*ss)+x0);</span><br><span class="line">        y=(<span class="keyword">int</span>)(r*<span class="number">0.9</span>*Math.<span class="built_in">sin</span>(RAD*ss)+y0);</span><br><span class="line">        g.setColor(Color.red);</span><br><span class="line">        g.drawLine((<span class="keyword">int</span>)(x0),(<span class="keyword">int</span>)(y0),(<span class="keyword">int</span>)x,(<span class="keyword">int</span>)(h-y));</span><br><span class="line">  </span><br><span class="line">        g2.setStroke(<span class="keyword">new</span> BasicStroke(<span class="number">2.2f</span>));</span><br><span class="line">        x=(<span class="keyword">int</span>)(r*<span class="number">0.7</span>*Math.<span class="built_in">cos</span>(RAD*mm)+x0);</span><br><span class="line">        y=(<span class="keyword">int</span>)(r*<span class="number">0.7</span>*Math.<span class="built_in">sin</span>(RAD*mm)+y0);</span><br><span class="line">        g.setColor(Color.blue);</span><br><span class="line">        g.drawLine((<span class="keyword">int</span>)x0,(<span class="keyword">int</span>)y0,(<span class="keyword">int</span>)x,(<span class="keyword">int</span>)(h-y));</span><br><span class="line">        g2.setStroke(<span class="keyword">new</span> BasicStroke(<span class="number">3.4f</span>));</span><br><span class="line">        x=(<span class="keyword">int</span>)(r*<span class="number">0.5</span>*Math.<span class="built_in">cos</span>(RAD*hh))+x0;</span><br><span class="line">        y=(<span class="keyword">int</span>)(r*<span class="number">0.5</span>*Math.<span class="built_in">sin</span>(RAD*hh))+y0;</span><br><span class="line">        g.setColor(Color.green);</span><br><span class="line">        g.drawLine((<span class="keyword">int</span>)x0,(<span class="keyword">int</span>)y0,(<span class="keyword">int</span>)x,(<span class="keyword">int</span>)(h-y));</span><br><span class="line"> </span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">//设置窗口大小</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> Dimension <span class="title">getPreferredSize</span><span class="params">()</span></span></span><br><span class="line"><span class="function"> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> Dimension(<span class="number">400</span>,<span class="number">450</span>);</span><br><span class="line"> &#125;</span><br><span class="line"><span class="comment">// </span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function"> </span>&#123;</span><br><span class="line">   Graphics g=null;</span><br><span class="line">   JFrame frame=<span class="keyword">new</span> JFrame(<span class="string">"我的时钟"</span>);</span><br><span class="line">   Container contentPane=frame.getContentPane();</span><br><span class="line">   final MyClock tw=<span class="keyword">new</span> MyClock();</span><br><span class="line">   contentPane.add(tw,BorderLayout.CENTER);</span><br><span class="line">   frame.pack();</span><br><span class="line">   frame.setVisible(<span class="literal">true</span>);</span><br><span class="line">   <span class="comment">//用于画板的刷新</span></span><br><span class="line">    <span class="keyword">int</span> delay=<span class="number">1000</span>;</span><br><span class="line">      <span class="comment">//创建一个监听事件</span></span><br><span class="line">      ActionListener drawClock=<span class="keyword">new</span> ActionListener()</span><br><span class="line">      &#123;</span><br><span class="line">         <span class="keyword">public</span> <span class="keyword">void</span> actionPerformed(ActionEvent evt)</span><br><span class="line">         &#123;</span><br><span class="line">            tw.repaint();</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;;</span><br><span class="line">      </span><br><span class="line">      <span class="comment">//创建一个时间计数器，每一秒触发一次</span></span><br><span class="line">      <span class="keyword">new</span> Timer(delay,drawClock).start();</span><br><span class="line">   </span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>运行结果如下图：</strong></p>
+<p>1.matlab时钟界面:<br>  <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140318/20140318_fig001.jpg" width="400" height="460" title="图1" alt="图1" ></p>
+<p>2.Java时钟界面</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140318/20140318_fig002.jpg" width="400" height="460" title="图2" alt="图2" ></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/03/15/%5B20140315%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1046,112 +1132,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/12/27/%5B20131227%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2013/12/27/%5B20131227%5D/" class="post-title-link" itemprop="url">【算法导论】有向图的可达矩阵</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2013-12-27 11:05:07" itemprop="dateCreated datePublished" datetime="2013-12-27T11:05:07+08:00">2013-12-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-12 19:11:09" itemprop="dateModified" datetime="2020-08-12T19:11:09+08:00">2020-08-12</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>​    有时候，我们关注的不是从一个地点到另一个地点的费用，而是能否从一个顶点到达另一个顶点。因此我们可以假设所有边的权值为单位1，在下面的算法中，我们可以在$O(n^3)$的时间内计算出图中任意两点是否可达，我用可达矩阵来表示有向图中两者是否可达。如果可以从$i$到$j$，则定义$t_{ij}=1$,否则$t_{ij}=0$。因此我们可以得到下式：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131227/20131227_fig001.jpg" width="600" height="200" title="图1" alt="图1" ></p>
-<p><strong>我们以下面的有向图进行具体实现：</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131227/20131227_fig002.jpg" width="300" height="250" title="图2" alt="图2" ></p>
-<p>下图给出了计算所得的每一个$T^{(k)}$矩阵：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131227/20131227_fig003.jpg" width="600" height="250" title="图3" alt="图3" ></p>
-<p><strong>具体程序实现如下：</strong></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX 10000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 4 <span class="comment">//顶点个数</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">TransitiveClosure</span><span class="params">(<span class="keyword">int</span> dist[N][N],<span class="keyword">int</span> t[N][N])</span><span class="comment">//寻找可达矩阵</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)<span class="comment">//进行遍历</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;N;j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>((i==j)||(dist[i][j])==<span class="number">1</span>)<span class="comment">//发现可达</span></span><br><span class="line">				t[i][j]=<span class="number">1</span>;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">				t[i][j]=<span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;N;k++)</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;N;j++)</span><br><span class="line">				t[i][j]=t[i][j]||(t[i][k]&amp;&amp;t[k][j]);<span class="comment">//由文中公式可得</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> dist[N][N]=&#123;&#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;,<span class="comment">//邻接矩阵</span></span><br><span class="line">					&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>&#125;,</span><br><span class="line">					&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>&#125;,</span><br><span class="line">					&#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> t[N][N]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">	TransitiveClosure( dist, t);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)</span><br><span class="line">	&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;N;j++)</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">"%d "</span>,t[i][j]);</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>在上面的程序中，我用了逻辑运算来计算可达矩阵，因为在某些计算机上，对单位的值，逻辑操作的执行速度快于对整数字长数据的算术运算操作，其空间要求也比整数要小。</strong></p>
-<hr>
-<p>​    学过图论的可能知道，一个邻接矩阵$A$（若边的权值都为单位$1$）表示两个顶点经过一步的可达情况, $A_{ij}$表示经过一步，$i$能到达$j$的次数。同理$A^{(2)}$表示两个顶点经过两部步的可达情况,$A_{ij}$表示经过两步，$i$能到达$j$的次数，一次类推……。还是以上面的图为例：</p>
-<script type="math/tex; mode=display">
-A=\begin{pmatrix}
-1 & 0 & 0 & 0\\
-0 & 1 & 1 & 1\\
-0 & 1 & 1 & 0\\
-1 & 0 & 1 & 1
-\end{pmatrix}
-\quad
-A^{(2)}=\begin{pmatrix}
-1 & 0 & 0 & 0\\
-1 & 2 & 3 & 2\\
-0 & 2 & 2 & 1\\
-2 & 1 & 2 & 1
-\end{pmatrix}</script><p>比如$A^{(2)}$中$A_{12}=2$，表示从顶点$2$到顶点$3$经过两步可以到达的次数为$3$。 <strong>注意:自己到达自己可以是任意步！</strong></p>
-<p><strong>由相关知识可知，可达矩阵$B=A+A^{(2)}+A^{(3)}+\cdots+A^{(n)}$ ，$n$为顶点个数</strong>。具体的C​语言实现比上面的算法要复杂，<strong>下面用matlab实现</strong>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function P = canget( A )</span><br><span class="line">%计算可达矩阵</span><br><span class="line">%B=A+A^2+A^3+……+A^n   A为邻接矩阵</span><br><span class="line">n=length(A);</span><br><span class="line">P=A;</span><br><span class="line">for i=2:n</span><br><span class="line">    P=P+A^i;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">P=(P~=0);</span><br></pre></td></tr></table></figure>
-<p>结算可以得到相同的结果。由于matlab擅长矩阵运算，因此程序计算十分简单。</p>
-<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1202,7 +1182,7 @@ A^{(2)}=\begin{pmatrix}
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">87</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1258,12 +1238,12 @@ A^{(2)}=\begin{pmatrix}
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">271k</span>
+    <span title="站点总字数">276k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:28</span>
+    <span title="站点阅读时长">6:34</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
