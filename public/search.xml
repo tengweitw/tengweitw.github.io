@@ -411,6 +411,30 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
       </tags>
   </entry>
   <entry>
+    <title>【Java编程】Java在dos窗口编译与执行的批处理</title>
+    <url>/2014/06/21/%5B20140621%5D/</url>
+    <content><![CDATA[<p>​    最近在Java编程过程中，常用到dos窗口对程序进行编译与运行。但是不方便之处在于每次都要输入命令进入将要编译的程序的目录(其实也有简单的方法，在文章末尾给出)。于是编写了一个配置文件，可以一次修改，经常使用。（只需要在下面程序中将路径修改为你所经常存放程序的目录）。前提当然是你已正确配置环境变量。具体方法为：将下面的程序放在新建的文本文件中，并将后缀名改为.bat.然后双击该文件，按提示操作即可！</p>
+<a id="more"></a>
+<p>程序源码如下：(红色字体是需要根据你的存放路径修改的)</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> off</span><br><span class="line">cls</span><br><span class="line">title Java在dos窗口的编译与执行</span><br><span class="line">color 0a </span><br><span class="line">rem 将路径改为你将要编译执行的文件目录 例如：我的文件目录为<span class="string">"D:\studytool\Java\classes"</span>(<span class="built_in">shift</span>+右键 单击你的文件目录选择<span class="string">"复制为路径"</span>)</span><br><span class="line">D:</span><br><span class="line"><span class="built_in">cd</span> D:\</span><br><span class="line"><span class="built_in">cd</span> studytool\Java\classes</span><br><span class="line"><span class="built_in">set</span> cd1=%<span class="built_in">cd</span>%</span><br><span class="line"><span class="built_in">echo</span> 当前目录%cd1%下已有的文件：</span><br><span class="line">dir /b</span><br><span class="line">:cx </span><br><span class="line"><span class="built_in">set</span> /p filename=请选择要编译或执行的文件名(需写后缀名,按quit退出程序)：</span><br><span class="line"><span class="keyword">if</span> <span class="string">"%filename%"</span>==<span class="string">"quit"</span> (<span class="built_in">exit</span>)</span><br><span class="line"><span class="built_in">set</span> <span class="string">"leixing=%filename:~-5%"</span></span><br><span class="line"><span class="built_in">set</span> <span class="string">"leixing1=%filename:~0,-5%"</span></span><br><span class="line"><span class="built_in">set</span> <span class="string">"leixing2=%filename:~0,-6%"</span></span><br><span class="line"><span class="keyword">if</span> <span class="string">"%leixing%"</span>==<span class="string">".java"</span>  (</span><br><span class="line"><span class="built_in">echo</span> 请选择:(1.编译；2.执行；3.编译和执行）</span><br><span class="line">choice /c 123</span><br><span class="line"><span class="keyword">if</span> errorlevel 3 (</span><br><span class="line"><span class="built_in">echo</span> 正在编译……</span><br><span class="line">javac %filename%</span><br><span class="line"><span class="built_in">echo</span> 正在执行……</span><br><span class="line"><span class="built_in">echo</span> 执行结果为：</span><br><span class="line">java %leixing1% </span><br><span class="line">goto cx</span><br><span class="line">)</span><br><span class="line"><span class="keyword">if</span> errorlevel 2  (</span><br><span class="line"><span class="built_in">echo</span> 该文件为.java文件，不能直接执行！</span><br><span class="line">goto cx</span><br><span class="line"> )</span><br><span class="line"><span class="keyword">if</span> errorlevel 1 (</span><br><span class="line"><span class="built_in">echo</span> 正在编译……</span><br><span class="line">javac %filename%</span><br><span class="line">goto cx</span><br><span class="line">)</span><br><span class="line"><span class="built_in">echo</span> 此时目录%cd1%下已有的文件：</span><br><span class="line">dir /b</span><br><span class="line">goto cx</span><br><span class="line">)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> <span class="string">"%leixing%"</span>==<span class="string">"class"</span> (</span><br><span class="line"><span class="built_in">echo</span> 请选择:(1.编译；2.执行；3.编译和执行）</span><br><span class="line">choice /c 123</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> errorlevel 3 (</span><br><span class="line"><span class="built_in">echo</span>  该文件为.class文件，不能编译！</span><br><span class="line">goto cx</span><br><span class="line"> )</span><br><span class="line"><span class="keyword">if</span> errorlevel 2  (</span><br><span class="line"><span class="built_in">echo</span> 正在执行……</span><br><span class="line"><span class="built_in">echo</span> 执行结果为：</span><br><span class="line">java %leixing2% </span><br><span class="line">goto cx</span><br><span class="line">)</span><br><span class="line"><span class="keyword">if</span> errorlevel 1 (</span><br><span class="line"><span class="built_in">echo</span>  该文件为.class文件，不能编译！</span><br><span class="line">goto cx</span><br><span class="line">)</span><br><span class="line"><span class="built_in">echo</span> 此时目录%cd1%下已有的文件：</span><br><span class="line">dir /b</span><br><span class="line">goto cx</span><br><span class="line">) <span class="keyword">else</span> (<span class="built_in">echo</span> 你输入的文件名有误！</span><br><span class="line">goto cx)</span><br><span class="line"> </span><br><span class="line">pause</span><br></pre></td></tr></table></figure>
+<p><strong>我的运行截图如下：</strong></p>
+<ul>
+<li>编译.java文件<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140621/20140621_fig001.jpg" width="400" height="300" title="图1" alt="图1" ></li>
+</ul>
+<ul>
+<li><p>执行.class文件</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140621/20140621_fig002.jpg" width="400" height="300" title="图2" alt="图2" ></p>
+</li>
+<li><p>处理异常和退出<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140621/20140621_fig003.jpg" width="400" height="300" title="图3" alt="图3" ></p>
+</li>
+</ul>
+<p>​    虽然上述方法比较人性化，但是也有不足之处：不能运行Java小程序。现在有一种更简单的方法能避免在dos窗口下进入程序所在目录的繁琐过程：将cmd.exe文件拷贝到程序的目录下即可。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Java Coding</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【LaTeX排版】LaTeX论文排版&lt;四&gt;</title>
     <url>/2014/06/19/%5B20140619%5D/</url>
     <content><![CDATA[<h2 id="表格的插入"><a href="#表格的插入" class="headerlink" title="表格的插入"></a>表格的插入</h2><p>  一般的表格插入的代码如下：</p>
