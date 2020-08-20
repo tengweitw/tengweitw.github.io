@@ -411,6 +411,31 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
       </tags>
   </entry>
   <entry>
+    <title>【LaTeX排版】LaTeX论文排版&lt;四&gt;</title>
+    <url>/2014/06/19/%5B20140619%5D/</url>
+    <content><![CDATA[<h2 id="表格的插入"><a href="#表格的插入" class="headerlink" title="表格的插入"></a>表格的插入</h2><p>  一般的表格插入的代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> \begin&#123;table&#125;[H]</span><br><span class="line">  \centering</span><br><span class="line">  \begin&#123;tabular&#125;&#123;|c|c|c|&#125;</span><br><span class="line">  \hline</span><br><span class="line">   感知方法&amp;优点&amp;缺点\\ \hline</span><br><span class="line">   单用户检测&amp;计算与执行简单&amp; \tabincell&#123;c&#125;&#123;隐藏终端问题\\多径与阴影效应&#125;\\ \hline</span><br><span class="line">   多用户合作检测&amp; \tabincell&#123;c&#125;&#123;精度高、感知时间短\\避免了阴影效应和隐藏终端问题&#125;&amp; \tabincell&#123;c&#125;&#123;复杂度高\\流量开销大、带宽需求高&#125;\\ \hline</span><br><span class="line">\end&#123;tabular&#125;</span><br><span class="line">   \caption&#123;单用户检测与多用户合作检测优缺点对比&#125;\label&#123;table21&#125;</span><br><span class="line">\end&#123;table&#125;</span><br><span class="line">%注意要在导言区加入\newcommand&#123;\tabincell&#125;[2]&#123;\begin&#123;tabular&#125;&#123;@&#123;&#125;#1@&#123;&#125;&#125;#2\end&#123;tabular&#125;&#125;来容许表格内可以换行</span><br></pre></td></tr></table></figure>
+<p><strong>结果显示如下：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140619/20140619_fig001.jpg" width="500" height="200" title="图1" alt="图1" ></p>
+<p><strong>在表格前加入行序号</strong>，源代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">\newcounter&#123;Rownumber&#125; \newcommand&#123;\Rown&#125;&#123;\stepcounter&#123;Rownumber&#125;\theRownumber&#125;</span><br><span class="line">\begin&#123;tabular&#125;&#123;|c|c|c|&#125;\hline</span><br><span class="line">序号&amp;材料&amp;电阻温度系数\\ \hline</span><br><span class="line">\Rown&amp;银&amp;0.0038 \\ \hline</span><br><span class="line">\Rown&amp;铜&amp;0.0039 \\ \hline</span><br><span class="line">\Rown&amp;铝&amp;0.0039 \\ \hline</span><br><span class="line">\end&#123;tabular&#125;</span><br></pre></td></tr></table></figure>
+<p>显示结果如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140619/20140619_fig002.jpg" width="300" height="150" title="图2" alt="图2" ></p>
+<p><strong>将多行变为一行</strong>，源代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">\begin&#123;tabular&#125;&#123;|c|c|&#125;\hline</span><br><span class="line"></span><br><span class="line">\multirow&#123;4&#125;*&#123;宇宙中的力&#125;</span><br><span class="line"></span><br><span class="line">&amp;万有引力 \\ \cline&#123;2-2&#125;</span><br><span class="line"></span><br><span class="line">&amp;电磁力 \\ \cline&#123;2-2&#125;</span><br><span class="line"></span><br><span class="line">&amp;弱相互作用力 \\ \cline&#123;2-2&#125;</span><br><span class="line"></span><br><span class="line">&amp;强相互作用力 \\ \cline&#123;2-2&#125;</span><br><span class="line"></span><br><span class="line">\hline</span><br><span class="line"></span><br><span class="line">\end&#123;tabular&#125;</span><br></pre></td></tr></table></figure>
+<p>注意在导言区加入包<code>\usepackage{multirow}</code>, 效果如下图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140619/20140619_fig003.jpg" width="300" height="150" title="图3" alt="图3" ></p>
+<hr>
+<h2 id="参考文献的使用"><a href="#参考文献的使用" class="headerlink" title="参考文献的使用"></a>参考文献的使用</h2><p>   参考文献可以写在一个子文件中，内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">\begin&#123;thebibliography&#125;&#123;99&#125;%这里的参数99可以自己随意设置，但需要大于文献个数</span><br><span class="line"></span><br><span class="line">    \bibitem&#123;1&#125;李建东，杨家玮, 个人通信. 北京：人民邮电出版社, 1998年.%注意在每两条文献中加入空行，以便索引时不会出错</span><br><span class="line"></span><br><span class="line">    \bibitem&#123;2&#125;郭梯云，杨家玮，李建东, 数字移动通信（修订本）. 北京：人民邮电出版社, 2001年.</span><br><span class="line"></span><br><span class="line">    \end&#123;thebibliography&#125;</span><br></pre></td></tr></table></figure>
+<p> 显示结果如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140619/20140619_fig004.jpg" width="500" height="200" title="图4" alt="图4" ></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>LaTeX Coding</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【Matlab编程】Matlab高效编程技巧</title>
     <url>/2014/06/16/%5B20140616%5D/</url>
     <content><![CDATA[<ul>
