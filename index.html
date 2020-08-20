@@ -712,6 +712,113 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/06/16/%5B20140616%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/06/16/%5B20140616%5D/" class="post-title-link" itemprop="url">【Matlab编程】Matlab高效编程技巧</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-06-16 18:39:20" itemprop="dateCreated datePublished" datetime="2014-06-16T18:39:20+08:00">2014-06-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-20 09:10:26" itemprop="dateModified" datetime="2020-08-20T09:10:26+08:00">2020-08-20</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>634</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li><p>默认状态下，matlab显示精度是short型，而默认的计算精度是double型，并且显示精度与计算精度没有关系。</p>
+</li>
+<li><p>一只失明的猫的问题：注意方法！</p>
+</li>
+<li><p>给数组预分配空间是基本的高效编程准则之一。如果不预先分配内存具体的动态扩充数组内存的实现方式如下：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140616/20140616_fig001.jpg" width="600" height="350" title="图1" alt="图1" ></p>
+<p>如果预分配空间，则只将新添加的值放入连续的内存中，而不会将整个数组重新分配空间。</p>
+</li>
+<li><p>matlab也可以使用window命令，只需要在系统命令前加！或者dos:例如<code>！shutdown -s</code> 会关闭电脑，这样可以想到，我们可以用matlab做一个简单的定时关机软件。</p>
+</li>
+<li><p>逻辑索引的速度大于数值索引：eg:<code>A=rand(1000); a1=A(find(A&gt;0.3)); a2=A(A&gt;0.3);</code> find函数返回的是数值索引。</p>
+</li>
+<li><p>使用循环时的两种高效方法：1.按列遍历；2.循环次数多的放在内层。</p>
+</li>
+<li><p>在目前的高版本中，循环已不是耗时的主要原因，而是函数调用。</p>
+</li>
+<li><p>edit 、type、open可以查看部分函数的源代码，内建函数不行。</p>
+</li>
+<li><p>匿名函数可以完全更好的替代incline函数。</p>
+</li>
+<li><p>build-in函数的开销最低。</p>
+</li>
+<li><p>更多的使用向量化函数。eg: accumarray、arrayfun 、bsxfun 、cellfun 、spfun 、structfun</p>
+</li>
+<li><p>符号计算虽说语法简单，但是由于精确性，在计算过程中会保留大量的中间结果，这样容易导致内存溢出。</p>
+</li>
+<li><p>matlab的界面元素都是由Java实现的，可以通过运行<code>matlab -nojvm</code>来启动matlab，从而减少内存消耗。</p>
+</li>
+</ul>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/06/12/%5B20140612%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -971,121 +1078,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/06/09/%5B20140609%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/06/09/%5B20140609%5D/" class="post-title-link" itemprop="url">【LaTeX排版】LaTeX论文排版<一></a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-06-09 10:50:05" itemprop="dateCreated datePublished" datetime="2014-06-09T10:50:05+08:00">2014-06-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-19 15:03:21" itemprop="dateModified" datetime="2020-08-19T15:03:21+08:00">2020-08-19</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.7k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本文及接下来的几篇文章主要讲关于毕设论文的排版。</p>
-<h2 id="论文的整体构架"><a href="#论文的整体构架" class="headerlink" title="论文的整体构架"></a>论文的整体构架</h2><p>  <strong>学校规定论文字数不得少于15000：</strong>说明论文属于中篇论文。一般来说，中长篇论文采用book文类，短篇论文采用article文类。中篇论文的结构一般是以一章作为一个子文件，形式如下：</p>
-<p>主源文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">\documentclass[a4paper,12pt]&#123;book&#125;</span><br><span class="line">\usepackage&#123;ctexcap&#125;</span><br><span class="line"></span><br><span class="line">\begin&#123;document&#125;\songti\zihao&#123;-4&#125;%设置正文字体格式:宋体四号</span><br><span class="line"></span><br><span class="line">\include&#123;Abstract&#125;%摘要部分</span><br><span class="line">\tableofcontents%生成目录</span><br><span class="line"></span><br><span class="line">\include&#123;chapter1&#125;%第一章</span><br><span class="line">\include&#123;chapter2&#125;%第二章</span><br><span class="line">\include&#123;chapter3&#125;</span><br><span class="line">\include&#123;chapter4&#125;</span><br><span class="line">\include&#123;chapter5&#125;</span><br><span class="line">\include&#123;thanks&#125;  %致谢部分</span><br><span class="line">\include&#123;appendix&#125;%附录部分</span><br><span class="line"></span><br><span class="line">\include&#123;reference&#125;%参考文献部分</span><br><span class="line">\end&#123;document&#125;</span><br></pre></td></tr></table></figure>
-<p>每一个include都有一个对应的源文件,由于每一章都会显示这是第几章，而摘要部分、致谢部分、附录部分及参考文献部分不是章节，且不会自动归入目录中，所以<strong>这两者的格式有些不同</strong>：</p>
-<p>每一章的格式：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">\chapter&#123;绪论&#125;</span><br><span class="line">这里是章内容</span><br><span class="line"></span><br><span class="line">摘要部分、致谢部分、附录部分及参考文献部分的格式：</span><br><span class="line">\chapter*&#123;摘要&#125;</span><br><span class="line">这里是摘要内容</span><br></pre></td></tr></table></figure>
-<p>可以看出两者的区别在于是否加<em>。加</em>之后就不会将其显示为第几章，例如假设thanks.tex文件中写入<code>\chapter{致谢}</code>，那么就会显示“第六章 致谢”，这肯定不是我们所期望的。<strong>值得注意的是，各个子文件不要有导言的内容如导入各种包，也不要有<code>\begin{document}</code>和<code>\end{document}</code>，只需要写文章的内容即可</strong>。</p>
-<hr>
-<h2 id="论文用纸"><a href="#论文用纸" class="headerlink" title="论文用纸"></a>论文用纸</h2><p>  A4纸、页面设置：上3cm 下2cm  内侧3cm 外侧2cm 装订线1cm</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">\usepackage&#123;geometry&#125;</span><br><span class="line">\geometry&#123;left=4cm,right=2cm,top=3cm,bottom=2cm&#125;%内侧3cm+装订线1cm=4cm</span><br></pre></td></tr></table></figure>
-<hr>
-<h2 id="论文字体"><a href="#论文字体" class="headerlink" title="论文字体"></a>论文字体</h2><p> 章的标题：黑体、三号</p>
-<p> 节的标题：宋体、四号</p>
-<p> 正文：    中文为宋体、英文为“Times News Roman” 小四 正文图表名为宋体、五号。</p>
-<p><strong>具体代码如下：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">\CTEXsetup[beforeskip=&#123;0pt&#125;]&#123;chapter&#125;%这里设置的是章标题与上页边距的距离，默认时是比较大的，记得自己设置</span><br><span class="line">\CTEXsetup[nameformat=&#123;\heiti\zihao&#123;3&#125;\centering&#125;]&#123;chapter&#125;%章标题格式</span><br><span class="line">\CTEXsetup[titleformat=&#123;\heiti\zihao&#123;3&#125;\centering&#125;]&#123;chapter&#125;%章标题格式</span><br><span class="line">\CTEXsetup[format=&#123;\songti\zihao&#123;4&#125;\centering&#125;]&#123;section&#125;% 节标题格式</span><br><span class="line">\CTEXsetup[format=&#123;\songti\zihao&#123;-4&#125;&#125;]&#123;subsection&#125;%小节标题格式</span><br><span class="line">\CTEXsetup[format=&#123;\songti\zihao&#123;-4&#125;&#125;]&#123;subsubsection&#125;%小节标题格式</span><br><span class="line"></span><br><span class="line">\usepackage&#123;mathptmx&#125; %设置英文默认为罗马体</span><br></pre></td></tr></table></figure>
-<hr>
-<h2 id="字号的大小与字体"><a href="#字号的大小与字体" class="headerlink" title="字号的大小与字体"></a>字号的大小与字体</h2><p>  字体   命令</p>
-<p>  宋体   <code>\songti</code></p>
-<p>  黑体   <code>\heiti</code></p>
-<p>  仿宋   <code>\fangsong</code></p>
-<p>  楷书   <code>\kaishu</code></p>
-<p>  幼圆   <code>\youyuan</code></p>
-<p>  隶书   <code>\lishu</code></p>
-<p>  尺寸  命令</p>
-<p>  初号  <code>\zihao{0}</code></p>
-<p>  小初  <code>\zihao{-0}</code></p>
-<p>  一号  <code>\zihao{1}</code></p>
-<p>  小一  <code>\zihao{-1}</code></p>
-<p>  六号  <code>\zihao{6}</code></p>
-<p>  小六  <code>\zihao{-6}</code></p>
-<hr>
-<h2 id="页眉页脚的设置"><a href="#页眉页脚的设置" class="headerlink" title="页眉页脚的设置"></a>页眉页脚的设置</h2><p>  <strong>页眉：宋体五号，居中排列。左面页眉为论文题目，右面页眉为章次和章标题。页眉底划线的宽度为0.75磅。页码：宋体小五，最外侧，不加任何修饰。</strong></p>
-<p>具体代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">\pagestyle&#123;myheadings&#125;</span><br><span class="line">\pagestyle&#123;fancy&#125;</span><br><span class="line">\fancyhead&#123;&#125;%清除页眉格式</span><br><span class="line">\fancyfoot&#123;&#125;%清除页脚格式</span><br><span class="line">\fancyhead[RO,LE]&#123;\songti\zihao&#123;-5&#125;\thepage&#125;%在奇数页右侧、偶数页左侧（也就是页面的外侧）设置页码 宋体小五。</span><br><span class="line">\fancyhead[CO]&#123;\songti\zihao&#123;5&#125;\leftmark&#125;%奇数页页眉中心设置章次和章标题</span><br><span class="line">\fancyhead[CE]&#123;\songti\zihao&#123;5&#125;复杂环境下多频段快速频谱感知技术&#125;%偶数页页眉中心设置论文的题目</span><br><span class="line">\renewcommand&#123;\headrulewidth&#125;&#123;0.75pt&#125; % 页眉与正文之间的水平线粗细</span><br><span class="line">% 设置章名和节名的显示方式</span><br><span class="line">\renewcommand&#123;\chaptermark&#125;[1]&#123;\markboth&#123;~第~\chinese&#123;chapter&#125;~章~~~#1~&#125;&#123;&#125;&#125;</span><br><span class="line">%%%%%%%%%%%</span><br><span class="line">\thispagestyle&#123;fancy&#125;%设置本页为指定的页眉页脚格式，默认情况下，每章的第一页都是没有页眉的，需要加上这一句。</span><br></pre></td></tr></table></figure>
-<p>至此，西电本科生毕业设计（论文）工作手册（2012版）第9页中第二项：毕业设计的编写格式的要求就满足了。</p>
-<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1136,7 +1128,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">88</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1192,12 +1184,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">277k</span>
+    <span title="站点总字数">278k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:36</span>
+    <span title="站点阅读时长">6:37</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
