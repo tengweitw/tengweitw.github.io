@@ -49,22 +49,25 @@
   };
 </script>
 
-  <meta name="description" content="​    在年前的一篇文章中，我提到要学习Qt.于是在这学期看了一个月的qt。现在大致对qt有了一些了解。但是现在导师又把我调到了android应用开发平台，所以说qt的学习要搁置了。本打算这学期做一个单词查询软件的，目测只有在暑假完成了，现在才刚刚完成了本地词库的查询。目前的工作解决了词库的来源、本地词典的查询功能。日后的工作还有访问网络词库、记单词的算法实现等等。下面来说一说我在本地查词功能实">
+  <meta name="description" content="1、html特殊字符的显示    我们知道html语言和C语言一样也有一些特殊字符，它们是不能正常显示的，必须经过转义，在网上可以查到如何显示这些字符，如下图所示：">
 <meta name="keywords" content="Qt Coding">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【Qt编程】基于Qt的词典开发系列--国际音标的显示">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2014&#x2F;04&#x2F;09&#x2F;[20140409]&#x2F;index.html">
+<meta property="og:title" content="【Qt编程】基于Qt的词典开发系列html特殊字符及正则表达式">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2014&#x2F;08&#x2F;21&#x2F;[20140821]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="​    在年前的一篇文章中，我提到要学习Qt.于是在这学期看了一个月的qt。现在大致对qt有了一些了解。但是现在导师又把我调到了android应用开发平台，所以说qt的学习要搁置了。本打算这学期做一个单词查询软件的，目测只有在暑假完成了，现在才刚刚完成了本地词库的查询。目前的工作解决了词库的来源、本地词典的查询功能。日后的工作还有访问网络词库、记单词的算法实现等等。下面来说一说我在本地查词功能实">
+<meta property="og:description" content="1、html特殊字符的显示    我们知道html语言和C语言一样也有一些特殊字符，它们是不能正常显示的，必须经过转义，在网上可以查到如何显示这些字符，如下图所示：">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140409&#x2F;20140409_fig001.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140409&#x2F;20140409_fig002.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140409&#x2F;20140409_fig003.jpg">
-<meta property="og:updated_time" content="2020-08-16T02:04:28.559Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140821&#x2F;20140821_fig001.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140821&#x2F;20140821_fig002.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140821&#x2F;20140821_fig003.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140821&#x2F;20140821_fig004.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140821&#x2F;20140821_fig005.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140821&#x2F;20140821_fig006.jpg">
+<meta property="og:updated_time" content="2020-08-23T07:38:55.615Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140409&#x2F;20140409_fig001.jpg">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140821&#x2F;20140821_fig001.jpg">
 
-<link rel="canonical" href="http://tengweitw.com/2014/04/09/[20140409]/">
+<link rel="canonical" href="http://tengweitw.com/2014/08/21/[20140821]/">
 
 
 <script id="page-configurations">
@@ -78,7 +81,7 @@
   };
 </script>
 
-  <title>【Qt编程】基于Qt的词典开发系列--国际音标的显示 | 青峰碧陋室</title>
+  <title>【Qt编程】基于Qt的词典开发系列html特殊字符及正则表达式 | 青峰碧陋室</title>
   
 
 
@@ -212,7 +215,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/04/09/%5B20140409%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/08/21/%5B20140821%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -225,7 +228,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【Qt编程】基于Qt的词典开发系列--国际音标的显示
+          【Qt编程】基于Qt的词典开发系列html特殊字符及正则表达式
         </h1>
 
         <div class="post-meta">
@@ -235,14 +238,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2014-04-09 20:26:34" itemprop="dateCreated datePublished" datetime="2014-04-09T20:26:34+08:00">2014-04-09</time>
+              <time title="创建时间：2014-08-21 18:01:48" itemprop="dateCreated datePublished" datetime="2014-08-21T18:01:48+08:00">2014-08-21</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-16 10:04:28" itemprop="dateModified" datetime="2020-08-16T10:04:28+08:00">2020-08-16</time>
+                <time title="修改时间：2020-08-23 15:38:55" itemprop="dateModified" datetime="2020-08-23T15:38:55+08:00">2020-08-23</time>
               </span>
 
           
@@ -258,14 +261,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.2k</span>
+              <span>2.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -277,21 +280,35 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>​    在年前的一篇文章中，我提到要学习Qt.于是在这学期看了一个月的qt。现在大致对qt有了一些了解。但是现在导师又把我调到了android应用开发平台，所以说qt的学习要搁置了。本打算这学期做一个单词查询软件的，目测只有在暑假完成了，现在才刚刚完成了本地词库的查询。目前的工作解决了词库的来源、本地词典的查询功能。日后的工作还有访问网络词库、记单词的算法实现等等。下面来说一说我在本地查词功能实现的问题—显示音标！</p>
-<p>我们知道，qt中讲的比较多的是如何显示中文。一般情况都可以用下面代码来解决：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">QTextCodec::setCodecForTr(QTextCodec::codecForName(<span class="string">"UTF-8"</span>));</span><br><span class="line">QTextCodec::setCodecForTr(QTextCodec::codecForLocale());</span><br></pre></td></tr></table></figure>
-<p>但是，我们<strong>本文解决的是显示国际音标</strong>。因为当我们从词库中搜索到我们查的单词时，便会显示其音标和意思。但是有一些音标却无法显示，举例如下：</p>
-<p>  <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140409/20140409_fig001.jpg" width="360" height="400" title="图1" alt="图1" ></p>
-<p> <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140409/20140409_fig002.jpg" width="360" height="400" title="图2" alt="图2" ></p>
-<p><strong>对比两张图就可以看出有一些音标无法显示。</strong></p>
-<p><strong>由于Qt可以解析html语言，因此我们可以通过在html语言中设置字体来显示这些特殊的音标</strong>。<strong>一些常用的音标有：</strong></p>
-<p>θ ð ʃ ʒ tʃ dʒ ŋ ɪ æ ɔ ʌ ʊ ə ɛ  ɑ:  ʊ:  ɔ  eɪ ɑɪ ɔɪ əʊ oʊ ɑʊ  ɪə eə ʊə ɪə</p>
-<p><strong>我们可以通过下面程序来测试：</strong></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">QString str2=<span class="string">"&lt;font face=\"Times New Roman\"&gt; θ  ð  ʃ  ʒ  tʃ  dʒ  ŋ ɪ æ  ɔ  ʌ   ʊ  ə  ɛ ɑ: ʊ: ɔ eɪ  ɑɪ  ɔɪ  əʊ  oʊ  ɑʊ ɪə  eə  ʊə  ɪə&lt;/font&gt;"</span>;</span><br></pre></td></tr></table></figure>
-<p>然后将上面的字符串放入Qlabel等部件进行显示，在这里就不给出具体程序了。<strong>测试结果如下：</strong></p>
-<p> <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140409/20140409_fig003.jpg" width="360" height="400" title="图3" alt="图3" ></p>
-<p>经过测试如上图，上述特殊音标都可以正常显示。学习过html语言的可以看出上面的字符串是html语言，并且将字体设置为Time New Roman。</p>
-<p>举一反三，如果要显示其它特殊字符，只需找出其所在的字体。当然，如果你学过html,你可以在上面的语句中包含多个字体（有备无患）。</p>
+        <p><strong>1、html特殊字符的显示</strong></p>
+<p>   我们知道html语言和C语言一样也有一些特殊字符，它们是不能正常显示的，必须经过转义，在网上可以查到如何显示这些字符，如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140821/20140821_fig001.jpg" width="300" height="200" title="图1" alt="图1" ></p>
+<a id="more"></a>
+<p>上图给了最常用的特殊字符的显示，下面我们来实验一下：</p>
+<p>首先在记事本中写入一句：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">blue</span>&gt;</span>程序例<span class="tag">&lt;/<span class="name">font</span>&gt;</span>#include<span class="tag">&lt;<span class="name">stdio.h</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>然后就文本后缀名改为.html后</strong>，用浏览器打开，显示如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140821/20140821_fig002.jpg" width="350" height="160" title="图2" alt="图2" ></p>
+<p>我们从上图可以发现include后面没有显示，但是当我们在文本中写入：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">blue</span>&gt;</span>程序例<span class="tag">&lt;/<span class="name">font</span>&gt;</span>#include<span class="tag">&lt;<span class="name">stdio.h</span>&gt;</span>   </span><br><span class="line">或</span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">blue</span>&gt;</span>程序例<span class="tag">&lt;/<span class="name">font</span>&gt;</span>#include<span class="tag">&lt;<span class="name">stdio.h</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这时就能正常显示了。显示结果如下图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140821/20140821_fig003.jpg" width="350" height="150" title="图3" alt="图3" ></p>
+<p>​    我们知道Qt能够支持html语言，但是我在编写可以查询c语言函数(肯定有#include后面&lt;&gt;的特殊字符的显示问题)的时候发现使用上面的方法仍然不能显示特殊字符，后来灵机一动，就决定<strong>用全角＜＞来代替半角&lt;&gt;</strong>。这样就不会当成是特殊字符了，就可以正常显示了。半角和全角的转换只需要点击下图中的第3个按钮：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140821/20140821_fig004.jpg" width="300" height="80" title="图4" alt="图4" ></p>
+<p>虽然说，使用全角后看起来不是很协调，但还看得过去，如果读者有什么好的方法，请不吝赐教。</p>
+<p><strong>2、正则表达式</strong></p>
+<p>​    接着上面的问题继续说，比如我有一个C语言函数词典库，我取其中一段来举例：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;font color=blue&gt;程序例&lt;/font&gt;:&lt;br&gt;#include &lt;span style="color:#ff0000;"&gt;&lt;&lt;/span&gt;stdio.h &lt;span style="color:#ff0000;"&gt;&gt;&lt;/span&gt;&lt;br&gt;#include &lt;span style="color:#ff0000;"&gt;&lt;&lt;/span&gt; stdlib.h &lt;span style="color:#ff0000;"&gt;&gt;&lt;/span&gt;&lt;br&gt;int main(void)&lt;br&gt;</span><br></pre></td></tr></table></figure>
+<p>因为我们需要将上述半角的&lt;&gt;转换为全角的＜＞，并且<strong>只是替换处于头文件的半角&lt;&gt;</strong>，<strong>即字符串中为红色的部分</strong>。当然当文件比较小的时候，可以手动查找替换，但是由于词典一半都有十几M，这时就必须使用正则表达式了。</p>
+<p>​    在Qt中，使用了QRegExp来支持正则表达式。关于正则表达式的语法，网上都有很多教程，我就不细说了。从上面的实例字符串的内容，我们知道包含了几个头文件，所以我们在匹配时，要分别匹配各个头文件两边的半角&lt;&gt;，<strong>即我们要使用非贪婪模式</strong>，否则就会从第一个头文件的&lt;匹配到最后一个头文件的&gt;。我们知道，在正则表达式中，非贪婪模式是由’?’来指定的，但是对于QRegExp类来说，？是不合法的。<strong>在QRegExp中，要使用setMinimal函数来指定贪婪模式</strong>。<strong>setMinimal(true)就是非贪婪模式，setMinimal(false)就是贪婪模式。</strong></p>
+<p>​    通过上面两部分的讲解，就可以完成C语言函数库词典的显示了。下面通过代码实现，新建Qt Gui应用程序，选择基类为QWidget，其中只需要修改widget.cpp里的内容即可（需要在widget.ui界面中，添加两个label,分别命名为label和label1）。</p>
+<p>widget.cpp文件：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"widget.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"ui_widget.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;QString&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;QRegExp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;QDebug&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;QLabel&gt;</span></span></span><br><span class="line"></span><br><span class="line">Widget::Widget(QWidget *parent) :</span><br><span class="line">    QWidget(parent),</span><br><span class="line">    ui(<span class="keyword">new</span> Ui::Widget)</span><br><span class="line">&#123;</span><br><span class="line">    ui-&gt;setupUi(<span class="keyword">this</span>);</span><br><span class="line">    QString str=<span class="string">"&lt;font color=blue&gt;程序例&lt;/font&gt;:&lt;br&gt;#include &lt;stdio.h &gt;&lt;br&gt;#include &lt; stdlib.h &gt;&lt;br&gt;int main(void)&lt;br&gt;"</span>;</span><br><span class="line">    ui-&gt;label-&gt;setText(str);  <span class="comment">//由于Qt也能识别html格式，而&lt; &gt;是html的特殊字符，因此不处理的话，就会出现显示出错</span></span><br><span class="line"></span><br><span class="line">    <span class="function">QRegExp <span class="title">rx</span><span class="params">(<span class="string">"#include (&lt;(.*.h )&gt;)"</span>)</span></span>;<span class="comment">//正则表达式里的括号是为了获取匹配的内容</span></span><br><span class="line">    rx.setMinimal(<span class="literal">true</span>);<span class="comment">//非贪婪模式</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> pos=<span class="number">0</span>;<span class="comment">//从字符串的开始部分</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;str.size();i++)</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        pos=rx.indexIn(str,<span class="number">0</span>);<span class="comment">//得到匹配字符串的位置</span></span><br><span class="line">        <span class="keyword">while</span>(pos!=<span class="number">-1</span>)<span class="comment">//匹配成功</span></span><br><span class="line">        &#123;</span><br><span class="line">        str.replace(rx.cap(<span class="number">1</span>),<span class="string">"＜"</span>+rx.cap(<span class="number">2</span>)+<span class="string">"＞"</span>);<span class="comment">//这里是进行替换，如果不明白rx.cap是什么，可以qDebug显示内容</span></span><br><span class="line">        pos=rx.indexIn(str,pos+rx.matchedLength());<span class="comment">//从当前位置，继续往后进行匹配</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">ui-&gt;label1-&gt;setText(str);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Widget::~Widget()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">delete</span> ui;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>程序运行结果如下：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140821/20140821_fig005.jpg" width="500" height="380" title="图5" alt="图5" ></p>
+<p><strong>下面放一张查单词软件用到的特殊字符显示和使用正则表达式后的截图：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140821/20140821_fig006.jpg" width="500" height="380" title="图6" alt="图6" ></p>
+<p>注意：我使用的平台为QT5,如果转移到Qt4上有错的话，可以反向参考<a href="http://qt-project.org/wiki/Transition_from_Qt_4.x_to_Qt5" target="_blank" rel="noopener">http://qt-project.org/wiki/Transition_from_Qt_4.x_to_Qt5</a></p>
 <p><strong>基于Qt的词典开发系列</strong></p>
 <ol>
 <li><a href="http://blog.csdn.net/tengweitw/article/details/44757875" target="_blank" rel="noopener">词典框架设计及成品展示</a></li>
@@ -349,7 +366,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2014/04/09/[20140409]/" title="【Qt编程】基于Qt的词典开发系列--国际音标的显示">http://tengweitw.com/2014/04/09/[20140409]/</a>
+    <a href="http://tengweitw.com/2014/08/21/[20140821]/" title="【Qt编程】基于Qt的词典开发系列html特殊字符及正则表达式">http://tengweitw.com/2014/08/21/[20140821]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -370,12 +387,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2014/03/29/%5B20140329%5D/" rel="prev" title="【Qt编程】Qt学习之状态栏">
-      <i class="fa fa-chevron-left"></i> 【Qt编程】Qt学习之状态栏
+    <a href="/2014/08/19/%5B20140819%5D/" rel="prev" title="【Qt编程】基于Qt的词典开发系列自动补全功能">
+      <i class="fa fa-chevron-left"></i> 【Qt编程】基于Qt的词典开发系列自动补全功能
     </a></div>
       <div class="post-nav-item">
-    <a href="/2014/04/10/%5B20140410%5D/" rel="next" title="【Qt编程】Qt版扫雷">
-      【Qt编程】Qt版扫雷 <i class="fa fa-chevron-right"></i>
+    <a href="/2018/07/05/Perceptron/" rel="next" title="【图解例说机器学习】感知机 (Perceptron)">
+      【图解例说机器学习】感知机 (Perceptron) <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>

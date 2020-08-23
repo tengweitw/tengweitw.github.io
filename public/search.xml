@@ -411,6 +411,65 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
       </tags>
   </entry>
   <entry>
+    <title>【Qt编程】基于Qt的词典开发系列html特殊字符及正则表达式</title>
+    <url>/2014/08/21/%5B20140821%5D/</url>
+    <content><![CDATA[<p><strong>1、html特殊字符的显示</strong></p>
+<p>   我们知道html语言和C语言一样也有一些特殊字符，它们是不能正常显示的，必须经过转义，在网上可以查到如何显示这些字符，如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140821/20140821_fig001.jpg" width="300" height="200" title="图1" alt="图1" ></p>
+<a id="more"></a>
+<p>上图给了最常用的特殊字符的显示，下面我们来实验一下：</p>
+<p>首先在记事本中写入一句：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">blue</span>&gt;</span>程序例<span class="tag">&lt;/<span class="name">font</span>&gt;</span>#include<span class="tag">&lt;<span class="name">stdio.h</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>然后就文本后缀名改为.html后</strong>，用浏览器打开，显示如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140821/20140821_fig002.jpg" width="350" height="160" title="图2" alt="图2" ></p>
+<p>我们从上图可以发现include后面没有显示，但是当我们在文本中写入：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">blue</span>&gt;</span>程序例<span class="tag">&lt;/<span class="name">font</span>&gt;</span>#include<span class="tag">&lt;<span class="name">stdio.h</span>&gt;</span>   </span><br><span class="line">或</span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">blue</span>&gt;</span>程序例<span class="tag">&lt;/<span class="name">font</span>&gt;</span>#include<span class="tag">&lt;<span class="name">stdio.h</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这时就能正常显示了。显示结果如下图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140821/20140821_fig003.jpg" width="350" height="150" title="图3" alt="图3" ></p>
+<p>​    我们知道Qt能够支持html语言，但是我在编写可以查询c语言函数(肯定有#include后面&lt;&gt;的特殊字符的显示问题)的时候发现使用上面的方法仍然不能显示特殊字符，后来灵机一动，就决定<strong>用全角＜＞来代替半角&lt;&gt;</strong>。这样就不会当成是特殊字符了，就可以正常显示了。半角和全角的转换只需要点击下图中的第3个按钮：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140821/20140821_fig004.jpg" width="300" height="80" title="图4" alt="图4" ></p>
+<p>虽然说，使用全角后看起来不是很协调，但还看得过去，如果读者有什么好的方法，请不吝赐教。</p>
+<p><strong>2、正则表达式</strong></p>
+<p>​    接着上面的问题继续说，比如我有一个C语言函数词典库，我取其中一段来举例：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">&lt;font color=blue&gt;程序例&lt;/font&gt;:&lt;br&gt;#include &lt;span style="color:#ff0000;"&gt;&lt;&lt;/span&gt;stdio.h &lt;span style="color:#ff0000;"&gt;&gt;&lt;/span&gt;&lt;br&gt;#include &lt;span style="color:#ff0000;"&gt;&lt;&lt;/span&gt; stdlib.h &lt;span style="color:#ff0000;"&gt;&gt;&lt;/span&gt;&lt;br&gt;int main(void)&lt;br&gt;</span><br></pre></td></tr></table></figure>
+<p>因为我们需要将上述半角的&lt;&gt;转换为全角的＜＞，并且<strong>只是替换处于头文件的半角&lt;&gt;</strong>，<strong>即字符串中为红色的部分</strong>。当然当文件比较小的时候，可以手动查找替换，但是由于词典一半都有十几M，这时就必须使用正则表达式了。</p>
+<p>​    在Qt中，使用了QRegExp来支持正则表达式。关于正则表达式的语法，网上都有很多教程，我就不细说了。从上面的实例字符串的内容，我们知道包含了几个头文件，所以我们在匹配时，要分别匹配各个头文件两边的半角&lt;&gt;，<strong>即我们要使用非贪婪模式</strong>，否则就会从第一个头文件的&lt;匹配到最后一个头文件的&gt;。我们知道，在正则表达式中，非贪婪模式是由’?’来指定的，但是对于QRegExp类来说，？是不合法的。<strong>在QRegExp中，要使用setMinimal函数来指定贪婪模式</strong>。<strong>setMinimal(true)就是非贪婪模式，setMinimal(false)就是贪婪模式。</strong></p>
+<p>​    通过上面两部分的讲解，就可以完成C语言函数库词典的显示了。下面通过代码实现，新建Qt Gui应用程序，选择基类为QWidget，其中只需要修改widget.cpp里的内容即可（需要在widget.ui界面中，添加两个label,分别命名为label和label1）。</p>
+<p>widget.cpp文件：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"widget.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"ui_widget.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;QString&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;QRegExp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;QDebug&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;QLabel&gt;</span></span></span><br><span class="line"></span><br><span class="line">Widget::Widget(QWidget *parent) :</span><br><span class="line">    QWidget(parent),</span><br><span class="line">    ui(<span class="keyword">new</span> Ui::Widget)</span><br><span class="line">&#123;</span><br><span class="line">    ui-&gt;setupUi(<span class="keyword">this</span>);</span><br><span class="line">    QString str=<span class="string">"&lt;font color=blue&gt;程序例&lt;/font&gt;:&lt;br&gt;#include &lt;stdio.h &gt;&lt;br&gt;#include &lt; stdlib.h &gt;&lt;br&gt;int main(void)&lt;br&gt;"</span>;</span><br><span class="line">    ui-&gt;label-&gt;setText(str);  <span class="comment">//由于Qt也能识别html格式，而&lt; &gt;是html的特殊字符，因此不处理的话，就会出现显示出错</span></span><br><span class="line"></span><br><span class="line">    <span class="function">QRegExp <span class="title">rx</span><span class="params">(<span class="string">"#include (&lt;(.*.h )&gt;)"</span>)</span></span>;<span class="comment">//正则表达式里的括号是为了获取匹配的内容</span></span><br><span class="line">    rx.setMinimal(<span class="literal">true</span>);<span class="comment">//非贪婪模式</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> pos=<span class="number">0</span>;<span class="comment">//从字符串的开始部分</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;str.size();i++)</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        pos=rx.indexIn(str,<span class="number">0</span>);<span class="comment">//得到匹配字符串的位置</span></span><br><span class="line">        <span class="keyword">while</span>(pos!=<span class="number">-1</span>)<span class="comment">//匹配成功</span></span><br><span class="line">        &#123;</span><br><span class="line">        str.replace(rx.cap(<span class="number">1</span>),<span class="string">"＜"</span>+rx.cap(<span class="number">2</span>)+<span class="string">"＞"</span>);<span class="comment">//这里是进行替换，如果不明白rx.cap是什么，可以qDebug显示内容</span></span><br><span class="line">        pos=rx.indexIn(str,pos+rx.matchedLength());<span class="comment">//从当前位置，继续往后进行匹配</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">ui-&gt;label1-&gt;setText(str);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Widget::~Widget()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">delete</span> ui;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>程序运行结果如下：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140821/20140821_fig005.jpg" width="500" height="380" title="图5" alt="图5" ></p>
+<p><strong>下面放一张查单词软件用到的特殊字符显示和使用正则表达式后的截图：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140821/20140821_fig006.jpg" width="500" height="380" title="图6" alt="图6" ></p>
+<p>注意：我使用的平台为QT5,如果转移到Qt4上有错的话，可以反向参考<a href="http://qt-project.org/wiki/Transition_from_Qt_4.x_to_Qt5" target="_blank" rel="noopener">http://qt-project.org/wiki/Transition_from_Qt_4.x_to_Qt5</a></p>
+<p><strong>基于Qt的词典开发系列</strong></p>
+<ol>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/44757875" target="_blank" rel="noopener">词典框架设计及成品展示</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45014771" target="_blank" rel="noopener">本地词典的设计</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45099867" target="_blank" rel="noopener">开始菜单的设计</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38758051" target="_blank" rel="noopener">无边框窗口的缩放与拖动</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38817595" target="_blank" rel="noopener">无边框窗口的拖动</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45223931" target="_blank" rel="noopener">界面美化设计</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45484803" target="_blank" rel="noopener">调用网络API</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45932429" target="_blank" rel="noopener">用户登录及API调用的实现</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45932429" target="_blank" rel="noopener">JSON数据解析</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/23294533" target="_blank" rel="noopener">国际音标的显示</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38237203" target="_blank" rel="noopener">系统托盘的显示</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38306803" target="_blank" rel="noopener">调用讲述人</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38555787" target="_blank" rel="noopener">音频播放</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38689745" target="_blank" rel="noopener">自动补全功能</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38734201" target="_blank" rel="noopener">HTML特殊字符及正则表达式</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/46563781" target="_blank" rel="noopener">后序</a></li>
+</ol>
+<p><strong>作品下载地址（发布版）</strong>：<a href="http://download.csdn.net/detail/tengweitw/8548767" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8548767</a></p>
+<p><strong>作品下载地址（绿色版）</strong>：<a href="http://download.csdn.net/detail/tengweitw/8830495" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8830495</a></p>
+<p><strong>源码下载地址</strong>：<a href="http://download.csdn.net/detail/tengweitw/8830503" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8830503</a></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Qt Coding</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【Qt编程】基于Qt的词典开发系列自动补全功能</title>
     <url>/2014/08/19/%5B20140819%5D/</url>
     <content><![CDATA[<p>最近写了一个查单词的类似有道词典的软件，里面就有一个自动补全功能（即当你输入一个字母时，就会出现几个候选项）。这个自动补全功能十分常见，百度搜索关键词时就会出现。不过它们这些补全功能都是与你输入的进行首字匹配，有时也会不方便。例如，如果我输入一个“好”，如果是首字匹配的话会出现下图：</p>
