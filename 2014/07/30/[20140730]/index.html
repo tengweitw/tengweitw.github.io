@@ -49,16 +49,16 @@
   };
 </script>
 
-  <meta name="description" content="​    我们知道，win7系统自带有讲述人，即可以机器读出当前内容，具体可以将电脑锁定，然后点击左下角的按钮即可。之前在用Matlab写扫雷游戏的时候，也曾经调用过讲述人来进行游戏的语音提示。具体的Matlab脚本文件如下： 1sp=actxserver(&amp;apos;SAPI.SpVoice&amp;apos;);sp.Speak(&amp;apos;你好，欢迎来到西安电子科技大学！Hello,Welcome to XD Universit">
+  <meta name="description" content="​    我们知道，win7系统自带有讲述人，即可以机器读出当前内容，具体可以将电脑锁定，然后点击左下角的按钮即可。之前在用Matlab写扫雷游戏的时候，也曾经调用过讲述人来进行游戏的语音提示。具体的Matlab脚本文件如下： 12sp=actxserver(&amp;apos;SAPI.SpVoice&amp;apos;);sp.Speak(&amp;apos;你好，欢迎来到西安电子科技大学！Hello,Welcome to XD Universi">
 <meta name="keywords" content="Qt Coding">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Qt编程】基于Qt的词典开发系列调用讲述人">
 <meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2014&#x2F;07&#x2F;30&#x2F;[20140730]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="​    我们知道，win7系统自带有讲述人，即可以机器读出当前内容，具体可以将电脑锁定，然后点击左下角的按钮即可。之前在用Matlab写扫雷游戏的时候，也曾经调用过讲述人来进行游戏的语音提示。具体的Matlab脚本文件如下： 1sp=actxserver(&amp;apos;SAPI.SpVoice&amp;apos;);sp.Speak(&amp;apos;你好，欢迎来到西安电子科技大学！Hello,Welcome to XD Universit">
+<meta property="og:description" content="​    我们知道，win7系统自带有讲述人，即可以机器读出当前内容，具体可以将电脑锁定，然后点击左下角的按钮即可。之前在用Matlab写扫雷游戏的时候，也曾经调用过讲述人来进行游戏的语音提示。具体的Matlab脚本文件如下： 12sp=actxserver(&amp;apos;SAPI.SpVoice&amp;apos;);sp.Speak(&amp;apos;你好，欢迎来到西安电子科技大学！Hello,Welcome to XD Universi">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140730&#x2F;20140730_fig001.jpg">
-<meta property="og:updated_time" content="2020-08-22T11:27:05.455Z">
+<meta property="og:updated_time" content="2020-08-23T02:16:21.553Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140730&#x2F;20140730_fig001.jpg">
 
@@ -240,7 +240,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-22 19:27:05" itemprop="dateModified" datetime="2020-08-22T19:27:05+08:00">2020-08-22</time>
+                <time title="修改时间：2020-08-23 10:16:21" itemprop="dateModified" datetime="2020-08-23T10:16:21+08:00">2020-08-23</time>
               </span>
 
           
@@ -276,7 +276,7 @@
 
       
         <p>​    我们知道，win7系统自带有讲述人，即可以机器读出当前内容，具体可以将电脑锁定，然后点击左下角的按钮即可。之前在用Matlab写扫雷游戏的时候，也曾经调用过讲述人来进行游戏的语音提示。<strong>具体的Matlab脚本文件如下：</strong></p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sp=actxserver(<span class="string">'SAPI.SpVoice'</span>);sp.Speak(<span class="string">'你好，欢迎来到西安电子科技大学！Hello,Welcome to XD University!'</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sp=actxserver('SAPI.SpVoice');</span><br><span class="line">sp.Speak('你好，欢迎来到西安电子科技大学！Hello,Welcome to XD University!')</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <p>Qt调用讲述人，需要使用专门的类，具体可以参考<a href="http://lynxline.com/qtspeech-say-hello-world一文，文中大致介绍了该类的使用方法。下面我就通过使用该类来实现讲述人的调用。" target="_blank" rel="noopener">http://lynxline.com/qtspeech-say-hello-world  </a> 一文，文中大致介绍了该类的使用方法。下面我就通过使用该类来实现讲述人的调用。</p>
 <p>  首先建立一个dialog类型的gui项目，将上面所说的类QtSpeech类的头文件speech.h和源文件speech.cpp添加到工程中，<strong>这样项目中就有5个文件</strong>：dialog.h、speech.h、main.cpp、dialog.cpp、speech.cpp。当然还有界面文件dialog.ui。在界面文件中<strong>添加QTextEdit控件</strong>用于输入你要读取的文字，然后在其槽函数中添加QtSpeech的发音功能，<strong>添加QPushButton控件</strong>来控制发音。<strong>具体的各个文件源代码如下：</strong></p>
@@ -374,8 +374,8 @@
       <i class="fa fa-chevron-left"></i> 【Qt编程】基于Qt的词典开发系列系统托盘的显示
     </a></div>
       <div class="post-nav-item">
-    <a href="/2018/07/05/Perceptron/" rel="next" title="【图解例说机器学习】感知机 (Perceptron)">
-      【图解例说机器学习】感知机 (Perceptron) <i class="fa fa-chevron-right"></i>
+    <a href="/2014/08/14/%5B20140814%5D/" rel="next" title="【Qt编程】基于Qt的词典开发系列音频播放">
+      【Qt编程】基于Qt的词典开发系列音频播放 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -429,7 +429,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">96</span>
+          <span class="site-state-item-count">98</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -485,12 +485,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">313k</span>
+    <span title="站点总字数">320k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">7:27</span>
+    <span title="站点阅读时长">7:38</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
