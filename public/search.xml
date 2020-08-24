@@ -411,6 +411,70 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
       </tags>
   </entry>
   <entry>
+    <title>【线性代数】方程组的几何解释</title>
+    <url>/2014/09/10/%5B20140910%5D/</url>
+    <content><![CDATA[<h2 id="二维情况"><a href="#二维情况" class="headerlink" title="二维情况"></a>二维情况</h2><p>首先，给出如下的二元一次方程组：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+2x-y=0\\
+-x+2y=3
+\end{aligned}</script><p>我们初中就对上面的二元一次方程组进行过求解，求解很简单。但是我们现在利用线性代数来表示这个式子，上式可以表示为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\underbrace{\left[ \begin{array}{cc}
+2 & -1 \\
+-1 & 2 \\
+\end{array} 
+\right ]}_{A}\underbrace{\left[\begin{array}{c}x\\y\end{array}\right]}_{\hat x}
+=\underbrace{\left[\begin{array}{c}0\\3\end{array}\right]}_{b}
+\end{aligned}</script><p>我们这里假设用小写字母表示向量，大写字母表示矩阵。上面可以二元一次方程组便转化为求解$x$,$y$。</p>
+<a id="more"></a>
+<p>下面我们从几种不同的角度来求解上面的方程组：</p>
+<p>1、<strong>从行的角度看</strong>，也就是画出上面两个方程的图像：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140910/20140910_fig001.jpg" width="500" height="400" title="图1" alt="图1" ></p>
+<p>很明显的可以看出方程的解是$x=1, y=2$。</p>
+<p>2、<strong>从列的角度看</strong>，<strong>方程组可以表现为列的线性组合</strong>：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+x\left[\begin{array}{c}2\\-1\end{array}\right]+y\left[\begin{array}{c}-1\\2\end{array}\right]=\left[\begin{array}{c}0\\3\end{array}\right]
+\end{aligned}</script><p>令向量$a=[2,-1]’, b=[-1, 2]’, c=[0, 3]’$，则<strong>问题变为找到适当的$x,y$将向量$a, b$ 进行线性组合得到向量$c$</strong>。同样我们可以通过作图求解：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140910/20140910_fig002.jpg" width="500" height="400" title="图2" alt="图2" ></p>
+<p>从上图可以看到$(2,-1)+2(-1,2)=(0,3)$，从而得到$x=1,y=2$。</p>
+<hr>
+<h2 id="三维情况"><a href="#三维情况" class="headerlink" title="三维情况"></a>三维情况</h2><p>上面的问题都是在二维平面上进行求解的，下面来看看三维下的情况：首先，给出三元一次方程组：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+2x-y+0z&=0\\
+-x+2y-z&=-1\\
+0x-3y+4z&=4
+\end{aligned}</script><p>同样可以得到其矩阵的表示形式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\left[\begin{array}{ccc}2&-1&0\\-1&2&-1\\0&-3&4\end{array}\right]\left[\begin{array}{c}x\\y\\z\end{array}\right]=\left[\begin{array}{c}0\\-1\\4\end{array}\right]
+\end{aligned}</script><p>还是按照上面的方法分析：</p>
+<hr>
+<p>1、<strong>从行的角度看</strong>，也就是画出上面三个方程的图像（在这里变成了三维空间的平面）：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140910/20140910_fig003.jpg" width="500" height="400" title="图3" alt="图3" ></p>
+<p>上图的matlab代码为：</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="built_in">figure</span></span><br><span class="line">t=<span class="number">-10</span>:<span class="number">.1</span>:<span class="number">10</span>;</span><br><span class="line">[x,z]=<span class="built_in">meshgrid</span>(t);</span><br><span class="line">y=<span class="number">2</span>*x;</span><br><span class="line">mesh(x,y,z);</span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line">y=(x+z<span class="number">-1</span>)/<span class="number">2</span>;</span><br><span class="line">mesh(x,y,z)</span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line">y=-(<span class="number">4</span><span class="number">-4</span>*z)/<span class="number">3</span>;</span><br><span class="line">mesh(x,y,z)</span><br></pre></td></tr></table></figure>
+<p>然后人工进行一些修正即可。从图中可以看出，三个平面交于一点$(0, 0, 1)$也就是方程组的解：$x=0, y=0, z=1$。</p>
+<hr>
+<p>2、<strong>同样从列的角度考虑该问题</strong>：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+x\left[\begin{array}{c}2\\-1\\0\end{array}\right]+y\left[\begin{array}{c}-1\\2\\3\end{array}\right]+z\left[\begin{array}{c}0\\-1\\4\end{array}\right]=\left[\begin{array}{c}0\\-1\\4\end{array}\right]
+\end{aligned}</script><p><strong>不用通过计算或作图，我们从上式就可以轻易得到$x=y=0,z=1$，这比上面一种方法要简单得多。</strong></p>
+<p>画出上面四个列向量的图（其中后两个列向量相同$(0,-1, 4)’$）:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140910/20140910_fig004.jpg" width="500" height="400" title="图4" alt="图4" ></p>
+<p>上图的matlab代码为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">a=[2 -1 0];</span><br><span class="line">b=[-1 2 3];</span><br><span class="line">c=[0 -1 4];</span><br><span class="line">quiver3(0,0,0,a(1),a(2),a(3),&apos;color&apos;,&apos;r&apos;)</span><br><span class="line">hold on</span><br><span class="line">quiver3(0,0,0,b(1),b(2),b(3),&apos;color&apos;,&apos;g&apos;)</span><br><span class="line">hold on</span><br><span class="line">quiver3(0,0,0,c(1),c(2),c(3),&apos;color&apos;,&apos;b&apos;)</span><br></pre></td></tr></table></figure>
+<p>然后人工标上箭头，当然也可以通过命令标上箭头。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Linear algebra</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【Qt编程】基于Qt的词典开发系列--无边框窗口的拖动</title>
     <url>/2014/08/25/%5B20140825%5D/</url>
     <content><![CDATA[<p>​    在上一篇文章中，我们讲述了如何进行无边框窗口的缩放与拖动，<strong>而在一些情况下，我们的窗口只需要进行拖动也不需要改变其大小</strong>，比如：QQ的登录窗口。本来在上一篇文章中已经讲述了如何进行窗口的拖动，但是却与窗口的缩放相关的程序放在一起，<strong>下面专门单独分离出来。</strong></p>
