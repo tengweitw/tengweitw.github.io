@@ -57,7 +57,7 @@
 <meta property="og:site_name" content="青峰碧陋室">
 <meta property="og:description" content="矩阵乘法的几种种表示方法1、一般形式  AB=C\\ C_{ij}=\sum\limits_{k=1}^{K}a_{ik}b_{kj}2、矩阵与列向量相乘  \left[ \begin{array}{cc} 1 &amp; 2 \\ 3 &amp; 4 \\ \end{array}  \right ] \left[ \begin{array}{cc} 1 &amp; 2 \\ 3 &amp; 4 \\ \end{array}">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-08-26T01:42:39.338Z">
+<meta property="og:updated_time" content="2020-08-26T01:50:41.246Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://tengweitw.com/2014/09/17/[20140917]/">
@@ -238,7 +238,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-26 09:42:39" itemprop="dateModified" datetime="2020-08-26T09:42:39+08:00">2020-08-26</time>
+                <time title="修改时间：2020-08-26 09:50:41" itemprop="dateModified" datetime="2020-08-26T09:50:41+08:00">2020-08-26</time>
               </span>
 
           
@@ -405,14 +405,19 @@ A_3B_1+A_4B_3 & A_3B_2+A_4B_4 \\
 <script type="math/tex; mode=display">
 A^{-1}A=I</script><p>原矩阵乘以其逆矩阵得到单位矩阵</p>
 <p>判断是否可逆的几种方法：</p>
-<p>1、行列式为$0$</p>
-<p>2、单位矩阵的各列是矩阵各列的线性组合</p>
-<p>3、下式成立时，矩阵$A$不可逆：</p>
+<ul>
+<li><p>行列式为$0$</p>
+</li>
+<li><p>单位矩阵的各列是矩阵各列的线性组合</p>
+</li>
+<li><p>下式成立时，矩阵$A$不可逆：</p>
 <script type="math/tex; mode=display">
 AX=0,</script><p>其中$X$不是零向量。</p>
 <p><strong>证明：</strong></p>
 <script type="math/tex; mode=display">
 A^{-1}AX=A^{-1}0</script><p>$X=0$与假设矛盾，说明$A$不可逆。</p>
+</li>
+</ul>
 <hr>
 <h2 id="矩阵求逆-高斯-若尔当消元法"><a href="#矩阵求逆-高斯-若尔当消元法" class="headerlink" title="矩阵求逆(高斯-若尔当消元法)"></a>矩阵求逆(高斯-若尔当消元法)</h2><p>假设矩阵为$A$:</p>
 <script type="math/tex; mode=display">

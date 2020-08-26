@@ -545,14 +545,19 @@ A_3B_1+A_4B_3 & A_3B_2+A_4B_4 \\
 <script type="math/tex; mode=display">
 A^{-1}A=I</script><p>原矩阵乘以其逆矩阵得到单位矩阵</p>
 <p>判断是否可逆的几种方法：</p>
-<p>1、行列式为$0$</p>
-<p>2、单位矩阵的各列是矩阵各列的线性组合</p>
-<p>3、下式成立时，矩阵$A$不可逆：</p>
+<ul>
+<li><p>行列式为$0$</p>
+</li>
+<li><p>单位矩阵的各列是矩阵各列的线性组合</p>
+</li>
+<li><p>下式成立时，矩阵$A$不可逆：</p>
 <script type="math/tex; mode=display">
 AX=0,</script><p>其中$X$不是零向量。</p>
 <p><strong>证明：</strong></p>
 <script type="math/tex; mode=display">
 A^{-1}AX=A^{-1}0</script><p>$X=0$与假设矛盾，说明$A$不可逆。</p>
+</li>
+</ul>
 <hr>
 <h2 id="矩阵求逆-高斯-若尔当消元法"><a href="#矩阵求逆-高斯-若尔当消元法" class="headerlink" title="矩阵求逆(高斯-若尔当消元法)"></a>矩阵求逆(高斯-若尔当消元法)</h2><p>假设矩阵为$A$:</p>
 <script type="math/tex; mode=display">
