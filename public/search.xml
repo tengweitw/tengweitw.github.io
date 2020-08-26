@@ -411,6 +411,46 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
       </tags>
   </entry>
   <entry>
+    <title>【线性代数】向量空间</title>
+    <url>/2014/10/04/%5B20141004%5D/</url>
+    <content><![CDATA[<h2 id="对称矩阵"><a href="#对称矩阵" class="headerlink" title="对称矩阵"></a>对称矩阵</h2><p>假设有一矩阵$A$，其中$A_{ij}=A_{ji}$,则称这个矩阵为对称矩阵。</p>
+<p>对称矩阵有如下性质：</p>
+<script type="math/tex; mode=display">
+A^{T}=A^{-1}</script><script type="math/tex; mode=display">
+A=RR^{T}\leftarrow(R^TR)^T=R^T(R^T)^T=R^TR</script><p>也就是说：1、一个对称矩阵的转置和其逆是相等的；2、一个对称矩阵可以由一个矩阵和其转置矩阵相乘得到。</p>
+<hr>
+<h2 id="向量空间"><a href="#向量空间" class="headerlink" title="向量空间"></a>向量空间</h2><p>向量空间即空间中向量的四则运算得到的向量人在空间中。</p>
+<p>  1、二维情况下，其子空间有</p>
+<p>   a、零向量(0,0)</p>
+<p>   b、过零点的直线</p>
+<p>   c、$\mathbb R^2$整个空间</p>
+<p>  2、三维情况下，其子空间有</p>
+<p>   a、零向量(0,0,0)</p>
+<p>   b、过（0,0,0）的平面</p>
+<p>   c、过(0,0,0)的直线</p>
+<p>   d、$\mathbb R^3$整个空间</p>
+<hr>
+<h2 id="列空间"><a href="#列空间" class="headerlink" title="列空间"></a>列空间</h2><p>假设有一个矩阵$A$：</p>
+<script type="math/tex; mode=display">
+A=\left[\begin{array}{cc}1&3\\2&3\\4&1\end{array}\right]</script><p>则$A$的列空间为$A$中各列向量的线性组合。</p>
+<p><strong>问题一</strong>：对于任意的$b,Ax=b$是否有解？</p>
+<p>答：不一定，$3$个列向量的线性组合不能充满四维空间</p>
+<p><strong>问题二</strong>：对怎样的$b$，$Ax=b$有解？</p>
+<p>答：当$b$属于$A$中列向量的线性组合，即$b$属于$A$的列空间</p>
+<h2 id="零空间"><a href="#零空间" class="headerlink" title="零空间"></a>零空间</h2><p>假设有一个矩阵$A$：</p>
+<script type="math/tex; mode=display">
+A=\left[\begin{array}{ccc}1&1&2\\2&1&3\\3&1&4\\4&1&5\end{array}\right]</script><p>则$A$的零空间就是使得$Ax=0$的解的集合。由于$A$比较特殊（第一列+第二列=第三列），我们可以直接给出下式：</p>
+<script type="math/tex; mode=display">
+\left[\begin{array}{ccc}1&1&2\\2&1&3\\3&1&4\\4&1&5\end{array}\right]
+\left[\begin{array}{c}C\\C\\-C\end{array}\right]
+=\left[\begin{array}{c}0\\0\\0\\0\end{array}\right]</script><p>则零空间为：</p>
+<script type="math/tex; mode=display">
+X=C\left[\begin{array}{c}1\\1\\-1\end{array}\right]</script><link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Linear Algebra</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【线性代数】矩阵的乘法与求逆</title>
     <url>/2014/09/17/%5B20140917%5D/</url>
     <content><![CDATA[<h2 id="矩阵乘法的几种种表示方法"><a href="#矩阵乘法的几种种表示方法" class="headerlink" title="矩阵乘法的几种种表示方法"></a>矩阵乘法的几种种表示方法</h2><p><strong>1、一般形式</strong></p>
