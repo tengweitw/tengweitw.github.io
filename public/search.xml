@@ -411,6 +411,84 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
       </tags>
   </entry>
   <entry>
+    <title>【线性代数】矩阵的零空间</title>
+    <url>/2014/10/13/%5B20141013%5D/</url>
+    <content><![CDATA[<p>矩阵A的零空间就$Ax=0$的解的集合。</p>
+<p><strong>零空间的求法：</strong>对矩阵$A$进行消元求得主变量和自由变量；给自由变量赋值得到特解；对特解进行线性组合得到零空间。</p>
+<p>假设矩阵如下：</p>
+<script type="math/tex; mode=display">
+A=\left[\begin{array}{cccc}1&2&2&2\\2&4&6&8\\3&6&8&10\end{array}\right]</script><p>对矩阵$A$进行高斯消元得到上三角矩阵$U$，继续化简得到最简矩阵$R$：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\underbrace{\left[\begin{array}{cccc}1&2&2&2\\2&4&6&8\\3&6&8&10\end{array}\right]}_{A}
+{\longrightarrow}\underbrace{\left[\begin{array}{cccc}1&2&2&2\\0&0&2&4\\0&0&0&0\end{array}\right]}_{U}
+{\longrightarrow}\underbrace{\left[\begin{array}{cccc}1&2&0&-2\\0&0&1&2\\0&0&0&0\end{array}\right]}_{R}
+\end{aligned}</script><p><strong>由于方程$Ax=0$的右侧是零向量，所以只对矩阵$A$进行消元不会影响解,因此不需要增广矩阵，所以有：</strong></p>
+<script type="math/tex; mode=display">
+Ax=0\rightarrow Ux=0\rightarrow Rx=0</script><p>从上面的高斯消元的结果可以看出，矩阵$A$的秩为$2$，其中第$1$，$3$列为主元列，$2$，$4$列为自由列，对应于方程主来说，形式转变如下：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\left\{  
+             \begin{array}{**lr**}  
+             x_1+2x_2+2x_3+2x_4=0 \\  
+             2x_1+4x_2+6x_3+8x_4=0\\  
+             3x_1+6x_2+8x_3+10x_4=0   
+             \end{array}  
+\right. \rightarrow
+\left\{  
+             \begin{array}{**lr**}  
+             x_1+2x_2-2x_4=0 \\  
+             x_3+2x_4=0  
+             \end{array}  
+\right. 
+\end{aligned}</script><p>从上式可以看出，$x_2,x_4$是自由变量，我们可以随意赋值，$x_2=0, x_4=1$；$x_2=1,x_4=0$可以分别得到两个特解（<strong>几个自由变量就有几个特解</strong>）：</p>
+<script type="math/tex; mode=display">
+x_1=\left[\begin{array}{c}-2\\1\\0\\0\end{array}\right],
+x_2=\left[\begin{array}{c}2\\0\\-2\\1\end{array}\right]</script><p>然后我们将<strong>两组特解进行线性组合就得到了矩阵$A$的零空间：</strong></p>
+<script type="math/tex; mode=display">
+x=
+c\left[\begin{array}{c}-2\\1\\0\\0\end{array}\right]+
+d\left[\begin{array}{c}2\\0\\-2\\1\end{array}\right]</script><p><strong>上面我们从数值解的角度描述了矩阵零空间的求法，下面从公式角度分析：</strong></p>
+<p>上面我们经过消元（<strong>行变换，不改变行空间和零空间，只改变列空间</strong>）得到了最简形式$R$。我们将$R$经过列变换得到如下矩阵：</p>
+<script type="math/tex; mode=display">
+\bar R=\left[\begin{array}{cccc}1&0&2&-2\\0&1&0&2\\0&0&0&0\end{array}\right]</script><p>我们可以对方程式作如下变形：</p>
+<script type="math/tex; mode=display">
+x=[x_1,x_2,x_3,x_4]\\
+\bar x=[x_1,x_3,x_2,x_4]\\
+Rx=0\rightarrow\bar R\bar x=0</script><p>$\bar R$是将$R$的第2,3列交换得到的，我们同样将$x$的2,3列交换得到$\bar x$, 这在方程式中可以表示为交换$x_2,x_3$，这样对解的结果没有影响，只是顺序交换了。</p>
+<p><strong>我们之所以进行上述变换，是为了有更好的表示形式（不进行列变换也行，但是要记住哪一列是单位矩阵I中的，哪一列是自由变量矩阵$F$中的）：</strong></p>
+<script type="math/tex; mode=display">
+\bar R=\left[\begin{array}{cccc}1&0&2&-2\\0&1&0&2\\0&0&0&0\end{array}\right]</script><script type="math/tex; mode=display">
+I_{2\times 2}=\left[\begin{array}{cc}1&0\\0&1\end{array}\right],
+F_{2\times 2}=\left[\begin{array}{cc}2&-2\\0&2\end{array}\right],
+\bar R=\left[\begin{array}{cc}I_{2\times 2}&F_{2\times 2}\\0_{1\times 1}&0_{1\times 1}\end{array}\right]</script><p>这样我们代入方程式可以得到零空间矩阵：</p>
+<script type="math/tex; mode=display">
+\bar R\bar x=0_{3\times 1}\rightarrow\left[\begin{array}{cc}I_{2\times 2}&F_{2\times 2}\\0_{1\times 1}&0_{1\times 1}\end{array}\right]\left[\begin{array}{c}-F_{2\times 2}\\I_{2\times 2}\end{array}\right]=
+-I_{2\times 2}F_{2\times 2}+F_{2\times 2}I_{2\times 2}=0\\
+\rightarrow\bar x=\left[\begin{array}{c}-F_{2\times 2}\\I_{2\times 2}\end{array}\right]=\left[\begin{array}{cc}-2&2\\0&-2\\1&0\\0&1\end{array}\right]</script><p>从上面的推导可以看出，得到的零空间矩阵的每一列就是我们前面的特解(注意要变换顺序！交换第$2$，$3$行,结果便和前面相同)。因此，我们可以从通过消元法得到最简式$R$，然后就可以直接得到零空间矩阵，则<strong>零空间就是零空间矩阵各列向量的线性组合</strong>，而不需要像前面那样先给$x_2$,$x_4$赋值，然后回代到方程中得到两个特解，从而得到矩阵的零空间。</p>
+<p>下面再举一例：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+A=\left[\begin{array}{ccc}1&2&3\\2&4&6\\2&6&8\\2&8&10\end{array}\right]
+{\longrightarrow}\underbrace{\left[\begin{array}{ccc}1&2&3\\0&2&2\\0&0&0\\0&0&0\end{array}\right]}_{U}
+{\longrightarrow}\underbrace{\left[\begin{array}{ccc}1&0&1\\0&1&1\\0&0&0\\0&0&0\end{array}\right]}_{R}
+\end{aligned}</script><p>由于$R$本来就具有很好的形式，就不用进行列变换了：</p>
+<script type="math/tex; mode=display">
+I_{2\times 2}=\left[\begin{array}{cc}1&0\\0&1\end{array}\right],
+F_{2\times 1}=\left[\begin{array}{c}1\\1\end{array}\right],
+R_{4\times 3}=\left[\begin{array}{cc}I_{2\times 2}&F_{2\times 1}\\0_{2\times 2}&0_{2\times 1}\end{array}\right]</script><p>于是通过解方程得到零空间矩阵：</p>
+<script type="math/tex; mode=display">
+R_{4\times 3}x_{3\times 1}=0_{4\times 1}\rightarrow
+\left[\begin{array}{cc}I_{2\times 2}&F_{2\times 1}\\0_{2\times 2}&0_{2\times 1}\end{array}\right]
+\left[\begin{array}{c}-F_{2\times 1}\\I_{1\times 1}\end{array}\right]=
+\left[\begin{array}{c}-I_{2\times 2}F_{2\times 1}+F_{2\times 1}I_{1\times 1}=0_{2\times 1}\\0_{2\times 1}\end{array}\right]\\
+x_{3\times 1}=\left[\begin{array}{c}-F_{2\times 1}\\I_{1\times 1}\end{array}\right]=\left[\begin{array}{c}-1\\-1\\1\end{array}\right]</script><p><strong>注：最简矩阵$R$和零空间矩阵$x$在MATLAB中可以分别用命令<code>rref(A)</code>，<code>null(A,&#39;r&#39;)</code>得到</strong></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Linear Algebra</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【线性代数】向量空间</title>
     <url>/2014/10/04/%5B20141004%5D/</url>
     <content><![CDATA[<h2 id="对称矩阵"><a href="#对称矩阵" class="headerlink" title="对称矩阵"></a>对称矩阵</h2><p>假设有一矩阵$A$，其中$A_{ij}=A_{ji}$,则称这个矩阵为对称矩阵。</p>
