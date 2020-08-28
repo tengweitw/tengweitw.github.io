@@ -72,7 +72,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20141018&#x2F;20141018_fig013.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20141018&#x2F;20141018_fig014.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20141018&#x2F;20141018_fig015.jpg">
-<meta property="og:updated_time" content="2020-08-28T09:39:37.182Z">
+<meta property="og:updated_time" content="2020-08-28T09:44:52.590Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20141018&#x2F;20141018_fig001.jpg">
 
@@ -254,7 +254,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-28 17:39:37" itemprop="dateModified" datetime="2020-08-28T17:39:37+08:00">2020-08-28</time>
+                <time title="修改时间：2020-08-28 17:44:52" itemprop="dateModified" datetime="2020-08-28T17:44:52+08:00">2020-08-28</time>
               </span>
 
           
@@ -295,12 +295,19 @@
 <p>​    现实生活中，我们经常将问题用数学的方法来描述并解决（数学建模）。同样的，我们想用程序来解决问题，就得把问题程序化。废话不多说，进入正题：</p>
 <p>​    <strong>我们可以用一个矩阵matrix来描绘整个迷宫</strong>：<strong>元素为1，代表是空的，元素为0代表墙</strong>。<strong>为了描述问题的方便，下面都采用9行9列的矩阵来说明问题，并且假设（0，0）为入口，（1，1）为出口。</strong></p>
 <p>​    <strong>网上也有一些常见的迷宫程序，但是它们都有一种特点，就是生成的迷宫可能没有从入口到出口的可达路径(可以通过循环来生成迷宫，直到有可达路径)，或则从入口到出口有几条可达路径(如果想要只有唯一可达路径，就不行了)</strong>。这些算法大多数是通过随机数来产生迷宫矩阵matrix(随机产生0，1元素)，然后通过迭代、回溯算法来找入口到出口的路径。由于矩阵matrix是随机的，这就不能保证入口到出口是可达的，这就是导致上面问题。</p>
+<hr>
 <p><strong>算法思想：</strong></p>
 <p>​    想必大家都学过<strong>树(关于树的相关操作可以看我之前的文章)</strong>这种数据结构，比如说树的遍历DFS、BFS，树的深度等等操作。当然树的类型也有很多，如完全二叉树、红黑树、B树等等。但是我现在要说的不是这些，<strong>而是另一个我发现的性质：一个节点到另一个节点的路径有且只有一条！</strong> 现在就能和前面我说的那个问题联系起来了。<strong>下面看看是怎么联系的：</strong></p>
 <p>​    我们首先将整个矩阵matrix的元素初始化为0即认为全都是墙，<strong>我们的任务就是拆墙（使元素等于1）来构成迷宫。怎么拆墙是我们算法的关键！</strong></p>
-<p>​    <strong>首先</strong>，我们随便在矩阵中找一个初始点A（4，4），将该点的值设为1，即将该点的墙拆掉。 </p>
-<p>​    <strong>然后</strong>，产生一个0到3的随机整数randnum（0，1，2，3分布代表上下左右四个方向），在随机数randnum表示的方向进行拆墙（<strong>注意是连拆两块</strong>），如果该方向上与目前位置隔一块的位置没有墙，就不能拆，则需要再产生随机数，在其他方向上拆墙。（<strong>注意拆墙的前提是该方向隔一块的位置是墙</strong>）  </p>
-<p>​    最后，在上一步骤中，一直循环，直到当前位置四个方向的隔一块的位置都没有墙可拆，就进行回溯（回退到当前位置的上一个位置），然后进行上一步骤的操作，直至没有墙可拆！。</p>
+<ul>
+<li><p><strong>首先</strong>，我们随便在矩阵中找一个初始点A（4，4），将该点的值设为1，即将该点的墙拆掉。 </p>
+</li>
+<li><p><strong>然后</strong>，产生一个0到3的随机整数randnum（0，1，2，3分布代表上下左右四个方向），在随机数randnum表示的方向进行拆墙（<strong>注意是连拆两块</strong>），如果该方向上与目前位置隔一块的位置没有墙，就不能拆，则需要再产生随机数，在其他方向上拆墙。（<strong>注意拆墙的前提是该方向隔一块的位置是墙</strong>）  </p>
+</li>
+<li><p>最后，在上一步骤中，一直循环，直到当前位置四个方向的隔一块的位置都没有墙可拆，就进行回溯（回退到当前位置的上一个位置），然后进行上一步骤的操作，直至没有墙可拆！</p>
+</li>
+</ul>
+<hr>
 <p>​    我一直相信图像是比文字更能说话的，下面我们用图像来说明上述步骤：</p>
 <p>​    <strong>在强调一下：我们举例都采用9行9列的矩阵，初始点为（4，4）。</strong></p>
 <ul>
@@ -331,7 +338,7 @@
 <p><strong>1、Maze.h</strong></p>
 <div class='spoiler collapsed'>
     <div class='spoiler-title'>
-        Maze.h源代码：
+        Maze.h 源代码：
     </div>
     <div class='spoiler-content'>
         <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;ctime&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> M 9<span class="comment">//迷宫的行</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 9<span class="comment">//迷宫的列</span></span></span><br><span class="line"><span class="comment">//构造迷宫类型//</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MazeStack</span>;</span><span class="comment">//申明该类</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Maze</span>//定义迷宫节点信息。</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">int</span> j;</span><br><span class="line">    <span class="keyword">int</span> state;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MazeMat</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    Maze matrix[M][N];<span class="comment">//迷宫矩阵</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;Maze&gt; EntryPath;<span class="comment">//从初始点到入口的路径</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;Maze&gt; ExitPath;<span class="comment">//从初始点到出口的路径</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;Maze&gt; FinalPath;<span class="comment">//从入口到出口的路径</span></span><br><span class="line">    MazeStack *mazeStack;<span class="comment">//定义栈</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">initMaze</span><span class="params">()</span></span>;<span class="comment">//初始化迷宫矩阵</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">createMaze</span><span class="params">()</span></span>;<span class="comment">//产生迷宫矩阵</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">displayMaze</span><span class="params">()</span></span>;<span class="comment">//显示迷宫矩阵</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">FindWay</span><span class="params">()</span></span>;<span class="comment">//寻找入口到出口的路径</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//////////////////</span></span><br></pre></td></tr></table></figure>
