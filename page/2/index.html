@@ -206,6 +206,154 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/10/13/%5B20141013%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/10/13/%5B20141013%5D/" class="post-title-link" itemprop="url">【线性代数】矩阵的零空间</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-10-13 09:07:08" itemprop="dateCreated datePublished" datetime="2014-10-13T09:07:08+08:00">2014-10-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-26 11:43:52" itemprop="dateModified" datetime="2020-08-26T11:43:52+08:00">2020-08-26</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>矩阵A的零空间就$Ax=0$的解的集合。</p>
+<p><strong>零空间的求法：</strong>对矩阵$A$进行消元求得主变量和自由变量；给自由变量赋值得到特解；对特解进行线性组合得到零空间。</p>
+<p>假设矩阵如下：</p>
+<script type="math/tex; mode=display">
+A=\left[\begin{array}{cccc}1&2&2&2\\2&4&6&8\\3&6&8&10\end{array}\right]</script><p>对矩阵$A$进行高斯消元得到上三角矩阵$U$，继续化简得到最简矩阵$R$：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\underbrace{\left[\begin{array}{cccc}1&2&2&2\\2&4&6&8\\3&6&8&10\end{array}\right]}_{A}
+{\longrightarrow}\underbrace{\left[\begin{array}{cccc}1&2&2&2\\0&0&2&4\\0&0&0&0\end{array}\right]}_{U}
+{\longrightarrow}\underbrace{\left[\begin{array}{cccc}1&2&0&-2\\0&0&1&2\\0&0&0&0\end{array}\right]}_{R}
+\end{aligned}</script><p><strong>由于方程$Ax=0$的右侧是零向量，所以只对矩阵$A$进行消元不会影响解,因此不需要增广矩阵，所以有：</strong></p>
+<script type="math/tex; mode=display">
+Ax=0\rightarrow Ux=0\rightarrow Rx=0</script><p>从上面的高斯消元的结果可以看出，矩阵$A$的秩为$2$，其中第$1$，$3$列为主元列，$2$，$4$列为自由列，对应于方程主来说，形式转变如下：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\left\{  
+             \begin{array}{**lr**}  
+             x_1+2x_2+2x_3+2x_4=0 \\  
+             2x_1+4x_2+6x_3+8x_4=0\\  
+             3x_1+6x_2+8x_3+10x_4=0   
+             \end{array}  
+\right. \rightarrow
+\left\{  
+             \begin{array}{**lr**}  
+             x_1+2x_2-2x_4=0 \\  
+             x_3+2x_4=0  
+             \end{array}  
+\right. 
+\end{aligned}</script><p>从上式可以看出，$x_2,x_4$是自由变量，我们可以随意赋值，$x_2=0, x_4=1$；$x_2=1,x_4=0$可以分别得到两个特解（<strong>几个自由变量就有几个特解</strong>）：</p>
+<script type="math/tex; mode=display">
+x_1=\left[\begin{array}{c}-2\\1\\0\\0\end{array}\right],
+x_2=\left[\begin{array}{c}2\\0\\-2\\1\end{array}\right]</script><p>然后我们将<strong>两组特解进行线性组合就得到了矩阵$A$的零空间：</strong></p>
+<script type="math/tex; mode=display">
+x=
+c\left[\begin{array}{c}-2\\1\\0\\0\end{array}\right]+
+d\left[\begin{array}{c}2\\0\\-2\\1\end{array}\right]</script><p><strong>上面我们从数值解的角度描述了矩阵零空间的求法，下面从公式角度分析：</strong></p>
+<p>上面我们经过消元（<strong>行变换，不改变行空间和零空间，只改变列空间</strong>）得到了最简形式$R$。我们将$R$经过列变换得到如下矩阵：</p>
+<script type="math/tex; mode=display">
+\bar R=\left[\begin{array}{cccc}1&0&2&-2\\0&1&0&2\\0&0&0&0\end{array}\right]</script><p>我们可以对方程式作如下变形：</p>
+<script type="math/tex; mode=display">
+x=[x_1,x_2,x_3,x_4]\\
+\bar x=[x_1,x_3,x_2,x_4]\\
+Rx=0\rightarrow\bar R\bar x=0</script><p>$\bar R$是将$R$的第2,3列交换得到的，我们同样将$x$的2,3列交换得到$\bar x$, 这在方程式中可以表示为交换$x_2,x_3$，这样对解的结果没有影响，只是顺序交换了。</p>
+<p><strong>我们之所以进行上述变换，是为了有更好的表示形式（不进行列变换也行，但是要记住哪一列是单位矩阵I中的，哪一列是自由变量矩阵$F$中的）：</strong></p>
+<script type="math/tex; mode=display">
+\bar R=\left[\begin{array}{cccc}1&0&2&-2\\0&1&0&2\\0&0&0&0\end{array}\right]</script><script type="math/tex; mode=display">
+I_{2\times 2}=\left[\begin{array}{cc}1&0\\0&1\end{array}\right],
+F_{2\times 2}=\left[\begin{array}{cc}2&-2\\0&2\end{array}\right],
+\bar R=\left[\begin{array}{cc}I_{2\times 2}&F_{2\times 2}\\0_{1\times 2}&0_{1\times 2}\end{array}\right]</script><p>这样我们代入方程式可以得到零空间矩阵：</p>
+<script type="math/tex; mode=display">
+\bar R\bar x=0_{3\times 1}\rightarrow\left[\begin{array}{cc}I_{2\times 2}&F_{2\times 2}\\0_{1\times 2}&0_{1\times 2}\end{array}\right]\left[\begin{array}{c}-F_{2\times 2}\\I_{2\times 2}\end{array}\right]=
+-I_{2\times 2}F_{2\times 2}+F_{2\times 2}I_{2\times 2}=0\\
+\rightarrow\bar x=\left[\begin{array}{c}-F_{2\times 2}\\I_{2\times 2}\end{array}\right]=\left[\begin{array}{cc}-2&2\\0&-2\\1&0\\0&1\end{array}\right]</script><p>从上面的推导可以看出，得到的零空间矩阵的每一列就是我们前面的特解(注意要变换顺序！交换第$2$，$3$行,结果便和前面相同)。因此，我们可以从通过消元法得到最简式$R$，然后就可以直接得到零空间矩阵，则<strong>零空间就是零空间矩阵各列向量的线性组合</strong>，而不需要像前面那样先给$x_2$,$x_4$赋值，然后回代到方程中得到两个特解，从而得到矩阵的零空间。</p>
+<p>下面再举一例：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+A=\left[\begin{array}{ccc}1&2&3\\2&4&6\\2&6&8\\2&8&10\end{array}\right]
+{\longrightarrow}\underbrace{\left[\begin{array}{ccc}1&2&3\\0&2&2\\0&0&0\\0&0&0\end{array}\right]}_{U}
+{\longrightarrow}\underbrace{\left[\begin{array}{ccc}1&0&1\\0&1&1\\0&0&0\\0&0&0\end{array}\right]}_{R}
+\end{aligned}</script><p>由于$R$本来就具有很好的形式，就不用进行列变换了：</p>
+<script type="math/tex; mode=display">
+I_{2\times 2}=\left[\begin{array}{cc}1&0\\0&1\end{array}\right],
+F_{2\times 1}=\left[\begin{array}{c}1\\1\end{array}\right],
+R_{4\times 3}=\left[\begin{array}{cc}I_{2\times 2}&F_{2\times 1}\\0_{2\times 2}&0_{2\times 1}\end{array}\right]</script><p>于是通过解方程得到零空间矩阵：</p>
+<script type="math/tex; mode=display">
+R_{4\times 3}x_{3\times 1}=0_{4\times 1}\rightarrow
+\left[\begin{array}{cc}I_{2\times 2}&F_{2\times 1}\\0_{2\times 2}&0_{2\times 1}\end{array}\right]
+\left[\begin{array}{c}-F_{2\times 1}\\I_{1\times 1}\end{array}\right]=
+\left[\begin{array}{c}-I_{2\times 2}F_{2\times 1}+F_{2\times 1}I_{1\times 1}=0_{2\times 1}\\0_{2\times 1}\end{array}\right]\\
+x_{3\times 1}=\left[\begin{array}{c}-F_{2\times 1}\\I_{1\times 1}\end{array}\right]=\left[\begin{array}{c}-1\\-1\\1\end{array}\right]</script><p><strong>注：最简矩阵$R$和零空间矩阵$x$在MATLAB中可以分别用命令<code>rref(A)</code>，<code>null(A,&#39;r&#39;)</code>得到</strong></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/10/04/%5B20141004%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1245,93 +1393,6 @@ U=ED=\left[\begin{array}{ccc}1&2&1\\0&2&-2\\0&0&5\end{array}\right]</script><hr>
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/07/30/%5B20140730%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/07/30/%5B20140730%5D/" class="post-title-link" itemprop="url">【Qt编程】基于Qt的词典开发系列调用讲述人</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-07-30 21:00:53" itemprop="dateCreated datePublished" datetime="2014-07-30T21:00:53+08:00">2014-07-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-23 10:16:21" itemprop="dateModified" datetime="2020-08-23T10:16:21+08:00">2020-08-23</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>8.4k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>12 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>​    我们知道，win7系统自带有讲述人，即可以机器读出当前内容，具体可以将电脑锁定，然后点击左下角的按钮即可。之前在用Matlab写扫雷游戏的时候，也曾经调用过讲述人来进行游戏的语音提示。<strong>具体的Matlab脚本文件如下：</strong></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sp=actxserver('SAPI.SpVoice');</span><br><span class="line">sp.Speak('你好，欢迎来到西安电子科技大学！Hello,Welcome to XD University!')</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2014/07/30/%5B20140730%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1382,7 +1443,7 @@ U=ED=\left[\begin{array}{ccc}1&2&1\\0&2&-2\\0&0&5\end{array}\right]</script><hr>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-count">110</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1438,12 +1499,12 @@ U=ED=\left[\begin{array}{ccc}1&2&1\\0&2&-2\\0&0&5\end{array}\right]</script><hr>
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">356k</span>
+    <span title="站点总字数">357k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:29</span>
+    <span title="站点阅读时长">8:30</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
