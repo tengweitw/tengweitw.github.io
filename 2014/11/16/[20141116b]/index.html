@@ -59,7 +59,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20141116b&#x2F;20141116b_fig001.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20141116b&#x2F;20141116b_fig002.jpg">
-<meta property="og:updated_time" content="2020-08-30T09:36:01.209Z">
+<meta property="og:updated_time" content="2020-08-30T09:44:24.958Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20141116b&#x2F;20141116b_fig001.jpg">
 
@@ -241,7 +241,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-30 17:36:01" itemprop="dateModified" datetime="2020-08-30T17:36:01+08:00">2020-08-30</time>
+                <time title="修改时间：2020-08-30 17:44:24" itemprop="dateModified" datetime="2020-08-30T17:44:24+08:00">2020-08-30</time>
               </span>
 
           
@@ -280,7 +280,7 @@
 <a id="more"></a>
 <hr>
 <h2 id="二维投影"><a href="#二维投影" class="headerlink" title="二维投影"></a>二维投影</h2><p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141116b/20141116b_fig001.jpg" width="400" height="300" title="图1" alt="图1" ></p>
-<p>上图表示的是，向量$b$在向量$a$上的投影。显然有如下表达式：</p>
+<p>上图表示的是，向量$b$在向量$a$上的投影为$p$。显然有如下表达式：</p>
 <script type="math/tex; mode=display">
 e=b-p=b-xa\\
 a^Te=0\rightarrow a^T(b-xa)=0\rightarrow xa^Ta=a^Tb\rightarrow x=\frac{a^Tb}{a^Ta}\\
@@ -288,13 +288,13 @@ p=ax=a\frac{a^Tb}{a^Ta}\\
 Pb=p\rightarrow P=\frac{aa^T}{a^Ta}</script><p>其中，<strong>$P$为投影矩阵</strong>，由$P$的表达式可以看出，它具有如下性质：</p>
 <script type="math/tex; mode=display">
 P^T=P, P^2=P</script><hr>
-<h2 id="三维投影"><a href="#三维投影" class="headerlink" title="三维投影"></a>三维投影</h2><p>三维投影，就是将一个向量投影到一个平面上。同上面一样，假设是将$b$向量投影到平面上的$p$向量，则有表达式：</p>
+<h2 id="三维投影"><a href="#三维投影" class="headerlink" title="三维投影"></a>三维投影</h2><p>三维投影，就是将一个向量投影到一个平面上。同上面一样，假设$b$向量在平面上的投影为$p$，则有表达式：</p>
 <script type="math/tex; mode=display">
-e=b-p</script><p>$e$是垂直与平面的向量。由于$p$向量在平面上，则$p$向量可以由该平面的$2$个线性无关向量(正如，在$xy$平面的任何向量都可以由$x$轴，$y$轴表示)表示：</p>
+e=b-p</script><p>$e$是垂直于平面的向量。由于$p$向量在平面上，则$p$向量可以由该平面的$2$个线性无关向量(正如，在$xy$平面的任何向量都可以由$x$轴，$y$轴表示)表示：</p>
 <script type="math/tex; mode=display">
 p=x_1a_1+x_2a_2=Ax\\
 A=[a_1\quad a_2]\\
-x=[x_1\quad x_2]</script><p><strong>由于$e$垂直平面，则$e$向量垂直与平面中的任意向量</strong>，则有：</p>
+x=[x_1\quad x_2]^T</script><p><strong>由于$e$垂直于平面，则$e$向量垂直于平面中的任意向量</strong>，则有：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
 \left\{  
