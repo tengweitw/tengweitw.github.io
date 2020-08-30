@@ -49,18 +49,20 @@
   };
 </script>
 
-  <meta name="description" content="​    上一篇文章讲述了$Ax=0$的解和矩阵$A$的零空间，这里我们讨论$Ax=b$的解以及矩阵$A$的列空间。 ​    $Ax=0$是肯定有解的，因为总存在$x$为全零向量，使得方程组成立。而$Ax=b$是不一定有解的，我们需要高斯消元来确定。我们还是利用上一篇讲述了$Ax=0$的解的矩阵$A$来举例说明：  x_1+2x_2+2x_3+2x_4=b_1\\ 2x_1+4x_2+6x_3+">
+  <meta name="description" content="前面的关于线性代数的文章都是从数学的角度来讲解的，本文将换个角度来讲解问题。导师时常告诉我，凡事都要想想它的物理或实际意义，需要透过现象看本质，这样就能更加深刻的理解，这样就可以看看线性代数有什么实际的用途。">
 <meta name="keywords" content="Linear Algebra">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【线性代数】线性方程组的求解">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2014&#x2F;11&#x2F;08&#x2F;[20141108]&#x2F;index.html">
+<meta property="og:title" content="【线性代数】图与网络">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2014&#x2F;11&#x2F;13&#x2F;[20141113]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="​    上一篇文章讲述了$Ax=0$的解和矩阵$A$的零空间，这里我们讨论$Ax=b$的解以及矩阵$A$的列空间。 ​    $Ax=0$是肯定有解的，因为总存在$x$为全零向量，使得方程组成立。而$Ax=b$是不一定有解的，我们需要高斯消元来确定。我们还是利用上一篇讲述了$Ax=0$的解的矩阵$A$来举例说明：  x_1+2x_2+2x_3+2x_4=b_1\\ 2x_1+4x_2+6x_3+">
+<meta property="og:description" content="前面的关于线性代数的文章都是从数学的角度来讲解的，本文将换个角度来讲解问题。导师时常告诉我，凡事都要想想它的物理或实际意义，需要透过现象看本质，这样就能更加深刻的理解，这样就可以看看线性代数有什么实际的用途。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-08-29T09:34:57.729Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20141113&#x2F;20141113_fig001.jpg">
+<meta property="og:updated_time" content="2020-08-30T03:47:26.317Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20141113&#x2F;20141113_fig001.jpg">
 
-<link rel="canonical" href="http://tengweitw.com/2014/11/08/[20141108]/">
+<link rel="canonical" href="http://tengweitw.com/2014/11/13/[20141113]/">
 
 
 <script id="page-configurations">
@@ -74,7 +76,7 @@
   };
 </script>
 
-  <title>【线性代数】线性方程组的求解 | 青峰碧陋室</title>
+  <title>【线性代数】图与网络 | 青峰碧陋室</title>
   
 
 
@@ -208,7 +210,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/11/08/%5B20141108%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/11/13/%5B20141113%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -221,7 +223,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【线性代数】线性方程组的求解
+          【线性代数】图与网络
         </h1>
 
         <div class="post-meta">
@@ -231,14 +233,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2014-11-08 15:16:22" itemprop="dateCreated datePublished" datetime="2014-11-08T15:16:22+08:00">2014-11-08</time>
+              <time title="创建时间：2014-11-13 15:56:03" itemprop="dateCreated datePublished" datetime="2014-11-13T15:56:03+08:00">2014-11-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-29 17:34:57" itemprop="dateModified" datetime="2020-08-29T17:34:57+08:00">2020-08-29</time>
+                <time title="修改时间：2020-08-30 11:47:26" itemprop="dateModified" datetime="2020-08-30T11:47:26+08:00">2020-08-30</time>
               </span>
 
           
@@ -254,14 +256,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.8k</span>
+              <span>2.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -273,81 +275,41 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>​    <a href="http://blog.csdn.net/tengweitw/article/details/40039373" target="_blank" rel="noopener">上一篇文章</a>讲述了$Ax=0$的解和矩阵$A$的零空间，<strong>这里我们讨论$Ax=b$的解以及矩阵$A$的列空间。</strong></p>
-<p>​    $Ax=0$是肯定有解的，因为总存在$x$为全零向量，使得方程组成立。而$Ax=b$是不一定有解的，我们需要高斯消元来确定。我们还是利用上一篇讲述了$Ax=0$的解的矩阵$A$来举例说明：</p>
+        <p>前面的关于线性代数的文章都是从数学的角度来讲解的，本文将换个角度来讲解问题。导师时常告诉我，凡事都要想想它的物理或实际意义，需要透过现象看本质，这样就能更加深刻的理解，这样就可以看看线性代数有什么实际的用途。</p>
+<a id="more"></a>
+<p>假设有如下电路网络：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141113/20141113_fig001.jpg" width="400" height="300" title="图1" alt="图1" ></p>
+<p>图中有$1, 2, 3, 4$号节点，$y_1, y_2, y_3, y_4, y_5$五条边，箭头的指向标明可以电流流向。我们假设电流的出发点设为$-1$，到达点设为$1$，<strong>则我们可以通过矩阵来表示上述网络：</strong></p>
 <script type="math/tex; mode=display">
-x_1+2x_2+2x_3+2x_4=b_1\\
-2x_1+4x_2+6x_3+8x_4=b_2\\
-3x_1+6x_2+8x_3+10x_4=b_3</script><a id="more"></a>
-<p>我们可以得到上述方程组的增广矩阵(<strong>等式右侧不是全零向量，消元时值会改变，所以需要用增广矩阵</strong>)如下：</p>
-<script type="math/tex; mode=display">
-\left[\begin{array}{ccccc}1&2&2&2&b_1\\2&4&6&8&b_2\\3&6&8&10&b_3\end{array}\right]</script><p>然后我们进行高斯消元可以得到：</p>
-<script type="math/tex; mode=display">
-\left[\begin{array}{ccccc}1&2&2&2&b_1\\0&0&2&4&b_2-2b_1\\0&0&0&0&b_3-b_2-b_1\end{array}\right]</script><p>从上面的矩阵可以看出，<strong>等式成立必须有</strong>：</p>
-<script type="math/tex; mode=display">
-b_3-b_2-b_1=0</script><p>我们假设一个满足上面条件的b向量，例如：$b=[1, 5, 1+5]$;并且令两个自由变量$x_2=0, x_4=0$，则我们将消元后的矩阵写成方程组的形式如下：</p>
-<script type="math/tex; mode=display">
-x_1+2x_3=1\rightarrow x_1=-2\\
-2x_3=3\rightarrow x_3=3/2</script><p><strong>得到的解为：</strong></p>
-<script type="math/tex; mode=display">
-x_c=\left[\begin{array}{c}-2\\0\\3/2\\0\end{array}\right]</script><p>$x_c$是这个方程组的一个特解，因为当$x_2, x_4$取不同的值时，会得到不同的特解。那么我们如何得到方程的同解呢？即怎样用一般形式来表示所有的特解？</p>
-<p><strong>求解$Ax=b$的过程：</strong></p>
-<p>1、求解特解$x_c$</p>
-<p>2、求解$Ax=0$的解$x_n$</p>
-<p>$Ax=b$的解就是特解$x_c+x_n$，证明如下：</p>
-<script type="math/tex; mode=display">
-Ax_p=b, Ax_n=0\rightarrow A(x_p+x_n)=b</script><p>$x_c$我们上面已经得到，$x_n$在<a href="http://blog.csdn.net/tengweitw/article/details/40039373" target="_blank" rel="noopener">上一篇文章</a>中得到，则<strong>通解可以表示为：</strong></p>
-<script type="math/tex; mode=display">
-x_c=x_p+x_n=\left[\begin{array}{c}-2\\0\\3/2\\0\end{array}\right]
-+c_1\left[\begin{array}{c}-2\\1\\0\\0\end{array}\right]
-+c_2\left[\begin{array}{c}2\\0\\-2\\1\end{array}\right]</script><p>至此，我们就得到了$Ax=b$的解。</p>
-<p>通过上面的分析求解，我们知道当$b$满足下式时，方程组有解：</p>
-<p>$b_3-b_2-b_1=0$</p>
-<p><strong>实际上，方程有解的条件是向量$b$属于矩阵$A$的列空间，即向量$b$可以表示为矩阵$A$的各列的线性组合。</strong>例如上面的例子：</p>
-<script type="math/tex; mode=display">
-b=\left[\begin{array}{c}1\\5\\6\end{array}\right]
-=-2\left[\begin{array}{c}1\\2\\3\end{array}\right]
-+0\left[\begin{array}{c}2\\3\\6\end{array}\right]
-+\frac{3}{2}\left[\begin{array}{c}2\\6\\8\end{array}\right]
-+0\left[\begin{array}{c}2\\8\\10\end{array}\right]</script><p>方程的解就是矩阵$A$中各列前面的系数。</p>
-<hr>
-<p><strong>下面推广到更一般的情况，我们以矩阵$A$的不同情况来看解的结构(假设矩阵$A$为$m\times n$的矩阵,秩为$r$)：</strong></p>
-<p><strong><em>1、$r=n&lt; m$，即列满秩(所有列都有主元)</em></strong></p>
-<p>   由于所有列都有主元，则自由变量的个数为$0$，矩阵$A$的零空间中只有零向量。$Ax=b$的解的个数为$0$个或者$1$个.</p>
-<p>   举例说明：</p>
+A=\left[\begin{array}{cccc}-1&1&0&0\\0&-1&1&0\\-1&0&1&0\\-1&0&0&1\\0&0&-1&1\end{array}\right]</script><hr>
+<h2 id="矩阵零空间的物理意义"><a href="#矩阵零空间的物理意义" class="headerlink" title="矩阵零空间的物理意义"></a>矩阵零空间的物理意义</h2><p>我们首先<strong>考虑矩阵$A$的零空间</strong>，则有：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-\underbrace{\left[\begin{array}{cc}1&3\\2&1\\5&1\\6&1\end{array}\right]}_{A}
-{\longrightarrow}\underbrace{\left[\begin{array}{cc}1&0\\0&1\\0&0\\0&0\end{array}\right]}_{R}
-{\longrightarrow}\left[\begin{array}{c}I_{2\times 2}\\0_{2\times 2}\end{array}\right]
-\end{aligned}</script><p> 当$b=[4, 3, 6, 7]$时，$Ax=b$的唯一解为$x=[1, 1]$。</p>
-<p><strong><em>2、$r=m&lt;n$，即行满秩(所有行都有主元)</em></strong></p>
-<p>   由于所有行都有主元，消元后不会出现全为$0$的行，则$Ax=b$有无穷多解。且自由变量的个数为$n-r$，矩阵$A$的零空间中不只有零向量。</p>
-<p>   例如：</p>
+\underbrace{\left[\begin{array}{cccc}-1&1&0&0\\0&-1&1&0\\-1&0&1&0\\-1&0&0&1\\0&0&-1&1\end{array}\right]}_{A}
+\underbrace{\left[\begin{array}{c}x_1\\x_2\\x_3\\x_4\end{array}\right]}_{x}
+=\left[\begin{array}{c}x_2-x_1\\x_3-x_2\\x_3-x_1\\x_4-x_1\\x_4-x_3\end{array}\right]
+=\left[\begin{array}{c}0\\0\\0\\0\\0\end{array}\right]
+\end{aligned}</script><p>从上面的式子可以看出<strong>$Ax$的结果是各个节点之间的差值</strong>，假设$x_i$为第$i$点的电势，<strong>那我们就赋予了物理意义：$Ax=0$的意思是当节点电势取何值时，所有的节点之间的电势差为$0$</strong>。很显然，当所有节点等电势时显然成立，即：</p>
 <script type="math/tex; mode=display">
-A=\left[\begin{array}{cccc}1&2&5&6\\3&1&1&1\end{array}\right]\rightarrow
-R=\left[\begin{array}{cccc}1&0&-0.6&-0.8\\0&1&2.8&3.4\end{array}\right]\rightarrow
-R=[I\quad F]</script><p><strong><em>3、$r=m=n$，即列、行都满秩(矩阵可逆)</em></strong></p>
-<p>   由于列、行都满秩，则具有列满秩，行满秩的一些性质：零空间只有零向量，方程总有解且解唯一。</p>
-<script type="math/tex; mode=display">
-A=\left[\begin{array}{cccc}1&2\\3&1\end{array}\right]\rightarrow
-R=I_{2\times 2}</script><p><strong><em>4、$r&lt;m, r&lt;n$，非满秩矩阵</em></strong></p>
-<script type="math/tex; mode=display">
-A\rightarrow R=\left[\begin{array}{cccc}I&F\\0&0\end{array}\right]</script><p>$Ax=b$有无穷多解或则没有解。</p>
+Ax=0\rightarrow x=\left[\begin{array}{c}c\\c\\c\\c\end{array}\right]</script><p>我们将图中各边的电流用$b$表示，则有等式$Ax=b$。其中$A$表示了电路节点之间的关系，$x$代表了各点的电势，$b$代表了各边的电流。<strong>这样，我们就将一个物理问题数学化了</strong>。上面讨论中$b=0$，$x$中各个分量相同，<strong>即说明电势相同，网络中没有电流，这与我们的物理常识是一致的：电势差是产生电流的原因。</strong></p>
 <hr>
-<p><strong>从上面的四种情况的讨论，我们可以总结如下：</strong></p>
-<p>如果想看一个线性方程组的解的情况，我们可以通过高斯消元法得到矩阵$A$的最简形式$R$，$R$的可能情况如下：</p>
+<h2 id="矩阵左零空间的物理意义"><a href="#矩阵左零空间的物理意义" class="headerlink" title="矩阵左零空间的物理意义"></a>矩阵左零空间的物理意义</h2><p> <strong>上面我们看了矩阵$A$的零空间，下面我们讨论矩阵$A$的左零空间</strong>，为了给我们的式子赋予实际意义，在下式中，我们假设$y$为每条边的电流，$b$为每个节点的电流值，$b=0$说明电流为$0$。</p>
 <script type="math/tex; mode=display">
-\left[\begin{array}{c}I\\0\end{array}\right],
-\left[\begin{array}{cc}I&F\end{array}\right],
-\left[\begin{array}{c}I\end{array}\right],
-\left[\begin{array}{cc}I&F\\0&0\end{array}\right].</script><p>这四种情况分别对应的解的情况为：</p>
-<ol>
-<li>唯一解或无解</li>
-<li>无穷多解</li>
-<li>唯一解</li>
-<li>无解或无穷多解</li>
-</ol>
+A^Ty=0</script><p><strong>该式反应的是电流中的基尔霍夫电流定律</strong>：流入一个节点的电流与流出的是相等的，即合电流为$0$:</p>
+<script type="math/tex; mode=display">
+A^Ty=0\rightarrow\left[\begin{array}{cccc}-1&0&-1&-1&0\\1&-1&0&0&0\\0&1&1&0&-1\\0&0&0&1&1\end{array}\right]
+\left[\begin{array}{c}y_1\\y_2\\y_3\\y_4\\y_5\end{array}\right]=
+\left[\begin{array}{c}-y_1-y_3-y_4\\y_1-y_2\\y_2+y_3-y_5\\y_4+y_5\end{array}\right]=\left[\begin{array}{c}0\\0\\0\\0\end{array}\right]</script><hr>
+<p>举例说明，$-y_1-y_3-y_4=0$说明的是$1$号节点满足KCL的条件。<strong>我们可以通过高斯消元法求得解，但是我们可以通过图来得到解：</strong></p>
+<p>在电路网络图中，我们可以看到，$1, 2, 3$号节点构成一个回路，$1, 3, 4$号也构成一个回路，为了满足基尔霍夫电流定律，我们可以只让电流在回路中循环流动，即：我们可以得到两个特解：</p>
+<script type="math/tex; mode=display">
+\left[\begin{array}{c}1\\1\\-1\\0\\0\end{array}\right],
+\left[\begin{array}{c}0\\0\\1\\-1\\1\end{array}\right]</script><p>那么左零空间可以表示为上述两个特解的线性组合。</p>
+<p>对$A^T$进行消元，我们可以发现其秩是$3$，即列中有三行是线性无关的。<strong>由上面的两个特解，我们知道第$1, 2, 3$列是相关的，第$3, 4, 5$列是相关的，除此之外的任意三列都是线性无关的</strong>。我们发现$y_1, y_2, y_3$恰好构成回路，$y_3, y_4, y_5$也恰好构成回路，<strong>这说明相关性是由回路产生的。</strong></p>
+<hr>
+<h2 id="欧拉公式的证明"><a href="#欧拉公式的证明" class="headerlink" title="欧拉公式的证明"></a>欧拉公式的证明</h2><p><strong>欧拉公式：回路数=边数-顶点数+1</strong></p>
+<p>前面文章说过，如果一个$m\times n$的矩阵$A$的秩为$r$，则其左零空间的维数为$m-r$。在这里，左零空间的维数代表的是不相关的回路数，$m$代表的是边数，由于矩阵$A$的零空间是$1$维的，则列空间的维数为$r=n-1$。所以有下式成立（即欧拉公式）：</p>
+<p>   不相关的回路数=边数-顶点数+1</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -383,7 +345,7 @@ A\rightarrow R=\left[\begin{array}{cccc}I&F\\0&0\end{array}\right]</script><p>$A
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2014/11/08/[20141108]/" title="【线性代数】线性方程组的求解">http://tengweitw.com/2014/11/08/[20141108]/</a>
+    <a href="http://tengweitw.com/2014/11/13/[20141113]/" title="【线性代数】图与网络">http://tengweitw.com/2014/11/13/[20141113]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -404,12 +366,12 @@ A\rightarrow R=\left[\begin{array}{cccc}I&F\\0&0\end{array}\right]</script><p>$A
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2014/10/26/%5B20141026%5D/" rel="prev" title="【算法导论】多项式求和">
-      <i class="fa fa-chevron-left"></i> 【算法导论】多项式求和
+    <a href="/2014/11/10/%5B20141110%5D/" rel="prev" title="【线性代数】矩阵的四个基本子空间">
+      <i class="fa fa-chevron-left"></i> 【线性代数】矩阵的四个基本子空间
     </a></div>
       <div class="post-nav-item">
-    <a href="/2014/11/09/%5B20141109%5D/" rel="next" title="【线性代数】线性相关性、基和维数">
-      【线性代数】线性相关性、基和维数 <i class="fa fa-chevron-right"></i>
+    <a href="/2018/07/05/Perceptron/" rel="next" title="【图解例说机器学习】感知机 (Perceptron)">
+      【图解例说机器学习】感知机 (Perceptron) <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -448,6 +410,7 @@ A\rightarrow R=\left[\begin{array}{cccc}I&F\\0&0\end{array}\right]</script><p>$A
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵零空间的物理意义"><span class="nav-number">1.</span> <span class="nav-text">矩阵零空间的物理意义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵左零空间的物理意义"><span class="nav-number">2.</span> <span class="nav-text">矩阵左零空间的物理意义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#欧拉公式的证明"><span class="nav-number">3.</span> <span class="nav-text">欧拉公式的证明</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
