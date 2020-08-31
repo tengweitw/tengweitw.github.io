@@ -411,6 +411,67 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
       </tags>
   </entry>
   <entry>
+    <title>【线性代数】标准正交矩阵与Gram-Schmidt正交化</title>
+    <url>/2014/12/06/%5B20141206%5D/</url>
+    <content><![CDATA[<h2 id="标准正交矩阵"><a href="#标准正交矩阵" class="headerlink" title="标准正交矩阵"></a>标准正交矩阵</h2><p>  假设矩阵$Q$有列向量$q1, q2,\cdots, q_n$表示，且其列向量满足下式：</p>
+<script type="math/tex; mode=display">
+Q=\left[\begin{array}{cccc}q_1&q_2&\cdots&q_n\end{array}\right]\\
+\begin{aligned}
+q_i^Tq_j=\left\{  
+             \begin{array}{**lr**}  
+            0\quad i\neq j \\  
+            1\quad i=j   
+             \end{array}  
+\right. 
+\end{aligned}</script><p>则</p>
+<script type="math/tex; mode=display">
+Q^TQ=\left[\begin{array}{c}q_1\\q_2\\\vdots\\q_n\end{array}\right]
+\left[\begin{array}{cccc}q_1&q_2&\cdots&q_n\end{array}\right]=I_{n\times n}</script><p>若$Q$为方阵，由上面的式子则有</p>
+<script type="math/tex; mode=display">
+Q^TQ=I\rightarrow Q^T=Q^{-1}</script><p><strong>我们举例说明上述概念：</strong></p>
+<script type="math/tex; mode=display">
+Q=\left[\begin{array}{ccc}0&0&1\\1&0&0\\0&1&0\end{array}\right],
+Q^T=\left[\begin{array}{ccc}0&1&0\\0&0&1\\1&0&0\end{array}\right]\rightarrow
+QQ^T=\left[\begin{array}{ccc}1&0&0\\0&1&0\\0&0&1\end{array}\right]=I</script><hr>
+<h2 id="标准正交矩阵的好处"><a href="#标准正交矩阵的好处" class="headerlink" title="标准正交矩阵的好处"></a>标准正交矩阵的好处</h2><p>上面我们介绍了标准正交矩阵，那么标准正交矩阵的用处在哪？<strong>下面以两方面来说明标准正交矩阵的用处：</strong></p>
+<h3 id="求解-Ax-b"><a href="#求解-Ax-b" class="headerlink" title="求解$Ax=b$"></a>求解$Ax=b$</h3><p>在前面文章<a href="http://blog.csdn.net/tengweitw/article/details/41174555" target="_blank" rel="noopener">《正交投影》</a>中，有下式：</p>
+<script type="math/tex; mode=display">
+x=(A^TA)^{-1}A^Tb</script><p>当矩阵$A$为标准正交矩阵$Q$时，由于正交矩阵与其转置的乘积为单位矩阵，则上式可以转化为：</p>
+<script type="math/tex; mode=display">
+x=(Q^TQ)^{-1}Q^Tb=Q^Tb</script><p>可以发现，求x时不需要矩阵Q的逆，只需要知道转置即可，这样简化了计算。</p>
+<h3 id="求解投影矩阵"><a href="#求解投影矩阵" class="headerlink" title="求解投影矩阵"></a>求解投影矩阵</h3><p>在前面文章<a href="http://blog.csdn.net/tengweitw/article/details/41174555" target="_blank" rel="noopener">《正交投影》</a>中，投影矩阵的通式可以表示为：</p>
+<script type="math/tex; mode=display">
+P=A(A^TA)^{-1}A^T</script><p>当矩阵$A$为标准正交矩阵$Q$时，由于正交矩阵与其转置的乘积为单位矩阵，则上式可以转化为：</p>
+<script type="math/tex; mode=display">
+P=Q(Q^TQ)^{-1}Q^T=QQ^T</script><p>这样就将投影矩阵简单化了。</p>
+<hr>
+<h2 id="Gram-Schmidt正交化"><a href="#Gram-Schmidt正交化" class="headerlink" title="Gram-Schmidt正交化"></a>Gram-Schmidt正交化</h2><p>任何复杂问题的求解都可以从简单的问题出发。聪明的数学家不会羞于考虑小问题，因为当最简单的情况弄得明明白白时，一般的形式就容易理解了。并且，简单的情况不仅帮我们发现一般的公式，而且还提供了一种便利的核查方法，看看我们是否犯下了愚蠢的错误。下面我们就从简单的二维情况讨论：</p>
+<h3 id="二维情况"><a href="#二维情况" class="headerlink" title="二维情况"></a>二维情况</h3><p> 假设原来的矩阵为$[a,b]$，$a,b$为线性无关的二维向量，下面我们通过Gram-Schmidt正交化使得矩阵$A$为标准正交矩阵：</p>
+<p>假设正交化后的矩阵为$Q=[A,B]$,我们可以令$A=a$，那么我们的目的根据$AB=I$来求$B$。如下面的二维情况所示，$B$的方向与$A$成$90$度。图中还表明，$B$可以表示为$b$向量与$b$向量在$a$上的投影的误差向量。由《正交投影》中的结论可知，有如下关系成立：</p>
+<script type="math/tex; mode=display">
+B=b-Pb=b-\frac{A^Tb}{A^TA}A</script><hr>
+<h3 id="三维情况"><a href="#三维情况" class="headerlink" title="三维情况"></a>三维情况</h3><p>假设原来的矩阵为$[a, b, c]$，$a, b, c$为线性无关的二维向量，正交化后的矩阵为$Q=[A, B, C]$,我们可以令$A=a$，则可以根据二维情况得到如下猜想：</p>
+<script type="math/tex; mode=display">
+B=b-Pb=b-\frac{A^Tb}{A^TA}A\\
+C=c-\frac{A^Tc}{A^TA}A-\frac{B^Tc}{B^TB}B</script><p>上式显然满足$AB=0, AC=0, BC=0$。</p>
+<p><strong>下面我们用实例说明正交化的过程：</strong></p>
+<p>假设矩阵为$[a, b]$:</p>
+<script type="math/tex; mode=display">
+a=\left[\begin{array}{c}1\\1\\1\end{array}\right],
+b=\left[\begin{array}{c}1\\0\\2\end{array}\right]</script><p>则由二维情况的结论可知：</p>
+<script type="math/tex; mode=display">
+A=a, B=b-\frac{A^Tb}{A^TA}A</script><p>把具体数值代入得：</p>
+<script type="math/tex; mode=display">
+B=\left[\begin{array}{c}0\\-1\\1\end{array}\right]</script><p>经过归一化得：</p>
+<script type="math/tex; mode=display">
+Q=\left[\begin{array}{c}\frac{A}{\Vert A\Vert}&\frac{B}{\Vert B\Vert}\end{array}\right]
+=\left[\begin{array}{cc}\frac{\sqrt{3}}{3}&0\\\frac{\sqrt{3}}{3}&-\frac{\sqrt{2}}{2}\\\frac{\sqrt{3}}{3}&\frac{\sqrt{2}}{2}\end{array}\right]</script><p><strong>$Q$即是我们经过正交化后的正交矩阵。</strong></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Linear Algebra</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【线性代数】最小二乘与投影矩阵</title>
     <url>/2014/12/05/%5B20141205%5D/</url>
     <content><![CDATA[<p>​    前一篇文章<a href="http://blog.csdn.net/tengweitw/article/details/41174555" target="_blank" rel="noopener">《正交投影》</a>中我们讲述了正交投影，现在我们来从正交投影的角度来看看我们熟悉的最小二乘法。我记得最早知道最小二乘法是在大一上高数课的时候，我们首先回顾一下什么是最小二乘法。</p>
