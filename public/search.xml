@@ -449,7 +449,7 @@ E&=(a_1+a_2-1)^2+(2a_1+a_2-2)^2+(3a_1+a_2-2)^2\\
 \frac{\partial E}{\partial a_2}=6a_2+12a_1-10=0</script><p>由上式得到系数$a,b$的值，并得到拟合直线表达式：</p>
 <script type="math/tex; mode=display">
 a_1=\frac{1}{2},a_2=\frac{2}{3}\rightarrow y=\frac{1}{2}x+\frac{2}{3}</script><p>通过最小二乘法得到的曲线如下：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141205/20141205_fig001.jpg" width="400" height="300" title="图1" alt="图1" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141205/20141205_fig001.jpg" width="600" height="450" title="图1" alt="图1" ></p>
 <p><strong>线性代数角度看最小二乘法：</strong></p>
 <p>  同样假设拟合直线的表达式设为：</p>
 <script type="math/tex; mode=display">
@@ -502,7 +502,7 @@ A^Tb=\left[\begin{array}{ccc}1&2&3\\1&1&1\end{array}\right]
 \underbrace{\left[\begin{array}{c}\frac{6}{7}\\\frac{10}{6}\\\frac{13}{6}\end{array}\right]}_{p}
 +\underbrace{\left[\begin{array}{c}-\frac{1}{6}\\\frac{2}{6}\\-\frac{1}{6}\end{array}\right]}_{e}
 \end{aligned}</script><p>$p, b$在图中的表示如下：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141205/20141205_fig002.jpg" width="400" height="300" title="图1" alt="图1" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141205/20141205_fig002.jpg" width="600" height="450" title="图2" alt="图2" ></p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
       <tags>
         <tag>Linear Algebra</tag>
