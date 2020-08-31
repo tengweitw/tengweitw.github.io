@@ -414,6 +414,7 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
     <title>【线性代数】最小二乘与投影矩阵</title>
     <url>/2014/12/05/%5B20141205%5D/</url>
     <content><![CDATA[<p>​    前一篇文章<a href="http://blog.csdn.net/tengweitw/article/details/41174555" target="_blank" rel="noopener">《正交投影》</a>中我们讲述了正交投影，现在我们来从正交投影的角度来看看我们熟悉的最小二乘法。我记得最早知道最小二乘法是在大一上高数课的时候，我们首先回顾一下什么是最小二乘法。</p>
+<a id="more"></a>
 <hr>
 <h2 id="最小二乘法"><a href="#最小二乘法" class="headerlink" title="最小二乘法"></a>最小二乘法</h2><p>最近机器学习比较火，机器学习中的许多算法都是对信息进行分类，比如说支持向量机就是根据已知信息来分类，神经网络可以找到输入输出的关系（当然，不能给出具体的数学表达式），这两种算法都能找到输入与输出的关系，分类和回归总是相辅相成的。以后有时间也准备写写关于机器学习方面的算法（现在终于开始写了图解例说机器学习系列—2020.0831）。 言归正传，最小二乘法的作用也是从一组数据中找到输入与输出之间的关系。</p>
 <p><strong>原理：</strong></p>
@@ -448,7 +449,7 @@ E&=(a_1+a_2-1)^2+(2a_1+a_2-2)^2+(3a_1+a_2-2)^2\\
 \frac{\partial E}{\partial a_2}=6a_2+12a_1-10=0</script><p>由上式得到系数$a,b$的值，并得到拟合直线表达式：</p>
 <script type="math/tex; mode=display">
 a_1=\frac{1}{2},a_2=\frac{2}{3}\rightarrow y=\frac{1}{2}x+\frac{2}{3}</script><p>通过最小二乘法得到的曲线如下：</p>
-<p><img src="D:\Documents\writing\FigureBed\20141205\20141205_fig001.jpg" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141205/20141205_fig001.jpg" width="400" height="300" title="图1" alt="图1" ></p>
 <p><strong>线性代数角度看最小二乘法：</strong></p>
 <p>  同样假设拟合直线的表达式设为：</p>
 <script type="math/tex; mode=display">
@@ -501,7 +502,7 @@ A^Tb=\left[\begin{array}{ccc}1&2&3\\1&1&1\end{array}\right]
 \underbrace{\left[\begin{array}{c}\frac{6}{7}\\\frac{10}{6}\\\frac{13}{6}\end{array}\right]}_{p}
 +\underbrace{\left[\begin{array}{c}-\frac{1}{6}\\\frac{2}{6}\\-\frac{1}{6}\end{array}\right]}_{e}
 \end{aligned}</script><p>$p, b$在图中的表示如下：</p>
-<p><img src="D:\Documents\writing\FigureBed\20141205\20141205_fig002.jpg" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141205/20141205_fig002.jpg" width="400" height="300" title="图1" alt="图1" ></p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
       <tags>
         <tag>Linear Algebra</tag>
