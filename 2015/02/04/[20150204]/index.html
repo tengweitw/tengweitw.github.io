@@ -49,13 +49,13 @@
   };
 </script>
 
-  <meta name="description" content="一维搜索方法的分类如下：  这篇文章主要讲解黄金分割法、二分法、牛顿法这三种一维搜索方法。黄金分割法只用到原函数，二分法用到函数的一阶导，牛顿法用到函数的二阶导。由于本文主要对研一上学期的课程中的部分算法进行程序实现，理论部分大多参考上课的课件。  黄金分割法基本概念：   算法思想：  算法流程图及优缺点如下：   二分法 基本思想：    牛顿法基本思想：    算法流程图：  具体实现：下面">
+  <meta name="description" content="一维搜索方法的分类如下：  这篇文章主要讲解黄金分割法、二分法、牛顿法这三种一维搜索方法。黄金分割法只用到原函数，二分法用到函数的一阶导，牛顿法用到函数的二阶导。由于本文主要对研一上学期的课程中的部分算法进行程序实现，理论部分大多参考上课的课件。">
 <meta name="keywords" content="Math">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【工程优化】一维搜索方法">
 <meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2015&#x2F;02&#x2F;04&#x2F;[20150204]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="一维搜索方法的分类如下：  这篇文章主要讲解黄金分割法、二分法、牛顿法这三种一维搜索方法。黄金分割法只用到原函数，二分法用到函数的一阶导，牛顿法用到函数的二阶导。由于本文主要对研一上学期的课程中的部分算法进行程序实现，理论部分大多参考上课的课件。  黄金分割法基本概念：   算法思想：  算法流程图及优缺点如下：   二分法 基本思想：    牛顿法基本思想：    算法流程图：  具体实现：下面">
+<meta property="og:description" content="一维搜索方法的分类如下：  这篇文章主要讲解黄金分割法、二分法、牛顿法这三种一维搜索方法。黄金分割法只用到原函数，二分法用到函数的一阶导，牛顿法用到函数的二阶导。由于本文主要对研一上学期的课程中的部分算法进行程序实现，理论部分大多参考上课的课件。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150204&#x2F;20150204_fig001.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150204&#x2F;20150204_fig002.jpg">
@@ -70,7 +70,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150204&#x2F;20150204_fig011.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150204&#x2F;20150204_fig012.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150204&#x2F;20150204_fig013.jpg">
-<meta property="og:updated_time" content="2020-09-03T03:03:48.576Z">
+<meta property="og:updated_time" content="2020-09-03T15:00:31.030Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150204&#x2F;20150204_fig001.jpg">
 
@@ -252,7 +252,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-03 11:03:48" itemprop="dateModified" datetime="2020-09-03T11:03:48+08:00">2020-09-03</time>
+                <time title="修改时间：2020-09-03 23:00:31" itemprop="dateModified" datetime="2020-09-03T23:00:31+08:00">2020-09-03</time>
               </span>
 
           
@@ -290,6 +290,7 @@
         <p><strong>一维搜索方法的分类如下：</strong></p>
 <p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig001.jpg" width="400" height="450" title="图1" alt="图1" ></p>
 <p>这篇文章主要讲解<strong>黄金分割法、二分法、牛顿法</strong>这三种一维搜索方法。黄金分割法只用到原函数，二分法用到函数的一阶导，牛顿法用到函数的二阶导。由于本文主要对研一上学期的课程中的部分算法进行程序实现，<strong>理论部分大多参考上课的课件</strong>。</p>
+<a id="more"></a>
 <hr>
 <h2 id="黄金分割法"><a href="#黄金分割法" class="headerlink" title="黄金分割法"></a>黄金分割法</h2><p><strong>基本概念：</strong></p>
 <p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig002.jpg" width="500" height="350" title="图2" alt="图2" ></p>

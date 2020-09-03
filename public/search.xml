@@ -424,7 +424,8 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
 <li>步骤4：令$x_{k+1}=x_k+d^{k}, k=k+1$, 转到步骤2</li>
 </ul>
 <p><strong>算法流程图</strong>：</p>
-<p>​     <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150209/20150209_fig001.jpg" width="450" height="200" title="图1" alt="图1" ><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>​     <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150209/20150209_fig001.jpg" width="450" height="200" title="图1" alt="图1" ></p>
+<a id="more"></a>
 <hr>
 <h2 id="阻尼牛顿法"><a href="#阻尼牛顿法" class="headerlink" title="阻尼牛顿法"></a>阻尼牛顿法</h2><p>与牛顿法基本相同，<strong>只是加入了一维精确搜索</strong>。在牛顿迭代中，取$d^{(k)}=-[\nabla^2f(x^{(k)}) ]^{-1}\nabla f(x^{(k)}) $ , 加入精确一维搜索：$\min f(x^{(k)}+\lambda_kd^{(k)})$, 求得$\lambda_k$, 然后更新：$x^{(k+1)}=x^{(k)}+\lambda_kd^{(k)}$.</p>
 <p><strong>优缺点</strong>：改善了局部收敛性。</p>
@@ -481,6 +482,7 @@ s.t. &\quad x_1+x_2-2x_3+x_4=12\\
     <content><![CDATA[<p><strong>一维搜索方法的分类如下：</strong></p>
 <p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig001.jpg" width="400" height="450" title="图1" alt="图1" ></p>
 <p>这篇文章主要讲解<strong>黄金分割法、二分法、牛顿法</strong>这三种一维搜索方法。黄金分割法只用到原函数，二分法用到函数的一阶导，牛顿法用到函数的二阶导。由于本文主要对研一上学期的课程中的部分算法进行程序实现，<strong>理论部分大多参考上课的课件</strong>。</p>
+<a id="more"></a>
 <hr>
 <h2 id="黄金分割法"><a href="#黄金分割法" class="headerlink" title="黄金分割法"></a>黄金分割法</h2><p><strong>基本概念：</strong></p>
 <p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig002.jpg" width="500" height="350" title="图2" alt="图2" ></p>
