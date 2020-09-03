@@ -411,9 +411,44 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
       </tags>
   </entry>
   <entry>
+    <title>【数值分析】复化积分公式</title>
+    <url>/2015/02/02/%5B20150202%5D/</url>
+    <content><![CDATA[<p> 对于积分$\int_{a}^{b}f(x)dx$只要找到被积公式的原函数$F(x)$，利用牛顿莱普利兹公式有：</p>
+<script type="math/tex; mode=display">
+I=\int_{a}^{b}f(x)dx=F(b)-F(a)</script><p>但是，实际使用这种求积分的方法往往是有困难的，因为大量的被积函数的原函数是不能用初等函数表示的；另外，当$f(x)$是由测量或数值计算给出的一张数据表时，牛顿莱普利兹公式也无法直接运用，因此有必要研究积分的数值计算问题。</p>
+<a id="more"></a>
+<hr>
+<p>对于一些理论的推导，大家可以看看维基百科，下面我<strong>主要给出牛顿-科特斯公式在$n=1$(梯形求积公式)、$n=2$（辛普森公式）的情况，并通过代码实现</strong>。</p>
+<p><strong>梯形公式：</strong></p>
+<script type="math/tex; mode=display">
+T=(b-a)\left[\frac{1}{2}f(a)+\frac{1}{2}f(b)\right]</script><p><strong>辛普森公式：</strong></p>
+<script type="math/tex; mode=display">
+S=(b-a)\left[\frac{1}{6}f(a)+\frac{4}{6}f(\frac{a+b}{2})+\frac{1}{6}f(b)\right]</script><p>应用高阶牛顿-科特斯公式计算积分时，会出现数值不稳定的情况，而低阶公式往往因为积分步长过大使得离散误差变大，因此，为了提高求积公式的精度，可以把积分区间分成若干个子区间，在每个子区间上使用低阶求积公式，然后将结果加起来，这种方法称为复化求积法。</p>
+<p><strong>复化梯形公式</strong></p>
+<p>将区间$[a,b]$划分为$n$等分，步长为$h=(b-a)/h$，节点为$x_i=a+ih,i=1,2,\cdots,n+1$，在每个子区间$[x_i,x_{i+1}]$ 使用梯形公式得：</p>
+<script type="math/tex; mode=display">
+\int_{a}^{b}f(x)dx\approx\sum\limits_{i=1}^{n}\int_{x_i}^{x_{i+1}}f(x)dx=T_n=\frac{h}{2}\left[f(a)+2\sum\limits_{i=1}^{n-1}f(a+ih)+f(b)\right],h=\frac{b-a}{n}</script><p><strong>复化辛普森公式</strong></p>
+<p>根据复化梯形公式的推导，同理可得复化辛普森公式为：</p>
+<script type="math/tex; mode=display">
+S_n=\frac{h}{6}\sum\limits_{i=0}^{n-1}\left[f(x_i)+4f(x_{i+1/2})+f(x_{i+1})\right], h=\frac{b-a}{n}</script><hr>
+<p>下面我们通过实例来实现复化梯形公式和复化辛普森公式：</p>
+<p><strong>对于函数$f(x)=\sin(x)/x$，试用复化梯形公式和复化辛普森公式计算函数$f(x)$在$[0, 1]$上的积分。</strong></p>
+<p><strong>具体的程序实现如下：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Function</span><span class="params">(<span class="keyword">double</span> x)</span><span class="comment">//所要计算积分的函数f(x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(x==<span class="number">0</span>)<span class="comment">//sin(x)/x在0处的取值为1</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">sin</span>(x)/x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//复化梯形公式</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Trapz</span><span class="params">(<span class="keyword">double</span> a,<span class="keyword">double</span> b,<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> h=(b-a)/n;</span><br><span class="line">    <span class="keyword">double</span> T=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        T=T+Function(a+i*h);</span><br><span class="line">    &#125;</span><br><span class="line">    T*=<span class="number">2</span>;</span><br><span class="line">    T=(Function(a)+Function(b)+T)*h/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">return</span> T;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//复化辛普森公式</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">MulripleSimpson</span><span class="params">(<span class="keyword">double</span> a,<span class="keyword">double</span> b,<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> h=(b-a)/n;</span><br><span class="line">    <span class="keyword">double</span> T=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        T=T+Function(a+i*h)+<span class="number">4</span>*Function(a+(i+<span class="number">0.5</span>)*h)+Function(a+(i+<span class="number">1</span>)*h);</span><br><span class="line">    &#125;</span><br><span class="line">    T=T*h/<span class="number">6</span>;</span><br><span class="line">    <span class="keyword">return</span> T;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"使用复化梯形公式可得：%f\n"</span>,Trapz(<span class="number">0</span>,<span class="number">1</span>,<span class="number">8</span>));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"使用复化辛普森公式可得：%f\n"</span>,MulripleSimpson(<span class="number">0</span>,<span class="number">1</span>,<span class="number">4</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>运行结果如下图：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150202/20150202_fig001.jpg" width="600" height="450" title="图1" alt="图1" ></p>
+<p><strong>结果分析：</strong></p>
+<p>比较复化梯形公式和复化辛普森公式两种方法的运行结果，我们发现复化辛普森公式与准确值$0.9460831$更加接近，复化梯形公式只有$2$位有效数字，而复化辛普森公式有$6$为有效数字。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Math</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【随机过程】马氏链的理论与仿真</title>
     <url>/2015/01/27/%5B20150127%5D/</url>
     <content><![CDATA[<p>在<a href="http://blog.csdn.net/tengweitw/article/details/42775597" target="_blank" rel="noopener">2014年终总结</a>中，我提到要对这学期学过的数学课中的部分算法进行仿真实现。<a href="http://blog.csdn.net/tengweitw/article/category/2848347" target="_blank" rel="noopener">《数值分析》</a>和《工程优化》这两门数学课里面还有些专门讲算法的，可以用来仿真。在《随机过程》这门课中，几乎全都是公式推导，定理证明，实在难以仿真实现。最后发现，马尔科夫链这一章比较适合仿真，况且先前也写过类似的程序，更重要的是之前有人也问过关于马氏链的Matlab实现问题。关于马氏链的理论原理在这就不作描述，下面直接用程序来实现具体问题的求解。</p>
+<a id="more"></a>
 <p>假设有$9$个状态，其状态转移图如下所示：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150127/20150127_fig001.jpg" width="600" height="150" title="图1" alt="图1" ></p>
 <p>根据状态转移图，我们可以得到其一步转移概率矩阵为$P$:</p>

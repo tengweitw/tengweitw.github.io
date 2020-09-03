@@ -206,6 +206,124 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/02/27/%5B20140227%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/02/27/%5B20140227%5D/" class="post-title-link" itemprop="url">【Qt编程】Qt学习笔记</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-02-27 20:14:26" itemprop="dateCreated datePublished" datetime="2014-02-27T20:14:26+08:00">2014-02-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-14 15:36:06" itemprop="dateModified" datetime="2020-08-14T15:36:06+08:00">2020-08-14</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li><p>在创建项目时，项目名和路径中都不能出现中文。</p>
+</li>
+<li><p>可以使用<code>Ctrl + “+”</code>和<code>Ctrl + “-”</code>来改变程序的字体大小（Ctrl+鼠标滑轮可达到同样效果），使用<code>Ctrl + “0”</code>可以恢复到默认字体大小。</p>
+</li>
+<li><p>在设计模式下有几个过滤器，就是写着<code>Filter</code>的行输入框，可以帮助你更快的找到所需要的部件。</p>
+</li>
+<li><p>如果生成的.exe文件不能运行，并且提示丢失.dll文件，可以按照提示在Qt的安装目录的bin目录下寻找这些.dll文件。还有一种一劳永逸的方法是：将Qt的安装目录的bin目录加到系统的Path环境变量中去，这样程序运行是就可以自动找到那些dll文件。</p>
+</li>
+<li><p>在Qt Creator 默认下，编译的程序要想发布就需要dll文件，这种编译方式就称为动态编译。静态编译是指将Qt 的库进行重新编译，发布时不需要dll文件.</p>
+</li>
+<li><p>设置应用程序的图标：</p>
+<ul>
+<li>将myico.ico(名字可以自己取)图标文件放入工程的目录下，在目录里建立文本文档并写入下面代码<code>IDI_ICON1 ICON DISCARDABLE&quot;myico.ico&quot;</code>然后将该文本文档改为myico.rc (注意更改后缀名)</li>
+<li>在项目文件中的pro文件中的最后添加下面代码：<code>RC_FILE += myico.rc</code></li>
+</ul>
+</li>
+<li><p>任何一个QtGUI都需要一个QApplication类对象来管理应用程序的资源。</p>
+</li>
+<li><p>在默认情况下，新建的可视部件对象是不可见的，我们可以通过<code>show()</code>来显示。</p>
+</li>
+<li><p>中文显示乱码的解决办法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">QTextCodec::setCodecForTr(QTextCodec::codecForName(<span class="string">"UTF-8"</span>));   QTextCodec::setCodecForTr(QTextCodec::codecForLocale());</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>  在Windows系统下，其中一个能正常显示，最好两者都写上。</p>
+<ul>
+<li><p>Qt Creator的代码补全功能<br>当输入一个比较长得函数或变量名时，可以通过其中的几个字母来定位。比如说，要输入前面讲到的<code>setFocus()</code>函数，那么只需输入首字母s和后面的大写字母F即可，这样可以大大缩减提示列表，如果还没有定位到，那么可以输入F后面的字母。如下图1所示。<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140227/20140227_fig001.jpg" width="400" height="150" title="图1" alt="图1" ></p>
+</li>
+<li><p>默认的情况下，对话框的左上角是（0，0）。</p>
+</li>
+<li><p>Ui文件生成的默认头文件的名称是ui_加ui文件的名称；ui文件是使用uic编译工具来编译的。</p>
+</li>
+<li><p>当有多个项目并存时，我们可以在项目文件右击来设定活动项目。</p>
+</li>
+<li><p>在项目发布时，不需要包含user文件，如果要打开别人的项目文件，我们应该去掉这种类型的文件。</p>
+</li>
+<li><p>我们可以将pro文件直接拖向Qt Creator图标来打开项目。</p>
+</li>
+</ul>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/01/05/%5B20140105%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1007,93 +1125,6 @@ A^{(2)}=\begin{pmatrix}
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/12/19/%5B20131219%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2013/12/19/%5B20131219%5D/" class="post-title-link" itemprop="url">【算法导论】最小生成树之Prime法</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2013-12-19 19:45:45" itemprop="dateCreated datePublished" datetime="2013-12-19T19:45:45+08:00">2013-12-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-11 19:53:24" itemprop="dateModified" datetime="2020-08-11T19:53:24+08:00">2020-08-11</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.4k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>​    关于最小生成树的概念，在前一篇文章中已经讲到，就不在赘述了。下面介绍Prime算法：</p>
-<p>​    <strong>其基本思想为</strong>：从一个顶点出发，选择由该顶点出发的最小权值边，并将该边的另一个顶点包含进来，然后找出由这两个顶点出发的最小边，依此类推，直至包含所有的顶点。如果期间构成环，就舍弃该边，继续寻找最小边。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2013/12/19/%5B20131219%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1144,7 +1175,7 @@ A^{(2)}=\begin{pmatrix}
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-count">123</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1200,12 +1231,12 @@ A^{(2)}=\begin{pmatrix}
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">386k</span>
+    <span title="站点总字数">388k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:12</span>
+    <span title="站点阅读时长">9:14</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
