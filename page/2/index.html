@@ -206,6 +206,103 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/02/09/%5B20150209%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/02/09/%5B20150209%5D/" class="post-title-link" itemprop="url">【工程优化】最优化算法--牛顿法、阻尼牛顿法及单纯形法</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-02-09 11:53:03" itemprop="dateCreated datePublished" datetime="2015-02-09T11:53:03+08:00">2015-02-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-03 23:01:11" itemprop="dateModified" datetime="2020-09-03T23:01:11+08:00">2020-09-03</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="牛顿法"><a href="#牛顿法" class="headerlink" title="牛顿法"></a>牛顿法</h2><p><strong>使用条件</strong>：目标函数具有二阶导数，且海塞矩阵正定。</p>
+<p><strong>优缺点</strong>： 收敛速度快、计算量大、很依赖初始点的选择。</p>
+<p><strong>算法的基本步骤：</strong></p>
+<p>已知目标函数$f(x)$，梯度$g(x)$, Hessan矩阵$G(x)$, 给定误差限$\epsilon$:</p>
+<ul>
+<li>步骤1：选定初始点$x_0$，计算$f_0=f(x_0), k=0$;</li>
+<li>步骤2：计算$g_k=g(x_k)$，如果$\Vert g_k\Vert\le\epsilon$, 算法停止, $x^\star=x_k$，否则转到步骤3：</li>
+<li>步骤3：计算$G_k=G(x_k)$, 由方程$G_kd^k=-g_k$, 解得$d^k$;</li>
+<li>步骤4：令$x_{k+1}=x_k+d^{k}, k=k+1$, 转到步骤2</li>
+</ul>
+<p><strong>算法流程图</strong>：</p>
+<p>​     <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150209/20150209_fig001.jpg" width="450" height="200" title="图1" alt="图1" ></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2015/02/09/%5B20150209%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/02/04/%5B20150204%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1024,92 +1121,6 @@ QQ^T=\left[\begin{array}{ccc}1&0&0\\0&1&0\\0&0&1\end{array}\right]=I</script>
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/12/05/%5B20141205%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/12/05/%5B20141205%5D/" class="post-title-link" itemprop="url">【线性代数】最小二乘与投影矩阵</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-12-05 12:31:22" itemprop="dateCreated datePublished" datetime="2014-12-05T12:31:22+08:00">2014-12-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-31 09:40:37" itemprop="dateModified" datetime="2020-08-31T09:40:37+08:00">2020-08-31</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.1k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>​    前一篇文章<a href="http://blog.csdn.net/tengweitw/article/details/41174555" target="_blank" rel="noopener">《正交投影》</a>中我们讲述了正交投影，现在我们来从正交投影的角度来看看我们熟悉的最小二乘法。我记得最早知道最小二乘法是在大一上高数课的时候，我们首先回顾一下什么是最小二乘法。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2014/12/05/%5B20141205%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1160,7 +1171,7 @@ QQ^T=\left[\begin{array}{ccc}1&0&0\\0&1&0\\0&0&1\end{array}\right]=I</script>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-count">129</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1216,12 +1227,12 @@ QQ^T=\left[\begin{array}{ccc}1&0&0\\0&1&0\\0&0&1\end{array}\right]=I</script>
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">413k</span>
+    <span title="站点总字数">414k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:50</span>
+    <span title="站点阅读时长">9:52</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>

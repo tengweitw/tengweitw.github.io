@@ -411,9 +411,103 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
       </tags>
   </entry>
   <entry>
+    <title>【Qt编程】基于Qt的词典开发系列--词典框架设计及成品展示</title>
+    <url>/2015/03/31/%5B20150331%5D/</url>
+    <content><![CDATA[<p>  去年暑假的时候，作为学习Qt的实战，我写了一个名为《我爱查词典》的词典软件。后来由于导师项目及上课等原因，时间不足，所以该软件的部分功能欠缺，性能有待改善。这学期重新拿出来看时，又有很多东西都不熟悉了。恰逢这学期课比较少，于是乎想写写关于这个软件制作的一系列文章，对日后重拾该软件时能够较快入手。当然，也非常乐意读者们在该软件的基础上添加一些功能，源代码会在该系列文章写完之后公布。可运行的词典软件的下载地址：<a href="http://download.csdn.net/detail/tengweitw/8548767" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8548767</a></p>
+<a id="more"></a>
+<p><strong>下面先给出软件的架构，文章后面会给出各个功能展示图。</strong></p>
+<h2 id="词典的功能模块"><a href="#词典的功能模块" class="headerlink" title="词典的功能模块"></a>词典的功能模块</h2><p>​    </p>
+<p>1、无边框窗口的拖动、放大缩小</p>
+<p>2、系统托盘的显示</p>
+<p>3、登录管理</p>
+<p>4、用户账号显示</p>
+<p>5、置顶、换肤、最小化、关闭按钮</p>
+<p>6、调用本地浏览器查词</p>
+<p>7、查词历史前进后退按钮</p>
+<p>8、查词框、搜索按钮</p>
+<p>9、三种查词：网络查词、本地查词、网页查词</p>
+<p>10、单词信息显示窗口</p>
+<p>11、主菜单：置顶、字体大小选择、匹配模式选择、注销、关于、退出</p>
+<p>12、单词本</p>
+<p>13、本地词典的选择模块</p>
+<p>14、网上学堂</p>
+<p>15、网络连通状态标志</p>
+<p>16、本地词典使用状态</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig001.jpg" width="600" height="500" title="图1" alt="图1" ></p>
+<h2 id="工程目录文件"><a href="#工程目录文件" class="headerlink" title="工程目录文件"></a>工程目录文件</h2><p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig002.jpg" width="200" height="500" title="图2" alt="图2" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig003.jpg" width="200" height="300" title="图3" alt="图3" ></p>
+<p><strong>下面给出各个文件的大概功能说明：</strong></p>
+<p>1、basicwindow.h、basicwindow.cpp和basicwindow.ui文件定义了Basicwindow类，主要实现的是边框窗口的拖动和缩放，软件中其他的窗口设计大都继承该类</p>
+<p>2、completelineedit.h和completelineedit.cpp文件定义了CompleteLineEdit类，该类主要是改进QLineEdit类，可以有下拉列表的显示，软件中功能8就用到该类。</p>
+<p>3、libmanager.h、libmanager.cpp和libmanager.ui文件用于生成本地词典的选择界面。</p>
+<p>4、localdict.h和localdict.cpp文件定义了LocalDict类，用于读取本地的词典库。</p>
+<p>5、logindialog.h、logindialog.cpp和logindialog.ui定义了LoginDialog类，用于管理用户帐号的登录。</p>
+<p>6、network.h和network.cpp文件定义了netWork类，用于根据扇贝网的公开API，使用帐号登录扇贝网，进行网络查词。</p>
+<p>7、qmenubutton.h和qmenubutton.cpp定义了QMenuButton类，功能11继承了该类，使之可以出现下拉菜单。</p>
+<p>8、searchwindow.h、searchwindow.cpp和searchwindow.ui定义了SearchWindow类，用于软件主界面的显示，这个是软件的核心部分。</p>
+<p>9、word.h和word.cpp文件定义了Word类，主要用于储存从网络查词获得的单词内容。</p>
+<p>10、wordbook.h、wordbook.cpp和wordbook.ui文件定义了WordBook类，用于管理单词本，此部分功能尚未实现。</p>
+<p>11、wordmodify.h、wordmodify.cpp和wordmodify.ui文件定义了WordModify，用于单词本中单词的修改功能。</p>
+<hr>
+<h2 id="部分功能的展示图"><a href="#部分功能的展示图" class="headerlink" title="部分功能的展示图"></a>部分功能的展示图</h2><p><strong>1、主界面</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig004.jpg" width="600" height="500" title="图4" alt="图4" ></p>
+<p><strong>2、网络查词</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig005.jpg" width="600" height="500" title="图5" alt="图5" ></p>
+<p><strong>3、本地查词</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig006.jpg" width="600" height="500" title="图6" alt="图6" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig007.jpg" width="600" height="500" title="图7" alt="图7" ></p>
+<p><strong>4、网络搜索</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig008.jpg" width="600" height="500" title="图8" alt="图8" ></p>
+<p><strong>5、换肤功能</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig009.jpg" width="600" height="500" title="图9" alt="图9" ></p>
+<p><strong>6、搜索模式：句首匹配、句中匹配</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig010.jpg" width="600" height="500" title="图10" alt="图10" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig011.jpg" width="600" height="500" title="图11" alt="图11" ></p>
+<p><strong>7、主菜单</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig012.jpg" width="600" height="500" title="图12" alt="图12" ></p>
+<p><strong>8、托盘显示</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig013.jpg" width="220" height="40" title="图13" alt="图13" ></p>
+<p><strong>9、其他一些截图：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig014.jpg" width="600" height="500" title="图14" alt="图14" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig015.jpg" width="600" height="500" title="图15" alt="图15" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig016.jpg" width="600" height="500" title="图16" alt="图16" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig017.jpg" width="600" height="500" title="图17" alt="图17" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig018.jpg" width="600" height="500" title="图18" alt="图18" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig019.jpg" width="600" height="500" title="图19" alt="图19" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig020.jpg" width="600" height="500" title="图20" alt="图20" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150331/20150331_fig021.jpg" width="600" height="550" title="图21" alt="图21" ></p>
+<p><strong>基于Qt的词典开发系列</strong></p>
+<ol>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/44757875" target="_blank" rel="noopener">词典框架设计及成品展示</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45014771" target="_blank" rel="noopener">本地词典的设计</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45099867" target="_blank" rel="noopener">开始菜单的设计</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38758051" target="_blank" rel="noopener">无边框窗口的缩放与拖动</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38817595" target="_blank" rel="noopener">无边框窗口的拖动</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45223931" target="_blank" rel="noopener">界面美化设计</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45484803" target="_blank" rel="noopener">调用网络API</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45932429" target="_blank" rel="noopener">用户登录及API调用的实现</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45932429" target="_blank" rel="noopener">JSON数据解析</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/23294533" target="_blank" rel="noopener">国际音标的显示</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38237203" target="_blank" rel="noopener">系统托盘的显示</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38306803" target="_blank" rel="noopener">调用讲述人</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38555787" target="_blank" rel="noopener">音频播放</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38689745" target="_blank" rel="noopener">自动补全功能</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38734201" target="_blank" rel="noopener">HTML特殊字符及正则表达式</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/46563781" target="_blank" rel="noopener">后序</a></li>
+</ol>
+<p><strong>作品下载地址（发布版）</strong>：<a href="http://download.csdn.net/detail/tengweitw/8548767" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8548767</a></p>
+<p><strong>作品下载地址（绿色版）</strong>：<a href="http://download.csdn.net/detail/tengweitw/8830495" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8830495</a></p>
+<p><strong>源码下载地址</strong>：<a href="http://download.csdn.net/detail/tengweitw/8830503" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8830503</a></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Qt Coding</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【妄言之言】考研</title>
     <url>/2015/03/28/%5B20150328%5D/</url>
     <content><![CDATA[<p>对于一个没有考过研的人来说，谈考研好像有点不着边际。正如韩寒导演的电影《后会无期》中的一句台词：你连世界都没观过，哪来的世界观。不过古语有云：当局者迷，旁观者清。我就以一个旁观者的身份来谈谈考研。（以下内容都是我本人的观点，与我本人无关—皆为自己的妄言之言）</p>
+<a id="more"></a>
 <p>为什么要说考研呢？毕竟考研已经过了几个月的。因为这一周应该是复试周，很多学校都陆续开始了复试。最明显的感觉就是自习室的人变多了，记得开学前两周我每天来自习室的时候，教室里基本没人，很多教室都空着，这一周好像人变多了，拿着专业课本在看，而我呢却看着英文书，显得有点格格不入，没办法，下个月要考英语了。今天在逛学校论坛的时候，看了一些关于考研的帖子。有的在传教考研经验，庆祝考研成功，有的在抱怨学校的录取体制，有的在伤感二战的失败，简直就是人生百态。</p>
 <p>幸好，我周围一些考研的同学大多数都成功了。想当年，涛哥在大三上学期就开准备考研了，而且是跨学校跨专业。记得当初我们在准备期末复习的时候，他就在看《离散数学》等等计算机专业的书籍。然后呢，《信息论》给挂了，这个消息真是令我等目瞪口呆。毕竟涛哥在我们眼中就是神一般的人物，当然也有着“神”一般的思想。不过，这也是意料之外，情理之中，毕竟都去准备考研了。涛哥为了考研，也是蛮拼的，记得大三暑假的时候都是睡在我们客厅里，唉，每次都被我们戏弄。最后，功夫不负有心人，成功的去了南大的计算机系。说起涛哥，的确有不少的话。记得我好多东西都是跟着涛哥学的，谁叫我是个电脑白痴呢。涛哥的编程水平可谓一流，记得大一时学c语言，都知道他很厉害，我却还是个连开机键都不知道（高中没玩过电脑），连计算机文化基础课（考word、excel、ppt）都要靠舍友才能及格。谭浩强的那本绿皮书，看了两遍才独立完成了算法大作业（好像是用双向链表实现飞机航班查询功能），通过了考试。大一暑假的时候，涛哥说学个单片机吧，好吧，我当时连单片机是啥都不知道，也就稀里糊涂的用奖学金的钱买了块郭天祥的板子（在这里推荐看看郭天祥的《我的大学六年》）。说好的，暑假一起学习单片机的，我回家十天就会学校了，结果涛哥说他头疼要在家休息，真是坑我啊，害的我一个人在没有电、没有热水的条件下还坚持学完了单片机。也难怪，涛哥肯定用脑过度，大学四年也没见他看过电视、电影以及综艺娱乐节目，就连考研复试结束，依旧拉着我去图书馆学linux。记得上csdn这个博客，也是被涛哥带进来的，当初看涛哥在用这个，还发了几篇文章，我就注册了号，等我真正用这个写博客的时候，都已经忘了那个用户名了，于是就重新注册了。现在也就不知道涛哥的帐号了，不能写太多关于他的事，万一不小心被他看到就不好了。我们宿舍也有两个考研的，一个去了上海交大，一个去了北京邮电，真好！关于他俩的事就不在这寒暄了，以后会有专门的文章来念叨念叨宿舍的小伙伴们。</p>
 <p>记得我们班有三个考清华的，结果都没考上。情哥会家乡，调剂到了山东大学；小阳子调剂去了中科大；“学姐”准备二战，且在上周日告知，已被东南大学录取了。不由得为他感到高兴，付出总算有回报了。经常我、情歌、涛哥、晖哥我们“四人帮”一起自习、吃饭，考研复习就抛弃我了，让我伤心一会。我们呢，经常就调侃涛哥和“疏影”，情歌和“北在北方”的不得不说的“故事”。小阳子呢，记得是大一暑假，关系开始混的比较好的。因为暑假留在学校的人比较少，就渐渐的就熟悉了，我每次都去他那里和他一起看电视剧（基本上都是抗战、谍战片）。然后大二暑假的时候，和他一起参加了数学建模，寒假又一起参加了美国数学建模。关于“学姐”，是老乡洪湖的，经常一起都是说家乡话（好吧，我承认我一直都是说的家乡话）。大三的时候，经常和他一起坐在信远教室的左边第三排。二战的时候，每个月还去新校区看看他，这次回学校，还和他在华科待了两天。现在想来，都是满满的回忆。</p>
