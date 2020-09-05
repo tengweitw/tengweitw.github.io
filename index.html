@@ -712,6 +712,132 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/04/13/%5B20150413%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/04/13/%5B20150413%5D/" class="post-title-link" itemprop="url">【Qt编程】基于Qt的词典开发系列--本地词典的设计</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-04-13 17:36:05" itemprop="dateCreated datePublished" datetime="2015-04-13T17:36:05+08:00">2015-04-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-05 21:11:54" itemprop="dateModified" datetime="2020-09-05T21:11:54+08:00">2020-09-05</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>我设计的词典不仅可以实现在线查单词，而且一个重大特色就是具有<strong>丰富的本地词典库</strong>：我默认加入了八个类型的词典，如下所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150413/20150413_fig001.jpg" width="600" height="500" title="图1" alt="图1" ></p>
+<p>由于是本人是通信专业，因此加入了华为通信词典、电子工程词典，又由于我喜爱编程，也加入了c语言基本函数词典。下面介绍如何设计本地词典：</p>
+<h2 id="词典类型的选择"><a href="#词典类型的选择" class="headerlink" title="词典类型的选择"></a>词典类型的选择</h2><p>当然是txt格式的最好了，因为我们可以用程序直接进行读取。可是网上词典一般都是用mdx格式、ld2格式的，我无法用Qt来直接读取。最终，经过不断摸索，网上查找，发现我们可以将mdx格式的词典通过软件转化为txt格式的！</p>
+<h2 id="mdx词典的下载"><a href="#mdx词典的下载" class="headerlink" title="mdx词典的下载"></a>mdx词典的下载</h2><p>​    如何获取mdx格式的词典呢？直接百度 mdx 词典就可以发现如下搜索结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150413/20150413_fig002.jpg" width="600" height="400" title="图2" alt="图2" ></p>
+<p>从中选择下载你想要的词典，这里我以<a href="http://bbs.meizu.cn/thread-3299845-1-1.html中的第一个mdx词典“三合一汉语大辞典”作为例子。" target="_blank" rel="noopener">http://bbs.meizu.cn/thread-3299845-1-1.html中的第一个mdx词典“三合一汉语大辞典”作为例子。</a></p>
+<hr>
+<h2 id="mdx词典的查看"><a href="#mdx词典的查看" class="headerlink" title="mdx词典的查看"></a>mdx词典的查看</h2><p>​    由于是mdx格式的，你用记事本打开就会显示乱码。那么怎么查看你下载的词典的内容呢？这时我们可以利用一个可以解析mdx格式的<strong>软件MDict（<a href="http://download.csdn.net/detail/tengweitw/8588165" target="_blank" rel="noopener">点击下载</a>）</strong>来打开该mdx词典。</p>
+<p>举例说明：</p>
+<p>假设我下载了一个“三合一汉语大辞典.mdx”，我们首先打开MDict软件来查看该词典的内容。首先选择“词库”—“词库管理”—“加入词典”，从而加入我们下载的词典文件，然后点击“词库”，从下拉列表中选择我们刚才加入的“三合一汉语大辞典”。然后单击左侧栏，就会在右侧栏中显示对应的内容。具体操作图解如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150413/20150413_fig003.jpg" width="600" height="400" title="图3" alt="图3" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150413/20150413_fig004.jpg" width="600" height="500" title="图4" alt="图4" ></p>
+<h2 id="mdx词典的转换"><a href="#mdx词典的转换" class="headerlink" title="mdx词典的转换"></a>mdx词典的转换</h2><p>将mdx格式的词典转化为txt格式需要利用工具MDx词典转化工具（<a href="http://download.csdn.net/detail/tengweitw/8588171" target="_blank" rel="noopener">点击下载</a>），只需要按照下图即可转化为txt文件：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150413/20150413_fig005.jpg" width="500" height="400" title="图5" alt="图5" ></p>
+<p>​    用记事本打开该txt文件我们就可以发现下图类似的语言格式：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150413/20150413_fig006.jpg" width="700" height="400" title="图6" alt="图6" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150413/20150413_fig007.jpg" width="600" height="400" title="图7" alt="图7" ></p>
+<p>我们以图中第二行为例，aadb为我们要查的单词（注意:我们这里的词典是成语词典，即查找aadb四个拼音首字母所组成的成语），而后面<code>&lt;font &lt;/font&gt;&lt;br&gt;</code>中的即为我们要找的成语，学过网页设计的人应该都知道<code>&lt;font color=&quot;#0000FF&quot;&gt;&lt;br&gt;嗷嗷待哺&lt;/font&gt;&lt;br&gt;</code>的意思，这其实是html语言，即将“嗷嗷待哺”变为蓝色字体，正如我们在MDict所看到的一样。而恰好Qt可以识别html语言，因此即使像我这种没有学过html语言的人也不用费心思去了解。</p>
+<hr>
+<h2 id="txt词典的处理"><a href="#txt词典的处理" class="headerlink" title="txt词典的处理"></a>txt词典的处理</h2><p>前面我们基本上完成了词典的制作，但是我为了简便起见，我将词典中要查的词和内容分开保存。例如，我将上面的txt文件改名为Chinese.txt(方便编程使用)，将其拆分如下名为ChineseA和ChineseB文件：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150413/20150413_fig008.jpg" width="700" height="200" title="图8" alt="图8" ></p>
+<p>这样做的好处是，每当我在搜索窗口输入我想要查询的内容时（比如输入aadb），我就只需要打开ChineseA文件，在这里寻找是否存在该词，而不需要打开整个词典（词+内容），这样查找速度会快一点，因为很明显ChineseA的文件的大小要明显小于Chinese文件大小，<strong>还有一点好处，会在后面的系列文章中提到</strong>。如下所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150413/20150413_fig009.jpg" width="400" height="100" title="图9" alt="图9" ></p>
+<p>关于如何将上面的文件拆分成两个文件，我想应该很简单，我就不在这写出具体的实现过程，只说说思路：首先读取整个文件，每次读取一行，在每一行中，遇到第一个空格就提取出来放入ChineseA.txt中，该行剩余部分放入ChineseB.txt。<strong>值得注意的是</strong>，两个子文件中，对应的内容应该在相同行！</p>
+<p>好吧，也许说了这么多，你也嫌太复杂，懒得自己操作，觉得我的本地词典库足够了，那好吧，你可以自己下载我已经处理好了的txt格式的词典文件。链接为：<a href="http://download.csdn.net/detail/tengweitw/8588209" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8588209</a></p>
+<p><strong>基于Qt的词典开发系列</strong></p>
+<ol>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/44757875" target="_blank" rel="noopener">词典框架设计及成品展示</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45014771" target="_blank" rel="noopener">本地词典的设计</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45099867" target="_blank" rel="noopener">开始菜单的设计</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38758051" target="_blank" rel="noopener">无边框窗口的缩放与拖动</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38817595" target="_blank" rel="noopener">无边框窗口的拖动</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45223931" target="_blank" rel="noopener">界面美化设计</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45484803" target="_blank" rel="noopener">调用网络API</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45932429" target="_blank" rel="noopener">用户登录及API调用的实现</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45932429" target="_blank" rel="noopener">JSON数据解析</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/23294533" target="_blank" rel="noopener">国际音标的显示</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38237203" target="_blank" rel="noopener">系统托盘的显示</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38306803" target="_blank" rel="noopener">调用讲述人</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38555787" target="_blank" rel="noopener">音频播放</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38689745" target="_blank" rel="noopener">自动补全功能</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38734201" target="_blank" rel="noopener">HTML特殊字符及正则表达式</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/46563781" target="_blank" rel="noopener">后序</a></li>
+</ol>
+<p><strong>作品下载地址（发布版）</strong>：<a href="http://download.csdn.net/detail/tengweitw/8548767" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8548767</a></p>
+<p><strong>作品下载地址（绿色版）</strong>：<a href="http://download.csdn.net/detail/tengweitw/8830495" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8830495</a></p>
+<p><strong>源码下载地址</strong>：<a href="http://download.csdn.net/detail/tengweitw/8830503" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8830503</a></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/04/09/%5B20150409%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -969,92 +1095,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/03/28/%5B20150328%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2015/03/28/%5B20150328%5D/" class="post-title-link" itemprop="url">【妄言之言】考研</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2015-03-28 21:20:17" itemprop="dateCreated datePublished" datetime="2015-03-28T21:20:17+08:00">2015-03-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-04 17:25:34" itemprop="dateModified" datetime="2020-09-04T17:25:34+08:00">2020-09-04</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.9k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>对于一个没有考过研的人来说，谈考研好像有点不着边际。正如韩寒导演的电影《后会无期》中的一句台词：你连世界都没观过，哪来的世界观。不过古语有云：当局者迷，旁观者清。我就以一个旁观者的身份来谈谈考研。（以下内容都是我本人的观点，与我本人无关—皆为自己的妄言之言）</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2015/03/28/%5B20150328%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1105,7 +1145,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">131</span>
+          <span class="site-state-item-count">132</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1161,12 +1201,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">420k</span>
+    <span title="站点总字数">421k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:59</span>
+    <span title="站点阅读时长">10:02</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
