@@ -49,13 +49,13 @@
   };
 </script>
 
-  <meta name="description" content="我设计的词典不仅可以实现在线查单词，而且一个重大特色就是具有丰富的本地词典库：我默认加入了八个类型的词典，如下所示：  由于是本人是通信专业，因此加入了华为通信词典、电子工程词典，又由于我喜爱编程，也加入了c语言基本函数词典。下面介绍如何设计本地词典： 词典类型的选择当然是txt格式的最好了，因为我们可以用程序直接进行读取。可是网上词典一般都是用mdx格式、ld2格式的，我无法用Qt来直接读取。最">
+  <meta name="description" content="我设计的词典不仅可以实现在线查单词，而且一个重大特色就是具有丰富的本地词典库：我默认加入了八个类型的词典，如下所示：  由于是本人是通信专业，因此加入了华为通信词典、电子工程词典，又由于我喜爱编程，也加入了c语言基本函数词典。下面介绍如何设计本地词典：">
 <meta name="keywords" content="Qt Coding">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Qt编程】基于Qt的词典开发系列--本地词典的设计">
 <meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2015&#x2F;04&#x2F;13&#x2F;[20150413]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="我设计的词典不仅可以实现在线查单词，而且一个重大特色就是具有丰富的本地词典库：我默认加入了八个类型的词典，如下所示：  由于是本人是通信专业，因此加入了华为通信词典、电子工程词典，又由于我喜爱编程，也加入了c语言基本函数词典。下面介绍如何设计本地词典： 词典类型的选择当然是txt格式的最好了，因为我们可以用程序直接进行读取。可是网上词典一般都是用mdx格式、ld2格式的，我无法用Qt来直接读取。最">
+<meta property="og:description" content="我设计的词典不仅可以实现在线查单词，而且一个重大特色就是具有丰富的本地词典库：我默认加入了八个类型的词典，如下所示：  由于是本人是通信专业，因此加入了华为通信词典、电子工程词典，又由于我喜爱编程，也加入了c语言基本函数词典。下面介绍如何设计本地词典：">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150413&#x2F;20150413_fig001.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150413&#x2F;20150413_fig002.jpg">
@@ -66,7 +66,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150413&#x2F;20150413_fig007.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150413&#x2F;20150413_fig008.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150413&#x2F;20150413_fig009.jpg">
-<meta property="og:updated_time" content="2020-09-05T13:11:54.855Z">
+<meta property="og:updated_time" content="2020-09-05T13:22:03.880Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150413&#x2F;20150413_fig001.jpg">
 
@@ -248,7 +248,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-05 21:11:54" itemprop="dateModified" datetime="2020-09-05T21:11:54+08:00">2020-09-05</time>
+                <time title="修改时间：2020-09-05 21:22:03" itemprop="dateModified" datetime="2020-09-05T21:22:03+08:00">2020-09-05</time>
               </span>
 
           
@@ -286,6 +286,7 @@
         <p>我设计的词典不仅可以实现在线查单词，而且一个重大特色就是具有<strong>丰富的本地词典库</strong>：我默认加入了八个类型的词典，如下所示：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150413/20150413_fig001.jpg" width="600" height="500" title="图1" alt="图1" ></p>
 <p>由于是本人是通信专业，因此加入了华为通信词典、电子工程词典，又由于我喜爱编程，也加入了c语言基本函数词典。下面介绍如何设计本地词典：</p>
+<a id="more"></a>
 <h2 id="词典类型的选择"><a href="#词典类型的选择" class="headerlink" title="词典类型的选择"></a>词典类型的选择</h2><p>当然是txt格式的最好了，因为我们可以用程序直接进行读取。可是网上词典一般都是用mdx格式、ld2格式的，我无法用Qt来直接读取。最终，经过不断摸索，网上查找，发现我们可以将mdx格式的词典通过软件转化为txt格式的！</p>
 <h2 id="mdx词典的下载"><a href="#mdx词典的下载" class="headerlink" title="mdx词典的下载"></a>mdx词典的下载</h2><p>​    如何获取mdx格式的词典呢？直接百度 mdx 词典就可以发现如下搜索结果：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150413/20150413_fig002.jpg" width="600" height="400" title="图2" alt="图2" ></p>
@@ -391,8 +392,8 @@
       <i class="fa fa-chevron-left"></i> 【Qt编程】设计ColorBar颜色栏
     </a></div>
       <div class="post-nav-item">
-    <a href="/2018/07/05/Perceptron/" rel="next" title="【图解例说机器学习】感知机 (Perceptron)">
-      【图解例说机器学习】感知机 (Perceptron) <i class="fa fa-chevron-right"></i>
+    <a href="/2015/04/17/%5B20150417%5D/" rel="next" title="【Qt编程】基于Qt的词典开发系列--开始菜单的设计">
+      【Qt编程】基于Qt的词典开发系列--开始菜单的设计 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -447,7 +448,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-count">133</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -503,12 +504,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">421k</span>
+    <span title="站点总字数">425k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">10:02</span>
+    <span title="站点阅读时长">10:07</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
