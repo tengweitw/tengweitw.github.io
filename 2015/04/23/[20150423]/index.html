@@ -49,25 +49,36 @@
   };
 </script>
 
-  <meta name="description" content="1、html特殊字符的显示    我们知道html语言和C语言一样也有一些特殊字符，它们是不能正常显示的，必须经过转义，在网上可以查到如何显示这些字符，如下图所示：">
+  <meta name="description" content="本文讲一讲界面设计，作品要面向用户，界面设计的好坏直接影响到用户的体验。现在的窗口设计基本都是扁平化的，你可以从window XP与window 8的窗口可以明显感觉出来。当然除了窗口本身的效果，窗口中各种控件的特效也是特别重要的一环。下面讲讲我在词典软件中的一些设计：说到界面美化的设计，不得不提到美工，一个好的美工是相当的重要！软件毕竟少不了图标，而不懂美工的我，也就只能在网上使用别人的图标了。">
 <meta name="keywords" content="Qt Coding">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【Qt编程】基于Qt的词典开发系列html特殊字符及正则表达式">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2014&#x2F;08&#x2F;21&#x2F;[20140821]&#x2F;index.html">
+<meta property="og:title" content="【Qt编程】基于Qt的词典开发系列--界面美化设计">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2015&#x2F;04&#x2F;23&#x2F;[20150423]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="1、html特殊字符的显示    我们知道html语言和C语言一样也有一些特殊字符，它们是不能正常显示的，必须经过转义，在网上可以查到如何显示这些字符，如下图所示：">
+<meta property="og:description" content="本文讲一讲界面设计，作品要面向用户，界面设计的好坏直接影响到用户的体验。现在的窗口设计基本都是扁平化的，你可以从window XP与window 8的窗口可以明显感觉出来。当然除了窗口本身的效果，窗口中各种控件的特效也是特别重要的一环。下面讲讲我在词典软件中的一些设计：说到界面美化的设计，不得不提到美工，一个好的美工是相当的重要！软件毕竟少不了图标，而不懂美工的我，也就只能在网上使用别人的图标了。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140821&#x2F;20140821_fig001.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140821&#x2F;20140821_fig002.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140821&#x2F;20140821_fig003.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140821&#x2F;20140821_fig004.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140821&#x2F;20140821_fig005.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140821&#x2F;20140821_fig006.jpg">
-<meta property="og:updated_time" content="2020-08-23T07:38:55.615Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150423&#x2F;20150423_fig001.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150423&#x2F;20150423_fig002.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150423&#x2F;20150423_fig003.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150423&#x2F;20150423_fig004.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150423&#x2F;20150423_fig005.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150423&#x2F;20150423_fig006.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150423&#x2F;20150423_fig007.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150423&#x2F;20150423_fig008.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150423&#x2F;20150423_fig009.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150423&#x2F;20150423_fig010.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150423&#x2F;20150423_fig011.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150423&#x2F;20150423_fig012.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150423&#x2F;20150423_fig013.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150423&#x2F;20150423_fig014.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150423&#x2F;20150423_fig015.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150423&#x2F;20150423_fig016.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150423&#x2F;20150423_fig017.jpg">
+<meta property="og:updated_time" content="2020-09-06T03:51:38.921Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20140821&#x2F;20140821_fig001.jpg">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150423&#x2F;20150423_fig001.jpg">
 
-<link rel="canonical" href="http://tengweitw.com/2014/08/21/[20140821]/">
+<link rel="canonical" href="http://tengweitw.com/2015/04/23/[20150423]/">
 
 
 <script id="page-configurations">
@@ -81,7 +92,7 @@
   };
 </script>
 
-  <title>【Qt编程】基于Qt的词典开发系列html特殊字符及正则表达式 | 青峰碧陋室</title>
+  <title>【Qt编程】基于Qt的词典开发系列--界面美化设计 | 青峰碧陋室</title>
   
 
 
@@ -215,7 +226,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/08/21/%5B20140821%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/04/23/%5B20150423%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -228,7 +239,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【Qt编程】基于Qt的词典开发系列html特殊字符及正则表达式
+          【Qt编程】基于Qt的词典开发系列--界面美化设计
         </h1>
 
         <div class="post-meta">
@@ -238,14 +249,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2014-08-21 18:01:48" itemprop="dateCreated datePublished" datetime="2014-08-21T18:01:48+08:00">2014-08-21</time>
+              <time title="创建时间：2015-04-23 17:15:44" itemprop="dateCreated datePublished" datetime="2015-04-23T17:15:44+08:00">2015-04-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-23 15:38:55" itemprop="dateModified" datetime="2020-08-23T15:38:55+08:00">2020-08-23</time>
+                <time title="修改时间：2020-09-06 11:51:38" itemprop="dateModified" datetime="2020-09-06T11:51:38+08:00">2020-09-06</time>
               </span>
 
           
@@ -261,14 +272,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.9k</span>
+              <span>2.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -280,36 +291,58 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><strong>1、html特殊字符的显示</strong></p>
-<p>   我们知道html语言和C语言一样也有一些特殊字符，它们是不能正常显示的，必须经过转义，在网上可以查到如何显示这些字符，如下图所示：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140821/20140821_fig001.jpg" width="300" height="200" title="图1" alt="图1" ></p>
+        <p>本文讲一讲界面设计，作品要面向用户，界面设计的好坏直接影响到用户的体验。现在的窗口设计基本都是扁平化的，你可以从window XP与window 8的窗口可以明显感觉出来。当然除了窗口本身的效果，窗口中各种控件的特效也是特别重要的一环。下面讲讲我在词典软件中的一些设计：说到界面美化的设计，不得不提到美工，一个好的美工是相当的重要！软件毕竟少不了图标，而不懂美工的我，也就只能在网上使用别人的图标了。</p>
 <a id="more"></a>
-<p>上图给了最常用的特殊字符的显示，下面我们来实验一下：</p>
-<p>首先在记事本中写入一句：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">blue</span>&gt;</span>程序例<span class="tag">&lt;/<span class="name">font</span>&gt;</span>#include<span class="tag">&lt;<span class="name">stdio.h</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p><strong>然后就文本后缀名改为.html后</strong>，用浏览器打开，显示如下：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140821/20140821_fig002.jpg" width="350" height="160" title="图2" alt="图2" ></p>
-<p>我们从上图可以发现include后面没有显示，但是当我们在文本中写入：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">blue</span>&gt;</span>程序例<span class="tag">&lt;/<span class="name">font</span>&gt;</span>#include<span class="tag">&lt;<span class="name">stdio.h</span>&gt;</span>   </span><br><span class="line">或</span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">blue</span>&gt;</span>程序例<span class="tag">&lt;/<span class="name">font</span>&gt;</span>#include<span class="tag">&lt;<span class="name">stdio.h</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>这时就能正常显示了。显示结果如下图：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140821/20140821_fig003.jpg" width="350" height="150" title="图3" alt="图3" ></p>
-<p>​    我们知道Qt能够支持html语言，但是我在编写可以查询c语言函数(肯定有#include后面&lt;&gt;的特殊字符的显示问题)的时候发现使用上面的方法仍然不能显示特殊字符，后来灵机一动，就决定<strong>用全角＜＞来代替半角&lt;&gt;</strong>。这样就不会当成是特殊字符了，就可以正常显示了。半角和全角的转换只需要点击下图中的第3个按钮：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140821/20140821_fig004.jpg" width="300" height="80" title="图4" alt="图4" ></p>
-<p>虽然说，使用全角后看起来不是很协调，但还看得过去，如果读者有什么好的方法，请不吝赐教。</p>
-<p><strong>2、正则表达式</strong></p>
-<p>​    接着上面的问题继续说，比如我有一个C语言函数词典库，我取其中一段来举例：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;font color=blue&gt;程序例&lt;/font&gt;:&lt;br&gt;#include &lt;span style="color:#ff0000;"&gt;&lt;&lt;/span&gt;stdio.h &lt;span style="color:#ff0000;"&gt;&gt;&lt;/span&gt;&lt;br&gt;#include &lt;span style="color:#ff0000;"&gt;&lt;&lt;/span&gt; stdlib.h &lt;span style="color:#ff0000;"&gt;&gt;&lt;/span&gt;&lt;br&gt;int main(void)&lt;br&gt;</span><br></pre></td></tr></table></figure>
-<p>因为我们需要将上述半角的&lt;&gt;转换为全角的＜＞，并且<strong>只是替换处于头文件的半角&lt;&gt;</strong>，<strong>即字符串中为红色的部分</strong>。当然当文件比较小的时候，可以手动查找替换，但是由于词典一半都有十几M，这时就必须使用正则表达式了。</p>
-<p>​    在Qt中，使用了QRegExp来支持正则表达式。关于正则表达式的语法，网上都有很多教程，我就不细说了。从上面的实例字符串的内容，我们知道包含了几个头文件，所以我们在匹配时，要分别匹配各个头文件两边的半角&lt;&gt;，<strong>即我们要使用非贪婪模式</strong>，否则就会从第一个头文件的&lt;匹配到最后一个头文件的&gt;。我们知道，在正则表达式中，非贪婪模式是由’?’来指定的，但是对于QRegExp类来说，？是不合法的。<strong>在QRegExp中，要使用setMinimal函数来指定贪婪模式</strong>。<strong>setMinimal(true)就是非贪婪模式，setMinimal(false)就是贪婪模式。</strong></p>
-<p>​    通过上面两部分的讲解，就可以完成C语言函数库词典的显示了。下面通过代码实现，新建Qt Gui应用程序，选择基类为QWidget，其中只需要修改widget.cpp里的内容即可（需要在widget.ui界面中，添加两个label,分别命名为label和label1）。</p>
-<p>widget.cpp文件：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"widget.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"ui_widget.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;QString&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;QRegExp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;QDebug&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;QLabel&gt;</span></span></span><br><span class="line"></span><br><span class="line">Widget::Widget(QWidget *parent) :</span><br><span class="line">    QWidget(parent),</span><br><span class="line">    ui(<span class="keyword">new</span> Ui::Widget)</span><br><span class="line">&#123;</span><br><span class="line">    ui-&gt;setupUi(<span class="keyword">this</span>);</span><br><span class="line">    QString str=<span class="string">"&lt;font color=blue&gt;程序例&lt;/font&gt;:&lt;br&gt;#include &lt;stdio.h &gt;&lt;br&gt;#include &lt; stdlib.h &gt;&lt;br&gt;int main(void)&lt;br&gt;"</span>;</span><br><span class="line">    ui-&gt;label-&gt;setText(str);  <span class="comment">//由于Qt也能识别html格式，而&lt; &gt;是html的特殊字符，因此不处理的话，就会出现显示出错</span></span><br><span class="line"></span><br><span class="line">    <span class="function">QRegExp <span class="title">rx</span><span class="params">(<span class="string">"#include (&lt;(.*.h )&gt;)"</span>)</span></span>;<span class="comment">//正则表达式里的括号是为了获取匹配的内容</span></span><br><span class="line">    rx.setMinimal(<span class="literal">true</span>);<span class="comment">//非贪婪模式</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> pos=<span class="number">0</span>;<span class="comment">//从字符串的开始部分</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;str.size();i++)</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        pos=rx.indexIn(str,<span class="number">0</span>);<span class="comment">//得到匹配字符串的位置</span></span><br><span class="line">        <span class="keyword">while</span>(pos!=<span class="number">-1</span>)<span class="comment">//匹配成功</span></span><br><span class="line">        &#123;</span><br><span class="line">        str.replace(rx.cap(<span class="number">1</span>),<span class="string">"＜"</span>+rx.cap(<span class="number">2</span>)+<span class="string">"＞"</span>);<span class="comment">//这里是进行替换，如果不明白rx.cap是什么，可以qDebug显示内容</span></span><br><span class="line">        pos=rx.indexIn(str,pos+rx.matchedLength());<span class="comment">//从当前位置，继续往后进行匹配</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">ui-&gt;label1-&gt;setText(str);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Widget::~Widget()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">delete</span> ui;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>程序运行结果如下：</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140821/20140821_fig005.jpg" width="500" height="380" title="图5" alt="图5" ></p>
-<p><strong>下面放一张查单词软件用到的特殊字符显示和使用正则表达式后的截图：</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140821/20140821_fig006.jpg" width="500" height="380" title="图6" alt="图6" ></p>
-<p>注意：我使用的平台为QT5,如果转移到Qt4上有错的话，可以反向参考<a href="http://qt-project.org/wiki/Transition_from_Qt_4.x_to_Qt5" target="_blank" rel="noopener">http://qt-project.org/wiki/Transition_from_Qt_4.x_to_Qt5</a></p>
-<p><strong>基于Qt的词典开发系列</strong></p>
+<hr>
+<h2 id="如何得到网上的图标？"><a href="#如何得到网上的图标？" class="headerlink" title="如何得到网上的图标？"></a>如何得到网上的图标？</h2><p>直接百度就可以了，当然还有另一种方法：就是从别人的文件中提取这些图标文件。一般来说，图标文件是不会以图片格式存储在软件目录中的，一般都存放在后缀名为.rdb以及.ui文件中。具体的步骤如下：</p>
+<ul>
+<li>找到要提取软件的安装目录</li>
+<li>进行搜索：搜索.jpg、.png等图片格式文件（能够搜到最好了），然后搜索.rdb或.ui文件</li>
+<li>下载RDB打包解包工具，进行解包，就可以得到图片资源了  </li>
+</ul>
+<hr>
+<h2 id="控件间的无缝连接："><a href="#控件间的无缝连接：" class="headerlink" title="控件间的无缝连接："></a>控件间的无缝连接：</h2><p>所谓无缝连接是指控件与控件之间没有空隙，用Qt Creator打开界面文件，比如我打开这个词典项目，打开searchwindow.ui文件，控件是否有空隙的效果如下所示：</p>
+<p>控件间的空隙大小可以由这些子控件所在父控件的Layout属性控制</p>
+<p><strong>1、当Layout属性设置如下时：（有空隙的情况）</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150423/20150423_fig001.jpg" width="400" height="180" title="图1" alt="图1" ></p>
+<p>则控件间有空隙，显示效果如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150423/20150423_fig002.jpg" width="600" height="500" title="图2" alt="图2" ></p>
+<p><strong>2当Layout属性设置如下时：（没有空隙的情况）</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150423/20150423_fig003.jpg" width="400" height="180" title="图3" alt="图3" ></p>
+<p>则控件间无空隙，显示效果如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150423/20150423_fig004.jpg" width="600" height="500" title="图4" alt="图4" ></p>
+<hr>
+<h2 id="按钮的美化"><a href="#按钮的美化" class="headerlink" title="按钮的美化"></a>按钮的美化</h2><p>现在按钮也开始扁平化，例如上图中的所有按钮都是扁平化的，两者的差别如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150423/20150423_fig005.jpg" width="200" height="200" title="图5" alt="图5" ></p>
+<p>显然第一种是常规的按钮，如果我们把ToolButton的autoRise属性书中，就会出现第二种情况，之所以没有使用QPushButton是因为它没有autoRaise属性。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150423/20150423_fig006.jpg" width="400" height="120" title="图6" alt="图6" ></p>
+<p>当选中autoRasie属性后，当鼠标放在该按钮上时效果如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150423/20150423_fig007.jpg" width="200" height="100" title="图7" alt="图7" ></p>
+<hr>
+<h2 id="动态渲染效果"><a href="#动态渲染效果" class="headerlink" title="动态渲染效果"></a>动态渲染效果</h2><p>我们发现很多软件都有动态效果，如鼠标放在按钮上时，会发生变化，点击后又发生变化，这些是怎么做到的呢？Qt中美化界面最好的使用QML，不过由于刚出来不久，网上资料不是很多，我也不是很懂，就不介绍了。学习过网页制作的都知道，网页的渲染效果用到了css，与此类似，Qt使用qss来美化界面。下面介绍一种简单使用的方法来进行渲染操作：</p>
+<p>右键单击界面中的控件，选择“更改样式表……”，然后在弹出的窗口中设置渲染效果，<strong>下面以单击按钮来举例说明：</strong></p>
+<p>首先，右击关闭按钮，选择“更改样式表……”：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150423/20150423_fig008.jpg" width="600" height="500" title="图8" alt="图8" ></p>
+<p>然后在弹出的“编辑样式表”按钮中写入如下代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">QToolButton&#123;</span><br><span class="line">	</span><br><span class="line">	border-image: url(:/searchwindow/searchwindow/close_normal.png);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//上面的语句是给“关闭”按钮添加close_normal.png的图标，注意这里需要写你自己图片的路径</span></span><br><span class="line">QToolButton:hover&#123;</span><br><span class="line">	</span><br><span class="line">	border-image: url(:/searchwindow/searchwindow/close_hover.png);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//这条语句的作用是，当鼠标放在“关闭”按钮上时，图标变成close_hover.png的图标，注意这里需要写你自己图片的路径</span></span><br></pre></td></tr></table></figure>
+<p><strong>这两条语句实现的效果如下：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150423/20150423_fig009.jpg" width="600" height="500" title="图9" alt="图9" ></p>
+<p>一般情况下,关闭按钮显示如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150423/20150423_fig010.jpg" width="50" height="50" title="图10" alt="图10" ></p>
+<p>当鼠标放在上面时，效果如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150423/20150423_fig011.jpg" width="50" height="50" title="图11" alt="图11" ></p>
+<p>我在词典中所有的按钮几乎都是采用了这种效果，如果想使用更多的效果，可以百度qt setstylesheet，可以看到更多的渲染效果。<strong>在软件界面中，listWidget控件中我使用的样式表如下</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">QListWidget::item</span><br><span class="line">&#123;</span><br><span class="line">	width:<span class="number">40</span>px;</span><br><span class="line">	height:<span class="number">40</span>px;</span><br><span class="line">	font:bold <span class="number">20</span>px;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"> QListWidget &#123;</span><br><span class="line">    </span><br><span class="line">	background-color: rgb(<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> QListWidget::item:selected:!active &#123;</span><br><span class="line">    background-color: rgb(<span class="number">98</span>, <span class="number">93</span>, <span class="number">255</span>);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> QListWidget::item:selected:active &#123;</span><br><span class="line">    </span><br><span class="line">	background-color: rgb(<span class="number">98</span>, <span class="number">93</span>, <span class="number">255</span>);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> QListWidget::item:hover &#123;</span><br><span class="line"> </span><br><span class="line">	background-color: rgba(<span class="number">50</span>, <span class="number">23</span>, <span class="number">255</span>, <span class="number">100</span>);</span><br><span class="line">	</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>具体含义可以根据效果就可以看出，如下演示效果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150423/20150423_fig012.jpg" width="150" height="400" title="图12" alt="图12" ></p>
+<p>当前选择项使用深蓝表示，而鼠标停靠的选择项使用浅蓝表示。</p>
+<p><strong>下面是我软件项目中所有的界面，图标都是使用网络上的图标（若有侵权，请告知）：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150423/20150423_fig013.jpg" width="600" height="500" title="图13" alt="图13" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150423/20150423_fig014.jpg" width="600" height="500" title="图14" alt="图14" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150423/20150423_fig015.jpg" width="400" height="300" title="图15" alt="图15" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150423/20150423_fig016.jpg" width="400" height="300" title="图16" alt="图16" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150423/20150423_fig017.jpg" width="400" height="400" title="图17" alt="图17" ></p>
+<hr>
 <ol>
 <li><a href="http://blog.csdn.net/tengweitw/article/details/44757875" target="_blank" rel="noopener">词典框架设计及成品展示</a></li>
 <li><a href="http://blog.csdn.net/tengweitw/article/details/45014771" target="_blank" rel="noopener">本地词典的设计</a></li>
@@ -366,7 +399,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2014/08/21/[20140821]/" title="【Qt编程】基于Qt的词典开发系列html特殊字符及正则表达式">http://tengweitw.com/2014/08/21/[20140821]/</a>
+    <a href="http://tengweitw.com/2015/04/23/[20150423]/" title="【Qt编程】基于Qt的词典开发系列--界面美化设计">http://tengweitw.com/2015/04/23/[20150423]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -387,12 +420,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2014/08/19/%5B20140819%5D/" rel="prev" title="【Qt编程】基于Qt的词典开发系列自动补全功能">
-      <i class="fa fa-chevron-left"></i> 【Qt编程】基于Qt的词典开发系列自动补全功能
+    <a href="/2015/04/17/%5B20150417%5D/" rel="prev" title="【Qt编程】基于Qt的词典开发系列--开始菜单的设计">
+      <i class="fa fa-chevron-left"></i> 【Qt编程】基于Qt的词典开发系列--开始菜单的设计
     </a></div>
       <div class="post-nav-item">
-    <a href="/2014/08/22/%5B20140822%5D/" rel="next" title="【Qt编程】基于Qt的词典开发系列--无边框窗口的缩放与拖动">
-      【Qt编程】基于Qt的词典开发系列--无边框窗口的缩放与拖动 <i class="fa fa-chevron-right"></i>
+    <a href="/2018/07/05/Perceptron/" rel="next" title="【图解例说机器学习】感知机 (Perceptron)">
+      【图解例说机器学习】感知机 (Perceptron) <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -431,6 +464,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何得到网上的图标？"><span class="nav-number">1.</span> <span class="nav-text">如何得到网上的图标？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控件间的无缝连接："><span class="nav-number">2.</span> <span class="nav-text">控件间的无缝连接：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#按钮的美化"><span class="nav-number">3.</span> <span class="nav-text">按钮的美化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态渲染效果"><span class="nav-number">4.</span> <span class="nav-text">动态渲染效果</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
