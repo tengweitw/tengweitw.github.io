@@ -49,18 +49,18 @@
   };
 </script>
 
-  <meta name="description" content="在上篇文章《内存对齐》中说到了内存问题，今天我也遇到了可以用内存映射来解释的问题: 数组越界访问，出现死循环。">
-<meta name="keywords" content="C&#x2F;C++">
+  <meta name="description" content="前面文章《离散分布的产生》中，主要讲述了如何通过均匀分布来产生各种离散分布。下面我给出一些离散分布之间的关系，从而可以由一种已知的分布来产生另一种分布。  伯努利分布、二项分布与多项分布 伯努利分布定义：一个离散随机变量$X$的取值仅为$0$和$1$，且其分布律$P(X = 1) = p, P(X = 0) = 1 - p$则此随机变量服从伯努利分布。 实例：抛硬币就是伯努利分布，伯努利分布产生的">
+<meta name="keywords" content="Probability Theory">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【C&#x2F;C++】数组越界">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2013&#x2F;05&#x2F;12&#x2F;[20130512]&#x2F;index.html">
+<meta property="og:title" content="【概率统计】离散分布之间的关系">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2015&#x2F;05&#x2F;15&#x2F;[20150515]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="在上篇文章《内存对齐》中说到了内存问题，今天我也遇到了可以用内存映射来解释的问题: 数组越界访问，出现死循环。">
+<meta property="og:description" content="前面文章《离散分布的产生》中，主要讲述了如何通过均匀分布来产生各种离散分布。下面我给出一些离散分布之间的关系，从而可以由一种已知的分布来产生另一种分布。  伯努利分布、二项分布与多项分布 伯努利分布定义：一个离散随机变量$X$的取值仅为$0$和$1$，且其分布律$P(X = 1) = p, P(X = 0) = 1 - p$则此随机变量服从伯努利分布。 实例：抛硬币就是伯努利分布，伯努利分布产生的">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-23T07:43:28.843Z">
+<meta property="og:updated_time" content="2020-09-08T01:59:52.541Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://tengweitw.com/2013/05/12/[20130512]/">
+<link rel="canonical" href="http://tengweitw.com/2015/05/15/[20150515]/">
 
 
 <script id="page-configurations">
@@ -74,7 +74,7 @@
   };
 </script>
 
-  <title>【C/C++】数组越界 | 青峰碧陋室</title>
+  <title>【概率统计】离散分布之间的关系 | 青峰碧陋室</title>
   
 
 
@@ -208,7 +208,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/05/12/%5B20130512%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/05/15/%5B20150515%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -221,7 +221,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【C/C++】数组越界
+          【概率统计】离散分布之间的关系
         </h1>
 
         <div class="post-meta">
@@ -231,14 +231,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2013-05-12 22:02:51" itemprop="dateCreated datePublished" datetime="2013-05-12T22:02:51+08:00">2013-05-12</time>
+              <time title="创建时间：2015-05-15 12:33:17" itemprop="dateCreated datePublished" datetime="2015-05-15T12:33:17+08:00">2015-05-15</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 15:43:28" itemprop="dateModified" datetime="2020-07-23T15:43:28+08:00">2020-07-23</time>
+                <time title="修改时间：2020-09-08 09:59:52" itemprop="dateModified" datetime="2020-09-08T09:59:52+08:00">2020-09-08</time>
               </span>
 
           
@@ -254,7 +254,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
+              <span>1.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -273,21 +273,42 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>在上篇文章<a href="http://www.tengweitw.com/2013/05/11/[20130511]/" target="_blank" rel="noopener">《内存对齐》</a>中说到了内存问题，今天我也遇到了可以用内存映射来解释的问题: 数组越界访问，出现死循环。</p>
- <a id="more"></a>
-<p>代码如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	<span class="keyword">int</span> a[<span class="number">5</span>];</span><br><span class="line"><span class="comment">//    int i;</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;&amp;i&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;=<span class="number">5</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		a[i]=<span class="number">0</span>;</span><br><span class="line">		<span class="built_in">cout</span>&lt;&lt;a[i]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面的程序中，发生了数组越界访问，那么将会发生什么情况呢？一般来说的话，会系统中断，出现提示框，然而，这里发生了死循环。</p>
-<p>我首先用下面的程序查看了 $i$ 和数组元素的地址：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	<span class="keyword">int</span> a[<span class="number">5</span>];</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;&amp;i&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		a[i]=<span class="number">0</span>;</span><br><span class="line">		<span class="built_in">cout</span>&lt;&lt;&amp;a[i]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在我的电脑（小端模式）下结果如下：</p>
-<p>   i的地址为：  12FF44<br>a[0]的地址为：  12FF30<br>a[1]的地址为：  12FF34<br>a[2]的地址为：  12FF38<br>a[3]的地址为：  12FF3C<br>a[4]的地址为：  12FF40</p>
-<p>按照这种内存存储方式，a[5]的地址为：  12FF44 与 $i$ 的地址相同！又因为我令a[i]=0, 则每当循环到a[5]=0时，$i=0$, 从而满足了循环条件，陷入了死循环。</p>
-<p>当我把变量定义顺序改变时，将i在数组后定义即：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a[<span class="number">5</span>];</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;&amp;i&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		a[i]=<span class="number">0</span>;</span><br><span class="line">		<span class="built_in">cout</span>&lt;&lt;&amp;a[i]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出的地址为：</p>
-<p>   i的地址为：  12FF30<br>a[0]的地址为：  12FF34<br>a[1]的地址为：  12FF38<br>a[2]的地址为：  12FF3c<br>a[3]的地址为：  12FF40<br>a[4]的地址为：  12FF44</p>
-<p>这时若发生越界的话，a[5]的地址为：  12FF48 与$i$ 的地址不同，系统会中断，出现错误提示框</p>
+        <p>前面文章《<a href="http://blog.csdn.net/tengweitw/article/details/45584597" target="_blank" rel="noopener">离散分布的产生</a>》中，主要讲述了如何通过均匀分布来产生各种离散分布。下面我给出一些离散分布之间的关系，从而可以由一种已知的分布来产生另一种分布。</p>
+<hr>
+<h2 id="伯努利分布、二项分布与多项分布"><a href="#伯努利分布、二项分布与多项分布" class="headerlink" title="伯努利分布、二项分布与多项分布"></a>伯努利分布、二项分布与多项分布</h2><hr>
+<h4 id="伯努利分布"><a href="#伯努利分布" class="headerlink" title="伯努利分布"></a>伯努利分布</h4><p><strong>定义</strong>：一个离散随机变量$X$的取值仅为$0$和$1$，且其分布律$P(X = 1) = p, P(X = 0) = 1 - p$则此随机变量服从伯努利分布。</p>
+<p>实例：抛硬币就是伯努利分布，伯努利分布产生的结果就是$1$或则$0$（正面或则反面）。</p>
+<hr>
+<h4 id="二项分布"><a href="#二项分布" class="headerlink" title="二项分布"></a>二项分布</h4><p> <strong>定义</strong>：设$B_1,B_2, \cdots ,B_n ( n \in N)$为相互独立的服从参数为$p (p \in [ 0,1 ])$的伯努利分布，定义随机变量：$X = \sum\nolimits_{i = 1}^n {B_i} $那么，随机变量$X$服从参数为$(n,p)$的二项分布。</p>
+<p> <strong>实例</strong>：由定义可知，二项分布就是$n$重伯努利分布。形象的说，抛$n$次硬币，出现正面朝上的次数服从二项分布。</p>
+<hr>
+<h4 id="多项分布"><a href="#多项分布" class="headerlink" title="多项分布"></a>多项分布</h4><p> <strong>定义</strong>：设$m \in N,p_i\in [ 0,1] $，假设$( Y_1,Y_2, \cdots, Y_m)$是一个离散型$m$维随机变量。如果其联合分布律满足：对于$k_1, \cdots, k_m= 0,1,\cdots,n$，当其满足$\sum\nolimits_{i = 1}^m k_i = n $时，$ P( Y_1 = k_1, \cdots ,Y_m = k_m) = \frac{n!}{k_1! \cdots k_n!}p_1^{k_1} \cdots p_m^{k_m}<script type="math/tex">则称</script>m$维随机变量$( Y_1,Y_2, \cdots ,Y_m )$服从参数为$( n;p_1, \cdots, p_m)$的$m$项分布。</p>
+<hr>
+<h2 id="几何分布与负二项分布"><a href="#几何分布与负二项分布" class="headerlink" title="几何分布与负二项分布"></a>几何分布与负二项分布</h2><hr>
+<h4 id="几何分布"><a href="#几何分布" class="headerlink" title="几何分布"></a>几何分布</h4><ul>
+<li><p><strong>定义</strong>：设随机变量$Y$具有如下的分布律：$P( Y = k ) = ( 1 - p )^kp$,其中$p\in [ 0,1], k=0,1,\cdots$<br>则我们称$Y$服从几何分布。</p>
+</li>
+<li><p><strong>实例</strong>：几何分布的物理意义就是实验成功前所经历的失败次数。拿掷硬币来说，假设正面朝上视为成功，服从该几何分布的随机变量的物理意义就是不断掷硬币直到出现正面朝上前，出现反面朝上的次数，也即是失败的次数。</p>
+</li>
+<li><p><strong>重要性质</strong>：<strong>无记忆性</strong>,即对于整数$s &gt;t$，有下式成立：$P( X &gt; s| {X &gt; t} ) = P( X &gt; s - t)$</p>
+</li>
+</ul>
+<hr>
+<h4 id="负二项分布"><a href="#负二项分布" class="headerlink" title="负二项分布"></a>负二项分布</h4><ul>
+<li><p><strong>定义</strong>：设$Y_1,Y_2, \cdots ,Y_m$是$m$个相互独立且服从相同的几何分布，那么，当随机变量$Z$满足下式：<script type="math/tex">Z = \sum\nolimits_{i = 1}^m {Y_i}</script>此时$Z$服从负二项分布，此时的分布律为：$P( Z = k ) = \frac{( k + m - 1)!}{( m - 1)!k!}{p^m}( 1 - p)^k,k=0,1,\cdots$</p>
+</li>
+<li><p><strong>实例</strong>：由定义可知，可以通过几何分布得到负二项分布。举例来说，若我们掷骰子，掷到$1$即视为成功。则每次掷骰的成功率是$1/6$。要掷出三次1，所需的掷骰次数属于集合$\{ 3,  4,  5,  6, \cdots \}$。掷到三次$1$的掷骰次数即是服从负二项分布的随机变量。</p>
+</li>
+</ul>
+<hr>
+<h2 id="二项分布与泊松分布"><a href="#二项分布与泊松分布" class="headerlink" title="二项分布与泊松分布"></a>二项分布与泊松分布</h2><ul>
+<li><p><strong>关系</strong>：对于参数为$(n,p)$的二项分布，如果参数$n$较大，$p$较小，那么我们可以用参数为$\lambda=np$的泊松分布来逼近。</p>
+</li>
+<li><p><strong>实例</strong>：一个盒子里有$144$个鸡蛋，假如每个鸡蛋破碎的概率都为$0.01$，请问恰好有$3$个鸡蛋破碎的概率是多少？</p>
+<p> 显然，这是一个二项分布的问题。设随机变量$X$表示鸡蛋破碎的个数，那么$X$服从参数为$(n=144,p=0.01)$的二项分布。因此在这$144$个鸡蛋中恰好有$3$个鸡蛋破碎的概率为：$P( X = 3) = C_{144}^3{0.01^3}{0.99^{144 - 3}} = 0.1181$<br> 如果用泊松分布进行逼近的话，可知$X$服从参数为$\lambda=np$的泊松分布，则概率近似等于$P( {X = 3}) = \frac{1.44^3}{3!}{e^{ - 1.44}} = 0.1179$比较上面两种计算概率的方法，很明显第二种方法的计算量要小于第一种，因此当$n$较大，$p$较小时，我们常常用泊松分布来近似计算概率。</p>
+</li>
+</ul>
+<hr>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -323,7 +344,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2013/05/12/[20130512]/" title="【C&#x2F;C++】数组越界">http://tengweitw.com/2013/05/12/[20130512]/</a>
+    <a href="http://tengweitw.com/2015/05/15/[20150515]/" title="【概率统计】离散分布之间的关系">http://tengweitw.com/2015/05/15/[20150515]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -335,7 +356,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/C-C/" rel="tag"><i class="fa fa-tag"></i> C/C++</a>
+              <a href="/tags/Probability-Theory/" rel="tag"><i class="fa fa-tag"></i> Probability Theory</a>
           </div>
 
         
@@ -344,12 +365,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2013/05/11/%5B20130511%5D/" rel="prev" title="【C/C++】内存对齐">
-      <i class="fa fa-chevron-left"></i> 【C/C++】内存对齐
+    <a href="/2015/05/09/%5B20150509%5D/" rel="prev" title="【概率统计】离散分布的生成">
+      <i class="fa fa-chevron-left"></i> 【概率统计】离散分布的生成
     </a></div>
       <div class="post-nav-item">
-    <a href="/2013/06/01/%5B20130601%5D/" rel="next" title="【C/C++】输入与输出(Cin & Cout)">
-      【C/C++】输入与输出(Cin & Cout) <i class="fa fa-chevron-right"></i>
+    <a href="/2018/07/05/Perceptron/" rel="next" title="【图解例说机器学习】感知机 (Perceptron)">
+      【图解例说机器学习】感知机 (Perceptron) <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -388,6 +409,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#伯努利分布、二项分布与多项分布"><span class="nav-number">1.</span> <span class="nav-text">伯努利分布、二项分布与多项分布</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#伯努利分布"><span class="nav-number">1.0.1.</span> <span class="nav-text">伯努利分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二项分布"><span class="nav-number">1.0.2.</span> <span class="nav-text">二项分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多项分布"><span class="nav-number">1.0.3.</span> <span class="nav-text">多项分布</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#几何分布与负二项分布"><span class="nav-number">2.</span> <span class="nav-text">几何分布与负二项分布</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#几何分布"><span class="nav-number">2.0.1.</span> <span class="nav-text">几何分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#负二项分布"><span class="nav-number">2.0.2.</span> <span class="nav-text">负二项分布</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二项分布与泊松分布"><span class="nav-number">3.</span> <span class="nav-text">二项分布与泊松分布</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
