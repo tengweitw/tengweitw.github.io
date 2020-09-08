@@ -422,7 +422,7 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
 <h4 id="二项分布"><a href="#二项分布" class="headerlink" title="二项分布"></a>二项分布</h4><p> <strong>定义</strong>：设$B_1,B_2, \cdots ,B_n ( n \in N)$为相互独立的服从参数为$p (p \in [ 0,1 ])$的伯努利分布，定义随机变量：$X = \sum\nolimits_{i = 1}^n {B_i} $那么，随机变量$X$服从参数为$(n,p)$的二项分布。</p>
 <p> <strong>实例</strong>：由定义可知，二项分布就是$n$重伯努利分布。形象的说，抛$n$次硬币，出现正面朝上的次数服从二项分布。</p>
 <hr>
-<h4 id="多项分布"><a href="#多项分布" class="headerlink" title="多项分布"></a>多项分布</h4><p> <strong>定义</strong>：设$m \in N,p_i\in [ 0,1] $，假设$( Y_1,Y_2, \cdots, Y_m)$是一个离散型$m$维随机变量。如果其联合分布律满足：对于$k_1, \cdots, k_m= 0,1,\cdots,n$，当其满足$\sum\nolimits_{i = 1}^m k_i = n $时，$ P( Y_1 = k_1, \cdots ,Y_m = k_m) = \frac{n!}{k_1! \cdots k_n!}p_1^{k_1} \cdots p_m^{k_m}<script type="math/tex">则称</script>m$维随机变量$( Y_1,Y_2, \cdots ,Y_m )$服从参数为$( n;p_1, \cdots, p_m)$的$m$项分布。</p>
+<h4 id="多项分布"><a href="#多项分布" class="headerlink" title="多项分布"></a>多项分布</h4><p> <strong>定义</strong>：设$m \in N,p_i\in [ 0,1] $，假设$( Y_1,Y_2, \cdots, Y_m)$是一个离散型$m$维随机变量。如果其联合分布律满足：对于$k_1, \cdots, k_m= 0,1,\cdots,n$，当其满足$\sum\nolimits_{i = 1}^m k_i = n $时，$ P( Y_1 = k_1, \cdots ,Y_m = k_m) = \frac{n!}{k_1! \cdots k_n!}p_1^{k_1} \cdots p_m^{k_m}$<br> 则称$m$维随机变量$( Y_1,Y_2, \cdots ,Y_m )$服从参数为$( n;p_1, \cdots, p_m)$的$m$项分布。</p>
 <hr>
 <h2 id="几何分布与负二项分布"><a href="#几何分布与负二项分布" class="headerlink" title="几何分布与负二项分布"></a>几何分布与负二项分布</h2><hr>
 <h4 id="几何分布"><a href="#几何分布" class="headerlink" title="几何分布"></a>几何分布</h4><ul>
