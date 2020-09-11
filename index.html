@@ -712,6 +712,109 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/05/19/%5B20150519%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/05/19/%5B20150519%5D/" class="post-title-link" itemprop="url">【概率统计】连续分布之间的关系</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-05-19 17:29:02" itemprop="dateCreated datePublished" datetime="2015-05-19T17:29:02+08:00">2015-05-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-11 17:06:29" itemprop="dateModified" datetime="2020-09-11T17:06:29+08:00">2020-09-11</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>前面的文章《<a href="http://blog.csdn.net/tengweitw/article/details/45599011" target="_blank" rel="noopener">连续分布的产生</a>》中，我主要讲述了用均匀分布生成各种连续分布的方法，其中的特殊方法都是利用分布之间的关系来生成的。那么，<strong>本文主要介绍连续分布之间的一些关系</strong>。</p>
+<hr>
+<h4 id="伽马分布与泊松分布的关系"><a href="#伽马分布与泊松分布的关系" class="headerlink" title="伽马分布与泊松分布的关系"></a>伽马分布与泊松分布的关系</h4><p>假设$X \sim gamma( \alpha, \beta ), Y \sim Poisson( x/\beta )$，当$\alpha$是整数的时候，下面等式成立：</p>
+<script type="math/tex; mode=display">
+P( X \le x) = P( Y \ge \alpha)</script><hr>
+<h4 id="伽马分布与卡方分布的关系"><a href="#伽马分布与卡方分布的关系" class="headerlink" title="伽马分布与卡方分布的关系"></a>伽马分布与卡方分布的关系</h4><p>服从形状参数为$\alpha$，尺度参数为$\beta$的伽马分布的概率密度函数pdf可以表示为：$f(x) = \frac{x^{( \alpha  - 1)}e^{( - x/\beta )}}{\Gamma( \alpha)\beta ^\alpha}$现在，我们假设$\alpha=p/2$，其中$p$是整数且$\beta=2$，那么此时的概率密度函数可以表示为：$f(x) = \frac{x^{( p/2 - 1 )}e^{( - x/2)}}{\Gamma ( p/2 )2^{p/2}},0 &lt; x &lt; \infty $显然，此时的概率密度函数$pdf$服从自由度为$p$的卡方分布的$pdf$。</p>
+<hr>
+<h4 id="伽马分布与指数分布的关系"><a href="#伽马分布与指数分布的关系" class="headerlink" title="伽马分布与指数分布的关系"></a>伽马分布与指数分布的关系</h4><p>当伽马分布中的形式参数$\alpha=1$时，概率密度函数变为：$f( x ) = \frac{e^{( - x/\beta  )}}{\beta },0 &lt; x &lt; \infty$显然，此时的概率密度函数就是参数为$\beta$的指数分布密度函数的$pdf$。</p>
+<hr>
+<h4 id="韦伯分布与指数分布、瑞利分布的关系"><a href="#韦伯分布与指数分布、瑞利分布的关系" class="headerlink" title="韦伯分布与指数分布、瑞利分布的关系"></a>韦伯分布与指数分布、瑞利分布的关系</h4><p>比例参数为$\lambda$，形状参数为$k$的韦伯分布的概率密度函数为：$f(x) = \frac{k}{\lambda }( \frac{x}{\lambda })^{k - 1}e^{ - {( x/\lambda )^k}},x \ge 0$当$\lambda=1$时，它是指数分布；当$\lambda=2$时，它是瑞利分布。</p>
+<hr>
+<h4 id="贝塔分布与均匀分布的关系"><a href="#贝塔分布与均匀分布的关系" class="headerlink" title="贝塔分布与均匀分布的关系"></a>贝塔分布与均匀分布的关系</h4><p>参数为$\alpha,\beta$的贝塔分布的概率密度函数为：$f( x ) = \frac{1}{B( \alpha ,\beta )}x^{\alpha  - 1}( 1 - x )^{\beta  - 1},0 &lt; x &lt; 1,\alpha  &gt; 0,\beta  &gt; 0,B( \alpha ,\beta) = \frac{\Gamma ( \alpha)\Gamma( \beta)}{\Gamma ( \alpha  + \beta )}$当$\alpha=\beta=1$时，此时退化成了区间在$0$到$1$的均匀分布。</p>
+<hr>
+<h4 id="正态分布与柯西分布的关系"><a href="#正态分布与柯西分布的关系" class="headerlink" title="正态分布与柯西分布的关系"></a>正态分布与柯西分布的关系</h4><p>位置参数为$x_0$，尺度参数为$\gamma$的柯西分布的概率密度函数为：$f( x ) = \frac{1}{\pi \gamma \left[ 1 + {( {\frac{x - {x_0}}\gamma })^2} \right]}$当$x_0=0,\gamma=1$时则是标准柯西分布。</p>
+<ul>
+<li><strong>关系</strong>：两个标准正态分布函数的比值服从标准柯西分布。</li>
+</ul>
+<hr>
+<h4 id="其它关系式"><a href="#其它关系式" class="headerlink" title="其它关系式"></a>其它关系式</h4><p>假设$U_j$是独立同分布于区间$0$到$1$的均匀分布，由文章《<a href="http://blog.csdn.net/tengweitw/article/details/45599011" target="_blank" rel="noopener">连续分布的产生</a>》可以得到：$Y_i=-\lambda log(U_i)$是独立同分布于指数分布的随机变量。那么由指数分布与其它分布的关系推导得到如下的表达式：</p>
+<script type="math/tex; mode=display">
+\begin{array}{l}
+Y =  - 2\sum\limits_{j = 1}^v \log (U_j)  \sim \chi _{2v}^2\\
+Y =  - \beta \sum\limits_{j = 1}^\alpha  \log( U_j )  \sim gamma( {\alpha ,\beta })\\
+Y = \frac{\sum\nolimits_{j = 1}^a {\log ( U_j)} }{\sum\nolimits_{j = 1}^{a + b} \log ( U_j )}  \sim beta( {a,b})
+\end{array}</script><p>很显然，我们可以先通过均匀分布产生指数分布，然后利用指数分布与其它分布的关系来生成对应的分布。因此，知道分布之间的关系就很容易由已知的分布得到要求的分布。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/05/15/%5B20150515%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1003,92 +1106,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/04/23/%5B20150423%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2015/04/23/%5B20150423%5D/" class="post-title-link" itemprop="url">【Qt编程】基于Qt的词典开发系列--界面美化设计</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2015-04-23 17:15:44" itemprop="dateCreated datePublished" datetime="2015-04-23T17:15:44+08:00">2015-04-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-06 11:51:38" itemprop="dateModified" datetime="2020-09-06T11:51:38+08:00">2020-09-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本文讲一讲界面设计，作品要面向用户，界面设计的好坏直接影响到用户的体验。现在的窗口设计基本都是扁平化的，你可以从window XP与window 8的窗口可以明显感觉出来。当然除了窗口本身的效果，窗口中各种控件的特效也是特别重要的一环。下面讲讲我在词典软件中的一些设计：说到界面美化的设计，不得不提到美工，一个好的美工是相当的重要！软件毕竟少不了图标，而不懂美工的我，也就只能在网上使用别人的图标了。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2015/04/23/%5B20150423%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1139,7 +1156,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-count">138</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1195,12 +1212,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">434k</span>
+    <span title="站点总字数">436k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">10:20</span>
+    <span title="站点阅读时长">10:22</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>

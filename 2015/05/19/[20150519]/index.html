@@ -49,18 +49,18 @@
   };
 </script>
 
-  <meta name="description" content="12345678910111213141516171819202122232425 clear all A4=440;%标准音A4 不同的曲调音调不同scale的取值范围不同 pt=44100;p0=pt&#x2F;2;%频率 scale=A4&#x2F;2^(9&#x2F;12)*2.^((-12:11)&#x2F;12);%这里可以调节音调高低，eg：改变式子中的-12：11为0：23 map=[1 3 5 6 8 10 12 13">
-<meta name="keywords" content="Matlab Coding">
+  <meta name="description" content="前面的文章《连续分布的产生》中，我主要讲述了用均匀分布生成各种连续分布的方法，其中的特殊方法都是利用分布之间的关系来生成的。那么，本文主要介绍连续分布之间的一些关系。  伽马分布与泊松分布的关系假设$X \sim gamma( \alpha, \beta ), Y \sim Poisson( x&#x2F;\beta )$，当$\alpha$是整数的时候，下面等式成立：  P( X \le x) = P(">
+<meta name="keywords" content="Probability Theory">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【Matlab编程】生日快乐歌(显示歌词)">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2014&#x2F;05&#x2F;24&#x2F;[20140524]&#x2F;index.html">
+<meta property="og:title" content="【概率统计】连续分布之间的关系">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2015&#x2F;05&#x2F;19&#x2F;[20150519]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="12345678910111213141516171819202122232425 clear all A4=440;%标准音A4 不同的曲调音调不同scale的取值范围不同 pt=44100;p0=pt&#x2F;2;%频率 scale=A4&#x2F;2^(9&#x2F;12)*2.^((-12:11)&#x2F;12);%这里可以调节音调高低，eg：改变式子中的-12：11为0：23 map=[1 3 5 6 8 10 12 13">
+<meta property="og:description" content="前面的文章《连续分布的产生》中，我主要讲述了用均匀分布生成各种连续分布的方法，其中的特殊方法都是利用分布之间的关系来生成的。那么，本文主要介绍连续分布之间的一些关系。  伽马分布与泊松分布的关系假设$X \sim gamma( \alpha, \beta ), Y \sim Poisson( x&#x2F;\beta )$，当$\alpha$是整数的时候，下面等式成立：  P( X \le x) = P(">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-08-17T14:43:16.518Z">
+<meta property="og:updated_time" content="2020-09-11T09:06:29.459Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://tengweitw.com/2014/05/24/[20140524]/">
+<link rel="canonical" href="http://tengweitw.com/2015/05/19/[20150519]/">
 
 
 <script id="page-configurations">
@@ -74,7 +74,7 @@
   };
 </script>
 
-  <title>【Matlab编程】生日快乐歌(显示歌词) | 青峰碧陋室</title>
+  <title>【概率统计】连续分布之间的关系 | 青峰碧陋室</title>
   
 
 
@@ -208,7 +208,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/05/24/%5B20140524%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/05/19/%5B20150519%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -221,7 +221,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【Matlab编程】生日快乐歌(显示歌词)
+          【概率统计】连续分布之间的关系
         </h1>
 
         <div class="post-meta">
@@ -231,14 +231,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2014-05-24 10:22:15" itemprop="dateCreated datePublished" datetime="2014-05-24T10:22:15+08:00">2014-05-24</time>
+              <time title="创建时间：2015-05-19 17:29:02" itemprop="dateCreated datePublished" datetime="2015-05-19T17:29:02+08:00">2015-05-19</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-17 22:43:16" itemprop="dateModified" datetime="2020-08-17T22:43:16+08:00">2020-08-17</time>
+                <time title="修改时间：2020-09-11 17:06:29" itemprop="dateModified" datetime="2020-09-11T17:06:29+08:00">2020-09-11</time>
               </span>
 
           
@@ -254,14 +254,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>740</span>
+              <span>1.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -273,8 +273,31 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"> clear all</span><br><span class="line"> A4=<span class="number">440</span>;<span class="comment">%标准音A4 不同的曲调音调不同scale的取值范围不同</span></span><br><span class="line"> pt=<span class="number">44100</span>;p0=pt/<span class="number">2</span>;<span class="comment">%频率</span></span><br><span class="line"> scale=A4/<span class="number">2</span>^(<span class="number">9</span>/<span class="number">12</span>)*<span class="number">2.</span>^((<span class="number">-12</span>:<span class="number">11</span>)/<span class="number">12</span>);<span class="comment">%这里可以调节音调高低，eg：改变式子中的-12：11为0：23</span></span><br><span class="line"> map=[<span class="number">1</span> <span class="number">3</span> <span class="number">5</span> <span class="number">6</span> <span class="number">8</span> <span class="number">10</span> <span class="number">12</span> <span class="number">13</span> <span class="number">15</span> <span class="number">17</span> <span class="number">18</span> <span class="number">20</span> <span class="number">22</span> <span class="number">24</span> <span class="number">25</span>];<span class="comment">%音符，这个需要看曲谱编码</span></span><br><span class="line"> score=[<span class="number">5</span> <span class="number">5</span> <span class="number">6</span> <span class="number">5</span> <span class="number">8</span> <span class="number">7</span> <span class="number">5</span> <span class="number">5</span> <span class="number">6</span> <span class="number">5</span> <span class="number">9</span> <span class="number">8</span> <span class="number">5</span> <span class="number">5</span> <span class="number">12</span> <span class="number">10</span> <span class="number">8</span> <span class="number">7</span> <span class="number">6</span> <span class="number">6</span> <span class="number">11</span> <span class="number">11</span> <span class="number">10</span> <span class="number">8</span> <span class="number">9</span> <span class="number">8</span>];</span><br><span class="line"> rhythm=[<span class="number">0.5</span> <span class="number">0.5</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">0.5</span> <span class="number">0.5</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span>  <span class="number">0.5</span> <span class="number">0.5</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span>  <span class="number">0.5</span> <span class="number">0.5</span> <span class="number">2</span> <span class="number">0.5</span> <span class="number">0.5</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span>];<span class="comment">%节拍，这个需要看曲谱编码</span></span><br><span class="line"> lyric=[<span class="string">'祝你生日快乐祝你生日快乐祝你生日快乐祝你生日快乐  '</span>];</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:<span class="built_in">length</span>(score)</span><br><span class="line"><span class="keyword">if</span>(<span class="built_in">i</span>&lt;<span class="number">19</span>) </span><br><span class="line">fprintf(<span class="number">1</span>,<span class="string">'%c'</span>,lyric(<span class="built_in">i</span>))</span><br><span class="line"><span class="keyword">elseif</span> (<span class="built_in">i</span>&gt;<span class="number">20</span>) </span><br><span class="line">fprintf(<span class="number">1</span>,<span class="string">'%c'</span>,lyric(<span class="built_in">i</span><span class="number">-2</span>)) </span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">i</span>==<span class="number">6</span>||<span class="built_in">i</span>==<span class="number">12</span>||<span class="built_in">i</span>==<span class="number">18</span>)</span><br><span class="line"><span class="built_in">disp</span>(<span class="string">'!'</span>); </span><br><span class="line">fprintf(<span class="number">1</span>,<span class="string">'\n'</span>);</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">i</span>==<span class="number">26</span></span><br><span class="line"><span class="built_in">disp</span>(<span class="string">'!'</span>);</span><br><span class="line"><span class="keyword">end</span>  </span><br><span class="line">wavplay(<span class="built_in">sin</span>((<span class="number">1</span>:rhythm(<span class="built_in">i</span>)*p0)/pt*<span class="number">2</span>*<span class="built_in">pi</span>*scale(map(score(<span class="built_in">i</span>)))),pt);</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<p>注意：该文章是在2014年所写，代码中的wavplay函数在matlab2014之后的版本被移除，需要自己下载该函数文件，详情见<a href="https://ww2.mathworks.cn/matlabcentral/fileexchange/71798-wavplay?s_tid=srchtitle" target="_blank" rel="noopener">https://ww2.mathworks.cn/matlabcentral/fileexchange/71798-wavplay?s_tid=srchtitle</a></p>
+        <p>前面的文章《<a href="http://blog.csdn.net/tengweitw/article/details/45599011" target="_blank" rel="noopener">连续分布的产生</a>》中，我主要讲述了用均匀分布生成各种连续分布的方法，其中的特殊方法都是利用分布之间的关系来生成的。那么，<strong>本文主要介绍连续分布之间的一些关系</strong>。</p>
+<hr>
+<h4 id="伽马分布与泊松分布的关系"><a href="#伽马分布与泊松分布的关系" class="headerlink" title="伽马分布与泊松分布的关系"></a>伽马分布与泊松分布的关系</h4><p>假设$X \sim gamma( \alpha, \beta ), Y \sim Poisson( x/\beta )$，当$\alpha$是整数的时候，下面等式成立：</p>
+<script type="math/tex; mode=display">
+P( X \le x) = P( Y \ge \alpha)</script><hr>
+<h4 id="伽马分布与卡方分布的关系"><a href="#伽马分布与卡方分布的关系" class="headerlink" title="伽马分布与卡方分布的关系"></a>伽马分布与卡方分布的关系</h4><p>服从形状参数为$\alpha$，尺度参数为$\beta$的伽马分布的概率密度函数pdf可以表示为：$f(x) = \frac{x^{( \alpha  - 1)}e^{( - x/\beta )}}{\Gamma( \alpha)\beta ^\alpha}$现在，我们假设$\alpha=p/2$，其中$p$是整数且$\beta=2$，那么此时的概率密度函数可以表示为：$f(x) = \frac{x^{( p/2 - 1 )}e^{( - x/2)}}{\Gamma ( p/2 )2^{p/2}},0 &lt; x &lt; \infty $显然，此时的概率密度函数$pdf$服从自由度为$p$的卡方分布的$pdf$。</p>
+<hr>
+<h4 id="伽马分布与指数分布的关系"><a href="#伽马分布与指数分布的关系" class="headerlink" title="伽马分布与指数分布的关系"></a>伽马分布与指数分布的关系</h4><p>当伽马分布中的形式参数$\alpha=1$时，概率密度函数变为：$f( x ) = \frac{e^{( - x/\beta  )}}{\beta },0 &lt; x &lt; \infty$显然，此时的概率密度函数就是参数为$\beta$的指数分布密度函数的$pdf$。</p>
+<hr>
+<h4 id="韦伯分布与指数分布、瑞利分布的关系"><a href="#韦伯分布与指数分布、瑞利分布的关系" class="headerlink" title="韦伯分布与指数分布、瑞利分布的关系"></a>韦伯分布与指数分布、瑞利分布的关系</h4><p>比例参数为$\lambda$，形状参数为$k$的韦伯分布的概率密度函数为：$f(x) = \frac{k}{\lambda }( \frac{x}{\lambda })^{k - 1}e^{ - {( x/\lambda )^k}},x \ge 0$当$\lambda=1$时，它是指数分布；当$\lambda=2$时，它是瑞利分布。</p>
+<hr>
+<h4 id="贝塔分布与均匀分布的关系"><a href="#贝塔分布与均匀分布的关系" class="headerlink" title="贝塔分布与均匀分布的关系"></a>贝塔分布与均匀分布的关系</h4><p>参数为$\alpha,\beta$的贝塔分布的概率密度函数为：$f( x ) = \frac{1}{B( \alpha ,\beta )}x^{\alpha  - 1}( 1 - x )^{\beta  - 1},0 &lt; x &lt; 1,\alpha  &gt; 0,\beta  &gt; 0,B( \alpha ,\beta) = \frac{\Gamma ( \alpha)\Gamma( \beta)}{\Gamma ( \alpha  + \beta )}$当$\alpha=\beta=1$时，此时退化成了区间在$0$到$1$的均匀分布。</p>
+<hr>
+<h4 id="正态分布与柯西分布的关系"><a href="#正态分布与柯西分布的关系" class="headerlink" title="正态分布与柯西分布的关系"></a>正态分布与柯西分布的关系</h4><p>位置参数为$x_0$，尺度参数为$\gamma$的柯西分布的概率密度函数为：$f( x ) = \frac{1}{\pi \gamma \left[ 1 + {( {\frac{x - {x_0}}\gamma })^2} \right]}$当$x_0=0,\gamma=1$时则是标准柯西分布。</p>
+<ul>
+<li><strong>关系</strong>：两个标准正态分布函数的比值服从标准柯西分布。</li>
+</ul>
+<hr>
+<h4 id="其它关系式"><a href="#其它关系式" class="headerlink" title="其它关系式"></a>其它关系式</h4><p>假设$U_j$是独立同分布于区间$0$到$1$的均匀分布，由文章《<a href="http://blog.csdn.net/tengweitw/article/details/45599011" target="_blank" rel="noopener">连续分布的产生</a>》可以得到：$Y_i=-\lambda log(U_i)$是独立同分布于指数分布的随机变量。那么由指数分布与其它分布的关系推导得到如下的表达式：</p>
+<script type="math/tex; mode=display">
+\begin{array}{l}
+Y =  - 2\sum\limits_{j = 1}^v \log (U_j)  \sim \chi _{2v}^2\\
+Y =  - \beta \sum\limits_{j = 1}^\alpha  \log( U_j )  \sim gamma( {\alpha ,\beta })\\
+Y = \frac{\sum\nolimits_{j = 1}^a {\log ( U_j)} }{\sum\nolimits_{j = 1}^{a + b} \log ( U_j )}  \sim beta( {a,b})
+\end{array}</script><p>很显然，我们可以先通过均匀分布产生指数分布，然后利用指数分布与其它分布的关系来生成对应的分布。因此，知道分布之间的关系就很容易由已知的分布得到要求的分布。</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -310,7 +333,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2014/05/24/[20140524]/" title="【Matlab编程】生日快乐歌(显示歌词)">http://tengweitw.com/2014/05/24/[20140524]/</a>
+    <a href="http://tengweitw.com/2015/05/19/[20150519]/" title="【概率统计】连续分布之间的关系">http://tengweitw.com/2015/05/19/[20150519]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -322,7 +345,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/Matlab-Coding/" rel="tag"><i class="fa fa-tag"></i> Matlab Coding</a>
+              <a href="/tags/Probability-Theory/" rel="tag"><i class="fa fa-tag"></i> Probability Theory</a>
           </div>
 
         
@@ -331,12 +354,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2014/05/14/%5B20140514%5D/" rel="prev" title="【算法思想】过河问题(续)">
-      <i class="fa fa-chevron-left"></i> 【算法思想】过河问题(续)
+    <a href="/2015/05/15/%5B20150515%5D/" rel="prev" title="【概率统计】离散分布之间的关系">
+      <i class="fa fa-chevron-left"></i> 【概率统计】离散分布之间的关系
     </a></div>
       <div class="post-nav-item">
-    <a href="/2014/05/29/%5B20140529%5D/" rel="next" title="【LaTeX排版】LaTeX使用--入门基础">
-      【LaTeX排版】LaTeX使用--入门基础 <i class="fa fa-chevron-right"></i>
+    <a href="/2018/07/05/Perceptron/" rel="next" title="【图解例说机器学习】感知机 (Perceptron)">
+      【图解例说机器学习】感知机 (Perceptron) <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -375,6 +398,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#伽马分布与泊松分布的关系"><span class="nav-number">1.</span> <span class="nav-text">伽马分布与泊松分布的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#伽马分布与卡方分布的关系"><span class="nav-number">2.</span> <span class="nav-text">伽马分布与卡方分布的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#伽马分布与指数分布的关系"><span class="nav-number">3.</span> <span class="nav-text">伽马分布与指数分布的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#韦伯分布与指数分布、瑞利分布的关系"><span class="nav-number">4.</span> <span class="nav-text">韦伯分布与指数分布、瑞利分布的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#贝塔分布与均匀分布的关系"><span class="nav-number">5.</span> <span class="nav-text">贝塔分布与均匀分布的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#正态分布与柯西分布的关系"><span class="nav-number">6.</span> <span class="nav-text">正态分布与柯西分布的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其它关系式"><span class="nav-number">7.</span> <span class="nav-text">其它关系式</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
