@@ -414,6 +414,7 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
     <title>【概率统计】连续分布之间的关系</title>
     <url>/2015/05/19/%5B20150519%5D/</url>
     <content><![CDATA[<p>前面的文章《<a href="http://blog.csdn.net/tengweitw/article/details/45599011" target="_blank" rel="noopener">连续分布的产生</a>》中，我主要讲述了用均匀分布生成各种连续分布的方法，其中的特殊方法都是利用分布之间的关系来生成的。那么，<strong>本文主要介绍连续分布之间的一些关系</strong>。</p>
+<a id="more"></a>
 <hr>
 <h4 id="伽马分布与泊松分布的关系"><a href="#伽马分布与泊松分布的关系" class="headerlink" title="伽马分布与泊松分布的关系"></a>伽马分布与泊松分布的关系</h4><p>假设$X \sim gamma( \alpha, \beta ), Y \sim Poisson( x/\beta )$，当$\alpha$是整数的时候，下面等式成立：</p>
 <script type="math/tex; mode=display">
@@ -447,6 +448,7 @@ Y = \frac{\sum\nolimits_{j = 1}^a {\log ( U_j)} }{\sum\nolimits_{j = 1}^{a + b} 
     <title>【概率统计】离散分布之间的关系</title>
     <url>/2015/05/15/%5B20150515%5D/</url>
     <content><![CDATA[<p>前面文章《<a href="http://blog.csdn.net/tengweitw/article/details/45584597" target="_blank" rel="noopener">离散分布的产生</a>》中，主要讲述了如何通过均匀分布来产生各种离散分布。下面我给出一些离散分布之间的关系，从而可以由一种已知的分布来产生另一种分布。</p>
+<a id="more"></a>
 <hr>
 <h2 id="伯努利分布、二项分布与多项分布"><a href="#伯努利分布、二项分布与多项分布" class="headerlink" title="伯努利分布、二项分布与多项分布"></a>伯努利分布、二项分布与多项分布</h2><hr>
 <h4 id="伯努利分布"><a href="#伯努利分布" class="headerlink" title="伯努利分布"></a>伯努利分布</h4><p><strong>定义</strong>：一个离散随机变量$X$的取值仅为$0$和$1$，且其分布律$P(X = 1) = p, P(X = 0) = 1 - p$则此随机变量服从伯努利分布。</p>

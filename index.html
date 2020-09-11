@@ -743,7 +743,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-11 17:06:29" itemprop="dateModified" datetime="2020-09-11T17:06:29+08:00">2020-09-11</time>
+                <time title="修改时间：2020-09-11 17:12:04" itemprop="dateModified" datetime="2020-09-11T17:12:04+08:00">2020-09-11</time>
               </span>
 
           <br>
@@ -772,31 +772,14 @@
 
       
           <p>前面的文章《<a href="http://blog.csdn.net/tengweitw/article/details/45599011" target="_blank" rel="noopener">连续分布的产生</a>》中，我主要讲述了用均匀分布生成各种连续分布的方法，其中的特殊方法都是利用分布之间的关系来生成的。那么，<strong>本文主要介绍连续分布之间的一些关系</strong>。</p>
-<hr>
-<h4 id="伽马分布与泊松分布的关系"><a href="#伽马分布与泊松分布的关系" class="headerlink" title="伽马分布与泊松分布的关系"></a>伽马分布与泊松分布的关系</h4><p>假设$X \sim gamma( \alpha, \beta ), Y \sim Poisson( x/\beta )$，当$\alpha$是整数的时候，下面等式成立：</p>
-<script type="math/tex; mode=display">
-P( X \le x) = P( Y \ge \alpha)</script><hr>
-<h4 id="伽马分布与卡方分布的关系"><a href="#伽马分布与卡方分布的关系" class="headerlink" title="伽马分布与卡方分布的关系"></a>伽马分布与卡方分布的关系</h4><p>服从形状参数为$\alpha$，尺度参数为$\beta$的伽马分布的概率密度函数pdf可以表示为：$f(x) = \frac{x^{( \alpha  - 1)}e^{( - x/\beta )}}{\Gamma( \alpha)\beta ^\alpha}$现在，我们假设$\alpha=p/2$，其中$p$是整数且$\beta=2$，那么此时的概率密度函数可以表示为：$f(x) = \frac{x^{( p/2 - 1 )}e^{( - x/2)}}{\Gamma ( p/2 )2^{p/2}},0 &lt; x &lt; \infty $显然，此时的概率密度函数$pdf$服从自由度为$p$的卡方分布的$pdf$。</p>
-<hr>
-<h4 id="伽马分布与指数分布的关系"><a href="#伽马分布与指数分布的关系" class="headerlink" title="伽马分布与指数分布的关系"></a>伽马分布与指数分布的关系</h4><p>当伽马分布中的形式参数$\alpha=1$时，概率密度函数变为：$f( x ) = \frac{e^{( - x/\beta  )}}{\beta },0 &lt; x &lt; \infty$显然，此时的概率密度函数就是参数为$\beta$的指数分布密度函数的$pdf$。</p>
-<hr>
-<h4 id="韦伯分布与指数分布、瑞利分布的关系"><a href="#韦伯分布与指数分布、瑞利分布的关系" class="headerlink" title="韦伯分布与指数分布、瑞利分布的关系"></a>韦伯分布与指数分布、瑞利分布的关系</h4><p>比例参数为$\lambda$，形状参数为$k$的韦伯分布的概率密度函数为：$f(x) = \frac{k}{\lambda }( \frac{x}{\lambda })^{k - 1}e^{ - {( x/\lambda )^k}},x \ge 0$当$\lambda=1$时，它是指数分布；当$\lambda=2$时，它是瑞利分布。</p>
-<hr>
-<h4 id="贝塔分布与均匀分布的关系"><a href="#贝塔分布与均匀分布的关系" class="headerlink" title="贝塔分布与均匀分布的关系"></a>贝塔分布与均匀分布的关系</h4><p>参数为$\alpha,\beta$的贝塔分布的概率密度函数为：$f( x ) = \frac{1}{B( \alpha ,\beta )}x^{\alpha  - 1}( 1 - x )^{\beta  - 1},0 &lt; x &lt; 1,\alpha  &gt; 0,\beta  &gt; 0,B( \alpha ,\beta) = \frac{\Gamma ( \alpha)\Gamma( \beta)}{\Gamma ( \alpha  + \beta )}$当$\alpha=\beta=1$时，此时退化成了区间在$0$到$1$的均匀分布。</p>
-<hr>
-<h4 id="正态分布与柯西分布的关系"><a href="#正态分布与柯西分布的关系" class="headerlink" title="正态分布与柯西分布的关系"></a>正态分布与柯西分布的关系</h4><p>位置参数为$x_0$，尺度参数为$\gamma$的柯西分布的概率密度函数为：$f( x ) = \frac{1}{\pi \gamma \left[ 1 + {( {\frac{x - {x_0}}\gamma })^2} \right]}$当$x_0=0,\gamma=1$时则是标准柯西分布。</p>
-<ul>
-<li><strong>关系</strong>：两个标准正态分布函数的比值服从标准柯西分布。</li>
-</ul>
-<hr>
-<h4 id="其它关系式"><a href="#其它关系式" class="headerlink" title="其它关系式"></a>其它关系式</h4><p>假设$U_j$是独立同分布于区间$0$到$1$的均匀分布，由文章《<a href="http://blog.csdn.net/tengweitw/article/details/45599011" target="_blank" rel="noopener">连续分布的产生</a>》可以得到：$Y_i=-\lambda log(U_i)$是独立同分布于指数分布的随机变量。那么由指数分布与其它分布的关系推导得到如下的表达式：</p>
-<script type="math/tex; mode=display">
-\begin{array}{l}
-Y =  - 2\sum\limits_{j = 1}^v \log (U_j)  \sim \chi _{2v}^2\\
-Y =  - \beta \sum\limits_{j = 1}^\alpha  \log( U_j )  \sim gamma( {\alpha ,\beta })\\
-Y = \frac{\sum\nolimits_{j = 1}^a {\log ( U_j)} }{\sum\nolimits_{j = 1}^{a + b} \log ( U_j )}  \sim beta( {a,b})
-\end{array}</script><p>很显然，我们可以先通过均匀分布产生指数分布，然后利用指数分布与其它分布的关系来生成对应的分布。因此，知道分布之间的关系就很容易由已知的分布得到要求的分布。</p>
-<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2015/05/19/%5B20150519%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -846,7 +829,7 @@ Y = \frac{\sum\nolimits_{j = 1}^a {\log ( U_j)} }{\sum\nolimits_{j = 1}^{a + b} 
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-08 10:02:35" itemprop="dateModified" datetime="2020-09-08T10:02:35+08:00">2020-09-08</time>
+                <time title="修改时间：2020-09-11 17:11:53" itemprop="dateModified" datetime="2020-09-11T17:11:53+08:00">2020-09-11</time>
               </span>
 
           <br>
@@ -875,42 +858,14 @@ Y = \frac{\sum\nolimits_{j = 1}^a {\log ( U_j)} }{\sum\nolimits_{j = 1}^{a + b} 
 
       
           <p>前面文章《<a href="http://blog.csdn.net/tengweitw/article/details/45584597" target="_blank" rel="noopener">离散分布的产生</a>》中，主要讲述了如何通过均匀分布来产生各种离散分布。下面我给出一些离散分布之间的关系，从而可以由一种已知的分布来产生另一种分布。</p>
-<hr>
-<h2 id="伯努利分布、二项分布与多项分布"><a href="#伯努利分布、二项分布与多项分布" class="headerlink" title="伯努利分布、二项分布与多项分布"></a>伯努利分布、二项分布与多项分布</h2><hr>
-<h4 id="伯努利分布"><a href="#伯努利分布" class="headerlink" title="伯努利分布"></a>伯努利分布</h4><p><strong>定义</strong>：一个离散随机变量$X$的取值仅为$0$和$1$，且其分布律$P(X = 1) = p, P(X = 0) = 1 - p$则此随机变量服从伯努利分布。</p>
-<p>实例：抛硬币就是伯努利分布，伯努利分布产生的结果就是$1$或则$0$（正面或则反面）。</p>
-<hr>
-<h4 id="二项分布"><a href="#二项分布" class="headerlink" title="二项分布"></a>二项分布</h4><p> <strong>定义</strong>：设$B_1,B_2, \cdots ,B_n ( n \in N)$为相互独立的服从参数为$p (p \in [ 0,1 ])$的伯努利分布，定义随机变量：$X = \sum\nolimits_{i = 1}^n {B_i} $那么，随机变量$X$服从参数为$(n,p)$的二项分布。</p>
-<p> <strong>实例</strong>：由定义可知，二项分布就是$n$重伯努利分布。形象的说，抛$n$次硬币，出现正面朝上的次数服从二项分布。</p>
-<hr>
-<h4 id="多项分布"><a href="#多项分布" class="headerlink" title="多项分布"></a>多项分布</h4><p> <strong>定义</strong>：设$m \in N,p_i\in [ 0,1] $，假设$( Y_1,Y_2, \cdots, Y_m)$是一个离散型$m$维随机变量。如果其联合分布律满足：对于$k_1, \cdots, k_m= 0,1,\cdots,n$，当其满足$\sum\nolimits_{i = 1}^m k_i = n $时，$ P( Y_1 = k_1, \cdots ,Y_m = k_m) = \frac{n!}{k_1! \cdots k_n!}p_1^{k_1} \cdots p_m^{k_m}$<br> 则称$m$维随机变量$( Y_1,Y_2, \cdots ,Y_m )$服从参数为$( n;p_1, \cdots, p_m)$的$m$项分布。</p>
-<hr>
-<h2 id="几何分布与负二项分布"><a href="#几何分布与负二项分布" class="headerlink" title="几何分布与负二项分布"></a>几何分布与负二项分布</h2><hr>
-<h4 id="几何分布"><a href="#几何分布" class="headerlink" title="几何分布"></a>几何分布</h4><ul>
-<li><p><strong>定义</strong>：设随机变量$Y$具有如下的分布律：$P( Y = k ) = ( 1 - p )^kp$,其中$p\in [ 0,1], k=0,1,\cdots$<br>则我们称$Y$服从几何分布。</p>
-</li>
-<li><p><strong>实例</strong>：几何分布的物理意义就是实验成功前所经历的失败次数。拿掷硬币来说，假设正面朝上视为成功，服从该几何分布的随机变量的物理意义就是不断掷硬币直到出现正面朝上前，出现反面朝上的次数，也即是失败的次数。</p>
-</li>
-<li><p><strong>重要性质</strong>：<strong>无记忆性</strong>,即对于整数$s &gt;t$，有下式成立：$P( X &gt; s| {X &gt; t} ) = P( X &gt; s - t)$</p>
-</li>
-</ul>
-<hr>
-<h4 id="负二项分布"><a href="#负二项分布" class="headerlink" title="负二项分布"></a>负二项分布</h4><ul>
-<li><p><strong>定义</strong>：设$Y_1,Y_2, \cdots ,Y_m$是$m$个相互独立且服从相同的几何分布，那么，当随机变量$Z$满足下式：<script type="math/tex">Z = \sum\nolimits_{i = 1}^m {Y_i}</script>此时$Z$服从负二项分布，此时的分布律为：$P( Z = k ) = \frac{( k + m - 1)!}{( m - 1)!k!}{p^m}( 1 - p)^k,k=0,1,\cdots$</p>
-</li>
-<li><p><strong>实例</strong>：由定义可知，可以通过几何分布得到负二项分布。举例来说，若我们掷骰子，掷到$1$即视为成功。则每次掷骰的成功率是$1/6$。要掷出三次1，所需的掷骰次数属于集合$\{ 3,  4,  5,  6, \cdots \}$。掷到三次$1$的掷骰次数即是服从负二项分布的随机变量。</p>
-</li>
-</ul>
-<hr>
-<h2 id="二项分布与泊松分布"><a href="#二项分布与泊松分布" class="headerlink" title="二项分布与泊松分布"></a>二项分布与泊松分布</h2><ul>
-<li><p><strong>关系</strong>：对于参数为$(n,p)$的二项分布，如果参数$n$较大，$p$较小，那么我们可以用参数为$\lambda=np$的泊松分布来逼近。</p>
-</li>
-<li><p><strong>实例</strong>：一个盒子里有$144$个鸡蛋，假如每个鸡蛋破碎的概率都为$0.01$，请问恰好有$3$个鸡蛋破碎的概率是多少？</p>
-<p> 显然，这是一个二项分布的问题。设随机变量$X$表示鸡蛋破碎的个数，那么$X$服从参数为$(n=144,p=0.01)$的二项分布。因此在这$144$个鸡蛋中恰好有$3$个鸡蛋破碎的概率为：$P( X = 3) = C_{144}^3{0.01^3}{0.99^{144 - 3}} = 0.1181$<br> 如果用泊松分布进行逼近的话，可知$X$服从参数为$\lambda=np$的泊松分布，则概率近似等于$P( {X = 3}) = \frac{1.44^3}{3!}{e^{ - 1.44}} = 0.1179$比较上面两种计算概率的方法，很明显第二种方法的计算量要小于第一种，因此当$n$较大，$p$较小时，我们常常用泊松分布来近似计算概率。</p>
-</li>
-</ul>
-<hr>
-<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2015/05/15/%5B20150515%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
