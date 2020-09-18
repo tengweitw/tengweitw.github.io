@@ -61,7 +61,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150623&#x2F;20150623_fig002.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150623&#x2F;20150623_fig003.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150623&#x2F;20150623_fig004.jpg">
-<meta property="og:updated_time" content="2020-09-18T01:13:41.235Z">
+<meta property="og:updated_time" content="2020-09-18T01:16:59.215Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150623&#x2F;20150623_fig001.jpg">
 
@@ -243,7 +243,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-18 09:13:41" itemprop="dateModified" datetime="2020-09-18T09:13:41+08:00">2020-09-18</time>
+                <time title="修改时间：2020-09-18 09:16:59" itemprop="dateModified" datetime="2020-09-18T09:16:59+08:00">2020-09-18</time>
               </span>
 
           
@@ -281,6 +281,7 @@
         <p>在上一篇文章《<a href="http://blog.csdn.net/tengweitw/article/details/45484803" target="_blank" rel="noopener">调用网络API</a>》中，我只讲述了如何直观的使用API接口以及调用API后返回的结果，本文则从程序实现的角度来实现API的调用，当然本程序的实现也是借助于扇贝网的API接口文档<a href="http://www.shanbay.com/help/developer/api/" target="_blank" rel="noopener">http://www.shanbay.com/help/developer/api/</a>。</p>
 <hr>
 <p>由<a href="http://www.shanbay.com/help/developer/api/" target="_blank" rel="noopener">API文档</a>可知，要想调用其API，必须先注册。因此，我就注册了，账户名为nineheadedbird， 密码为123456。显然，我们要查词，首先必须得登录该账户。如果用浏览器，那就很简单，只需单纯的输入用户名和密码就可以了。可实际上，这一操作并不简单，只是浏览器为我们做了这一切。如果我们要通过程序来实现上述功能的话，就需要用到Qt中的get()函数了，而发送请求的内容格式就至关重要了。</p>
+<a id="more"></a>
 <hr>
 <h4 id="查看请求格式"><a href="#查看请求格式" class="headerlink" title="查看请求格式"></a>查看请求格式</h4><p> <strong>我们可以通过浏览器来查看请求格式</strong>：首先用谷歌浏览器(其他浏览器也可以，不过你要百度一下怎么来查看这些格式)打开扇贝网的登录界面<a href="http://www.shanbay.com/accounts/login/" target="_blank" rel="noopener">http://www.shanbay.com/accounts/login/</a> ，在谷歌浏览器的设置中单击开发者选项，然后刷新一下页眉，就会出现如下的界面：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150623/20150623_fig001.jpg" width="600" height="450" title="图1" alt="图1" ></p>
 <p>然后<strong>点击右边的第一个文件login</strong>，就会出现下面的内容：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150623/20150623_fig002.jpg" width="600" height="600" title="图2" alt="图2" ></p>
