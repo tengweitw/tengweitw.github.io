@@ -411,11 +411,47 @@ f(\mathrm x)=\mathbb I(-3+x^{(1)}+x^{(2)})\tag{15}</script><p>注意：这里的
       </tags>
   </entry>
   <entry>
+    <title>【漫漫科研路\pgfplots】多个子图共用一个图例</title>
+    <url>/2017/12/02/%5B20171202%5D/</url>
+    <content><![CDATA[<p>十月底，投完会议之后，便对科研写作方面遇到的问题进行了探索。问题主要有：</p>
+<hr>
+<p><em>问题：</em></p>
+<ol>
+<li>文献管理问题：在写论文的过程中，经常要引用他人文献，这时需要费时去寻找。另一方面，有时想要查看曾经读到的某篇文章提到的方法， 也需要去耗时去寻找。</li>
+<li>画图问题：怎样画出好看的图？</li>
+</ol>
+<p><em>解决方案：</em></p>
+<ul>
+<li>针对问题1： 使用JabRef</li>
+<li>针对问题2：使用Pgfplots</li>
+</ul>
+<a id="more"></a>
+<hr>
+<p>后面我将会用一系列文章来记录JabRef和Pgfplots的常用使用方法。本文介绍一下如何让<em>多个子图共用一个图例</em></p>
+<ul>
+<li><p>Case1: 所有的子图有相同的曲线<br> <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20171202/20171202_fig001.jpg" width="600" height="350" title="图1" alt="图1" ></p>
+<p> 实现代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">\documentclass&#123;article&#125;</span><br><span class="line">\usepackage[dvipdfm]&#123;graphicx&#125;</span><br><span class="line">\def\pgfsysdriver&#123;pgfsys-dvipdfmx.def&#125;</span><br><span class="line">\usepackage&#123;tikz&#125;</span><br><span class="line">\usepackage&#123;pgfplots&#125;</span><br><span class="line">\pgfplotsset&#123;width=6cm,compat=1.15&#125;</span><br><span class="line">\begin&#123;document&#125;</span><br><span class="line">\begin&#123;center&#125;</span><br><span class="line">\ref&#123;named&#125;\\%\pgfplotsplotfromname&#123;named&#125; instead of \ref&#123;named&#125; if the codes doesn&apos;t work </span><br><span class="line">\begin&#123;tikzpicture&#125;</span><br><span class="line">\begin&#123;axis&#125;[</span><br><span class="line">legend columns=-1,%the legend are plotted horizontally</span><br><span class="line">legend entries=&#123;$x$&#125;,</span><br><span class="line">legend to name=named,% stored in named</span><br><span class="line">title=&#123;subfig1&#125;,</span><br><span class="line">]</span><br><span class="line">\addplot &#123;x&#125;;</span><br><span class="line">\end&#123;axis&#125;</span><br><span class="line">\end&#123;tikzpicture&#125;</span><br><span class="line">\begin&#123;tikzpicture&#125;</span><br><span class="line">\begin&#123;axis&#125;[title=&#123;subfig2&#125;]</span><br><span class="line">\addplot &#123;x&#125;;</span><br><span class="line">\end&#123;axis&#125;</span><br><span class="line">\end&#123;tikzpicture&#125;</span><br><span class="line">\end&#123;center&#125;</span><br><span class="line">\end&#123;document&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Case2: 子图有不同的曲线<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20171202/20171202_fig002.jpg" width="600" height="350" title="图2" alt="图2" ></p>
+<p> 实现代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">\documentclass&#123;article&#125;</span><br><span class="line">\usepackage[dvipdfm]&#123;graphicx&#125;</span><br><span class="line">\def\pgfsysdriver&#123;pgfsys-dvipdfmx.def&#125;</span><br><span class="line">\usepackage&#123;tikz&#125;</span><br><span class="line">\usepackage&#123;pgfplots&#125;</span><br><span class="line">\pgfplotsset&#123;width=6cm,compat=1.15&#125;</span><br><span class="line">\usetikzlibrary&#123;matrix&#125;</span><br><span class="line">\usepgfplotslibrary&#123;external&#125;</span><br><span class="line">\newcommand*&#123;\refne&#125;[1]&#123;\tikzexternaldisable\pgfplotsplotfromname&#123;#1&#125;\tikzexternalenable&#125;%avoid conflict with the packet hyperref</span><br><span class="line">\begin&#123;document&#125;</span><br><span class="line">\begin&#123;center&#125;</span><br><span class="line">\begin&#123;tikzpicture&#125;</span><br><span class="line">%--define the legend by ourself</span><br><span class="line">  \matrix[</span><br><span class="line">      matrix of nodes,</span><br><span class="line">      draw,</span><br><span class="line">      inner sep=0.2em,</span><br><span class="line">      ampersand replacement=\&amp;,</span><br><span class="line">      font=\scriptsize,</span><br><span class="line">      anchor=east</span><br><span class="line">    ]</span><br><span class="line">    &#123; \refne&#123;x&#125;\&amp; $x$\\</span><br><span class="line">      \refne&#123;x2&#125;\&amp; $x^2$\\</span><br><span class="line">      &#125;;</span><br><span class="line">\end&#123;tikzpicture&#125;\\</span><br><span class="line"></span><br><span class="line">\begin&#123;tikzpicture&#125;</span><br><span class="line">\begin&#123;axis&#125;[</span><br><span class="line">legend columns=-1,%the legend are plotted horizontally</span><br><span class="line">legend entries=&#123;$x$&#125;,</span><br><span class="line">legend to name=named,% stored in named</span><br><span class="line">title=&#123;subfig1&#125;,</span><br><span class="line">]</span><br><span class="line">\addplot &#123;x&#125;;\label&#123;x&#125;</span><br><span class="line">\end&#123;axis&#125;</span><br><span class="line">\end&#123;tikzpicture&#125;</span><br><span class="line">\begin&#123;tikzpicture&#125;</span><br><span class="line">\begin&#123;axis&#125;[title=&#123;subfig2&#125;]</span><br><span class="line">\addplot[red] &#123;x^2&#125;;\label&#123;x2&#125;</span><br><span class="line">\end&#123;axis&#125;</span><br><span class="line">\end&#123;tikzpicture&#125;</span><br><span class="line">\end&#123;center&#125;</span><br><span class="line">\end&#123;document&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<p>参考文献：<br>[1] pgfplots manual: <a href="http://pgfplots.sourceforge.net/pgfplots.pdf" target="_blank" rel="noopener">http://pgfplots.sourceforge.net/pgfplots.pdf</a></p>
+<p>[2]<a href="https://tex.stackexchange.com/questions/192729/pgfplots-trying-to-combine-legends" target="_blank" rel="noopener">https://tex.stackexchange.com/questions/192729/pgfplots-trying-to-combine-legends</a></p>
+<p>[3]<a href="https://tex.stackexchange.com/questions/383547/refnamed-pgfplot-externalization-and-hyperref-gives-warning-namepgfplotsli" target="_blank" rel="noopener">https://tex.stackexchange.com/questions/383547/refnamed-pgfplot-externalization-and-hyperref-gives-warning-namepgfplotsli</a></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Research</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【漫漫科研路】序言</title>
     <url>/2017/11/19/%5B20171119%5D/</url>
     <content><![CDATA[<p>时间回溯到2015年中秋和国庆期间，那时还在为实验室十二五项目验收而通宵了一晚上。第二天上午结束验收，标志着我硕士生阶段就告一段落。 下午睡了几个小时便赶着火车去青海湖与小伙伴汇合。游玩归来，便开始了我的博士生阶段。 当时还思考了很多，还写了一篇对应的博文《<a href="http://blog.csdn.net/tengweitw/article/details/48953621" target="_blank" rel="noopener">遇见</a>》。从此我便放弃了技术性博文的书写，至今已两年矣。</p>
-<hr>
-<p>时至今日，我将重新开始有关科研方面的写作，包括技术与非技术方面的。尽管两年来，我在科研上尚无建树，我仍旧希望通过博文来记录我科研方面的点点滴滴，表达一些我的拙见。我希望在科研中抽出时间，每个月至少能写上一篇，笔耕不辍。互联网上关于科研的博客非常少，大多数是与编程技术相关的。因此几乎所有的编程上遇到的bug都能很好的通过百度谷歌得到结果。但是关于科研的博客少之又少，这可能与科研的特性有关吧。为此，我将写一系列关于科研的文章，一方面可以记录自己的科研经历，另一方面可能也能给予别人以参考。</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><p>时至今日，我将重新开始有关科研方面的写作，包括技术与非技术方面的。尽管两年来，我在科研上尚无建树，我仍旧希望通过博文来记录我科研方面的点点滴滴，表达一些我的拙见。我希望在科研中抽出时间，每个月至少能写上一篇，笔耕不辍。互联网上关于科研的博客非常少，大多数是与编程技术相关的。因此几乎所有的编程上遇到的bug都能很好的通过百度谷歌得到结果。但是关于科研的博客少之又少，这可能与科研的特性有关吧。为此，我将写一系列关于科研的文章，一方面可以记录自己的科研经历，另一方面可能也能给予别人以参考。</p>
 <hr>
 <p>正如题目所示，这个系列命名为【漫漫科研路】，其中包括以下几个部分（后续可能有补充）：</p>
 <ul>
