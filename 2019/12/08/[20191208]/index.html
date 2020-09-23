@@ -49,18 +49,20 @@
   };
 </script>
 
-  <meta name="description" content="不用截图工具就可以将图保存成图像格式，并且没有背景颜色：saveas(gcf ,’outputname’,’png&#x2F;jpg’)，第三项省略时默认为fig.m文件">
-<meta name="keywords" content="Matlab Coding">
+  <meta name="description" content="本文旨在向大家推荐个人在科研过程中觉得还不错的硬件和软件。 硬件与其他专业不同，我所处的科研环境不需要其他外部实验设备，只需要一台电脑，一根网线而已。因此硬件方面，跟大多数程序员大同小异。下面列举硬件清单：  Mac mini 2018 mid早在2014年，用的是实验室标配的台式机，主机+显示屏+键盘好像是2500左右。没过多久，我就换成了实验室淘汰的2011购买的think centre服务器">
+<meta name="keywords" content="Research">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【Matlab编程】matlab 画图">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2014&#x2F;05&#x2F;30&#x2F;[20140530]&#x2F;index.html">
+<meta property="og:title" content="【漫漫科研路\pgfplots】子图的多种画法">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2019&#x2F;12&#x2F;08&#x2F;[20191208]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="不用截图工具就可以将图保存成图像格式，并且没有背景颜色：saveas(gcf ,’outputname’,’png&#x2F;jpg’)，第三项省略时默认为fig.m文件">
+<meta property="og:description" content="本文旨在向大家推荐个人在科研过程中觉得还不错的硬件和软件。 硬件与其他专业不同，我所处的科研环境不需要其他外部实验设备，只需要一台电脑，一根网线而已。因此硬件方面，跟大多数程序员大同小异。下面列举硬件清单：  Mac mini 2018 mid早在2014年，用的是实验室标配的台式机，主机+显示屏+键盘好像是2500左右。没过多久，我就换成了实验室淘汰的2011购买的think centre服务器">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-08-18T12:18:17.544Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20191208&#x2F;20191208_fig001.jpg">
+<meta property="og:updated_time" content="2020-09-23T00:57:57.272Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20191208&#x2F;20191208_fig001.jpg">
 
-<link rel="canonical" href="http://tengweitw.com/2014/05/30/[20140530]/">
+<link rel="canonical" href="http://tengweitw.com/2019/12/08/[20191208]/">
 
 
 <script id="page-configurations">
@@ -74,7 +76,7 @@
   };
 </script>
 
-  <title>【Matlab编程】matlab 画图 | 青峰碧陋室</title>
+  <title>【漫漫科研路\pgfplots】子图的多种画法 | 青峰碧陋室</title>
   
 
 
@@ -208,7 +210,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/05/30/%5B20140530%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2019/12/08/%5B20191208%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -221,7 +223,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【Matlab编程】matlab 画图
+          【漫漫科研路\pgfplots】子图的多种画法
         </h1>
 
         <div class="post-meta">
@@ -231,14 +233,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2014-05-30 19:38:05" itemprop="dateCreated datePublished" datetime="2014-05-30T19:38:05+08:00">2014-05-30</time>
+              <time title="创建时间：2019-12-08 21:52:24" itemprop="dateCreated datePublished" datetime="2019-12-08T21:52:24+08:00">2019-12-08</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-18 20:18:17" itemprop="dateModified" datetime="2020-08-18T20:18:17+08:00">2020-08-18</time>
+                <time title="修改时间：2020-09-23 08:57:57" itemprop="dateModified" datetime="2020-09-23T08:57:57+08:00">2020-09-23</time>
               </span>
 
           
@@ -254,14 +256,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.8k</span>
+              <span>1.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -273,48 +275,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <ol>
-<li><p>不用截图工具就可以将图保存成图像格式，并且没有背景颜色：<code>saveas(gcf ,’outputname’,’png/jpg’)</code>，第三项省略时默认为fig.m文件</p>
-<a id="more"></a>
-</li>
-<li><p>计算形如$(-1)^{2/3}$，应该是默认先算$(-1)^{(1/3)}$，plot的时候命令窗会警告略去了虚部, 为了避免不必要的麻烦$((-1)^2)^{1/3}$这样写,例子如下：</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">clear</span><br><span class="line">clc</span><br><span class="line">subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>);</span><br><span class="line">ezplot(<span class="string">'x^2+(y-(x^2)^(1/3))^2-1'</span>,[<span class="number">-2</span>,<span class="number">2</span>]);</span><br><span class="line">subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">ezplot(<span class="string">'x^2+(y-x^(2/3))^2-1'</span>,[<span class="number">-2</span>,<span class="number">2</span>]);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>获取图片纵轴刻度间隔：<code>b=get(gca,&#39;ytick&#39;), y_tick=b(2)-b(1)</code></p>
-</li>
-<li><p>excel中有三列数据，第一列是横坐标，第二列是纵坐标，第三列是所要画图的点的颜色深浅，第三列的值只有一个，但是如果表示成color，需要三个值，如[0 1 0]表示纯绿色。我在程序中用的是绿色的深浅，你也可以改成别的如红色、蓝色等。<code>Plot(x,y,’*’,’color’,[0 z(i) 0])</code></p>
-</li>
-<li><p>画出来的总是实线穿过了这些小正方形，标识符，能不能设置成不穿过小正方形markerfacecolor 改成和你的背景颜色一样。<code>plot(0,0,&#39;-b^&#39;,&#39;visible&#39;,&#39;off&#39;)</code>;</p>
-</li>
-<li><p>原点在右侧：<code>set(gca,&#39;XDir&#39;,&#39;rev&#39;)</code></p>
-</li>
-<li><p>将第一个图和第三个图合并为一个图</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">subplot(<span class="number">2</span>,<span class="number">2</span>,[<span class="number">1</span> <span class="number">3</span>])</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">2</span>,<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Ezplot应该写成函数式fplot可以写成等式，例如：<code>ezplot(&#39;exp(x)-3*x^2&#39;)</code>,不要写=0</p>
-</li>
-<li><p>画图纵坐标全部显示为分数（当然这个可以直接在图像上修改）：<code>set(gca,&#39;XTickLabel&#39;,{&#39;1/2&#39;,&#39;1/5&#39;,&#39;1/10&#39;,&#39;1/15&#39;,&#39;1/20&#39;})</code></p>
-</li>
-<li><p>ezplot()简易绘图函数，每次绘图的时候会自动清空当前坐标系 ，因此不支持<code>hold on</code>函数。例如：</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ezplot(<span class="string">'x^2'</span>,[<span class="number">-1</span>,<span class="number">0</span>]);</span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line">ezplot(<span class="string">'x^2+1'</span>,[<span class="number">0</span>,<span class="number">1</span>]);</span><br></pre></td></tr></table></figure>
-<p>可以修改为：</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f=@(x)x.^<span class="number">2.</span>*(x&gt;=<span class="number">-1</span>&amp;x&lt;=<span class="number">0</span>)+(x.^<span class="number">2</span>+<span class="number">1</span>).*(x&gt;=<span class="number">0</span>&amp;x&lt;=<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>把colorbar的标度变成log型：</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">clear,clc</span><br><span class="line">[x,y] = <span class="built_in">meshgrid</span>(<span class="number">0</span>:<span class="number">.1</span>:<span class="number">10</span>);</span><br><span class="line">z = <span class="number">10.</span>^((x<span class="number">-5</span>).^<span class="number">2</span>+(y<span class="number">-5</span>).^<span class="number">2</span>);</span><br><span class="line">contourf(x,y,<span class="built_in">log10</span>(z))</span><br><span class="line">h = colorbar;</span><br><span class="line">l = get(h,<span class="string">'yticklabel'</span>);</span><br><span class="line">set(h,<span class="string">'yticklabel'</span>,<span class="string">''</span>);</span><br><span class="line">t = arrayfun(@(<span class="built_in">i</span>)[<span class="string">'10^&#123;'</span> l(<span class="built_in">i</span>,:) <span class="string">'&#125;'</span>],<span class="number">1</span>:<span class="built_in">size</span>(l,<span class="number">1</span>),<span class="string">'un'</span>,<span class="built_in">false</span>);</span><br><span class="line">text(<span class="number">2.5</span>*<span class="built_in">ones</span>(<span class="built_in">size</span>(l,<span class="number">1</span>),<span class="number">1</span>),get(h,<span class="string">'ytick'</span>),t,<span class="string">'parent'</span>,h)*</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>画立体心形：<code>ezsurf(&#39;5-sqrt(1-x^2-(y-abs(x))^2)*cos(30*(1-x^2-(y-abs(x))^2))&#39;,[-1,1,-1,2],100)</code></p>
-</li>
-<li><p>将横纵坐标改为天数、日期、年份等等，简便的方法就是直接在图形窗口进行可视化修改。如果画的图比较多，可以利用XTickLabel等相关程序语句编写。</p>
-</li>
-<li><p>坐标的标签：<code>set(gca,&#39;XTick&#39;,-pi:pi/2:pi)</code><br><code>set(gca,&#39;XTickLabel&#39;,{&#39;-pi&#39;,&#39;-pi/2&#39;,&#39;0&#39;,&#39;pi/2&#39;,&#39;pi&#39;})</code></p>
-</li>
-<li><p>用imagesc函数画图时，出来的图y轴坐标都是反的，解决办法：<code>axis xy</code></p>
-</li>
-<li><p>画五角星：</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">n=<span class="number">1</span>:<span class="number">2</span>:<span class="number">11</span>;</span><br><span class="line">x=<span class="built_in">sin</span>(<span class="number">0.4</span>*n*<span class="built_in">pi</span>);</span><br><span class="line">y=<span class="built_in">cos</span>(<span class="number">0.4</span>*n*<span class="built_in">pi</span>);</span><br><span class="line"><span class="built_in">plot</span>(x,y);</span><br><span class="line">axis([<span class="number">-1.5</span>,<span class="number">1.5</span>,<span class="number">-1.5</span>,<span class="number">1.5</span>]);</span><br><span class="line">axis square</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
+        <p>本文旨在向大家推荐个人在科研过程中觉得还不错的硬件和软件。</p>
+<h2 id="硬件"><a href="#硬件" class="headerlink" title="硬件"></a>硬件</h2><p>与其他专业不同，我所处的科研环境不需要其他外部实验设备，只需要一台电脑，一根网线而已。因此硬件方面，跟大多数程序员大同小异。下面列举硬件清单：</p>
+<ul>
+<li>Mac mini 2018 mid<br>早在2014年，用的是实验室标配的台式机，主机+显示屏+键盘好像是2500左右。没过多久，我就换成了实验室淘汰的2011购买的think centre服务器，最少还是个酷睿i5的cpu。后来，我自己买了一块120G的Intel系列的SSD，使其重新焕发光彩。用了两年后，SSD居然坏了。于是乎放弃了这台台式机，改用了我自己的笔记本Thinkpad T440（也是我现在正在码字用的笔记本）。 记得这个笔记是于2015年春季购买，后来又自己买了个256G的SSD装上。为了便携方便，我又在咸鱼买了个thinkpad 扩展坞。后来，在苹果在2018秋季发布会的时候，推出了四年才更新的Mac mini，恰好人正在美国访学，于是乎果断入手。当时是在美国亚马逊1049美元购买，discover 有10%的bonus，算下来差不多是950美元入手。相比于国内的8899还是便宜太多。</li>
+<li>人体工程学椅<br>记得最开始的时候，坐的是实验室的圆凳子，而且还是破了一角的凳子。后来我自己又在走廊里的垃圾堆放处找了一把可旋转、有靠背的椅子。最后来，在2015的618时期，在京东买了一把五百多的人体工程学椅西昊M16。买了后，感觉的确有点效果，以前腰酸背痛的感觉明显好转。</li>
+<li>Dell P系列显示器<br>实验室配置的是三星的显示器，但是我一直都是用的两个显示屏。之前都是随便拿实验室报废的显示器使用，两个显示器存在明显的色差。后来，在2015年双十一的时候，一口气就买了2个19寸左右的实验室。在美国访学期间，也是在实验室找的两个配置更高些的Dell u系列的显示器。</li>
+<li>HHKB Type-s 静电容键盘<br>起初，用的是实验室买电脑送的键盘，牌子估计是双飞燕，忘记了。后来在2015年，买了ThinkPad的小红点有线键盘，编号为0B47190。这把键盘是我使用时间最长的键盘，用了四年，期间还随我漂洋过海到美国。后来由于一些失误，不小心把键盘的按键弄坏了两个，随后便买了这款键盘的蓝牙升级版本，编号为4X30K12182。但是由于实验室无线环境复杂，该键盘经常出现按键延迟响应，现在已经沦落为我ipad的备用键盘了。后来实验室同学又推荐机械键盘，我自己又在网上调研了一番，便发现了这款适合于Mac、Vim、程序员的HHKB Type-s的退烧键盘。恰逢双十一，于是一狠心、一跺脚就买了。心里暗暗说服自己，这个键盘可以用个十年，这么算来性价比还可以吧。之所以买这个静音版，一方面是因为实验室环境，不好意思影响他人；另一方面是因为蓝牙版本可能出现前面的无线冲突情况。</li>
+<li>Apple Magic Trackpad 2<br>其实我对于鼠标并没有什么追求，之前一直都是用的在普通不过的鼠标。后来使用thinkpad小红点键盘后，就没有使用过鼠标了。后来，在2018年的某一天，我发现长期使用小红点，会出现食指的指甲盖明显的弯曲，估计是常年用食指使用小红点的缘故。于是乎，在有mac mini的前提下，就购买了触摸板，买了之后，发现实在是太香了。之后就是在写论文和编代码的时候使用小红点，看论文的时候就是用触摸板。</li>
+<li>小米圈铁耳机2<br>我对于音乐的欣赏，应该处于木耳阶段。完全是因为有事需要听点音乐提神，就随便买了个耳机。其实，如果需要降噪的话，可以考虑Sony的mx 1000系列和bose的qc 35系列，感觉评价都不错。</li>
+</ul>
+<p>最后附一张实验室的科研环境图：<br>    <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191208/20191208_fig001.jpg" width="600" height="450" title="图1" alt="图1" ></p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -350,7 +321,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2014/05/30/[20140530]/" title="【Matlab编程】matlab 画图">http://tengweitw.com/2014/05/30/[20140530]/</a>
+    <a href="http://tengweitw.com/2019/12/08/[20191208]/" title="【漫漫科研路\pgfplots】子图的多种画法">http://tengweitw.com/2019/12/08/[20191208]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -362,7 +333,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/Matlab-Coding/" rel="tag"><i class="fa fa-tag"></i> Matlab Coding</a>
+              <a href="/tags/Research/" rel="tag"><i class="fa fa-tag"></i> Research</a>
           </div>
 
         
@@ -371,12 +342,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2014/05/29/%5B20140529%5D/" rel="prev" title="【LaTeX排版】LaTeX使用--入门基础">
-      <i class="fa fa-chevron-left"></i> 【LaTeX排版】LaTeX使用--入门基础
+    <a href="/2019/12/01/%5B20191201%5D/" rel="prev" title="【漫漫科研路\C&C++】CPLEX解SOCP问题">
+      <i class="fa fa-chevron-left"></i> 【漫漫科研路\C&C++】CPLEX解SOCP问题
     </a></div>
       <div class="post-nav-item">
-    <a href="/2014/06/04/%5B20140604%5D/" rel="next" title="【LaTeX排版】LaTeX使用--入门基础<二>">
-      【LaTeX排版】LaTeX使用--入门基础<二> <i class="fa fa-chevron-right"></i>
+    <a href="/2020/07/19/hello-world2020/" rel="next" title="Hello World--2020">
+      Hello World--2020 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -415,6 +386,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#硬件"><span class="nav-number">1.</span> <span class="nav-text">硬件</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
