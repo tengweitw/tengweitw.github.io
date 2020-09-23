@@ -300,6 +300,45 @@
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
   </entry>
   <entry>
+    <title>【漫漫科研路\pgfplots】克服绘制色温图时，数据量大出现的内存限制</title>
+    <url>/2019/12/22/%5B20191222%5D/</url>
+    <content><![CDATA[<p>在科研论文写作中，经常会遇到画色温图，3D图。此时一般输入的数据量比较大，导致在Latex中使用Tikz画图时出现内存不足的情况。常常报错如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">! TeX capacity exceeded, sorry [main memory size=5000000].</span><br></pre></td></tr></table></figure>
+<p>参考pgfplots手册中的第六章，我们有以下解决方案：</p>
+<ul>
+<li>使用LuaTex进行编译<br>有些版本不含LuaTex</li>
+<li>对输入数据采样降低数据量<br>不是从本质上解决问题，降低了精度</li>
+<li>使用其它软件画图，e.g., MATLAB</li>
+<li>增大LaTex的编译内存</li>
+</ul>
+<a id="more"></a>
+<hr>
+<p>本文主要介绍如何在MacOS系统中Texlive平台下，克服内LaTex内存限制。关于在Linux和MiKTEX环境下，<a href="http://pgfplots.sourceforge.net/" target="_blank" rel="noopener">pgfplots</a>手册已给了说明，这里不再赘述。</p>
+<p><strong>解决办法</strong>：在Texlive安装目录中找到texmf.cnf文件并编辑：</p>
+<p><em>其安装目录在</em>：</p>
+<p>/usr/local/texlive/2018/texmf-dist/web2c/texmf.cnf</p>
+<p>注意：/usr/local/texlive/2018/texmf.cnf也有相同的文件，编辑这个文件无法解决问题</p>
+<p><em>其内容修改如下：</em><br>    <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191222/20191222_fig001.jpg" width="400" height="300" title="图1" alt="图1" ><br>注意：修改的内存大小不能超过实际内存大小，我的是8G.</p>
+<p>最后，打开终端进入安装目录下，执行</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">sudo texhash</span><br></pre></td></tr></table></figure>
+<p>若发生文件不可写的情况，可以使用<code>chmod 777</code> 来更改文件读写权限。</p>
+<hr>
+<p>下面，我们通过实例来验证：</p>
+<ul>
+<li><p>数据产生<br>我们使用Matlab的peaks函数来产生peaks.dat文件用于tikz画图的输入数据。其代码如下：</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">clear all</span><br><span class="line">clc</span><br><span class="line">close all</span><br><span class="line"></span><br><span class="line">lambda_total=<span class="number">2</span>;<span class="comment">% the sum of Z</span></span><br><span class="line">[X,Y,Z] = peaks(<span class="number">100</span>);</span><br><span class="line">Z(Z&lt;<span class="number">0</span>)=<span class="number">0</span>;</span><br><span class="line">Z=Z/sum(sum(Z))*lambda_total;</span><br><span class="line"></span><br><span class="line">x_temp=<span class="built_in">repmat</span>(<span class="number">1</span>:<span class="number">100</span>,<span class="number">100</span>,<span class="number">1</span>);<span class="comment">% X-axis</span></span><br><span class="line">x_temp=x_temp(:);  </span><br><span class="line">y_temp=<span class="built_in">repmat</span>(<span class="number">1</span>:<span class="number">100</span>,<span class="number">1</span>,<span class="number">100</span>);<span class="comment">%Y-axis</span></span><br><span class="line"></span><br><span class="line">xyz=[<span class="string">'x y z'</span>];</span><br><span class="line">dlmwrite(<span class="string">'peaks.dat'</span>,xyz,<span class="string">'delimiter'</span>,<span class="string">' '</span>);</span><br><span class="line"><span class="keyword">for</span> x_ind=<span class="number">1</span>:<span class="built_in">size</span>(Z,<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">for</span> y_ind=<span class="number">1</span>:<span class="built_in">size</span>(Z,<span class="number">2</span>)</span><br><span class="line">        <span class="comment">% for one point (x,y,z), we use 4 coordinates (x,y,z) (x,y+1,z) (x+1,y+1,z) (x+1,y,z) to form a patch</span></span><br><span class="line">        xyz=[x_ind y_ind Z(x_ind, y_ind);x_ind y_ind+<span class="number">1</span> Z(x_ind, y_ind);x_ind+<span class="number">1</span> y_ind+<span class="number">1</span> Z(x_ind, y_ind);x_ind+<span class="number">1</span> y_ind Z(x_ind, y_ind)];</span><br><span class="line">        <span class="keyword">if</span>(x_ind==<span class="number">1</span>&amp;&amp;y_ind==<span class="number">1</span>)</span><br><span class="line">            dlmwrite(<span class="string">'peaks.dat'</span>,xyz,<span class="string">'delimiter'</span>,<span class="string">' '</span>,<span class="string">'-append'</span>,<span class="string">'roffset'</span>,<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            dlmwrite(<span class="string">'peaks.dat'</span>,xyz,<span class="string">'delimiter'</span>,<span class="string">' '</span>,<span class="string">'-append'</span>,<span class="string">'roffset'</span>,<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在Tikz中画图<br>本文使用了patch来画图，也可以改用surf, mesh等。完整latex源代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> \documentclass&#123;standalone&#125;</span><br><span class="line">\def\pgfsysdriver&#123;pgfsys-dvipdfmx.def&#125;</span><br><span class="line">\usepackage&#123;tikz&#125;</span><br><span class="line">\usepackage&#123;pgfplots&#125;</span><br><span class="line">\pgfplotsset&#123;width=7cm,compat=1.14&#125;</span><br><span class="line"></span><br><span class="line">\begin&#123;document&#125;</span><br><span class="line">\begin&#123;tikzpicture&#125; </span><br><span class="line">	\begin&#123;axis&#125;[</span><br><span class="line">		colorbar,</span><br><span class="line">        xmin=1,xmax=101,</span><br><span class="line">		ymin=1,ymax=101,</span><br><span class="line">		xlabel=&#123;X-axis (m)&#125;,</span><br><span class="line">		ylabel=&#123;Y-axis (m)&#125;,</span><br><span class="line">	]</span><br><span class="line">	\addplot [patch,patch type=rectangle] </span><br><span class="line">		table [point meta=\thisrow&#123;z&#125;]</span><br><span class="line">		&#123;peaks.dat &#125;; </span><br><span class="line">    \end&#123;axis&#125;</span><br><span class="line">\end&#123;tikzpicture&#125;</span><br><span class="line">\end&#123;document&#125;</span><br></pre></td></tr></table></figure>
+<p>画图效果如下：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191222/20191222_fig002.jpg" width="400" height="300" title="图2" alt="图2" ></p>
+</li>
+</ul>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Research</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【漫漫科研路\pgfplots】画局部放大图</title>
     <url>/2019/12/15/%5B20191215%5D/</url>
     <content><![CDATA[<p>在科研论文写作中，我们经常需要放大局部图片来显示细节，即绘制图中图。在Matlab中可以使用magnify或则axes函数，网上有很多例子，这里不再赘述。本文主要讲解如何使用tikz/pgfplots来画局部放大图中图。</p>

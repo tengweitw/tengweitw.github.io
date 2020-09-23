@@ -49,28 +49,21 @@
   };
 </script>
 
-  <meta name="description" content="我设计的词典不仅可以实现在线查单词，而且一个重大特色就是具有丰富的本地词典库：我默认加入了八个类型的词典，如下所示：  由于是本人是通信专业，因此加入了华为通信词典、电子工程词典，又由于我喜爱编程，也加入了c语言基本函数词典。下面介绍如何设计本地词典：">
-<meta name="keywords" content="Qt Coding">
+  <meta name="description" content="在科研论文写作中，经常会遇到画色温图，3D图。此时一般输入的数据量比较大，导致在Latex中使用Tikz画图时出现内存不足的情况。常常报错如下： 1! TeX capacity exceeded, sorry [main memory size=5000000]. 参考pgfplots手册中的第六章，我们有以下解决方案：  使用LuaTex进行编译有些版本不含LuaTex 对输入数据采样降低数据量">
+<meta name="keywords" content="Research">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【Qt编程】基于Qt的词典开发系列--本地词典的设计">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2015&#x2F;04&#x2F;13&#x2F;[20150413]&#x2F;index.html">
+<meta property="og:title" content="【漫漫科研路\pgfplots】克服绘制色温图时，数据量大出现的内存限制">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2019&#x2F;12&#x2F;22&#x2F;[20191222]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="我设计的词典不仅可以实现在线查单词，而且一个重大特色就是具有丰富的本地词典库：我默认加入了八个类型的词典，如下所示：  由于是本人是通信专业，因此加入了华为通信词典、电子工程词典，又由于我喜爱编程，也加入了c语言基本函数词典。下面介绍如何设计本地词典：">
+<meta property="og:description" content="在科研论文写作中，经常会遇到画色温图，3D图。此时一般输入的数据量比较大，导致在Latex中使用Tikz画图时出现内存不足的情况。常常报错如下： 1! TeX capacity exceeded, sorry [main memory size=5000000]. 参考pgfplots手册中的第六章，我们有以下解决方案：  使用LuaTex进行编译有些版本不含LuaTex 对输入数据采样降低数据量">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150413&#x2F;20150413_fig001.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150413&#x2F;20150413_fig002.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150413&#x2F;20150413_fig003.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150413&#x2F;20150413_fig004.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150413&#x2F;20150413_fig005.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150413&#x2F;20150413_fig006.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150413&#x2F;20150413_fig007.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150413&#x2F;20150413_fig008.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150413&#x2F;20150413_fig009.jpg">
-<meta property="og:updated_time" content="2020-09-05T13:22:03.880Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20191222&#x2F;20191222_fig001.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20191222&#x2F;20191222_fig002.jpg">
+<meta property="og:updated_time" content="2020-09-23T09:48:26.863Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20150413&#x2F;20150413_fig001.jpg">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20191222&#x2F;20191222_fig001.jpg">
 
-<link rel="canonical" href="http://tengweitw.com/2015/04/13/[20150413]/">
+<link rel="canonical" href="http://tengweitw.com/2019/12/22/[20191222]/">
 
 
 <script id="page-configurations">
@@ -84,7 +77,7 @@
   };
 </script>
 
-  <title>【Qt编程】基于Qt的词典开发系列--本地词典的设计 | 青峰碧陋室</title>
+  <title>【漫漫科研路\pgfplots】克服绘制色温图时，数据量大出现的内存限制 | 青峰碧陋室</title>
   
 
 
@@ -218,7 +211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/04/13/%5B20150413%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2019/12/22/%5B20191222%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -231,7 +224,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【Qt编程】基于Qt的词典开发系列--本地词典的设计
+          【漫漫科研路\pgfplots】克服绘制色温图时，数据量大出现的内存限制
         </h1>
 
         <div class="post-meta">
@@ -241,14 +234,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2015-04-13 17:36:05" itemprop="dateCreated datePublished" datetime="2015-04-13T17:36:05+08:00">2015-04-13</time>
+              <time title="创建时间：2019-12-22 21:27:50" itemprop="dateCreated datePublished" datetime="2019-12-22T21:27:50+08:00">2019-12-22</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-05 21:22:03" itemprop="dateModified" datetime="2020-09-05T21:22:03+08:00">2020-09-05</time>
+                <time title="修改时间：2020-09-23 17:48:26" itemprop="dateModified" datetime="2020-09-23T17:48:26+08:00">2020-09-23</time>
               </span>
 
           
@@ -264,7 +257,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.8k</span>
+              <span>1.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -283,55 +276,37 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>我设计的词典不仅可以实现在线查单词，而且一个重大特色就是具有<strong>丰富的本地词典库</strong>：我默认加入了八个类型的词典，如下所示：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150413/20150413_fig001.jpg" width="600" height="500" title="图1" alt="图1" ></p>
-<p>由于是本人是通信专业，因此加入了华为通信词典、电子工程词典，又由于我喜爱编程，也加入了c语言基本函数词典。下面介绍如何设计本地词典：</p>
+        <p>在科研论文写作中，经常会遇到画色温图，3D图。此时一般输入的数据量比较大，导致在Latex中使用Tikz画图时出现内存不足的情况。常常报错如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">! TeX capacity exceeded, sorry [main memory size=5000000].</span><br></pre></td></tr></table></figure>
+<p>参考pgfplots手册中的第六章，我们有以下解决方案：</p>
+<ul>
+<li>使用LuaTex进行编译<br>有些版本不含LuaTex</li>
+<li>对输入数据采样降低数据量<br>不是从本质上解决问题，降低了精度</li>
+<li>使用其它软件画图，e.g., MATLAB</li>
+<li>增大LaTex的编译内存</li>
+</ul>
 <a id="more"></a>
-<h2 id="词典类型的选择"><a href="#词典类型的选择" class="headerlink" title="词典类型的选择"></a>词典类型的选择</h2><p>当然是txt格式的最好了，因为我们可以用程序直接进行读取。可是网上词典一般都是用mdx格式、ld2格式的，我无法用Qt来直接读取。最终，经过不断摸索，网上查找，发现我们可以将mdx格式的词典通过软件转化为txt格式的！</p>
-<h2 id="mdx词典的下载"><a href="#mdx词典的下载" class="headerlink" title="mdx词典的下载"></a>mdx词典的下载</h2><p>​    如何获取mdx格式的词典呢？直接百度 mdx 词典就可以发现如下搜索结果：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150413/20150413_fig002.jpg" width="600" height="400" title="图2" alt="图2" ></p>
-<p>从中选择下载你想要的词典，这里我以<a href="http://bbs.meizu.cn/thread-3299845-1-1.html中的第一个mdx词典“三合一汉语大辞典”作为例子。" target="_blank" rel="noopener">http://bbs.meizu.cn/thread-3299845-1-1.html中的第一个mdx词典“三合一汉语大辞典”作为例子。</a></p>
 <hr>
-<h2 id="mdx词典的查看"><a href="#mdx词典的查看" class="headerlink" title="mdx词典的查看"></a>mdx词典的查看</h2><p>​    由于是mdx格式的，你用记事本打开就会显示乱码。那么怎么查看你下载的词典的内容呢？这时我们可以利用一个可以解析mdx格式的<strong>软件MDict（<a href="http://download.csdn.net/detail/tengweitw/8588165" target="_blank" rel="noopener">点击下载</a>）</strong>来打开该mdx词典。</p>
-<p>举例说明：</p>
-<p>假设我下载了一个“三合一汉语大辞典.mdx”，我们首先打开MDict软件来查看该词典的内容。首先选择“词库”—“词库管理”—“加入词典”，从而加入我们下载的词典文件，然后点击“词库”，从下拉列表中选择我们刚才加入的“三合一汉语大辞典”。然后单击左侧栏，就会在右侧栏中显示对应的内容。具体操作图解如下：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150413/20150413_fig003.jpg" width="600" height="400" title="图3" alt="图3" ></p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150413/20150413_fig004.jpg" width="600" height="500" title="图4" alt="图4" ></p>
-<h2 id="mdx词典的转换"><a href="#mdx词典的转换" class="headerlink" title="mdx词典的转换"></a>mdx词典的转换</h2><p>将mdx格式的词典转化为txt格式需要利用工具MDx词典转化工具（<a href="http://download.csdn.net/detail/tengweitw/8588171" target="_blank" rel="noopener">点击下载</a>），只需要按照下图即可转化为txt文件：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150413/20150413_fig005.jpg" width="500" height="400" title="图5" alt="图5" ></p>
-<p>​    用记事本打开该txt文件我们就可以发现下图类似的语言格式：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150413/20150413_fig006.jpg" width="700" height="400" title="图6" alt="图6" ></p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150413/20150413_fig007.jpg" width="600" height="400" title="图7" alt="图7" ></p>
-<p>我们以图中第二行为例，aadb为我们要查的单词（注意:我们这里的词典是成语词典，即查找aadb四个拼音首字母所组成的成语），而后面<code>&lt;font &lt;/font&gt;&lt;br&gt;</code>中的即为我们要找的成语，学过网页设计的人应该都知道<code>&lt;font color=&quot;#0000FF&quot;&gt;&lt;br&gt;嗷嗷待哺&lt;/font&gt;&lt;br&gt;</code>的意思，这其实是html语言，即将“嗷嗷待哺”变为蓝色字体，正如我们在MDict所看到的一样。而恰好Qt可以识别html语言，因此即使像我这种没有学过html语言的人也不用费心思去了解。</p>
+<p>本文主要介绍如何在MacOS系统中Texlive平台下，克服内LaTex内存限制。关于在Linux和MiKTEX环境下，<a href="http://pgfplots.sourceforge.net/" target="_blank" rel="noopener">pgfplots</a>手册已给了说明，这里不再赘述。</p>
+<p><strong>解决办法</strong>：在Texlive安装目录中找到texmf.cnf文件并编辑：</p>
+<p><em>其安装目录在</em>：</p>
+<p>/usr/local/texlive/2018/texmf-dist/web2c/texmf.cnf</p>
+<p>注意：/usr/local/texlive/2018/texmf.cnf也有相同的文件，编辑这个文件无法解决问题</p>
+<p><em>其内容修改如下：</em><br>    <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191222/20191222_fig001.jpg" width="400" height="300" title="图1" alt="图1" ><br>注意：修改的内存大小不能超过实际内存大小，我的是8G.</p>
+<p>最后，打开终端进入安装目录下，执行</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo texhash</span><br></pre></td></tr></table></figure>
+<p>若发生文件不可写的情况，可以使用<code>chmod 777</code> 来更改文件读写权限。</p>
 <hr>
-<h2 id="txt词典的处理"><a href="#txt词典的处理" class="headerlink" title="txt词典的处理"></a>txt词典的处理</h2><p>前面我们基本上完成了词典的制作，但是我为了简便起见，我将词典中要查的词和内容分开保存。例如，我将上面的txt文件改名为Chinese.txt(方便编程使用)，将其拆分如下名为ChineseA和ChineseB文件：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150413/20150413_fig008.jpg" width="700" height="200" title="图8" alt="图8" ></p>
-<p>这样做的好处是，每当我在搜索窗口输入我想要查询的内容时（比如输入aadb），我就只需要打开ChineseA文件，在这里寻找是否存在该词，而不需要打开整个词典（词+内容），这样查找速度会快一点，因为很明显ChineseA的文件的大小要明显小于Chinese文件大小，<strong>还有一点好处，会在后面的系列文章中提到</strong>。如下所示：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150413/20150413_fig009.jpg" width="400" height="100" title="图9" alt="图9" ></p>
-<p>关于如何将上面的文件拆分成两个文件，我想应该很简单，我就不在这写出具体的实现过程，只说说思路：首先读取整个文件，每次读取一行，在每一行中，遇到第一个空格就提取出来放入ChineseA.txt中，该行剩余部分放入ChineseB.txt。<strong>值得注意的是</strong>，两个子文件中，对应的内容应该在相同行！</p>
-<p>好吧，也许说了这么多，你也嫌太复杂，懒得自己操作，觉得我的本地词典库足够了，那好吧，你可以自己下载我已经处理好了的txt格式的词典文件。链接为：<a href="http://download.csdn.net/detail/tengweitw/8588209" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8588209</a></p>
-<p><strong>基于Qt的词典开发系列</strong></p>
-<ol>
-<li><a href="http://blog.csdn.net/tengweitw/article/details/44757875" target="_blank" rel="noopener">词典框架设计及成品展示</a></li>
-<li><a href="http://blog.csdn.net/tengweitw/article/details/45014771" target="_blank" rel="noopener">本地词典的设计</a></li>
-<li><a href="http://blog.csdn.net/tengweitw/article/details/45099867" target="_blank" rel="noopener">开始菜单的设计</a></li>
-<li><a href="http://blog.csdn.net/tengweitw/article/details/38758051" target="_blank" rel="noopener">无边框窗口的缩放与拖动</a></li>
-<li><a href="http://blog.csdn.net/tengweitw/article/details/38817595" target="_blank" rel="noopener">无边框窗口的拖动</a></li>
-<li><a href="http://blog.csdn.net/tengweitw/article/details/45223931" target="_blank" rel="noopener">界面美化设计</a></li>
-<li><a href="http://blog.csdn.net/tengweitw/article/details/45484803" target="_blank" rel="noopener">调用网络API</a></li>
-<li><a href="http://blog.csdn.net/tengweitw/article/details/45932429" target="_blank" rel="noopener">用户登录及API调用的实现</a></li>
-<li><a href="http://blog.csdn.net/tengweitw/article/details/45932429" target="_blank" rel="noopener">JSON数据解析</a></li>
-<li><a href="http://blog.csdn.net/tengweitw/article/details/23294533" target="_blank" rel="noopener">国际音标的显示</a></li>
-<li><a href="http://blog.csdn.net/tengweitw/article/details/38237203" target="_blank" rel="noopener">系统托盘的显示</a></li>
-<li><a href="http://blog.csdn.net/tengweitw/article/details/38306803" target="_blank" rel="noopener">调用讲述人</a></li>
-<li><a href="http://blog.csdn.net/tengweitw/article/details/38555787" target="_blank" rel="noopener">音频播放</a></li>
-<li><a href="http://blog.csdn.net/tengweitw/article/details/38689745" target="_blank" rel="noopener">自动补全功能</a></li>
-<li><a href="http://blog.csdn.net/tengweitw/article/details/38734201" target="_blank" rel="noopener">HTML特殊字符及正则表达式</a></li>
-<li><a href="http://blog.csdn.net/tengweitw/article/details/46563781" target="_blank" rel="noopener">后序</a></li>
-</ol>
-<p><strong>作品下载地址（发布版）</strong>：<a href="http://download.csdn.net/detail/tengweitw/8548767" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8548767</a></p>
-<p><strong>作品下载地址（绿色版）</strong>：<a href="http://download.csdn.net/detail/tengweitw/8830495" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8830495</a></p>
-<p><strong>源码下载地址</strong>：<a href="http://download.csdn.net/detail/tengweitw/8830503" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8830503</a></p>
+<p>下面，我们通过实例来验证：</p>
+<ul>
+<li><p>数据产生<br>我们使用Matlab的peaks函数来产生peaks.dat文件用于tikz画图的输入数据。其代码如下：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">clear all</span><br><span class="line">clc</span><br><span class="line">close all</span><br><span class="line"></span><br><span class="line">lambda_total=<span class="number">2</span>;<span class="comment">% the sum of Z</span></span><br><span class="line">[X,Y,Z] = peaks(<span class="number">100</span>);</span><br><span class="line">Z(Z&lt;<span class="number">0</span>)=<span class="number">0</span>;</span><br><span class="line">Z=Z/sum(sum(Z))*lambda_total;</span><br><span class="line"></span><br><span class="line">x_temp=<span class="built_in">repmat</span>(<span class="number">1</span>:<span class="number">100</span>,<span class="number">100</span>,<span class="number">1</span>);<span class="comment">% X-axis</span></span><br><span class="line">x_temp=x_temp(:);  </span><br><span class="line">y_temp=<span class="built_in">repmat</span>(<span class="number">1</span>:<span class="number">100</span>,<span class="number">1</span>,<span class="number">100</span>);<span class="comment">%Y-axis</span></span><br><span class="line"></span><br><span class="line">xyz=[<span class="string">'x y z'</span>];</span><br><span class="line">dlmwrite(<span class="string">'peaks.dat'</span>,xyz,<span class="string">'delimiter'</span>,<span class="string">' '</span>);</span><br><span class="line"><span class="keyword">for</span> x_ind=<span class="number">1</span>:<span class="built_in">size</span>(Z,<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">for</span> y_ind=<span class="number">1</span>:<span class="built_in">size</span>(Z,<span class="number">2</span>)</span><br><span class="line">        <span class="comment">% for one point (x,y,z), we use 4 coordinates (x,y,z) (x,y+1,z) (x+1,y+1,z) (x+1,y,z) to form a patch</span></span><br><span class="line">        xyz=[x_ind y_ind Z(x_ind, y_ind);x_ind y_ind+<span class="number">1</span> Z(x_ind, y_ind);x_ind+<span class="number">1</span> y_ind+<span class="number">1</span> Z(x_ind, y_ind);x_ind+<span class="number">1</span> y_ind Z(x_ind, y_ind)];</span><br><span class="line">        <span class="keyword">if</span>(x_ind==<span class="number">1</span>&amp;&amp;y_ind==<span class="number">1</span>)</span><br><span class="line">            dlmwrite(<span class="string">'peaks.dat'</span>,xyz,<span class="string">'delimiter'</span>,<span class="string">' '</span>,<span class="string">'-append'</span>,<span class="string">'roffset'</span>,<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            dlmwrite(<span class="string">'peaks.dat'</span>,xyz,<span class="string">'delimiter'</span>,<span class="string">' '</span>,<span class="string">'-append'</span>,<span class="string">'roffset'</span>,<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在Tikz中画图<br>本文使用了patch来画图，也可以改用surf, mesh等。完整latex源代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"> \documentclass&#123;standalone&#125;</span><br><span class="line">\def\pgfsysdriver&#123;pgfsys-dvipdfmx.def&#125;</span><br><span class="line">\usepackage&#123;tikz&#125;</span><br><span class="line">\usepackage&#123;pgfplots&#125;</span><br><span class="line">\pgfplotsset&#123;width=7cm,compat=1.14&#125;</span><br><span class="line"></span><br><span class="line">\begin&#123;document&#125;</span><br><span class="line">\begin&#123;tikzpicture&#125; </span><br><span class="line">	\begin&#123;axis&#125;[</span><br><span class="line">		colorbar,</span><br><span class="line">        xmin=1,xmax=101,</span><br><span class="line">		ymin=1,ymax=101,</span><br><span class="line">		xlabel=&#123;X-axis (m)&#125;,</span><br><span class="line">		ylabel=&#123;Y-axis (m)&#125;,</span><br><span class="line">	]</span><br><span class="line">	\addplot [patch,patch type=rectangle] </span><br><span class="line">		table [point meta=\thisrow&#123;z&#125;]</span><br><span class="line">		&#123;peaks.dat &#125;; </span><br><span class="line">    \end&#123;axis&#125;</span><br><span class="line">\end&#123;tikzpicture&#125;</span><br><span class="line">\end&#123;document&#125;</span><br></pre></td></tr></table></figure>
+<p>画图效果如下：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191222/20191222_fig002.jpg" width="400" height="300" title="图2" alt="图2" ></p>
+</li>
+</ul>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -367,7 +342,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2015/04/13/[20150413]/" title="【Qt编程】基于Qt的词典开发系列--本地词典的设计">http://tengweitw.com/2015/04/13/[20150413]/</a>
+    <a href="http://tengweitw.com/2019/12/22/[20191222]/" title="【漫漫科研路\pgfplots】克服绘制色温图时，数据量大出现的内存限制">http://tengweitw.com/2019/12/22/[20191222]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -379,7 +354,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/Qt-Coding/" rel="tag"><i class="fa fa-tag"></i> Qt Coding</a>
+              <a href="/tags/Research/" rel="tag"><i class="fa fa-tag"></i> Research</a>
           </div>
 
         
@@ -388,12 +363,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2015/04/09/%5B20150409%5D/" rel="prev" title="【Qt编程】设计ColorBar颜色栏">
-      <i class="fa fa-chevron-left"></i> 【Qt编程】设计ColorBar颜色栏
+    <a href="/2019/12/15/%5B20191215%5D/" rel="prev" title="【漫漫科研路\pgfplots】画局部放大图">
+      <i class="fa fa-chevron-left"></i> 【漫漫科研路\pgfplots】画局部放大图
     </a></div>
       <div class="post-nav-item">
-    <a href="/2015/04/17/%5B20150417%5D/" rel="next" title="【Qt编程】基于Qt的词典开发系列--开始菜单的设计">
-      【Qt编程】基于Qt的词典开发系列--开始菜单的设计 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/07/19/hello-world2020/" rel="next" title="Hello World--2020">
+      Hello World--2020 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -432,7 +407,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#词典类型的选择"><span class="nav-number">1.</span> <span class="nav-text">词典类型的选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mdx词典的下载"><span class="nav-number">2.</span> <span class="nav-text">mdx词典的下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mdx词典的查看"><span class="nav-number">3.</span> <span class="nav-text">mdx词典的查看</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mdx词典的转换"><span class="nav-number">4.</span> <span class="nav-text">mdx词典的转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#txt词典的处理"><span class="nav-number">5.</span> <span class="nav-text">txt词典的处理</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

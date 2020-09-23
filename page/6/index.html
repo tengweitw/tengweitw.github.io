@@ -206,6 +206,105 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/11/09/%5B20141109%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/11/09/%5B20141109%5D/" class="post-title-link" itemprop="url">【线性代数】线性相关性、基和维数</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-11-09 14:29:25" itemprop="dateCreated datePublished" datetime="2014-11-09T14:29:25+08:00">2014-11-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-29 17:36:49" itemprop="dateModified" datetime="2020-08-29T17:36:49+08:00">2020-08-29</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>909</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="线性相关性"><a href="#线性相关性" class="headerlink" title="线性相关性"></a>线性相关性</h4><p>什么情况下，向量$x_1,x_2,\cdots,x_n$是线性无关的？</p>
+<p>答：当向量$x_1,x_2,\cdots,x_n$的线性组合(线性组合时系数不能全为$0$)不为零向量时，它们是线性无关的。即方程</p>
+<script type="math/tex; mode=display">
+[x_1,x_2,\cdots,x_n]x=0</script><p>不存在非零解。</p>
+<p>对于一个矩阵$A$来说，当$A$总各列向量是线性无关时，则$Ax=0$的解只有$0$向量，即矩阵$A$的零空间只有零向量。 如果各列向量是相关的，则矩阵$A$的零空间中还存在一些其他的向量。</p>
+<p>当矩阵$A$各列是线性无关的，则矩阵$A$各列都有主元，自由变量的个数为$0$。</p>
+<hr>
+<h4 id="空间的基"><a href="#空间的基" class="headerlink" title="空间的基"></a>空间的基</h4><p>我们知道，矩阵各列的线性组合生成矩阵的列向量。但是，矩阵的各列有可能不是线性相关的。我们关心的是这样的一组向量：既能生成空间，又是线性无关的。这样的向量我们称为空间的基。</p>
+<p>如果要确定一个空间，我们只需要知道该空间的基，就了解了该空间的所有信息。例如：在三维空间中，向量的一个基是：</p>
+<script type="math/tex; mode=display">
+\left[\begin{array}{c}1\\0\\0\end{array}\right],
+\left[\begin{array}{c}0\\1\\0\end{array}\right],
+\left[\begin{array}{c}0\\0\\1\end{array}\right].</script><p>当然，我们还可以写出其他的基，只需要满足基的两个性质：1、生成空间；2、线性无关。但是基中向量的个数是一样的。对于一个n阶的方阵A的各列想要成为$n$维空间的基的话，该方阵必须是可逆的。</p>
+<hr>
+<h4 id="空间的维数"><a href="#空间的维数" class="headerlink" title="空间的维数"></a>空间的维数</h4><p><em>维数的定义</em>：空间内任意基内向量个数称为空间的维数。</p>
+<p>空间内所有的基内向量个数是相同的，都指空间的维数。    </p>
+<p>下面我们来举例说明上述概念：假设矩阵为$A$:</p>
+<script type="math/tex; mode=display">
+A=\left[\begin{array}{cccc}1&2&3&1\\1&1&2&1\\1&2&3&1\end{array}\right]</script><p> 矩阵$A$的各列生成矩阵$A$的列空间。</p>
+<p> 矩阵$A$的各列不是$A$的列空间的基，因为它们线性相关，列空间的一个基是矩阵的第一、二列。</p>
+<p>我们可以通过消元知道，该矩阵的秩为$2$，该列空间的维数为$2$。即矩阵的秩是列空间的维数！</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/11/08/%5B20141108%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1247,96 +1346,6 @@ U=ED=\left[\begin{array}{ccc}1&2&1\\0&2&-2\\0&0&5\end{array}\right]</script><hr>
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/08/22/%5B20140822%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/08/22/%5B20140822%5D/" class="post-title-link" itemprop="url">【Qt编程】基于Qt的词典开发系列--无边框窗口的缩放与拖动</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-08-22 16:06:05" itemprop="dateCreated datePublished" datetime="2014-08-22T16:06:05+08:00">2014-08-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-24 09:01:54" itemprop="dateModified" datetime="2020-08-24T09:01:54+08:00">2020-08-24</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>5k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>7 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>​    在现在，绝大多数软件都向着简洁，时尚发展。就拿有道的单词本和我做的单词本来说，绝大多数用户肯定喜欢我所做的单词本(就单单界面，关于颜色搭配和布局问题，大家就不要在意了)。</p>
-<p>有道的单词本：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140822/20140822_fig001.jpg" width="500" height="350" title="图1" alt="图1" ></p>
-<p>我所做的单词本：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140822/20140822_fig002.jpg" width="500" height="350" title="图2" alt="图2" ></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2014/08/22/%5B20140822%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1387,7 +1396,7 @@ U=ED=\left[\begin{array}{ccc}1&2&1\\0&2&-2\\0&0&5\end{array}\right]</script><hr>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">153</span>
+          <span class="site-state-item-count">154</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1443,12 +1452,12 @@ U=ED=\left[\begin{array}{ccc}1&2&1\\0&2&-2\\0&0&5\end{array}\right]</script><hr>
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">517k</span>
+    <span title="站点总字数">519k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">12:18</span>
+    <span title="站点阅读时长">12:21</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
