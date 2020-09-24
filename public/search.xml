@@ -1,73 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>[20200318]</title>
-    <url>/2020/09/24/%5B20200318%5D/</url>
-    <content><![CDATA[<p>【漫漫科研路\LaTeX】使用Sublime Text3撰写科研论文</p>
-<p>在之前的一篇文章《<a href="https://blog.csdn.net/tengweitw/article/details/103759321" target="_blank" rel="noopener">使用Vim撰写科研论文</a>》中，我提到了曾经在Windows系统中使用Sublime+TexLive+SumatraPDF的组合来进行科研工作。现在介绍如何使用sublime来编辑LaTeX论文，真是恰逢其时。由于疫情原因在家隔离(家在湖北)，只能使用我淘汰已久，赋闲在家的windows笔记本来进行科研工作。为此，在配置编辑环境的同时，我顺便来介绍其流程。毕竟，使用IDE来编写科研论文的人占绝大多数，使用Vim编写LaTeX的可能是凤毛麟角。因此，使用Sublime编写LaTeX可以看成两者的一个折中选择。</p>
-<hr>
-<h2 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h2><p>软件的安装都比较简单，下面只给出其下载链接：</p>
-<p>Texlive：<a href="http://www.tug.org/texlive/" target="_blank" rel="noopener">http://www.tug.org/texlive/</a></p>
-<p>Sublime Text3:  <a href="http://www.sublimetext.cn/" target="_blank" rel="noopener">http://www.sublimetext.cn/</a></p>
-<p>Sumatra PDF: <a href="https://www.sumatrapdfreader.org/download-free-pdf-viewer.html" target="_blank" rel="noopener">https://www.sumatrapdfreader.org/download-free-pdf-viewer.html</a></p>
-<hr>
-<h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><h4 id="Sublime-Text3的配置"><a href="#Sublime-Text3的配置" class="headerlink" title="Sublime Text3的配置"></a>Sublime Text3的配置</h4><ol>
-<li><p><strong>安装Package Control</strong><br>首先通过组合键 Ctrl+`或者在菜单栏点击View-&gt;Show Console来打开控制台，然后将下面的代码输入，按enter即可。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.request,os,hashlib; h = <span class="string">'2915d1851351e5ee549c20394736b442'</span> + <span class="string">'8bc59f460fa1548d1514676163dafc88'</span>; pf = <span class="string">'Package Control.sublime-package'</span>; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( <span class="string">'http://packagecontrol.io/'</span> + pf.replace(<span class="string">' '</span>, <span class="string">'%20'</span>)).read(); dh = hashlib.sha256(by).hexdigest(); print(<span class="string">'Error validating download (got %s instead of %s), please try manual install'</span> % (dh, h)) <span class="keyword">if</span> dh != h <span class="keyword">else</span> open(os.path.join( ipp, pf), <span class="string">'wb'</span> ).write(by)</span><br></pre></td></tr></table></figure>
-<p>如若安装不成功，一般是因为packagecontrol.io容易被墙，解决办法请参考<a href="http://packagecontrol.cn/installation。" target="_blank" rel="noopener">http://packagecontrol.cn/installation。</a></p>
-<p>安装成功后，重启Sublime就可以在Preference下拉菜单中看到Package Control选项了。</p>
-</li>
-<li><p><strong>安装LaTeXTools插件</strong></p>
-<p>在Sublime界面按下快捷键Ctrl+Shift+p，搜索Package Control: Install Package, 如下图所示：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig001.jpg" width="600" height="450" title="图1" alt="图1" ></p>
-</li>
-</ol>
-<p>按下回车键后，稍等一会，就可以搜索LaTeXTools回车进行安装。</p>
-<p>​    安装完成后我们需要对LaTeXTools进行配置，告知其Texlive和Sumatra PDF的目录，<strong>具体操作如下：</strong>  </p>
-<ul>
-<li>首先打开LaTeXTools的setting文件：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig002.jpg" width="600" height="450" title="图2" alt="图2" ></li>
-</ul>
-<ul>
-<li>然后更改windows系统(按下Ctrl+F搜索windows,在209行)中Texlive和sumatra的内容如下：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig003.jpg" width="600" height="450" title="图3" alt="图3" ></li>
-</ul>
-<p>其中，texpath和sumatra的值分别改为你Texlive和SumatraPDF的安装目录，distro的值改为texlive。</p>
-<ul>
-<li>最后定位到builder(第379行)，改builder的值为simple，如下图所示：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig004.jpg" width="600" height="450" title="图4" alt="图4" ></li>
-</ul>
-<hr>
-<h4 id="Sumatra-PDF的配置"><a href="#Sumatra-PDF的配置" class="headerlink" title="Sumatra PDF的配置"></a>Sumatra PDF的配置</h4><p>配置Sumatra的目的是为了实现<strong>正向搜索</strong>(从源码跳转到pdf)与<strong>反向搜索</strong>(从pdf跳转到源码)。具体操作如下：</p>
-<p>1.使用快捷键win+r打开cmd.exe，cd到SumatraPDF的目录下，执行以下命令：</p>
-<p><code>sumatrapdf.exe -inverse-search &quot;\&quot;D:\Sublime Text 3\sublime_text.exe\&quot; \&quot;%f:%l\&quot;</code></p>
-<p>其中后面的目录为sublime的安装目录。</p>
-<p>2.打开SumatraPDF软件，点击菜单设置如下：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig005.jpg" width="600" height="400" title="图5" alt="图5" ></p>
-<p>在<strong>设置反向搜索命令行</strong>输入命令如下：(根据自己的安装目录作相应修改)</p>
-<p><code>&quot;D:\Sublime Text 3\sublime_text.exe&quot; &quot;%f:%l&quot;</code></p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig006.jpg" width="400" height="450" title="图6" alt="图6" ></p>
-<p>至此，SumatraPDF配置完成，在pdf中双击就可以跳转到Sublime中对应的LaTeX源码。</p>
-<hr>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>在Sublime中新建一个.tex文件，输入如下简单的LaTeX代码：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">%!TEX program = xelatex</span><br><span class="line">\documentclass&#123;article&#125;</span><br><span class="line">\begin&#123;document&#125;</span><br><span class="line">Hello World!</span><br><span class="line">\end&#123;document&#125;</span><br></pre></td></tr></table></figure>
-<p>使用快捷键<code>Ctrl+B</code>进行编译，编译成功会自动打开SumatraPDF进行预览。</p>
-<hr>
-<h2 id="有用的插件"><a href="#有用的插件" class="headerlink" title="有用的插件"></a>有用的插件</h2><h4 id="自动补全"><a href="#自动补全" class="headerlink" title="自动补全"></a>自动补全</h4><p>  在Sublime中，选择菜单Preference-&gt;Settings，添加如下代码：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot;auto_complete&quot;:true,</span><br><span class="line">&quot;auto_complete_selector&quot;: &quot;source, text&quot;,</span><br><span class="line">&quot;auto_match_enabled&quot;:true,</span><br></pre></td></tr></table></figure>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig007.jpg" width="600" height="250" title="图7" alt="图7" ></p>
-<p>设置后即可实现自动补全，如下图所示：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig008.jpg" width="600" height="350" title="图8" alt="图8" ></p>
-<hr>
-<h4 id="公式、图片预览"><a href="#公式、图片预览" class="headerlink" title="公式、图片预览"></a>公式、图片预览</h4><ul>
-<li><p>下载并安装<a href="https://www.ghostscript.com/download/gsdnld.html" target="_blank" rel="noopener">Ghostscript</a>和<a href="https://www.imagemagick.org/script/download.php#windows" target="_blank" rel="noopener">ImageMagick</a>。安装完成后，将这两个安装目录添加进系统环境变量。</p>
-</li>
-<li><p>在Sublime的菜单Preferences-&gt;Package Settings-&gt;LaTexTools-&gt;Check System,检查Ghostscript和ImageMagick是否安装成功。若安装成功，会如下图所示：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig009.jpg" width="600" height="550" title="图9" alt="图9" ></p>
-<p>下面我们就可以测试是否能够预览公式和图片了，如下图所示：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig010.jpg" width="600" height="450" title="图10" alt="图10" ><br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig011.jpg" width="600" height="450" title="图11" alt="图11" ></p>
-</li>
-</ul>
-<p>其中这里面的test.png为你自己选择的一张图片。</p>
-<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
-  </entry>
-  <entry>
     <title>【Vim】Vim常用配置&lt;二&gt;</title>
     <url>/2020/08/05/%5B20200805%5D/</url>
     <content><![CDATA[<p>在前面的文章《<a href="https://blog.csdn.net/tengweitw/article/details/103759321" target="_blank" rel="noopener">使用Vim撰写科研论文</a>》和《<a href="https://tengweitw.blog.csdn.net/article/details/107737921" target="_blank" rel="noopener">Vim常用配置&lt;一&gt;</a>》中，我们介绍了一些较为实用的vim插件的安装和使用。这篇文章介绍一下，最基础普适的设置，主要分为：一般性设置，键位设置。</p>
@@ -365,6 +298,76 @@
 <h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+  </entry>
+  <entry>
+    <title>【漫漫科研路\LaTeX】使用Sublime Text3撰写科研论文</title>
+    <url>/2020/03/18/%5B20200318%5D/</url>
+    <content><![CDATA[<p>在之前的一篇文章《<a href="https://blog.csdn.net/tengweitw/article/details/103759321" target="_blank" rel="noopener">使用Vim撰写科研论文</a>》中，我提到了曾经在Windows系统中使用Sublime+TexLive+SumatraPDF的组合来进行科研工作。现在介绍如何使用sublime来编辑LaTeX论文，真是恰逢其时。由于疫情原因在家隔离(家在湖北)，只能使用我淘汰已久，赋闲在家的windows笔记本来进行科研工作。为此，在配置编辑环境的同时，我顺便来介绍其流程。毕竟，使用IDE来编写科研论文的人占绝大多数，使用Vim编写LaTeX的可能是凤毛麟角。因此，使用Sublime编写LaTeX可以看成两者的一个折中选择。</p>
+<a id="more"></a>
+<hr>
+<h2 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h2><p>软件的安装都比较简单，下面只给出其下载链接：</p>
+<p>Texlive：<a href="http://www.tug.org/texlive/" target="_blank" rel="noopener">http://www.tug.org/texlive/</a></p>
+<p>Sublime Text3:  <a href="http://www.sublimetext.cn/" target="_blank" rel="noopener">http://www.sublimetext.cn/</a></p>
+<p>Sumatra PDF: <a href="https://www.sumatrapdfreader.org/download-free-pdf-viewer.html" target="_blank" rel="noopener">https://www.sumatrapdfreader.org/download-free-pdf-viewer.html</a></p>
+<hr>
+<h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><h4 id="Sublime-Text3的配置"><a href="#Sublime-Text3的配置" class="headerlink" title="Sublime Text3的配置"></a>Sublime Text3的配置</h4><ol>
+<li><p><strong>安装Package Control</strong><br>首先通过组合键 Ctrl+`或者在菜单栏点击View-&gt;Show Console来打开控制台，然后将下面的代码输入，按enter即可。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.request,os,hashlib; h = <span class="string">'2915d1851351e5ee549c20394736b442'</span> + <span class="string">'8bc59f460fa1548d1514676163dafc88'</span>; pf = <span class="string">'Package Control.sublime-package'</span>; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( <span class="string">'http://packagecontrol.io/'</span> + pf.replace(<span class="string">' '</span>, <span class="string">'%20'</span>)).read(); dh = hashlib.sha256(by).hexdigest(); print(<span class="string">'Error validating download (got %s instead of %s), please try manual install'</span> % (dh, h)) <span class="keyword">if</span> dh != h <span class="keyword">else</span> open(os.path.join( ipp, pf), <span class="string">'wb'</span> ).write(by)</span><br></pre></td></tr></table></figure>
+<p>如若安装不成功，一般是因为packagecontrol.io容易被墙，解决办法请参考<a href="http://packagecontrol.cn/installation。" target="_blank" rel="noopener">http://packagecontrol.cn/installation。</a></p>
+<p>安装成功后，重启Sublime就可以在Preference下拉菜单中看到Package Control选项了。</p>
+</li>
+<li><p><strong>安装LaTeXTools插件</strong></p>
+<p>在Sublime界面按下快捷键Ctrl+Shift+p，搜索Package Control: Install Package, 如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig001.jpg" width="600" height="450" title="图1" alt="图1" ></p>
+</li>
+</ol>
+<p>按下回车键后，稍等一会，就可以搜索LaTeXTools回车进行安装。</p>
+<p>​    安装完成后我们需要对LaTeXTools进行配置，告知其Texlive和Sumatra PDF的目录，<strong>具体操作如下：</strong>  </p>
+<ul>
+<li>首先打开LaTeXTools的setting文件：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig002.jpg" width="600" height="450" title="图2" alt="图2" ></li>
+</ul>
+<ul>
+<li>然后更改windows系统(按下Ctrl+F搜索windows,在209行)中Texlive和sumatra的内容如下：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig003.jpg" width="600" height="450" title="图3" alt="图3" ></li>
+</ul>
+<p>其中，texpath和sumatra的值分别改为你Texlive和SumatraPDF的安装目录，distro的值改为texlive。</p>
+<ul>
+<li>最后定位到builder(第379行)，改builder的值为simple，如下图所示：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig004.jpg" width="600" height="450" title="图4" alt="图4" ></li>
+</ul>
+<hr>
+<h4 id="Sumatra-PDF的配置"><a href="#Sumatra-PDF的配置" class="headerlink" title="Sumatra PDF的配置"></a>Sumatra PDF的配置</h4><p>配置Sumatra的目的是为了实现<strong>正向搜索</strong>(从源码跳转到pdf)与<strong>反向搜索</strong>(从pdf跳转到源码)。具体操作如下：</p>
+<p>1.使用快捷键win+r打开cmd.exe，cd到SumatraPDF的目录下，执行以下命令：</p>
+<p><code>sumatrapdf.exe -inverse-search &quot;\&quot;D:\Sublime Text 3\sublime_text.exe\&quot; \&quot;%f:%l\&quot;</code></p>
+<p>其中后面的目录为sublime的安装目录。</p>
+<p>2.打开SumatraPDF软件，点击菜单设置如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig005.jpg" width="600" height="400" title="图5" alt="图5" ></p>
+<p>在<strong>设置反向搜索命令行</strong>输入命令如下：(根据自己的安装目录作相应修改)</p>
+<p><code>&quot;D:\Sublime Text 3\sublime_text.exe&quot; &quot;%f:%l&quot;</code></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig006.jpg" width="400" height="450" title="图6" alt="图6" ></p>
+<p>至此，SumatraPDF配置完成，在pdf中双击就可以跳转到Sublime中对应的LaTeX源码。</p>
+<hr>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>在Sublime中新建一个.tex文件，输入如下简单的LaTeX代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">%!TEX program = xelatex</span><br><span class="line">\documentclass&#123;article&#125;</span><br><span class="line">\begin&#123;document&#125;</span><br><span class="line">Hello World!</span><br><span class="line">\end&#123;document&#125;</span><br></pre></td></tr></table></figure>
+<p>使用快捷键<code>Ctrl+B</code>进行编译，编译成功会自动打开SumatraPDF进行预览。</p>
+<hr>
+<h2 id="有用的插件"><a href="#有用的插件" class="headerlink" title="有用的插件"></a>有用的插件</h2><h4 id="自动补全"><a href="#自动补全" class="headerlink" title="自动补全"></a>自动补全</h4><p>  在Sublime中，选择菜单Preference-&gt;Settings，添加如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot;auto_complete&quot;:true,</span><br><span class="line">&quot;auto_complete_selector&quot;: &quot;source, text&quot;,</span><br><span class="line">&quot;auto_match_enabled&quot;:true,</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig007.jpg" width="600" height="250" title="图7" alt="图7" ></p>
+<p>设置后即可实现自动补全，如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig008.jpg" width="600" height="350" title="图8" alt="图8" ></p>
+<hr>
+<h4 id="公式、图片预览"><a href="#公式、图片预览" class="headerlink" title="公式、图片预览"></a>公式、图片预览</h4><ul>
+<li><p>下载并安装<a href="https://www.ghostscript.com/download/gsdnld.html" target="_blank" rel="noopener">Ghostscript</a>和<a href="https://www.imagemagick.org/script/download.php#windows" target="_blank" rel="noopener">ImageMagick</a>。安装完成后，将这两个安装目录添加进系统环境变量。</p>
+</li>
+<li><p>在Sublime的菜单Preferences-&gt;Package Settings-&gt;LaTexTools-&gt;Check System,检查Ghostscript和ImageMagick是否安装成功。若安装成功，会如下图所示：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig009.jpg" width="600" height="550" title="图9" alt="图9" ></p>
+<p>下面我们就可以测试是否能够预览公式和图片了，如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig010.jpg" width="600" height="450" title="图10" alt="图10" ><br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200318/20200318_fig011.jpg" width="600" height="450" title="图11" alt="图11" ></p>
+</li>
+</ul>
+<p>其中这里面的test.png为你自己选择的一张图片。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Research</tag>
+      </tags>
   </entry>
   <entry>
     <title>【图解例说机器学习】K最近邻 (KNN)</title>
