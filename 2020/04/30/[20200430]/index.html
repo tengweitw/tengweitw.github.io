@@ -59,7 +59,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200430&#x2F;Decision_tree_fig001.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200430&#x2F;Decision_tree_fig002.jpg">
-<meta property="og:updated_time" content="2020-09-28T09:35:15.884Z">
+<meta property="og:updated_time" content="2020-09-28T09:45:46.185Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200430&#x2F;Decision_tree_fig001.jpg">
 
@@ -241,7 +241,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-28 17:35:15" itemprop="dateModified" datetime="2020-09-28T17:35:15+08:00">2020-09-28</time>
+                <time title="修改时间：2020-09-28 17:45:46" itemprop="dateModified" datetime="2020-09-28T17:45:46+08:00">2020-09-28</time>
               </span>
 
           
@@ -257,7 +257,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>13k</span>
+              <span>12k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -290,12 +290,7 @@ H(X)=-\sum\limits_{i=1}^{\lvert X\rvert}p_i\log{p_i}\tag{2}</script><p>当随机
 P(X=0)=p,P(X=1)=1-p\tag{3}</script><p>那么此时公式(2)可以写为：</p>
 <script type="math/tex; mode=display">
 H(X)=-p\log{p}-(1-p)\log{(1-p)}\tag{4}</script><p>公式(4)的图像如下所示：</p>
-<table>
-    <tr>
-        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200430/Decision_tree_fig001.jpg"  >图1 </center></td>
-    </tr>
-</table>
-
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200430/Decision_tree_fig001.jpg" width="600" height="450" title="图1" alt="图1" ></p>
 <p>由图1可以看出，当$p=0,1$时，此时随机变量$X$的取值时确定性的。当$p=0.5$时，此时$X$取值的不确定性最大，熵最大。</p>
 <hr>
 <h4 id="条件熵"><a href="#条件熵" class="headerlink" title="条件熵"></a>条件熵</h4><p>条件熵表示的是在已知随机变量$X$的情况下，随机变量$Y$的不确定性，其定义为：</p>
@@ -386,7 +381,12 @@ H(\mathcal D\mid weather)&=-\frac{4}{7}(\frac{1}{4}\log{\frac{1}{4}}+\frac{3}{4}
 H(\mathcal D_1^1\mid time)&=-\frac{2}{3}*0-\frac{1}{3}*0=0\\
 H(\mathcal D_1^1\mid weather)&=-\frac{2}{3}*(\frac{1}{2}\log{\frac{1}{2}}+\frac{1}{2}\log{\frac{1}{2}})-\frac{1}{3}*0=0.6667
 \end{aligned}</script><p>我们发现$H(\mathcal D_1^1\mid time)=0$，说明在已知$time$的情况下，数据集$D_1^1$时完全确定的，也就是说，我们只需要$weather$和$time$ 两个特征属性，就可以得到正确的标签，不需要考虑天气这个属性。此时的决策树如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph TD;</span><br><span class="line">    A[是否必修课]--&gt;|否| B[在食堂吃];</span><br><span class="line">    A--&gt;|是|C[是否有时间];</span><br><span class="line">    C--&gt;|否|D[打包带走];</span><br><span class="line">    C--&gt;|是|E[在食堂吃];</span><br></pre></td></tr></table></figure>
+<pre class="mermaid">graph TD;
+    A[是否必修课]-->|否| B[在食堂吃];
+    A-->|是|C[是否有时间];
+    C-->|否|D[打包带走];
+    C-->|是|E[在食堂吃];</pre>
+
 <p>从我们得到的决策树可以看出，当课程不是必修课时，小明总是慢悠悠地在食堂吃完再去上课，不在乎迟不迟到。只有当课程是必修课，且已经快要上课时，小明才会选择打包带走。</p>
 <hr>
 <h2 id="决策树的生成"><a href="#决策树的生成" class="headerlink" title="决策树的生成"></a>决策树的生成</h2><p>在上面小明的例子中，我们已经基本描述了如何选择特征来生成决策树: 选择使得条件熵最大的特征，将数据集划分为子数据集，递归地对子数据集进行相同操作，直至子数据集都属于同一类。当所有特征都无法使得子数据集的样例属于同一类时，我们采用多数表决来使其归为一类。</p>
@@ -526,14 +526,14 @@ Gini(\mathcal D\mid m)=-\sum\limits_{i=1}^{m_K}\frac{\lvert\mathcal D_{i}^m\rver
 </table>
 </div>
 <p>和计算小明吃早餐的例子一样，我们可以得到如下的决策树：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph TD;</span><br><span class="line">    A[是否有房子]--&gt;|否| B[是否有工作];</span><br><span class="line">    A--&gt;|是|C[同意贷款];</span><br><span class="line">    B--&gt;|否|D[不同意贷款];</span><br><span class="line">    B--&gt;|是|E[同意贷款];</span><br></pre></td></tr></table></figure>
-<p>具体python源代码见附录，实验结果如下图2：</p>
-<table>
-    <tr>
-        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200430/Decision_tree_fig002.jpg"  >图2 </center></td>
-    </tr>
-</table>
+<pre class="mermaid">graph TD;
+    A[是否有房子]-->|否| B[是否有工作];
+    A-->|是|C[同意贷款];
+    B-->|否|D[不同意贷款];
+    B-->|是|E[同意贷款];</pre>
 
+<p>具体python源代码见附录，实验结果如下图2：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200430/Decision_tree_fig002.jpg" width="600" height="300" title="图2" alt="图2" ></p>
 <ul>
 <li><p>在小明吃早餐的例子中，生成的决策树为(用字典表示)：</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'0'</span>: &#123;<span class="number">0</span>: <span class="string">'n'</span>, <span class="number">1</span>: &#123;<span class="string">'1'</span>: &#123;<span class="number">0</span>: <span class="string">'y'</span>, <span class="number">1</span>: <span class="string">'n'</span>&#125;&#125;&#125;&#125;</span><br></pre></td></tr></table></figure>
@@ -785,6 +785,11 @@ E=H(\mathcal D\mid m)+\alpha m_K\tag{16}</script><p>公式(16)中的第一项即
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
   </div>
+
+
+
+
+
 
         
 <div class="busuanzi-count">
