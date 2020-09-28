@@ -65,7 +65,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200512&#x2F;SVM_fig006.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200512&#x2F;SVM_fig007.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200512&#x2F;SVM_fig008.jpg">
-<meta property="og:updated_time" content="2020-09-28T14:09:16.166Z">
+<meta property="og:updated_time" content="2020-09-28T14:12:28.827Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200505&#x2F;Perceptron_fig001.jpg">
 
@@ -247,7 +247,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-28 22:09:16" itemprop="dateModified" datetime="2020-09-28T22:09:16+08:00">2020-09-28</time>
+                <time title="修改时间：2020-09-28 22:12:28" itemprop="dateModified" datetime="2020-09-28T22:12:28+08:00">2020-09-28</time>
               </span>
 
           
@@ -525,7 +525,7 @@ L(\lambda_1,\lambda_2)=4\lambda_1^2+\frac{13}{2}\lambda_2^2+10\lambda_1\lambda_2
 &\min\limits_{\omega_0,\mathrm w, \xi_i}\quad\frac{1}{2}\lvert\mathrm w\rvert^2+C\sum\limits_{i=1}^{N}\xi_i\\
 &s.t.\quad  (\omega_0+\mathrm w^{\mathrm T}\mathrm x_i)y_i\ge1-\xi_i\quad\forall i=1,2,\cdots,N\\
 &\quad\quad\quad\xi_i>0\quad\forall i=1,2,\cdots,N
-\end{aligned}\tag{35}</script><p>在优化问题(35)中，$C&gt;0$ 是一个权重因子，用于平衡最大化间隔和最小化训练误差(即样例点被错误分类)。当 $C\to\infin$  时，相当于我们十分在乎训练误差，不容许训练样例被错误分类，此时所有的$\xi_i=0$。此时，问题(35)退化为问题(10)。</p>
+\end{aligned}\tag{35}</script><p>在优化问题(35)中，$C&gt;0$ 是一个权重因子，用于平衡最大化间隔和最小化训练误差(即样例点被错误分类)。当 $ C \to \infin $  时，相当于我们十分在乎训练误差，不容许训练样例被错误分类，此时所有的$\xi_i=0$。此时，问题(35)退化为问题(10)。</p>
 <hr>
 <h4 id="求解带松弛变量的优化问题"><a href="#求解带松弛变量的优化问题" class="headerlink" title="求解带松弛变量的优化问题"></a>求解带松弛变量的优化问题</h4><p>问题(35)也是一个凸二次优化问题，所以可以完全按照前面求解问题(10)的方式求解，在此我们只给出解析表达式。同样利用拉格朗日乘子法得到拉格朗日函数并对变量求偏导，令偏导为0，我们有：</p>
 <script type="math/tex; mode=display">
