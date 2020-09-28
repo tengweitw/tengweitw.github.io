@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://tengweitw.com/2020/05/05/[20200505]/</loc>
+    
+    <lastmod>2020-09-28T13:17:38.321Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://tengweitw.com/2020/04/30/[20200430]/</loc>
     
     <lastmod>2020-09-28T09:45:46.185Z</lastmod>
@@ -26,13 +33,6 @@
     <loc>http://tengweitw.com/2020/04/06/[20200406]/</loc>
     
     <lastmod>2020-09-27T07:43:29.317Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tengweitw.com/2018/07/05/Perceptron/</loc>
-    
-    <lastmod>2020-09-27T07:37:21.336Z</lastmod>
     
   </url>
   
@@ -1118,13 +1118,6 @@
     <loc>http://tengweitw.com/2013/05/08/[20130508]/</loc>
     
     <lastmod>2020-07-23T13:47:18.023Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tengweitw.com/2020/07/19/hello-world2020/</loc>
-    
-    <lastmod>2020-07-23T13:46:56.430Z</lastmod>
     
   </url>
   
