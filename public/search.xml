@@ -317,12 +317,8 @@
 
     </div>
 </div>
-<div class='spoiler collapsed'>
-    <div class='spoiler-title'>
-        图3和图4是常见的神经网络结构图：
-    </div>
-    <div class='spoiler-content'>
-        <table>
+<p>图3和图4是常见的神经网络结构图：</p>
+<table>
     <tr>
         <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig005.jpg"  >图3</center></td>
         <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig009.jpg"  >图4</center></td>
@@ -330,8 +326,6 @@
 </table>
 
 
-    </div>
-</div>
 <div class='spoiler collapsed'>
     <div class='spoiler-title'>
         图3的Tikz源代码为：
@@ -350,20 +344,16 @@
 
     </div>
 </div>
-<div class='spoiler collapsed'>
-    <div class='spoiler-title'>
-        图5为多层神经网络与M-P神经元的关系图：
-    </div>
-    <div class='spoiler-content'>
-        <table>
+<p>图5为多层神经网络与M-P神经元的关系图：</p>
+<table>
     <tr>
         <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig008.jpg"  ></center>  <center>图5 </center></td>
     </tr>
 </table>
 
 
-    </div>
-</div>
+
+
 <div class='spoiler collapsed'>
     <div class='spoiler-title'>
         图5对应的Tikz源代码为：
