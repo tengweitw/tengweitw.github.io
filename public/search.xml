@@ -285,6 +285,324 @@
       </tags>
   </entry>
   <entry>
+    <title>【图解例说机器学习】集成学习之AdaBoost算法</title>
+    <url>/2020/06/18/%5B20200618%5D/</url>
+    <content><![CDATA[<blockquote>
+<p>三个臭皮匠，顶个诸葛亮。</p>
+</blockquote>
+<p>集成学习 (Ensemble learning) 通过构建并结合多个学习器来完成学习任务，即先产生一组<strong>个体学习器</strong>，再通过<strong>某种策略</strong>将它们结合起来完成学习任务。</p>
+<p>个体学习器通常为一个现有的学习算法从训练数据产生，例如决策树，神经网络等。结合策略：在回归问题中，一般采用 (加权) 平均法，在分类问题中，一般采用 (加权) 投票法。当训练数据很多时，一种更为强大的结合策略为学习法，即通过另一个学习器来进行结合，典型代表为Stacking.</p>
+<p>根据个体学习器的生成方式不同，目前的集成学习方法大致分为两大类：<strong>序列化方法</strong>和<strong>并行化方法</strong>。在序列化方法中，个体学习器之间存在强依赖关系，需要串行生成，其代表为Boosting；在并行化方法中，个体学习器间不存在强依赖关系，可同时生成，其代表为Bagging和随机森林 (Random Forest)。</p>
+<a id="more"></a>
+<p>本文主要介绍Boosting算法簇中最经典的代表AdaBoost。</p>
+<hr>
+<h2 id="AdaBoost"><a href="#AdaBoost" class="headerlink" title="AdaBoost"></a>AdaBoost</h2><p>AdaBoost算法有多种推导方式，比较简单易懂的是基于<strong>加性模型</strong>，以<strong>指数函数为损失函数</strong>，优化方法为<strong>前向分步</strong>算法的推导。具体如下所示：</p>
+<h4 id="模型与损失函数"><a href="#模型与损失函数" class="headerlink" title="模型与损失函数"></a>模型与损失函数</h4><p>假设给定一个二分类的训练数据集$\mathcal D=\{(\mathrm x_i,y_i)\mid i=1,2,\cdots,N\}$，总共有$K$个个体学习器$f_k(\mathrm x),k=1,2,\cdots,K$。此时，模型的表达式为：</p>
+<script type="math/tex; mode=display">
+f(\mathrm x)=\sum\limits_{k=1}^{K}\alpha_kf_k(\mathrm x)\tag{1}</script><p>这里我们采用指数损失函数：</p>
+<script type="math/tex; mode=display">
+E=\sum\limits_{i=1}^{N}E_i=\sum\limits_{i=1}^{N}\exp(-y_if(\mathrm x_i))\tag{2}</script><p>我们的目标是优化参数$\alpha_k, f_k(\mathrm x)$使得损失函数最小，即</p>
+<script type="math/tex; mode=display">
+\min_{\alpha_k,f_k(\mathrm x)}\quad\sum\limits_{i=1}^{N}\exp(-y_if(\mathrm x_i))\tag{3}</script><p>一般来说，优化问题(3)不易求解。我们可以采用前向分布算法逐一地学习个体学习器$f_k(\mathrm x)$, 具体操作如下：</p>
+<p>在第$t$次迭代中，我们假设已经学习得到了$\alpha_k, f_k(\mathrm x),k=1,2,\cdots,t-1$, 根据公式(1)，我们有</p>
+<script type="math/tex; mode=display">
+f(x)=\sum\limits_{k=1}^{t-1}\alpha_kf_k(\mathrm x)+\alpha_tf_t(\mathrm x)\tag{4}</script><p>根据公式(2)，此时的损失函数为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+E&=\sum\limits_{i=1}^{N}\exp(-y_if(\mathrm x_i))=\sum\limits_{i=1}^{N}\exp\left(-y_i\left[\sum\limits_{k=1}^{t-1}\alpha_kf_k(\mathrm x_i)+\alpha_tf_t(\mathrm x_i)\right]\right)\\
+&=\sum\limits_{i=1}^{N}\exp(-y_i\sum\limits_{k=1}^{t-1}\alpha_kf_t(\mathrm x_i))\exp(-y_i\alpha_tf_t(\mathrm x_i))=\sum\limits_{i=1}^{N}w_{ti}\exp(-y_i\alpha_tf_t(\mathrm x_i))
+\end{aligned}\tag{5}</script><p>注意：在公式(5)中，$w_{ti}$已经由前$t-1$次迭代得到。为此，为最小化当前的损失函数，我们可以对$\alpha_t$求导可得：</p>
+<script type="math/tex; mode=display">
+\frac{\partial E}{\partial\alpha_t}=\sum\limits_{i=1}^{N}\frac{\partial E_i}{\partial\alpha_t}\tag{6}</script><p>其中，我们有：</p>
+<script type="math/tex; mode=display">
+\frac{\partial E_i}{\partial\alpha_t}=
+\begin{cases}
+w_{ti}\exp(-\alpha_t),\quad if\hspace{3pt}(f_t(\mathrm x_i)==y_i)\\
+w_{ti}\exp(\alpha_t),\quad if\hspace{3pt}(f_t(\mathrm x_i)!=y_i)
+\end{cases}\tag{7}</script><p>令公式(6)等于0，我们可得：</p>
+<script type="math/tex; mode=display">
+\alpha_t=\frac{1}{2}ln\frac{1-e_t}{e_t}\tag{8}</script><p>其中，分类误差率$e_t$可以表示为：</p>
+<script type="math/tex; mode=display">
+e_t=\frac{\sum\nolimits_{i=1}^{N}w_{ti}\mathbb I(f_t(\mathrm x_i)\neq y_i)}{\sum\nolimits_{i=1}^{N}w_{ti}}\tag{9}</script><p>由公式(2)：</p>
+<script type="math/tex; mode=display">
+\sum\limits_{k=1}^{t}\alpha_kf_k(\mathrm x)=\sum\limits_{k=1}^{t-1}\alpha_kf_k(\mathrm x)+\alpha_tf_t(\mathrm x)\tag{10}</script><p>根据公式(5)中$w_{ti}$的定义可知</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+w_{t+1,i}&=\exp[-y_i\sum\limits_{k=1}^{t}\alpha_kf_t(\mathrm x_i)]\\&=\exp[-y_i\sum\limits_{k=1}^{t-1}\alpha_kf_t(\mathrm x_i)]\exp[-y_i\alpha_tf_t(\mathrm x_i)]\\&=w_{ti}\exp[-y_i\alpha_tf_t(\mathrm x_i)]
+\end{aligned}\tag{11}</script><p>这里我们对$w_{t+1,i},i=1,2,\cdots,N$进行归一化，即：</p>
+<script type="math/tex; mode=display">
+\bar w_{t+1,i}=\frac{w_{t+1,i}}{\sum\nolimits_{i=1}^{N}w_{t+1,i}}=\frac{w_{ti}\exp(-y_i\alpha_tf_t(\mathrm x_i))}{\sum\nolimits_{i=1}^{N}w_{ti}\exp(-y_i\alpha_tf_t(\mathrm x_i))}\tag{12}</script><p>由公式(9)可知，$w_{ti}$可以看成是在$t$次迭代过程中，样例点$\mathrm x_i$的误差权重。$w_{ti}$越大，说明越期望$\mathrm x_i$被正确分类，其被误分类的损失越大。</p>
+<p>到目前为止，我们就完成了第$t$次迭代过程中需要更新的值：个体学习器$f_t(x)$及其权重$\alpha_t$ ，以及下一次迭代时计算误差率(9)所需要的权重$\bar w_{t+1,i}$。注意：这里的个体学习器$f_t(x)$可以是一些常见的算法，如决策树，神经网络等；另外，初始的权重值可以设置为$1/N$，即可把所有样例等同看待。</p>
+<hr>
+<h2 id="一个例子"><a href="#一个例子" class="headerlink" title="一个例子"></a>一个例子</h2><p>如下表所示包含10个训练样例的训练集。假设个体分类器简单地设为$x&lt;v$或者$x\ge v$，其阈值$v$使得该分类器在训练数据集上误分类率最低，这里我们可以采用穷举来得到。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$\mathrm x$</th>
+<th style="text-align:center">0</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+<th style="text-align:center">7</th>
+<th style="text-align:center">8</th>
+<th style="text-align:center">9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$y$</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">-1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="第-t-1-次迭代："><a href="#第-t-1-次迭代：" class="headerlink" title="第$t=1$次迭代："></a><strong>第$t=1$次迭代：</strong></h4><p>我们假设初始权值为</p>
+<script type="math/tex; mode=display">
+w_{1i}=0.1, i=1,2,\cdots,10\tag{13}</script><p>然后根据公式(9)和我们假定的分类器</p>
+<script type="math/tex; mode=display">
+f_1(\mathrm x)=
+\begin{cases}
+1,\quad x<v\\
+-1,\quad x\ge v
+\end{cases}\tag{14}</script><p>通过穷举$v=\{-0.5,0.5,1.5,\cdots,9.5\}$来找到最优的$v=2.5$使得误分类率(9)最小，即：</p>
+<script type="math/tex; mode=display">
+e_1=0.3\tag{15}</script><p>根据公式(8)和(15)，我们计算</p>
+<script type="math/tex; mode=display">
+\alpha_1=0.4236\tag{16}</script><p>至此，我们得到第$t=1$次的表达式：</p>
+<script type="math/tex; mode=display">
+f(\mathrm x)=\alpha_1f_1(\mathrm x)=0.4236f_1(\mathrm x)\tag{17}</script><p>(17)对应的分类函数为：</p>
+<script type="math/tex; mode=display">
+\hat y=f(\mathrm x)=
+\begin{cases}
+1,\quad\alpha_1f_1(\mathrm x)<0\\
+-1,\quad\alpha_1f_1(\mathrm x)\ge 0
+\end{cases}\tag{18}</script><p>根据(18)，我们有</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$\mathrm x$</th>
+<th style="text-align:center">0</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+<th style="text-align:center">7</th>
+<th style="text-align:center">8</th>
+<th style="text-align:center">9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">y</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">-1</td>
+</tr>
+<tr>
+<td style="text-align:center">$\hat y$</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">$\color{red}-1$</td>
+<td style="text-align:center">$\color{red}-1$</td>
+<td style="text-align:center">$\color{red}-1$</td>
+<td style="text-align:center">-1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>最后根据(12)来计算下次迭代所需要的权重：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+w_{21}=w_{22}=w_{23}=w_{24}=w_{25}=w_{26}=w_{210}=0.0714\\
+w_{27}=w_{28}=w_{29}=0.1667
+\end{aligned}\tag{19}</script><h4 id="第-t-2-次迭代："><a href="#第-t-2-次迭代：" class="headerlink" title="第$t=2$次迭代："></a>第$t=2$次迭代：</h4><p>然后根据公式(9)和我们假定的第二个分类器</p>
+<script type="math/tex; mode=display">
+f_2(\mathrm x)=
+\begin{cases}
+1,\quad x<v\\
+-1,\quad x\ge v
+\end{cases}\tag{20}</script><p>通过穷举$v=\{-0.5,0.5,1.5,\cdots,9.5\}$来找到最优的$v=8.5$使得误分类率(9)最小，即：</p>
+<script type="math/tex; mode=display">
+e_2=0.2143\tag{21}</script><p>根据公式(8)和(21)，我们计算：</p>
+<script type="math/tex; mode=display">
+\alpha_2=0.6496\tag{22}</script><p>此时，我们得到第$t=2$次的表达式：</p>
+<script type="math/tex; mode=display">
+f(\mathrm x)=\alpha_1f_1(\mathrm x)+\alpha_2f_2(\mathrm x)=0.4236f_1(\mathrm x)+0.6496f_2(\mathrm x)\tag{23}</script><p>(23)对应的分类函数为：</p>
+<script type="math/tex; mode=display">
+\hat y=f(\mathrm x)=
+\begin{cases}
+1,\quad\alpha_1f_1(\mathrm x)+\alpha_2f_2(\mathrm x)<0\\
+-1,\quad\alpha_1f_1(\mathrm x)+\alpha_2f_2(\mathrm x)\ge 0
+\end{cases}\tag{24}</script><p>根据(24)，我们有</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$\mathrm x$</th>
+<th style="text-align:center">0</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+<th style="text-align:center">7</th>
+<th style="text-align:center">8</th>
+<th style="text-align:center">9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">y</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">-1</td>
+</tr>
+<tr>
+<td style="text-align:center">$\hat y$</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">$\color{red}1$</td>
+<td style="text-align:center">$\color{red}1$</td>
+<td style="text-align:center">$\color{red}1$</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">-1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>最后根据(12)来计算下次迭代所需要的权重：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+w_{31}=w_{32}=w_{33}=w_{310}=0.0455\\
+w_{34}=w_{35}=w_{36}=0.1667\\
+w_{37}=w_{38}=w_{39}=0.1061
+\end{aligned}\tag{25}</script><h4 id="第-t-3-次迭代："><a href="#第-t-3-次迭代：" class="headerlink" title="第$t=3$次迭代："></a><strong>第$t=3$次迭代：</strong></h4><p>然后根据公式(9)和我们假定的第三个分类器</p>
+<script type="math/tex; mode=display">
+f_3(\mathrm x)=
+\begin{cases}
+-1,\quad x<v\\
+1,\quad x\ge v
+\end{cases}\tag{26}</script><p>通过穷举$v=\{-0.5,0.5,1.5,\cdots,9.5\}$来找到最优的$v=5.5$使得误分类率(9)最小，即：</p>
+<script type="math/tex; mode=display">
+e_3=0.1818\tag{27}</script><p>根据公式(8)和(27)，我们计算：</p>
+<script type="math/tex; mode=display">
+\alpha_3=0.7520\tag{28}</script><p>此时，我们得到第$t=3$次的表达式：</p>
+<script type="math/tex; mode=display">
+f(\mathrm x)=\alpha_1f_1(\mathrm x)+\alpha_2f_2(\mathrm x)+\alpha_3f_3(\mathrm x)=0.4236f_1(\mathrm x)+0.6496f_2(\mathrm x)+0.7514f_3(\mathrm x)\tag{29}</script><p>(29)对应的分类函数为：</p>
+<script type="math/tex; mode=display">
+\hat y=f(\mathrm x)=
+\begin{cases}
+1,\quad\alpha_1f_1(\mathrm x)+\alpha_2f_2(\mathrm x)+\alpha_3f_3(\mathrm x)<0\\
+-1,\quad\alpha_1f_1(\mathrm x)+\alpha_2f_2(\mathrm x)+\alpha_3f_3(\mathrm x)\ge 0
+\end{cases}\tag{30}</script><p>根据(30)，我们有</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$\mathrm x$</th>
+<th style="text-align:center">0</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+<th style="text-align:center">7</th>
+<th style="text-align:center">8</th>
+<th style="text-align:center">9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">y</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">-1</td>
+</tr>
+<tr>
+<td style="text-align:center">$\hat y$</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">-1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>最后根据(12)来计算下次迭代所需要的权重：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+w_{41}=w_{42}=w_{43}=w_{410}=0.125\\
+w_{44}=w_{45}=w_{46}=0.102\\
+w_{47}=w_{48}=w_{49}=0.065
+\end{aligned}\tag{31}</script><p>从上表可知，分类函数(30)已经能成功将这10个样例分类，实际上(31)已经不需要计算了。此时，最终的分类函数即为(30)。</p>
+<hr>
+<h3 id="具体算法实现"><a href="#具体算法实现" class="headerlink" title="具体算法实现"></a>具体算法实现</h3><p>对于上面的例子，我们使用python进行了算法实践，其结果与上述过程相同，如图1：</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200618/AdaBoost_fig001.jpg"  ></center>  <center>图1 </center></td>
+    </tr>
+</table>
+
+<p>对应的Python源代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- encoding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">@File    : AdaBoost.py</span></span><br><span class="line"><span class="string">@Time    : 2020/6/17 22:02</span></span><br><span class="line"><span class="string">@Author  : tengweitw</span></span><br><span class="line"><span class="string">@Email   : tengweitw@foxmail.com</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">train_x = range(<span class="number">10</span>)</span><br><span class="line">train_y = [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">-1</span>]</span><br><span class="line"></span><br><span class="line">N = len(train_x)  <span class="comment"># num of instances</span></span><br><span class="line">K = <span class="number">3</span>  <span class="comment"># num of basic classfier</span></span><br><span class="line"></span><br><span class="line">w = np.zeros((K + <span class="number">1</span>, N))</span><br><span class="line">alpha = np.zeros((K, <span class="number">1</span>))</span><br><span class="line">v = np.zeros((K, <span class="number">1</span>))</span><br><span class="line">f_t_x = np.zeros((K, <span class="number">1</span>))</span><br><span class="line"><span class="comment"># used for brute force</span></span><br><span class="line">values = np.linspace(<span class="number">-0.5</span>, <span class="number">9.5</span>, <span class="number">11</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># exhaust search for the optimal threshold value</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Choose_values</span><span class="params">(values, w, train_x, train_y, N)</span>:</span></span><br><span class="line">    error1 = []</span><br><span class="line">    tmp1 = np.zeros((N, <span class="number">1</span>))</span><br><span class="line">    tmp2 = np.zeros((N, <span class="number">1</span>))</span><br><span class="line">    <span class="keyword">for</span> v <span class="keyword">in</span> values:</span><br><span class="line">        tmp3 = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">            <span class="keyword">if</span> (train_x[i] &lt; v):</span><br><span class="line">                tmp1[i] = <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                tmp1[i] = <span class="number">-1</span></span><br><span class="line">            <span class="keyword">if</span> (tmp1[i] == train_y[i]):</span><br><span class="line">                tmp2[i] = <span class="number">0</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                tmp2[i] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">            tmp3 = tmp3 + tmp2[i] * w[i]</span><br><span class="line">        error1.append(tmp3)</span><br><span class="line">    <span class="comment"># Note that there are two cases: y=1,if x&gt;v or y=-1, if x&gt;v</span></span><br><span class="line">    err_min1 = min(error1)</span><br><span class="line">    err_min_index1 = error1.index(err_min1)</span><br><span class="line"></span><br><span class="line">    error2 = []</span><br><span class="line">    tmp1 = np.zeros((N, <span class="number">1</span>))</span><br><span class="line">    tmp2 = np.zeros((N, <span class="number">1</span>))</span><br><span class="line">    <span class="keyword">for</span> v <span class="keyword">in</span> values:</span><br><span class="line">        tmp3 = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">            <span class="keyword">if</span> (train_x[i] &lt; v):</span><br><span class="line">                tmp1[i] = <span class="number">-1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                tmp1[i] = <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> (tmp1[i] == train_y[i]):</span><br><span class="line">                tmp2[i] = <span class="number">0</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                tmp2[i] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">            tmp3 = tmp3 + tmp2[i] * w[i]</span><br><span class="line">        error2.append(tmp3)</span><br><span class="line">    err_min2 = min(error2)</span><br><span class="line">    err_min_index2 = error2.index(err_min2)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (err_min1 &lt; err_min2):</span><br><span class="line">        error = err_min1</span><br><span class="line">        index = err_min_index1</span><br><span class="line">        flag = <span class="number">0</span>  <span class="comment"># case 0: y=1 if x&lt;v</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        error = err_min2</span><br><span class="line">        index = err_min_index2</span><br><span class="line">        flag = <span class="number">1</span>  <span class="comment"># case 1: y=-1 if x&lt;v</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> index, error, flag</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> range(K):</span><br><span class="line">    print(<span class="string">'------------------The %d-th iteration------------------'</span> % (k))</span><br><span class="line">    <span class="keyword">if</span> k == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">            w[k][i] = <span class="number">1.0</span> / N  <span class="comment"># initialization: equal weigh</span></span><br><span class="line"></span><br><span class="line">    v_index, err, flag = Choose_values(values, w[k], train_x, train_y, N)</span><br><span class="line">    v[k] = values[v_index]</span><br><span class="line">    alpha[k] = np.log((<span class="number">1</span> - err) / err) / <span class="number">2.0</span></span><br><span class="line">    print(<span class="string">'The optimal threshold v:'</span>, v[k])</span><br><span class="line">    print(<span class="string">'The minimum error e:'</span>, err)</span><br><span class="line">    print(<span class="string">'The coefficient of the basic function: alpha'</span>, alpha[k])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">        <span class="keyword">if</span> train_x[i] &lt; v[k]:</span><br><span class="line">            f_t_x = <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            f_t_x = <span class="number">-1</span></span><br><span class="line">        <span class="keyword">if</span> flag == <span class="number">1</span>: <span class="comment"># check case 0 or case 1</span></span><br><span class="line">            f_t_x = -f_t_x</span><br><span class="line">        w[k + <span class="number">1</span>][i] = w[k][i] * np.exp(-train_y[i] * alpha[k] * f_t_x)</span><br><span class="line"></span><br><span class="line">    sum_tmp = sum(w[k + <span class="number">1</span>])</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">        w[k + <span class="number">1</span>][i] = w[k + <span class="number">1</span>][i] / sum_tmp <span class="comment"># regularization</span></span><br><span class="line">    print(<span class="string">'The weight of the next iteration w:'</span>)</span><br><span class="line">    print(w[k + <span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Machine Learning</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【漫漫科研路\Python】画支持向量机相关图</title>
     <url>/2020/06/11/%5B20200611%5D/</url>
     <content><![CDATA[<p>在之前的一篇文章<a href="https://blog.csdn.net/tengweitw/article/details/106088030" target="_blank" rel="noopener">【图解例说机器学习】支持向量机 (SVM)</a>中，由于篇幅有限，我们只介绍了其理论部分。作为补充，本文介绍文中所有图像的绘制。我们全都是采用Python绘制，具体如下：</p>

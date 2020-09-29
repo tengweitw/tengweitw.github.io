@@ -206,6 +206,100 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2019/12/22/%5B20191222%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/22/%5B20191222%5D/" class="post-title-link" itemprop="url">【漫漫科研路\pgfplots】克服绘制色温图时，数据量大出现的内存限制</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-22 21:27:50" itemprop="dateCreated datePublished" datetime="2019-12-22T21:27:50+08:00">2019-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-23 17:48:26" itemprop="dateModified" datetime="2020-09-23T17:48:26+08:00">2020-09-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在科研论文写作中，经常会遇到画色温图，3D图。此时一般输入的数据量比较大，导致在Latex中使用Tikz画图时出现内存不足的情况。常常报错如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">! TeX capacity exceeded, sorry [main memory size=5000000].</span><br></pre></td></tr></table></figure>
+<p>参考pgfplots手册中的第六章，我们有以下解决方案：</p>
+<ul>
+<li>使用LuaTex进行编译<br>有些版本不含LuaTex</li>
+<li>对输入数据采样降低数据量<br>不是从本质上解决问题，降低了精度</li>
+<li>使用其它软件画图，e.g., MATLAB</li>
+<li>增大LaTex的编译内存</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/12/22/%5B20191222%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2019/12/15/%5B20191215%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -991,95 +1085,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2016/09/14/%5B20160914%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/09/14/%5B20160914%5D/" class="post-title-link" itemprop="url">【妄言之言】西南游记</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-09-14 21:30:52" itemprop="dateCreated datePublished" datetime="2016-09-14T21:30:52+08:00">2016-09-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-21 11:33:14" itemprop="dateModified" datetime="2020-09-21T11:33:14+08:00">2020-09-21</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>663</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>少不入川，老不出蜀</p>
-</blockquote>
-<p>三年前，去了趟甘肃：兰州—嘉峪关—敦煌，第一次看到了黄河，见识了天下第一关，体会了“大漠孤烟直、黄河落日圆”的意境。一年前，也是在国庆，环游了青海湖，感受了青藏高原的气候，享受着青海湖粗犷的美，自然的美，质朴的美。我曾经有一个梦想，游遍祖国的名山大川，感受自然界的美。如今梦想只实现了一点点，向着梦想前进，于是乎，便有了今年暑假的重庆、成都之旅。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/09/14/%5B20160914%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1130,7 +1135,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">168</span>
+          <span class="site-state-item-count">169</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1186,12 +1191,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">697k</span>
+    <span title="站点总字数">700k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">16:36</span>
+    <span title="站点阅读时长">16:41</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
