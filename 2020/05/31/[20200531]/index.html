@@ -60,7 +60,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200531&#x2F;Parameter_Estimation_fig001.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200531&#x2F;Parameter_Estimation_fig002.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200531&#x2F;Parameter_Estimation_fig003.jpg">
-<meta property="og:updated_time" content="2020-09-29T01:49:48.100Z">
+<meta property="og:updated_time" content="2020-09-29T01:54:16.129Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20200531&#x2F;Parameter_Estimation_fig001.jpg">
 
@@ -242,7 +242,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-29 09:49:48" itemprop="dateModified" datetime="2020-09-29T09:49:48+08:00">2020-09-29</time>
+                <time title="修改时间：2020-09-29 09:54:16" itemprop="dateModified" datetime="2020-09-29T09:54:16+08:00">2020-09-29</time>
               </span>
 
           
@@ -345,7 +345,7 @@ p(\theta)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(\theta-\mu)^2}{2\sigma^2}}\tag{1
 \theta^\star=\arg\max_{\theta}\sum\limits_{i=1}^{N}\mathrm x_i\log{\theta}+(1-\mathrm x_i)\log{(1-\theta)}+\log{\frac{1}{\sqrt{2\pi}\sigma}}-\frac{(\theta-\mu)^2}{2\sigma^2}\tag{11}</script><p>注意：由于正态分布的概率密度函数(10)是关于$\theta$ 的凹函数，公式(4)也是凹函数，所以公式(11)中的目标函数也是凹函数，所以我们可以利用导数为0取得最优的参数值$\theta^\star$。但是此时，我们一般无法得到如公式(5)一样简洁的解析表达式。在下面的具体实例中，我们直接给出目标函数的图像，从而可以形象地直接确定其最优解。对于比较复杂的目标函数，我们就需要借助其他迭代算法来求解了。</p>
 <p>对于一个具体实例 ($\mu=0.5,\sigma=0.1$，事件$\mathrm x$为10次试验有7次为正面朝上)，此时问题(8)中的目标函数为：</p>
 <script type="math/tex; mode=display">
-P(\theta\mid\mathrm x)=P(\mathrm x\mid\theta)P(\theta)=\theta^7(1-\theta)^3\frac{10}{\sqrt{2\pi}}e^{-50(\theta-0.5)^2}\tag{10}</script><p>我们可以画出其函数曲线如下：</p>
+P(\theta\mid\mathrm x)=P(\mathrm x\mid\theta)P(\theta)=\theta^7(1-\theta)^3\frac{10}{\sqrt{2\pi}}e^{-50(\theta-0.5)^2}\tag{12}</script><p>我们可以画出其函数曲线如下：</p>
 <table>
     <tr>
         <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200531/Parameter_Estimation_fig001.jpg"  ></center>  <center>图1 </center></td>
@@ -446,8 +446,8 @@ P(\theta\mid\mathrm x)=P(\mathrm x\mid\theta)P(\theta)=\theta^7(1-\theta)^3\frac
       <i class="fa fa-chevron-left"></i> 【图解例说机器学习】朴素贝叶斯 (Naive Bayes)
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/07/28/%5B20200728%5D/" rel="next" title="【CUDA编程】初始配置及一个简单实例">
-      【CUDA编程】初始配置及一个简单实例 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/06/09/%5B20200609%5D/" rel="next" title="【图解例说机器学习】神经网络 (Neural Networks)">
+      【图解例说机器学习】神经网络 (Neural Networks) <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -502,7 +502,7 @@ P(\theta\mid\mathrm x)=P(\mathrm x\mid\theta)P(\theta)=\theta^7(1-\theta)^3\frac
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-count">166</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -558,12 +558,12 @@ P(\theta\mid\mathrm x)=P(\mathrm x\mid\theta)P(\theta)=\theta^7(1-\theta)^3\frac
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">647k</span>
+    <span title="站点总字数">652k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">15:24</span>
+    <span title="站点阅读时长">15:32</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
