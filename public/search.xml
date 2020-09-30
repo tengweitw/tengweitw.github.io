@@ -1,6 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>【妄言之言】MacOS上的效率工具</title>
+    <url>/2020/09/30/%5B20200930%5D/</url>
+    <content><![CDATA[<h2 id="Software"><a href="#Software" class="headerlink" title="Software"></a>Software</h2><h3 id="Alfred"><a href="#Alfred" class="headerlink" title="Alfred"></a>Alfred</h3><p>我们将通过通用(General)、特征(Features)、工作流(Workflows)、外观(Appearance)四个方面来介绍其中常用的功能：</p>
+<ul>
+<li>General<br>我一般都是开机自启动，唤出的快捷键为<code>Ctrl+Space</code>，设置如下图1：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200930/20200930_fig001.jpg" width="800" height="450" title="图1" alt="图1" ></li>
+</ul>
+<ul>
+<li><p>Features</p>
+<ul>
+<li><p>默认设置(Default Results)<br>这里默认就行，唯一需要改变的是右下角按钮<code>Setup fallback results</code>中设置百度为默认搜索引擎，毕竟谷歌时常不工作。设置如下图2:<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200930/20200930_fig002.jpg" width="800" height="450" title="图2" alt="图2" ></p>
+</li>
+<li><p>文件搜索(File Search)<br>使用默认设置就可以了，如图3:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200930/20200930_fig003.jpg" width="800" height="450" title="图3" alt="图3" >最常用的就是命令<code>open</code> 和 <code>find</code> 。前者用来直接打开文件，后者用来打开文件所在目录。操作见图4，5:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200930/20200930_fig004.jpg" width="600" height="500" title="图4" alt="图4" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200930/20200930_fig005.jpg" width="600" height="500" title="图5" alt="图5" ><br>现在，我基本不用打开一层一层目录去找到我所需要的文件。</p>
+</li>
+<li><p>网页搜索(Web Search)<br>我们只需要直接输入<code>关键词+想要搜索的内容</code>，就可以直接打开浏览器并进行搜索。我们只需要添加常用的搜索，如百度搜索、ieee搜索、京东搜索、淘宝搜索以及github搜索。设置如图6:<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200930/20200930_fig006.jpg" width="600" height="150" title="图6" alt="图6" ></p>
+<p>关于如何设置这些搜索方式，详细可以网上自行搜索。在默认设置(Default Results)中，我们设置了默认搜索引擎为百度搜索，这样我们可以不用输入关键词，也可以进行百度搜索。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>​    </p>
+<ul>
+<li>Workflows<br>工作流是一个十分好的功能，使用Workflow需要购买Powerpack(这也是我第一次购买正版软件，主要是害怕在美国不让用盗版)，即购买后才能使用这个高级功能。我安装的工作流如图7所示：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200930/20200930_fig007.jpg" width="800" height="450" title="图7" alt="图7" ></li>
+</ul>
+<p>  官网上有一些经典的<a href="https://www.alfredapp.com/workflows/" target="_blank" rel="noopener">workflow</a> , 还有<a href="http://alfredworkflow.com/" target="_blank" rel="noopener">http://alfredworkflow.com/</a> 上列举了许多workflow插件，大家可以根据自己的喜好来选择。  目前，我还经常使用到的有Find Folder、 Open with MacVim、  Simple Screenshots、  YouDao，下面我来逐一介绍：</p>
+<ul>
+<li><p>Find Folder<br>如图8所示，我设置的关键词为folder，当在Alfred搜索栏中输入 <code>folder+目录名</code>时，即可出现我们要寻找的目录，如图9所示：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200930/20200930_fig008.jpg" width="800" height="450" title="图8" alt="图8" ><br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200930/20200930_fig009.jpg" width="600" height="500" title="图9" alt="图9" ></p>
+</li>
+<li><p>如图10，设置的关键词为mvim，选择需要打开的文件，在Alfred搜索栏中输入 <code>mvim</code>并回车时，即可用MacVIM打开该文件。不过，我一般都使用热键<code>Ctrl+m</code>直接使用MacVim打开选中的文件。<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200930/20200930_fig010.jpg" width="800" height="450" title="图10" alt="图10" ></p>
+</li>
+<li><p>Simple Screenshots<br>如图11，设置关键词为ss或ssc，在Alfred搜索栏中输入 <code>ss</code>或者<code>ssc</code>后：<code>Enter</code>截取全屏；<code>Ctrl+Enter</code>截图窗口；<code>Alt+Enter</code>自行选择矩形区域截图。截图会保存在系统粘贴板中。这样截图就十分方便，不用专门打开截图app。对于截图app，腾讯出品的<a href="https://jietu.qq.com/" target="_blank" rel="noopener">截图</a>还不错。<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200930/20200930_fig011.jpg" width="800" height="450" title="图11" alt="图11" ></p>
+</li>
+<li><p>YouDao<br>如图12，设置关键词为<code>yd</code>，在Alfred搜索栏中输入 <code>yd+单词</code>,就可以查看意思了，然后<code>Enter</code>就可以复制翻译到粘贴板中，或则<code>Shift+Enter</code>打开有道单词网页查词，如图13所示：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200930/20200930_fig012.jpg" width="800" height="450" title="图12" alt="图12" ><br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200930/20200930_fig013.jpg" width="600" height="500" title="图13" alt="图13" ></p>
+<p>除此之外，我还设置了热键<code>Alt+y</code>可以直接对选中的单词进行查询，这对阅读英文文献时特别管用。一般来说，能够选中单词的，我都使用热键，其他情况只有自己在搜索栏中输入单词了。</p>
+</li>
+</ul>
+<ul>
+<li>Appearance<br>如图14，我选的是Alfred macOS Dark，感觉还不错，与电脑本身的颜色比较契合。<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200930/20200930_fig014.jpg" width="800" height="450" title="图14" alt="图14" ></li>
+</ul>
+<hr>
+<h3 id="BetterTouchTool"><a href="#BetterTouchTool" class="headerlink" title="BetterTouchTool"></a>BetterTouchTool</h3><h3 id="Karabiner-Elements"><a href="#Karabiner-Elements" class="headerlink" title="Karabiner-Elements"></a>Karabiner-Elements</h3><h3 id="NutStore"><a href="#NutStore" class="headerlink" title="NutStore"></a>NutStore</h3><h3 id="iStat-Menus"><a href="#iStat-Menus" class="headerlink" title="iStat Menus"></a>iStat Menus</h3><link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>Algorithm Design</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【Vim】Vim常用配置&lt;二&gt;</title>
     <url>/2020/08/05/%5B20200805%5D/</url>
     <content><![CDATA[<p>在前面的文章《<a href="https://blog.csdn.net/tengweitw/article/details/103759321" target="_blank" rel="noopener">使用Vim撰写科研论文</a>》和《<a href="https://tengweitw.blog.csdn.net/article/details/107737921" target="_blank" rel="noopener">Vim常用配置&lt;一&gt;</a>》中，我们介绍了一些较为实用的vim插件的安装和使用。这篇文章介绍一下，最基础普适的设置，主要分为：一般性设置，键位设置。</p>
@@ -53,7 +101,7 @@
       </tags>
   </entry>
   <entry>
-    <title>【Vim】Vim常用配置</title>
+    <title>【Vim】Vim常用配置&lt;一&gt;</title>
     <url>/2020/08/01/%5B20200801%5D/</url>
     <content><![CDATA[<p>疫情在家期间，也在新电脑上准备用vim写科研论文。但是之前配置好的.vimrc文件中的配置在实验室的电脑上，我自己又懒得再配置一遍，于是作罢，选择了sublime来进行科研写作，顺便写了一篇《使用Sublime Text3撰写科研论文》。现在已经在实验室了，于是乎我将我的vim配置文件介绍介绍，放在网上，以防万一。同时，也给有需要的人借鉴参考。虽然去年在文章《使用Vim撰写科研论文》介绍了如何利用vim编写论文，只是介绍了与LaTex相关的插件。这里，我们将介绍一般性的编辑工作所需要的配置。</p>
 <hr>
