@@ -49,24 +49,20 @@
   };
 </script>
 
-  <meta name="description" content="​    如果我们想写一个单词查询的软件的话，我们的目的就是让查询的总时间最短，我们首先想到用之前的二叉查找树。我们可以用红黑树或者其它的平衡二叉树来保证每个单词的搜索时间。但是每个单词出现的频率一般不同，因此我们希望把频率较大的单词放在离根比较近的地方，频率较小的放在离叶子较近的地方。而且，我们所要查询的单词词库中没有，这也值得考虑。">
-<meta name="keywords" content="Algorithm Design">
+  <meta name="description" content="随机数在一般编程中都会涉及，特别是在仿真过程中。我之前有几篇文章介绍了如何通过CPU函数调用产生随机数，这里我介绍如何在CUDA中产生随机数。在CUDA中，主要使用cuRAND库中的函数来产生随机数，其链接文档为https:&#x2F;&#x2F;docs.nvidia.com&#x2F;cuda&#x2F;curand&#x2F;index.html 。">
+<meta name="keywords" content="Programming Art">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【算法导论】动态规划之最优二叉查找树">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2013&#x2F;11&#x2F;26&#x2F;[20131126]&#x2F;index.html">
+<meta property="og:title" content="【CUDA编程】随机数生成">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2020&#x2F;10&#x2F;24&#x2F;[20201024]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="​    如果我们想写一个单词查询的软件的话，我们的目的就是让查询的总时间最短，我们首先想到用之前的二叉查找树。我们可以用红黑树或者其它的平衡二叉树来保证每个单词的搜索时间。但是每个单词出现的频率一般不同，因此我们希望把频率较大的单词放在离根比较近的地方，频率较小的放在离叶子较近的地方。而且，我们所要查询的单词词库中没有，这也值得考虑。">
+<meta property="og:description" content="随机数在一般编程中都会涉及，特别是在仿真过程中。我之前有几篇文章介绍了如何通过CPU函数调用产生随机数，这里我介绍如何在CUDA中产生随机数。在CUDA中，主要使用cuRAND库中的函数来产生随机数，其链接文档为https:&#x2F;&#x2F;docs.nvidia.com&#x2F;cuda&#x2F;curand&#x2F;index.html 。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131126&#x2F;20131126_fig001.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131126&#x2F;20131126_fig002.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131126&#x2F;20131126_fig003.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131126&#x2F;20131126_fig004.jpg">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131126&#x2F;20131126_fig005.jpg">
-<meta property="og:updated_time" content="2020-08-07T08:09:29.633Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20201024&#x2F;20201024_fig001.jpg">
+<meta property="og:updated_time" content="2020-10-24T13:54:30.084Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20131126&#x2F;20131126_fig001.jpg">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20201024&#x2F;20201024_fig001.jpg">
 
-<link rel="canonical" href="http://tengweitw.com/2013/11/26/[20131126]/">
+<link rel="canonical" href="http://tengweitw.com/2020/10/24/[20201024]/">
 
 
 <script id="page-configurations">
@@ -80,7 +76,7 @@
   };
 </script>
 
-  <title>【算法导论】动态规划之最优二叉查找树 | 青峰碧陋室</title>
+  <title>【CUDA编程】随机数生成 | 青峰碧陋室</title>
   
 
 
@@ -214,7 +210,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/11/26/%5B20131126%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/10/24/%5B20201024%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -227,7 +223,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【算法导论】动态规划之最优二叉查找树
+          【CUDA编程】随机数生成
         </h1>
 
         <div class="post-meta">
@@ -236,16 +232,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2013-11-26 22:00:02" itemprop="dateCreated datePublished" datetime="2013-11-26T22:00:02+08:00">2013-11-26</time>
+              <time title="创建时间：2020-10-24 15:10:23 / 修改时间：21:54:30" itemprop="dateCreated datePublished" datetime="2020-10-24T15:10:23+08:00">2020-10-24</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-07 16:09:29" itemprop="dateModified" datetime="2020-08-07T16:09:29+08:00">2020-08-07</time>
-              </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -260,14 +250,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.6k</span>
+              <span>2.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -279,22 +269,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>​    如果我们想写一个单词查询的软件的话，我们的目的就是让查询的总时间最短，我们首先想到用之前的二叉查找树。我们可以用红黑树或者其它的平衡二叉树来保证每个单词的搜索时间。但是每个单词出现的频率一般不同，因此我们希望把频率较大的单词放在离根比较近的地方，频率较小的放在离叶子较近的地方。而且，我们所要查询的单词词库中没有，这也值得考虑。</p>
+        <p>随机数在一般编程中都会涉及，特别是在仿真过程中。我之前有几篇文章介绍了如何通过CPU函数调用产生随机数，这里我介绍如何在CUDA中产生随机数。在CUDA中，主要使用cuRAND库中的函数来产生随机数，其链接文档为<a href="https://docs.nvidia.com/cuda/curand/index.html" target="_blank" rel="noopener">https://docs.nvidia.com/cuda/curand/index.html</a> 。</p>
 <a id="more"></a>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131126/20131126_fig001.jpg" width="700" height="120" title="图1" alt="图1" ></p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131126/20131126_fig002.jpg" width="600" height="380" title="图2" alt="图2" ></p>
-<p>​    由上文可知，$k_i$表示单词，$d_i$表示不能查到的情况。由上面的例子可知，一棵最优二叉树不一定是高度最小的树。我们也不一定总把频率最大的放在根部。</p>
-<p>​    和矩阵链乘法一样，穷举所有的可能行肯定不是一个好的算法。由于具有动态规划的特征，毫无疑问，我们将使用动态规划法。</p>
-<p>​    对于原序列，我们假设第k个元素(采用遍历的方法)作为根时可以得到最优解，由于是二叉查询树，则前$k-1$个元素在左子树，剩余元素在右子树。接下来，我们要分别在左、右子树中找到最优二叉树，于是我们可以用相同的方法：假设左、右子树中第$m, n$个为根时，可以得到最优解，依此类推，就可以求得整体最优解。上面的解法中，可能存在左或者右子树为空的情况：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131126/20131126_fig003.jpg" width="700" height="220" title="图3" alt="图3" ></p>
-<p>通过推导，可以递推公式：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131126/20131126_fig004.jpg" width="600" height="60" title="图4" alt="图4" ></p>
-<p>其中$e$表示搜索的代价，$q[i]$为$d[i]$的出现频率，$w$为子树总的概率。</p>
-<p><strong>具体程序实现如下：</strong></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 7</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Optimal_Bst</span><span class="params">(<span class="keyword">float</span> *p,<span class="keyword">float</span> *q,<span class="keyword">int</span> n,<span class="keyword">float</span> e[][N],<span class="keyword">int</span> root[][N])</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">float</span> p[]=&#123;<span class="number">0</span>,<span class="number">0.15</span>,<span class="number">0.1</span>,<span class="number">0.05</span>,<span class="number">0.1</span>,<span class="number">0.2</span>&#125;;<span class="comment">//关键字出现的概率</span></span><br><span class="line">	<span class="keyword">float</span> q[]=&#123;<span class="number">0.05</span>,<span class="number">0.1</span>,<span class="number">0.05</span>,<span class="number">0.05</span>,<span class="number">0.05</span>,<span class="number">0.1</span>&#125;;<span class="comment">//搜索不到关键字的几种情况的概率</span></span><br><span class="line">	<span class="keyword">int</span> n=<span class="number">6</span>;<span class="comment">//关键字个数</span></span><br><span class="line">	<span class="keyword">float</span> e[N][N]=&#123;<span class="number">0</span>&#125;;<span class="comment">//存储搜索的代价</span></span><br><span class="line">	<span class="keyword">int</span> root[N][N]=&#123;<span class="number">0</span>&#125;;<span class="comment">//子树的根，便于重构最优二叉树</span></span><br><span class="line">	Optimal_Bst(p,q,n,e,root);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;<span class="number">6</span>;i++)</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">5</span>;j&gt;=i;j--)</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"从第%d个元素到第%d个元素的最优二叉查找树的顶点为：%d\n"</span>,i,j,root[i][j]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Optimal_Bst</span><span class="params">(<span class="keyword">float</span> *p,<span class="keyword">float</span> *q,<span class="keyword">int</span> n,<span class="keyword">float</span> e[][N],<span class="keyword">int</span> root[][N])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">float</span> w[N][N]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">	<span class="keyword">float</span> t=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)<span class="comment">//左右子树为空的情况</span></span><br><span class="line">	&#123;</span><br><span class="line">		e[i][i<span class="number">-1</span>]=q[i<span class="number">-1</span>];</span><br><span class="line">		w[i][i<span class="number">-1</span>]=q[i<span class="number">-1</span>];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> l=<span class="number">1</span>;l&lt;=n;l++)</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n-l+<span class="number">1</span>;i++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> j=<span class="number">0</span>;</span><br><span class="line">			j=i+l<span class="number">-1</span>;</span><br><span class="line">			e[i][j]=<span class="number">10000</span>;<span class="comment">//初始化为很大的值，可以随意设置</span></span><br><span class="line">			w[i][j]=w[i][j<span class="number">-1</span>]+p[j]+q[j];<span class="comment">//</span></span><br><span class="line">			</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> r=i;r&lt;=j;r++)<span class="comment">//r代表以下标r为根，r在所有的子树节点中遍历</span></span><br><span class="line">			&#123;</span><br><span class="line">				t=e[i][r<span class="number">-1</span>]+e[r+<span class="number">1</span>][j]+w[i][j];</span><br><span class="line">				<span class="keyword">if</span>(t&lt;e[i][j])</span><br><span class="line">				&#123;</span><br><span class="line">					e[i][j]=t;</span><br><span class="line">					root[i][j]=r;<span class="comment">//得到最优二叉树时的根</span></span><br><span class="line">					</span><br><span class="line">				&#125;</span><br><span class="line">					</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>上述程序运行后，数组e,w,root的结果如下：</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20131126/20131126_fig005.jpg" width="600" height="320" title="图5" alt="图5" ></p>
-<p><strong>上述程序的运行时间为$O(n^3)$</strong>，这和前面的矩阵链乘法是一样的。</p>
+<hr>
+<p>通过文档可知，cuRAND库提供两种方式的随机数生成：host与device。关于具体如何生成随机数，我们可参考文档中的<a href="https://docs.nvidia.com/cuda/curand/host-api-overview.html#host-api-example" target="_blank" rel="noopener">Host API Example</a> 和<a href="https://docs.nvidia.com/cuda/curand/device-api-overview.html#device-api-example" target="_blank" rel="noopener">Device API Examples</a>。其中<a href="https://docs.nvidia.com/cuda/curand/host-api-overview.html#host-api-example" target="_blank" rel="noopener">Host API Example</a>的例子非常简单，这里不具体描述，唯一需要注意的点是，在VS中可能会出现error LNK2019的错误，此时需要在项目属性中添加依赖库，具体可以网上搜索答案。本文主要介绍如何参考<a href="https://docs.nvidia.com/cuda/curand/device-api-overview.html#device-api-example" target="_blank" rel="noopener">Device API Examples</a>的例子，来具体实现在核函数中产生随机数。为了便于介绍，我们首先给出了具体的代码实现：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"cuda_runtime.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"device_launch_parameters.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"curand_kernel.h"</span><span class="comment">// this lib shoulb be included</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;ctime&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;random&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//-------------------generate random numbers-------//</span></span><br><span class="line">__<span class="function">device__ <span class="keyword">float</span> <span class="title">generate</span><span class="params">(curandState *globalState, <span class="keyword">int</span> ind)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	curandState localState = globalState[ind];</span><br><span class="line">	<span class="keyword">float</span> RANDOM = curand_uniform(&amp;localState);<span class="comment">// uniform distribution</span></span><br><span class="line">	globalState[ind] = localState;</span><br><span class="line">	<span class="keyword">return</span> RANDOM;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">__<span class="function">global__ <span class="keyword">void</span> <span class="title">setup_kernel</span><span class="params">(curandState *state, <span class="keyword">unsigned</span> <span class="keyword">long</span> seed)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> ix = threadIdx.x + blockIdx.x*blockDim.x;</span><br><span class="line">	<span class="keyword">int</span> iy = threadIdx.y + blockIdx.y*blockDim.y;</span><br><span class="line">	<span class="keyword">int</span> idx = iy * blockDim.x*gridDim.x + ix;</span><br><span class="line">	curand_init(seed, idx, <span class="number">0</span>, &amp;state[idx]);<span class="comment">// initialize the state</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//-------------This is our kernel function where the random numbers generated------//</span></span><br><span class="line">__<span class="function">global__ <span class="keyword">void</span> <span class="title">our_kernel</span><span class="params">(curandState *globalState,<span class="keyword">int</span> nx,<span class="keyword">int</span> ny)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> ix = threadIdx.x + blockIdx.x*blockDim.x;</span><br><span class="line">	<span class="keyword">int</span> iy = threadIdx.y + blockIdx.y*blockDim.y;</span><br><span class="line">	<span class="keyword">int</span> idx = iy * blockDim.x*gridDim.x + ix;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (ix &lt; nx&amp;&amp;iy &lt; ny)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> k = generate(globalState, idx) * <span class="number">100000</span>;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%d\n"</span>, k);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> nx = <span class="number">5</span>;</span><br><span class="line">	<span class="keyword">int</span> ny = <span class="number">2</span>;<span class="comment">// generate nx*ny random numbers</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> blockx = <span class="number">32</span>;</span><br><span class="line">	<span class="keyword">int</span> blocky = <span class="number">1</span>;</span><br><span class="line">	<span class="function">dim3 <span class="title">block</span><span class="params">(blockx, blocky)</span></span>;<span class="comment">//(32,1)</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> gridx = (nx + block.x - <span class="number">1</span>) / block.x;</span><br><span class="line">	<span class="keyword">int</span> gridy = (ny + block.y - <span class="number">1</span>) / block.y;</span><br><span class="line">	<span class="function">dim3 <span class="title">grid</span><span class="params">(gridx,gridy)</span></span>; <span class="comment">//(1,10)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> N = gridx*gridy*blockx*blocky;<span class="comment">// the number of states</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//--------------------//</span></span><br><span class="line">	curandState* devStates;</span><br><span class="line"></span><br><span class="line">	cudaMalloc(&amp;devStates, N * <span class="keyword">sizeof</span>(curandState));</span><br><span class="line"></span><br><span class="line">	srand(time(<span class="number">0</span>));</span><br><span class="line">	<span class="keyword">int</span> seed = rand();</span><br><span class="line"></span><br><span class="line">	<span class="comment">//  Initialize the states</span></span><br><span class="line">	setup_kernel &lt;&lt;&lt;grid, block&gt;&gt;&gt; (devStates, seed);</span><br><span class="line"></span><br><span class="line">	our_kernel &lt;&lt; &lt;grid, block &gt;&gt; &gt; (devStates,nx,ny);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	cudaDeviceReset();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上面代码可以看出，主要的有两点：一是首先使用<code>setup_kernel</code>来初始化，二是使用<code>generate</code>来产生随机数。最需要注意的是，<code>setup_kernel</code>和<code>our_kernel</code>运行的维度一致&lt;&lt;<grid, block>&gt;&gt;。并且，<code>devStates</code>的维度要相同，这样确保<code>devStates</code>为每一个thread都生成对应的state.</p>
+<p>最后给出上述代码结果图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201024/20201024_fig001.jpg" width="600" height="500" title="图1" alt="图1" ></p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -330,7 +312,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2013/11/26/[20131126]/" title="【算法导论】动态规划之最优二叉查找树">http://tengweitw.com/2013/11/26/[20131126]/</a>
+    <a href="http://tengweitw.com/2020/10/24/[20201024]/" title="【CUDA编程】随机数生成">http://tengweitw.com/2020/10/24/[20201024]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -342,7 +324,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/Algorithm-Design/" rel="tag"><i class="fa fa-tag"></i> Algorithm Design</a>
+              <a href="/tags/Programming-Art/" rel="tag"><i class="fa fa-tag"></i> Programming Art</a>
           </div>
 
         
@@ -351,13 +333,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2013/11/25/%5B20131125%5D/" rel="prev" title="【算法导论】动态规划之最长公共子序列">
-      <i class="fa fa-chevron-left"></i> 【算法导论】动态规划之最长公共子序列
+    <a href="/2020/10/18/%5B20201018%5D/" rel="prev" title="【CUDA编程】CPU计时与GPU计时">
+      <i class="fa fa-chevron-left"></i> 【CUDA编程】CPU计时与GPU计时
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2013/11/27/%5B20131127%5D/" rel="next" title="【算法导论】贪心算法之活动安排问题">
-      【算法导论】贪心算法之活动安排问题 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
