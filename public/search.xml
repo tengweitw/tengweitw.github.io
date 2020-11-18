@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>【LaTeX排版】西电硕\博士论文LaTeX模版</title>
+    <title>【LaTeX排版】MacOS系统下西电硕\博士论文LaTeX模版</title>
     <url>/2020/11/18/%5B20201118%5D/</url>
     <content><![CDATA[<p>现在终于可以着手写大论文了，但是学校官网上的LaTeX模板主要是针对windows系统上的，实验室师兄师姐也没有MacOS系统的LaTeX版本。一想到我本科毕设的时候就是自己按照毕设手册的格式自己制作的LaTeX模板（详情见我之前的<a href="http://www.tengweitw.com/2014/06/28/%5B20140628%5D/" target="_blank" rel="noopener">相关文章</a>），我准备自己制作模板。转念一想，我是否可以根据官网中的LaTeX模板进行修改，这样可以节省好多时间。其中官网的latex模板可以在研究生院网站上进行下载，见下载地址：<a href="https://gr.xidian.edu.cn/xwsy/zlxz.htm" target="_blank" rel="noopener">https://gr.xidian.edu.cn/xwsy/zlxz.htm</a> 。现在想想，为啥当初为啥完全是自己根据本科毕设格式自己弄的LaTeX模板？可能一方面是因为github上西电本科毕设LaTeX模板好像都是2017年以后的，二是没有找到西电官方的本科LaTeX模板。</p>
 <p>本文主要介绍在MacOS系统下使用的硕士或者博士论文的LaTeX模板，Windows系统下的LaTeX应该可以直接使用上述官网的模板。</p>
@@ -34,7 +34,7 @@
 <h5 id="修改编码方式"><a href="#修改编码方式" class="headerlink" title="修改编码方式"></a>修改编码方式</h5><p>修改完上述驱动后，编译运行后会出现乱码，这是因为这些源文件基本上都是GB2312编码，我们需要将这些源文件改为UTF - 8编码，具体我们可以使用sublime Text 3来实现，如图4所示：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201118/20201118_fig004.jpg" width="600" height="450" title="图4" alt="图4" ></p>
 <hr>
-<p>经过上述的修改，我们就可以开始得到正确的PDF文件了。当然如果你不想修改，我也提供了修改过后MacOS下的LaTeX模板，链接为：</p>
+<p>经过上述的修改，我们就可以开始得到正确的PDF文件了。当然如果你不想修改，我也提供了修改过后MacOS下的LaTeX模板，链接为：<a href="https://github.com/tengweitw/XDUThesis" target="_blank" rel="noopener">https://github.com/tengweitw/XDUThesis</a></p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
       <tags>
         <tag>LaTeX Coding</tag>
