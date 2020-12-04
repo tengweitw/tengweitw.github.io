@@ -206,6 +206,89 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/12/03/%5B20201203%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/03/%5B20201203%5D/" class="post-title-link" itemprop="url">【LaTeX排版】Windows系统下西电硕\博士论文LaTeX模版</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-03 20:55:46 / 修改时间：22:19:51" itemprop="dateCreated datePublished" datetime="2020-12-03T20:55:46+08:00">2020-12-03</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>782</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>昨天实验室同学，直接使用西电官网的<a href="https://gr.xidian.edu.cn/xwsy/zlxz.htm" target="_blank" rel="noopener">LaTeX模板](https://gr.xidian.edu.cn/xwsy/zlxz.htm</a>，使用WinEdt环境，然后编译运行失败。由于我之前已经写过一篇关于在MacOS系统上的LaTeX模板文章，对于官方的模板有些经验：无非就是编码问题或者有些package过时。下面我们逐一排查这些错误。</p>
+<p>当我们使用WinEdt打开官网的templet.tex文件并编译运行时，会出现如下图1所示错误：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201203/20201203_fig001.jpg" width="400" height="250" title="图1" alt="图1" ></p>
+<p>按着提示按键<code>H+Enter</code>后显示的是编码问题。想到之前在MacOS下也出现过编码问题(可以使用Sublime Text3 查看当前文件编码，具体方法可以自己网上搜索)，我们可以将所有文件的编码转换为UTF-8编码，转换方法在<a href="http://www.tengweitw.com/2020/11/18/%5B20201118%5D/" target="_blank" rel="noopener">文章</a>中已经介绍过，这里不再赘述。当全部转化为UTF-8编码后，再次尝试编译运行，出现如图2所示错误：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201203/20201203_fig002.jpg" width="400" height="300" title="图2" alt="图2" ></p>
+<p>显然是这里类文件XDUthesis.cls有问题。打开该文件，找到<code>\XDU@underline[#1]#2</code>这一句，在第154行如图3：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201203/20201203_fig003.jpg" width="600" height="450" title="图3" alt="图3" ></p>
+<p>当我把\CTEXunderline删除时，重新编译(XeLaTeX)可以成功编译。通过参考CTeX手册第11.3节可知，此命令已经过时，我们可以将其简单地使用<code>\underline</code>即可，修改后的内容如图4所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201203/20201203_fig004.jpg" width="600" height="450" title="图4" alt="图4" ></p>
+<p>至此，Windows下对应的西电硕、博士论文LaTeX模板完成，完整的可运行版本请见github地址：<a href="https://github.com/tengweitw/XDUThesis_Windows" target="_blank" rel="noopener">https://github.com/tengweitw/XDUThesis_Windows</a></p>
+<p>另外，推荐大家使用sublime + text live来作为编写大论文环境，个人感觉比WinEdt好太多，其安装方法见另一篇文章:<a href="http://www.tengweitw.com/2020/03/18/%5B20200318%5D/" target="_blank" rel="noopener">http://www.tengweitw.com/2020/03/18/%5B20200318%5D/</a> 。在该环境下，LaTeX模板也得到了验证，能成功运行。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/11/22/%5B20201122%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -231,7 +314,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-11-22 20:43:58 / 修改时间：20:53:37" itemprop="dateCreated datePublished" datetime="2020-11-22T20:43:58+08:00">2020-11-22</time>
+              <time title="创建时间：2020-11-22 20:43:58 / 修改时间：20:56:25" itemprop="dateCreated datePublished" datetime="2020-11-22T20:43:58+08:00">2020-11-22</time>
             </span>
 
           <br>
@@ -259,7 +342,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>今天，西安下雪了，2020年的第一场雪，比往年来的早些。依稀记得，2010年刚来西安上学时，第一场雪是12月24日，由于是在平安夜，所以还能记得，一晃都十年了。。。。。。</p>
+          <p>今天，西安下雪了，2020年的第一场雪，比往年来的早些。依稀记得，2010年刚来西安上学时，第一场雪是12月24日，由于是在平安夜，所以还能记得，一晃都十年了……</p>
 <p>在CUDA编程过程中，最易出错的部分就是内存的相关操作。时常出现的问题是：程序能够运行，但是其中的Kernel函数未能成功运行。这使得排错相对传统的C语言编程复杂。好在我们依旧可以使用最传统的方法：使用printf函数打印输出进行排查Bug。但是，printf函数在CUDA编程过程中，存在局限性。具体地说，运行在CPU上的代码和运行在GPU上的代码是异步的，运行在GPU核函数中的每个线程也是异步的。这使得printf函数的显示上比较复杂，不是那么直观。</p>
           <!--noindex-->
             <div class="post-button">
@@ -943,97 +1026,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/06/18/%5B20200618%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/18/%5B20200618%5D/" class="post-title-link" itemprop="url">【图解例说机器学习】集成学习之AdaBoost算法</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-18 12:06:10" itemprop="dateCreated datePublished" datetime="2020-06-18T12:06:10+08:00">2020-06-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-29 16:32:44" itemprop="dateModified" datetime="2020-09-29T16:32:44+08:00">2020-09-29</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>三个臭皮匠，顶个诸葛亮。</p>
-</blockquote>
-<p>集成学习 (Ensemble learning) 通过构建并结合多个学习器来完成学习任务，即先产生一组<strong>个体学习器</strong>，再通过<strong>某种策略</strong>将它们结合起来完成学习任务。</p>
-<p>个体学习器通常为一个现有的学习算法从训练数据产生，例如决策树，神经网络等。结合策略：在回归问题中，一般采用 (加权) 平均法，在分类问题中，一般采用 (加权) 投票法。当训练数据很多时，一种更为强大的结合策略为学习法，即通过另一个学习器来进行结合，典型代表为Stacking.</p>
-<p>根据个体学习器的生成方式不同，目前的集成学习方法大致分为两大类：<strong>序列化方法</strong>和<strong>并行化方法</strong>。在序列化方法中，个体学习器之间存在强依赖关系，需要串行生成，其代表为Boosting；在并行化方法中，个体学习器间不存在强依赖关系，可同时生成，其代表为Bagging和随机森林 (Random Forest)。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/18/%5B20200618%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1084,7 +1076,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">176</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1140,12 +1132,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">712k</span>
+    <span title="站点总字数">713k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">16:57</span>
+    <span title="站点阅读时长">16:58</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
