@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>【LaTeX排版】Windows系统下西电硕\博士论文LaTeX模版</title>
+    <title>【LaTeX排版】西电硕\博士论文LaTeX模版&lt;一&gt;</title>
     <url>/2020/12/06/%5B20201206%5D/</url>
     <content><![CDATA[<p>前面文章《<a href="http://www.tengweitw.com/2020/11/18/%5B20201118%5D/" target="_blank" rel="noopener">MacOS系统下西电硕\博士论文LaTeX模版</a>》和《<a href="http://www.tengweitw.com/2020/12/03/%5B20201203%5D/" target="_blank" rel="noopener">Windows系统下西电硕\博士论文LaTeX模版</a>》中，我们介绍使得官网的LaTeX模板可以成功运行。但是，这只是最基础的版本，后面肯定需要添加许多东西。下面，我将用一系列文章来介绍在写毕业论文中的一些技巧和需要添加和修改的地方。注意：本系列文章只适用于西电硕博模板，本科毕设论文可以参考我多年前的相关系列文章《<a href="http://www.tengweitw.com/2014/06/28/[20140628]/" target="_blank" rel="noopener">LaTeX论文模板</a>》。</p>
 <a id="more"></a>
