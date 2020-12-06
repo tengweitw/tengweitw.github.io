@@ -6,7 +6,8 @@
     <content><![CDATA[<p>前面文章《<a href="http://www.tengweitw.com/2020/11/18/%5B20201118%5D/" target="_blank" rel="noopener">MacOS系统下西电硕\博士论文LaTeX模版</a>》和《<a href="http://www.tengweitw.com/2020/12/03/%5B20201203%5D/" target="_blank" rel="noopener">Windows系统下西电硕\博士论文LaTeX模版</a>》中，我们介绍使得官网的LaTeX模板可以成功运行。但是，这只是最基础的版本，后面肯定需要添加许多东西。下面，我将用一系列文章来介绍在写毕业论文中的一些技巧和需要添加和修改的地方。注意：本系列文章只适用于西电硕博模板，本科毕设论文可以参考我多年前的相关系列文章《<a href="http://www.tengweitw.com/2014/06/28/[20140628]/" target="_blank" rel="noopener">LaTeX论文模板</a>》。</p>
 <a id="more"></a>
 <hr>
-<h4 id="英文字体改为Times-New-Roman"><a href="#英文字体改为Times-New-Roman" class="headerlink" title="英文字体改为Times New Roman"></a>英文字体改为Times New Roman</h4><p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201206/20201206_fig001.jpg" width="600" height="450" title="图1" alt="图1" ></p>
+<h4 id="英文字体改为Times-New-Roman"><a href="#英文字体改为Times-New-Roman" class="headerlink" title="英文字体改为Times New Roman"></a>英文字体改为Times New Roman</h4><p>如图1所示，英文字体不是所规定的Times New Roman。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201206/20201206_fig001.jpg" width="600" height="450" title="图1" alt="图1" ></p>
 <p>我们想要设置英文为Times New Roman，只需要在导言区加入如下命令：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">\usepackage&#123;Times New Roman&#125;</span><br></pre></td></tr></table></figure>
 <p>效果如下图：</p>
