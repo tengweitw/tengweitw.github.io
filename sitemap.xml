@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://tengweitw.com/about/index.html</loc>
+    
+    <lastmod>2021-03-23T08:27:43.366Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://tengweitw.com/2021/02/11/[20210211]/</loc>
     
     <lastmod>2021-02-11T14:21:13.442Z</lastmod>
@@ -1174,13 +1181,6 @@
     <loc>http://tengweitw.com/2013/07/30/[20130730]/</loc>
     
     <lastmod>2020-07-27T15:07:28.103Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tengweitw.com/about/index.html</loc>
-    
-    <lastmod>2020-07-27T08:12:23.928Z</lastmod>
     
   </url>
   
