@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>【单片机】Win10下单片机COM口设置</title>
+    <url>/2021/03/31/%5B20210331%5D/</url>
+    <content><![CDATA[<p>开学来便是3月了，这个月主要是进行了预答辩以及学位申请相关材料的准备。这周一论文终于送审了，我也有时间来干点业余的事了。于是乎，我拿出了大二买的郭天祥单片机，准备做个小东西。</p>
+<a id="more"></a>
+<p>遥想当年，电脑都才刚刚从XP系统向Win7过渡，现如今早已是Win10了。单片机中附带的软件STC-ISP已经无法适配最新的Win10系统，而且Win10系统中也不显示端口(COM和LPT)了。为此，我们需要安装较新的版本，例如stc-isp-15xx-v6.86I，链接地址为：<a href="https://github.com/tengweitw/STC-ISP" target="_blank" rel="noopener">https://github.com/tengweitw/STC-ISP</a> 安装完成后，我们需要选取<strong>串口号</strong>和<strong>单片机型号</strong>：</p>
+<ul>
+<li><p>对于串口的选择，我们需要右击此电脑，选择管理-&gt;设备管理器寻找端口(COM和LPT)，一般来说Win10没有此选项。这时，我们可以选择显示隐藏的设备，操作如下图1：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20210331/20210331_fig001.jpg" width="600" height="450" title="图1" alt="图1" ></p>
+<p>这时，可能出现的端口会有黄色的感叹号，这时我们需要安装驱动程序，操作如下图2：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20210331/20210331_fig002.jpg" width="600" height="450" title="图2" alt="图2" ></p>
+<p>这样COM端口就可以正常工作了。如果还有问题，我们可以点击操作-&gt;添加过时硬件，选择添加端口，具体操作如下图3、4、5：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20210331/20210331_fig003.jpg" width="600" height="450" title="图3" alt="图3" ><br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20210331/20210331_fig004.jpg" width="600" height="450" title="图4" alt="图4" ><br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20210331/20210331_fig005.jpg" width="600" height="450" title="图5" alt="图5" ></p>
+</li>
+</ul>
+<ul>
+<li><p>当我们使用STC89C52单片机时，若我们选择的是STC89C52就会无法下载程序，如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20210331/20210331_fig006.jpg" width="600" height="450" title="图6" alt="图6" ><br>这里我们要选择的型号为STC89C52RC/LE52RC！如图7所示：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20210331/20210331_fig007.jpg" width="600" height="450" title="图7" alt="图7" ></p>
+<p>这样，我们就能成功下载程序到单片机中了！</p>
+</li>
+</ul>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <tags>
+        <tag>MCU</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【妄言之言】2020年末总结</title>
     <url>/2021/02/11/%5B20210211%5D/</url>
     <content><![CDATA[<p>今天是除夕，再不进行年末总结，就来不及了。之前也写过年末总结，都是在元旦左右。今年在学校过年，所以有时间在实验室完成这一总结报告。</p>
@@ -2895,30 +2919,6 @@ E(\omega_0,\omega_1,\omega_2)=\sum\limits_{i=1}^{500}(\omega_0+\omega_1*x^{(1)}+
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
       <tags>
         <tag>Machine Learning</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【单片机】Win10下单片机COM口设置</title>
-    <url>/2020/03/31/%5B20210331%5D/</url>
-    <content><![CDATA[<p>开学来便是3月了，这个月主要是进行了预答辩以及学位申请相关材料的准备。这周一论文终于送审了，我也有时间来干点业余的事了。于是乎，我拿出了大二买的郭天祥单片机，准备做个小东西。</p>
-<a id="more"></a>
-<p>遥想当年，电脑都才刚刚从XP系统向Win7过渡，现如今早已是Win10了。单片机中附带的软件STC-ISP已经无法适配最新的Win10系统，而且Win10系统中也不显示端口(COM和LPT)了。为此，我们需要安装较新的版本，例如stc-isp-15xx-v6.86I，链接地址为：<a href="https://github.com/tengweitw/STC-ISP" target="_blank" rel="noopener">https://github.com/tengweitw/STC-ISP</a> 安装完成后，我们需要选取<strong>串口号</strong>和<strong>单片机型号</strong>：</p>
-<ul>
-<li><p>对于串口的选择，我们需要右击此电脑，选择管理-&gt;设备管理器寻找端口(COM和LPT)，一般来说Win10没有此选项。这时，我们可以选择显示隐藏的设备，操作如下图1：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20210331/20210331_fig001.jpg" width="600" height="450" title="图1" alt="图1" ></p>
-<p>这时，可能出现的端口会有黄色的感叹号，这时我们需要安装驱动程序，操作如下图2：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20210331/20210331_fig002.jpg" width="600" height="450" title="图2" alt="图2" ></p>
-<p>这样COM端口就可以正常工作了。如果还有问题，我们可以点击操作-&gt;添加过时硬件，选择添加端口，具体操作如下图3、4、5：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20210331/20210331_fig003.jpg" width="600" height="450" title="图3" alt="图3" ><br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20210331/20210331_fig004.jpg" width="600" height="450" title="图4" alt="图4" ><br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20210331/20210331_fig005.jpg" width="600" height="450" title="图5" alt="图5" ></p>
-</li>
-</ul>
-<ul>
-<li><p>当我们使用STC89C52单片机时，若我们选择的是STC89C52就会无法下载程序，如下图所示：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20210331/20210331_fig006.jpg" width="600" height="450" title="图6" alt="图6" ><br>这里我们要选择的型号为STC89C52RC/LE52RC！如图7所示：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20210331/20210331_fig007.jpg" width="600" height="450" title="图7" alt="图7" ></p>
-<p>这样，我们就能成功下载程序到单片机中了！</p>
-</li>
-</ul>
-<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
-      <tags>
-        <tag>MCU</tag>
       </tags>
   </entry>
   <entry>
