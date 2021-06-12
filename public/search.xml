@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>【单片机】辉光管时钟系列&lt;二&gt;--LCD液晶显示</title>
+    <title>【单片机】辉光管时钟系列&lt;二&gt;LCD液晶显示</title>
     <url>/2021/06/12/%5B20210612%5D/</url>
-    <content><![CDATA[<p>在前一篇文章中，我们是通过蜂鸣器或发光二极管来验证最小系统是否正常工作。很多时候，我们需要将系统的信息进行可视化展示，方面我们对系统进行测试。这里我们介绍如何通过常用的LCD1602液晶来显示一些单片机的信息。</p>
+    <content><![CDATA[<p>在前一篇文章《<a href="http://www.tengweitw.com/2021/06/11/%5B20210611%5D/" target="_blank" rel="noopener">辉光管时钟系列&lt;一&gt;单片机最小系统</a>》中，我们是通过蜂鸣器或发光二极管来验证最小系统是否正常工作。很多时候，我们需要将系统的信息进行可视化展示，方面我们对系统进行测试。这里我们介绍如何通过常用的LCD1602液晶来显示一些单片机的信息。</p>
 <a id="more"></a>
 <p>图1为LCD1602与单片机的电路原理图：</p>
 <p>  <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20210612/20210612_fig001.jpg" width="600" height="450" title="图1" alt="图1" ></p>
@@ -21,7 +21,7 @@
       </tags>
   </entry>
   <entry>
-    <title>【单片机】辉光管时钟系列&lt;一&gt;--单片机最小系统</title>
+    <title>【单片机】辉光管时钟系列&lt;一&gt;单片机最小系统</title>
     <url>/2021/06/11/%5B20210611%5D/</url>
     <content><![CDATA[<p>已经有两个多月没有写文章了，这两个多月都忙着毕业的事。在业务时间也重拾了大学期间的单片机知识，准备做个辉光管时钟。现在程序和电路都已经完成了，就等着PCB板回来了。下面我将以一系列的文章来介绍辉光管时钟的各个模块，这篇文章我们介绍单片机最小系统。</p>
 <a id="more"></a>
