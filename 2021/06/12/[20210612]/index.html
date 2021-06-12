@@ -49,18 +49,22 @@
   };
 </script>
 
-  <meta name="description" content="对称矩阵假设有一矩阵$A$，其中$A_{ij}=A_{ji}$,则称这个矩阵为对称矩阵。 对称矩阵有如下性质：  A^{T}=A^{-1} A=RR^{T}\leftarrow(R^TR)^T=R^T(R^T)^T=R^TR也就是说：1、一个对称矩阵的转置和其逆是相等的；2、一个对称矩阵可以由一个矩阵和其转置矩阵相乘得到。  向量空间向量空间即空间中向量的四则运算得到的向量人在空间中。   1、二">
-<meta name="keywords" content="Linear Algebra">
+  <meta name="description" content="在前一篇文章中，我们是通过蜂鸣器或发光二极管来验证最小系统是否正常工作。很多时候，我们需要将系统的信息进行可视化展示，方面我们对系统进行测试。这里我们介绍如何通过常用的LCD1602液晶来显示一些单片机的信息。">
+<meta name="keywords" content="MCU">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【线性代数】向量空间">
-<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2014&#x2F;10&#x2F;04&#x2F;[20141004]&#x2F;index.html">
+<meta property="og:title" content="【单片机】辉光管时钟系列&lt;二&gt;--LCD液晶显示">
+<meta property="og:url" content="http:&#x2F;&#x2F;tengweitw.com&#x2F;2021&#x2F;06&#x2F;12&#x2F;[20210612]&#x2F;index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="对称矩阵假设有一矩阵$A$，其中$A_{ij}=A_{ji}$,则称这个矩阵为对称矩阵。 对称矩阵有如下性质：  A^{T}=A^{-1} A=RR^{T}\leftarrow(R^TR)^T=R^T(R^T)^T=R^TR也就是说：1、一个对称矩阵的转置和其逆是相等的；2、一个对称矩阵可以由一个矩阵和其转置矩阵相乘得到。  向量空间向量空间即空间中向量的四则运算得到的向量人在空间中。   1、二">
+<meta property="og:description" content="在前一篇文章中，我们是通过蜂鸣器或发光二极管来验证最小系统是否正常工作。很多时候，我们需要将系统的信息进行可视化展示，方面我们对系统进行测试。这里我们介绍如何通过常用的LCD1602液晶来显示一些单片机的信息。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-08-26T02:28:34.755Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20210612&#x2F;20210612_fig001.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20210612&#x2F;20210612_fig002.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20210612&#x2F;20210612_fig003.jpg">
+<meta property="og:updated_time" content="2021-06-12T08:49:56.851Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;tengweitw&#x2F;FigureBed@latest&#x2F;20210612&#x2F;20210612_fig001.jpg">
 
-<link rel="canonical" href="http://tengweitw.com/2014/10/04/[20141004]/">
+<link rel="canonical" href="http://tengweitw.com/2021/06/12/[20210612]/">
 
 
 <script id="page-configurations">
@@ -74,7 +78,7 @@
   };
 </script>
 
-  <title>【线性代数】向量空间 | 青峰碧陋室</title>
+  <title>【单片机】辉光管时钟系列<二>--LCD液晶显示 | 青峰碧陋室</title>
   
 
 
@@ -208,7 +212,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/10/04/%5B20141004%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2021/06/12/%5B20210612%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -221,7 +225,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【线性代数】向量空间
+          【单片机】辉光管时钟系列<二>--LCD液晶显示
         </h1>
 
         <div class="post-meta">
@@ -230,16 +234,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2014-10-04 19:54:38" itemprop="dateCreated datePublished" datetime="2014-10-04T19:54:38+08:00">2014-10-04</time>
+              <time title="创建时间：2021-06-12 16:01:25 / 修改时间：16:49:56" itemprop="dateCreated datePublished" datetime="2021-06-12T16:01:25+08:00">2021-06-12</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-26 10:28:34" itemprop="dateModified" datetime="2020-08-26T10:28:34+08:00">2020-08-26</time>
-              </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -254,14 +252,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>868</span>
+              <span>1.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -273,39 +271,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="对称矩阵"><a href="#对称矩阵" class="headerlink" title="对称矩阵"></a>对称矩阵</h2><p>假设有一矩阵$A$，其中$A_{ij}=A_{ji}$,则称这个矩阵为对称矩阵。</p>
-<p>对称矩阵有如下性质：</p>
-<script type="math/tex; mode=display">
-A^{T}=A^{-1}</script><script type="math/tex; mode=display">
-A=RR^{T}\leftarrow(R^TR)^T=R^T(R^T)^T=R^TR</script><p>也就是说：1、一个对称矩阵的转置和其逆是相等的；2、一个对称矩阵可以由一个矩阵和其转置矩阵相乘得到。</p>
-<hr>
-<h2 id="向量空间"><a href="#向量空间" class="headerlink" title="向量空间"></a>向量空间</h2><p>向量空间即空间中向量的四则运算得到的向量人在空间中。</p>
-<p>  1、二维情况下，其子空间有</p>
-<p>   a、零向量(0,0)</p>
-<p>   b、过零点的直线</p>
-<p>   c、$\mathbb R^2$整个空间</p>
-<p>  2、三维情况下，其子空间有</p>
-<p>   a、零向量(0,0,0)</p>
-<p>   b、过（0,0,0）的平面</p>
-<p>   c、过(0,0,0)的直线</p>
-<p>   d、$\mathbb R^3$整个空间</p>
-<hr>
-<h2 id="列空间"><a href="#列空间" class="headerlink" title="列空间"></a>列空间</h2><p>假设有一个矩阵$A$：</p>
-<script type="math/tex; mode=display">
-A=\left[\begin{array}{cc}1&3\\2&3\\4&1\end{array}\right]</script><p>则$A$的列空间为$A$中各列向量的线性组合。</p>
-<p><strong>问题一</strong>：对于任意的$b,Ax=b$是否有解？</p>
-<p>答：不一定，$3$个列向量的线性组合不能充满四维空间</p>
-<p><strong>问题二</strong>：对怎样的$b$，$Ax=b$有解？</p>
-<p>答：当$b$属于$A$中列向量的线性组合，即$b$属于$A$的列空间</p>
-<h2 id="零空间"><a href="#零空间" class="headerlink" title="零空间"></a>零空间</h2><p>假设有一个矩阵$A$：</p>
-<script type="math/tex; mode=display">
-A=\left[\begin{array}{ccc}1&1&2\\2&1&3\\3&1&4\\4&1&5\end{array}\right]</script><p>则$A$的零空间就是使得$Ax=0$的解的集合。由于$A$比较特殊（第一列+第二列=第三列），我们可以直接给出下式：</p>
-<script type="math/tex; mode=display">
-\left[\begin{array}{ccc}1&1&2\\2&1&3\\3&1&4\\4&1&5\end{array}\right]
-\left[\begin{array}{c}C\\C\\-C\end{array}\right]
-=\left[\begin{array}{c}0\\0\\0\\0\end{array}\right]</script><p>则零空间为：</p>
-<script type="math/tex; mode=display">
-X=C\left[\begin{array}{c}1\\1\\-1\end{array}\right]</script><link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+        <p>在前一篇文章中，我们是通过蜂鸣器或发光二极管来验证最小系统是否正常工作。很多时候，我们需要将系统的信息进行可视化展示，方面我们对系统进行测试。这里我们介绍如何通过常用的LCD1602液晶来显示一些单片机的信息。</p>
+<a id="more"></a>
+<p>图1为LCD1602与单片机的电路原理图：</p>
+<p>  <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20210612/20210612_fig001.jpg" width="600" height="450" title="图1" alt="图1" ></p>
+<p>除了单片机最小系统的元器件外，还需要液晶显示器1602以及相应的电阻，其实物图如图2所示：</p>
+<p>  <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20210612/20210612_fig002.jpg" width="600" height="450" title="图2" alt="图2" ></p>
+<p>图2中，排针用于使用杜邦线连接LCD1602和单片机，可调变阻器用于调节LCD1602的明暗程度。</p>
+<p>最后，我们给出简单的LCD1602显示的C语言程序：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;reg52.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> uchar unsigned char</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> uint unsigned int</span></span><br><span class="line"></span><br><span class="line">sbit lcden=P2^<span class="number">7</span>;</span><br><span class="line"></span><br><span class="line">sbit lcdrs=P2^<span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">uchar code table1[]=<span class="string">"   Hello World!   "</span>;</span><br><span class="line">uchar code table2[]=<span class="string">" tengweitw.com  "</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">delay</span><span class="params">(uint z)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	uint x,y;</span><br><span class="line">	<span class="keyword">for</span>(x=z;x&gt;<span class="number">0</span>;x--)</span><br><span class="line">		<span class="keyword">for</span>(y=<span class="number">110</span>;y&gt;<span class="number">0</span>;y--);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">write_com</span><span class="params">(uchar com)</span><span class="comment">// LCD1602写命令</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	lcdrs=<span class="number">0</span>;</span><br><span class="line">	P0=com;</span><br><span class="line">	<span class="built_in">delay</span>(<span class="number">5</span>);</span><br><span class="line">	lcden=<span class="number">1</span>;</span><br><span class="line">	<span class="built_in">delay</span>(<span class="number">5</span>);</span><br><span class="line">	lcden=<span class="number">0</span>;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">write_date</span><span class="params">(uchar dat)</span><span class="comment">// LCD1602写数据</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	lcdrs=<span class="number">1</span>;</span><br><span class="line">	P0=dat;</span><br><span class="line">	<span class="built_in">delay</span>(<span class="number">5</span>);</span><br><span class="line">	lcden=<span class="number">1</span>;</span><br><span class="line">	<span class="built_in">delay</span>(<span class="number">5</span>);</span><br><span class="line">	lcden=<span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">	lcden=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	write_com(<span class="number">0x38</span>); <span class="comment">//设置1602显示</span></span><br><span class="line">	write_com(<span class="number">0x0e</span>);<span class="comment">//开显示、显示光标、光标不显示</span></span><br><span class="line">	write_com(<span class="number">0x06</span>); <span class="comment">//移动光标</span></span><br><span class="line">	write_com(<span class="number">0x01</span>); <span class="comment">//清除LCD的显示内容</span></span><br><span class="line">	write_com(<span class="number">0x80</span>);<span class="comment">//设置显示的起始地址</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	uchar num;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	init();</span><br><span class="line">    write_com(<span class="number">0x80</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(num=<span class="number">0</span>;num&lt;<span class="number">16</span>;num++)<span class="comment">//显示第一行</span></span><br><span class="line">		&#123;</span><br><span class="line">			write_date(table1[num]);</span><br><span class="line">			<span class="built_in">delay</span>(<span class="number">10</span>);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">    write_com(<span class="number">0x80</span>+<span class="number">0x40</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(num=<span class="number">0</span>;num&lt;<span class="number">16</span>;num++)<span class="comment">//显示第二行</span></span><br><span class="line">		&#123;</span><br><span class="line">			write_date(table2[num]);</span><br><span class="line">			<span class="built_in">delay</span>(<span class="number">10</span>);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>);<span class="comment">//程序停在这</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>显示的效果图如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20210612/20210612_fig003.jpg" width="600" height="450" title="图3" alt="图3" ></p>
+<p>注意：在图3中，P0口没有加10K的上拉电阻，也能正常工作，但是还是推荐加上上拉电阻。关于LCD1602显示的其他设置，可以参考LCD1602的datasheet，链接地址如下：<a href="https://github.com/tengweitw/LCD1602_Datasheet" target="_blank" rel="noopener">https://github.com/tengweitw/LCD1602_Datasheet</a> 。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
     
@@ -340,7 +318,7 @@ X=C\left[\begin{array}{c}1\\1\\-1\end{array}\right]</script><link rel="styleshee
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2014/10/04/[20141004]/" title="【线性代数】向量空间">http://tengweitw.com/2014/10/04/[20141004]/</a>
+    <a href="http://tengweitw.com/2021/06/12/[20210612]/" title="【单片机】辉光管时钟系列&lt;二&gt;--LCD液晶显示">http://tengweitw.com/2021/06/12/[20210612]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -352,7 +330,7 @@ X=C\left[\begin{array}{c}1\\1\\-1\end{array}\right]</script><link rel="styleshee
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/Linear-Algebra/" rel="tag"><i class="fa fa-tag"></i> Linear Algebra</a>
+              <a href="/tags/MCU/" rel="tag"><i class="fa fa-tag"></i> MCU</a>
           </div>
 
         
@@ -361,13 +339,10 @@ X=C\left[\begin{array}{c}1\\1\\-1\end{array}\right]</script><link rel="styleshee
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2014/09/17/%5B20140917%5D/" rel="prev" title="【线性代数】矩阵的乘法与求逆">
-      <i class="fa fa-chevron-left"></i> 【线性代数】矩阵的乘法与求逆
+    <a href="/2021/06/11/%5B20210611%5D/" rel="prev" title="【单片机】辉光管时钟系列<一>--单片机最小系统">
+      <i class="fa fa-chevron-left"></i> 【单片机】辉光管时钟系列<一>--单片机最小系统
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2014/10/13/%5B20141013%5D/" rel="next" title="【线性代数】矩阵的零空间">
-      【线性代数】矩阵的零空间 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -405,7 +380,6 @@ X=C\left[\begin{array}{c}1\\1\\-1\end{array}\right]</script><link rel="styleshee
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#对称矩阵"><span class="nav-number">1.</span> <span class="nav-text">对称矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#向量空间"><span class="nav-number">2.</span> <span class="nav-text">向量空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#列空间"><span class="nav-number">3.</span> <span class="nav-text">列空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#零空间"><span class="nav-number">4.</span> <span class="nav-text">零空间</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
