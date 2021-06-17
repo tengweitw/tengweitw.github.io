@@ -206,6 +206,97 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/01/12/%5B20200122%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/12/%5B20200122%5D/" class="post-title-link" itemprop="url">【图解例说机器学习】K最近邻 (KNN)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-12 22:12:55" itemprop="dateCreated datePublished" datetime="2020-01-12T22:12:55+08:00">2020-01-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-24 08:59:43" itemprop="dateModified" datetime="2020-09-24T08:59:43+08:00">2020-09-24</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>9.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>13 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="kNN-k-nearest-neighbor-的定义"><a href="#kNN-k-nearest-neighbor-的定义" class="headerlink" title="kNN (k-nearest neighbor)的定义"></a>kNN (k-nearest neighbor)的定义</h2><blockquote>
+<p>针对一个测试实例，在给定训练集中，基于<strong>某种距离度量</strong>找到与之<strong>最近的k个实例点</strong>，然后基于这k个最邻近实例点的信息，以<strong>某种决策规则</strong>来对该测试实例进行分类或回归。</p>
+</blockquote>
+<p>由定义可知，$kNN$模型包含三个基本要素：距离度量、k值选择以及决策规则。再详细描述这三要素之前，我们先用一个样图来简单描述$kNN$分类模型的效果。</p>
+<p>我们以二维平面为例，假设输入的训练集格式为$(x_1,x_2,l)$，其中$x_1, x_2$为横纵坐标，$l$为标签。这里我们考虑$k=1,3$的情况，决策规则为多数投票规则，即测试实例与k个实例中的多数属于同一类。图$1,2$分别是$k=1,3$时，二维特征空间划分图。</p>
+<p>​    <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200122/20200122_fig001.jpg" width="600" height="450" title="图1" alt="图1" ></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/12/%5B20200122%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/01/05/%5B20200105%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -987,103 +1078,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2017/12/02/%5B20171202%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/12/02/%5B20171202%5D/" class="post-title-link" itemprop="url">【漫漫科研路\pgfplots】多个子图共用一个图例</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-12-02 18:15:38" itemprop="dateCreated datePublished" datetime="2017-12-02T18:15:38+08:00">2017-12-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-21 15:25:58" itemprop="dateModified" datetime="2020-09-21T15:25:58+08:00">2020-09-21</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.8k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>十月底，投完会议之后，便对科研写作方面遇到的问题进行了探索。问题主要有：</p>
-<hr>
-<p><em>问题：</em></p>
-<ol>
-<li>文献管理问题：在写论文的过程中，经常要引用他人文献，这时需要费时去寻找。另一方面，有时想要查看曾经读到的某篇文章提到的方法， 也需要去耗时去寻找。</li>
-<li>画图问题：怎样画出好看的图？</li>
-</ol>
-<p><em>解决方案：</em></p>
-<ul>
-<li>针对问题1： 使用JabRef</li>
-<li>针对问题2：使用Pgfplots</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/12/02/%5B20171202%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1134,7 +1128,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">182</span>
+          <span class="site-state-item-count">183</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1190,12 +1184,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">720k</span>
+    <span title="站点总字数">723k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">17:08</span>
+    <span title="站点阅读时长">17:13</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
