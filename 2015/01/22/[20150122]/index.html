@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="​    在工程应用和科学研究中，经常要研究变量之间的关系$y&#x3D;f(x)$。但对于函数$f(x)$，常常得不到一个具体的解析表达式，它可能是通过观测或实验得到的一组数据$(x,f(x))$，$x$为一向量;或则是解析表达式非常复杂，不便于计算和使用。因此我们需要寻找一个计算比较简单的函数$S(x)$近似代替$f(x)$，并使得$S(x)&#x3D;f(x)$，这种方法就称为插值法。 常用的插值法有： ​">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【数值分析】拉格朗日插值与牛顿插值">
+<meta property="og:url" content="http://tengweitw.com/2015/01/22/[20150122]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="​    在工程应用和科学研究中，经常要研究变量之间的关系$y&#x3D;f(x)$。但对于函数$f(x)$，常常得不到一个具体的解析表达式，它可能是通过观测或实验得到的一组数据$(x,f(x))$，$x$为一向量;或则是解析表达式非常复杂，不便于计算和使用。因此我们需要寻找一个计算比较简单的函数$S(x)$近似代替$f(x)$，并使得$S(x)&#x3D;f(x)$，这种方法就称为插值法。 常用的插值法有： ​">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150122/20150122_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150122/20150122_fig002.jpg">
+<meta property="article:published_time" content="2015-01-22T12:30:08.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.781Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Math">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150122/20150122_fig001.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2015/01/22/[20150122]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【数值分析】拉格朗日插值与牛顿插值 | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/01/22/%5B20150122%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【数值分析】拉格朗日插值与牛顿插值
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-01-22 20:30:08" itemprop="dateCreated datePublished" datetime="2015-01-22T20:30:08+08:00">2015-01-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>​    在工程应用和科学研究中，经常要研究变量之间的关系$y=f(x)$。但对于函数$f(x)$，常常得不到一个具体的解析表达式，它可能是通过观测或实验得到的一组数据$(x,f(x))$，$x$为一向量;或则是解析表达式非常复杂，不便于计算和使用。因此我们需要寻找一个计算比较简单的函数$S(x)$近似代替$f(x)$，并使得$S(x)=f(x)$，<strong>这种方法就称为插值法</strong>。</p>
+<p><strong>常用的插值法有：</strong></p>
+<p>​    一维插值法：拉格朗日插值、牛顿插值、分段低次插值、埃尔米特插值、样条插值。</p>
+<p>​    二维插值法：双线性插值、双二次插值。</p>
+<a id="more"></a>
+<hr>
+<h2 id="拉格朗日插值法"><a href="#拉格朗日插值法" class="headerlink" title="拉格朗日插值法"></a>拉格朗日插值法</h2><p>​    已知函数$f(x)$的$n+1$个互异的节点$x_i$处的函数值$f(x_i)$，则其拉格朗日插值多项式可以写为：</p>
+<script type="math/tex; mode=display">
+L_n(x)=\sum\limits_{k=0}^ny_kl_k(x)</script><p>其中，$l_k(x)$为插值基函数，其表达式为：</p>
+<script type="math/tex; mode=display">
+l_k(x)=\prod\limits_{j=0,j\neq k}^n\frac{x-x_j}{x_k-x_j}</script><hr>
+<h2 id="牛顿插值法"><a href="#牛顿插值法" class="headerlink" title="牛顿插值法"></a>牛顿插值法</h2><p>已知函数$f(x)$的$n+1$个互异的节点$x_i$处的函数值$f(x_i)$，则其牛顿插值多项式可以写为：</p>
+<script type="math/tex; mode=display">
+N_n(x)=a_0+a_1(x-x_0)+\cdots+a_n(x-x_0)(x-x_1)\cdots(x-x_{n-1})</script><p>其中，$a_k$为$f(x)$的$k$阶差商（也叫均差），可以表示如下：</p>
+<script type="math/tex; mode=display">
+a_k=f[x_0,x_1,\cdots,x_{k-1},x_k]</script><p>也可以由函数值$f(x_i)$线性表示为：</p>
+<script type="math/tex; mode=display">
+a_k=\sum\limits_{i=0}^{n}\frac{f(x_i)}{(x_i-x_0)\cdots(x_i-x_{i-1})(x_i-x_{i+1})\cdots(x_i-x_k)}</script><p>根据上述基本原理和公式，很容易编程实现。我们假设根据下面的数据表，来分别用拉格朗日插值和牛顿插值来计算$f(8.4)$的近似值：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>x</th>
+<th>8.1</th>
+<th>8.3</th>
+<th>8.6</th>
+<th>8.7</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>f(x)</td>
+<td>16.94410</td>
+<td>17.56492</td>
+<td>18.50515</td>
+<td>18.82091</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>具体代码实现如下：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="comment">//-----------------拉格朗日插值法BEGIN---------------------//</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Lagrange</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; x,<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; y ,<span class="keyword">double</span> X)</span><span class="comment">//x,y分别为x和f(x)的值，X为要求的点，返回值为f(X)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> result=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">double</span> temp=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;x.size();i++)</span><br><span class="line">    &#123;</span><br><span class="line">        temp=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;x.size();j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(j!=i)</span><br><span class="line">            &#123;</span><br><span class="line">                temp=temp*(X-x.at(j))/(x.at(i)-x.at(j));</span><br><span class="line">            &#125;        </span><br><span class="line">        &#125;</span><br><span class="line">        result+=temp*y.at(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//-----------------拉格朗日插值法END---------------------//</span></span><br><span class="line"><span class="comment">//-----------------牛顿法BEGIN---------------------//</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">DifferenceQuotient</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; x,<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; y ,<span class="keyword">int</span> k)</span><span class="comment">//计算差商</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> result=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=k;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">double</span> temp=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;=k;j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(i!=j)</span><br><span class="line">            &#123;</span><br><span class="line">                temp=temp/(x.at(i)-x.at(j));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        temp=y.at(i)*temp;</span><br><span class="line">        result+=temp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Newton</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; x,<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; y ,<span class="keyword">double</span> X)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> result=y.at(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">double</span> temp=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;x.size();i++)</span><br><span class="line">    &#123;</span><br><span class="line">        temp=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;i;j++)</span><br><span class="line">        &#123;</span><br><span class="line">            temp*=(X-x.at(j));</span><br><span class="line">        &#125;</span><br><span class="line">        result+=DifferenceQuotient(x,y,i)*temp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//-----------------牛顿法END---------------------//</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; x;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; y;</span><br><span class="line">    <span class="comment">//这里输入x的值,这里使用向量vector是为了方便添加数据点，可以根据实际的观测点更改</span></span><br><span class="line">    x.push_back(<span class="number">8.1</span>);</span><br><span class="line">    x.push_back(<span class="number">8.3</span>);</span><br><span class="line">    x.push_back(<span class="number">8.6</span>);</span><br><span class="line">    x.push_back(<span class="number">8.7</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这里输入f(x)的值</span></span><br><span class="line">    y.push_back(<span class="number">16.94410</span>);</span><br><span class="line">    y.push_back(<span class="number">17.56492</span>);</span><br><span class="line">    y.push_back(<span class="number">18.50515</span>);</span><br><span class="line">    y.push_back(<span class="number">18.82091</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">cout</span>.precision(<span class="number">10</span>);<span class="comment">//设置显示精度</span></span><br><span class="line">    <span class="comment">//下面是根据上面的4个样本点及其函数值来分别使用两种插值法计算在x=8.4处的函数值</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"使用拉格朗日插值法："</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;Lagrange(x,y,<span class="number">8.4</span>)&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"使用牛顿插值法："</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;Newton(x,y,<span class="number">8.4</span>)&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>程序运行结果如下：</strong></p>
+<p>  <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150122/20150122_fig001.jpg" width="600" height="450" title="图1" alt="图1" ></p>
+<p><strong>优缺点比较：</strong></p>
+<p>​    拉格朗日插值法：插值多项式和插值基函数的形式对称，容易编程。但是，增加节点时，需要重新计算每一个插值基函数。</p>
+<p>​    牛顿插值法：当插值节点增加时，之前已计算的结果仍然能用，每增加一个节点，只要再增加一项即可，从而避免了重复性计算。</p>
+<hr>
+<h2 id="Matlab实现多种插值函数"><a href="#Matlab实现多种插值函数" class="headerlink" title="Matlab实现多种插值函数"></a>Matlab实现多种插值函数</h2><p>​    现在也有很多人使用Matlab来进行算法的仿真，我在这里把大二时数学建模整理的插值算法函数也共享出来，链接为：<a href="http://download.csdn.net/detail/tengweitw/8387451" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/838745</a>1具体的使用说明在文件中都有说明。下面就拿我们刚才所讲的拉格朗日插值和牛顿插值来举例说明，<strong>还是使用上面的数据表，则拉格朗日插值函数如下：</strong></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span> = <span class="title">Language</span><span class="params">(x,y,x0)</span></span></span><br><span class="line"><span class="comment">%x y为坐标向量  x0为插值点的x坐标|| f0为x0对应的值</span></span><br><span class="line"> </span><br><span class="line">syms t;</span><br><span class="line"><span class="keyword">if</span>(<span class="built_in">length</span>(x) == <span class="built_in">length</span>(y))</span><br><span class="line">    n = <span class="built_in">length</span>(x);    </span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">disp</span>(<span class="string">'x和y的维数不相等！'</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line"><span class="keyword">end</span>                                      <span class="comment">%检错</span></span><br><span class="line"> </span><br><span class="line">f = <span class="number">0.0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="built_in">i</span> = <span class="number">1</span>:n)</span><br><span class="line">    l = y(<span class="built_in">i</span>); </span><br><span class="line">    <span class="keyword">for</span>(<span class="built_in">j</span> = <span class="number">1</span>:<span class="built_in">i</span><span class="number">-1</span>)</span><br><span class="line">        l = l*(t-x(<span class="built_in">j</span>))/(x(<span class="built_in">i</span>)-x(<span class="built_in">j</span>));      </span><br><span class="line">    <span class="keyword">end</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="built_in">j</span> = <span class="built_in">i</span>+<span class="number">1</span>:n)</span><br><span class="line">        l = l*(t-x(<span class="built_in">j</span>))/(x(<span class="built_in">i</span>)-x(<span class="built_in">j</span>));      <span class="comment">%计算拉格朗日基函数</span></span><br><span class="line">    <span class="keyword">end</span>;</span><br><span class="line"> </span><br><span class="line">    f = f + l;                           <span class="comment">%计算拉格朗日插值函数      </span></span><br><span class="line">    simplify(f);                         <span class="comment">%化简</span></span><br><span class="line"> </span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">i</span>==n)</span><br><span class="line">        <span class="keyword">if</span>(nargin == <span class="number">3</span>)</span><br><span class="line">            f = subs(f,<span class="string">'t'</span>,x0);          <span class="comment">%计算插值点的函数值</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            f = collect(f);          <span class="comment">%将插值多项式展开</span></span><br><span class="line">            f = vpa(f,<span class="number">6</span>);                <span class="comment">%将插值多项式的系数化成6位精度的小数</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><strong>牛顿插值函数如下：</strong></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span> = <span class="title">Newton</span><span class="params">(x,y,x0)</span></span></span><br><span class="line"><span class="comment">%x y为坐标向量  x0为插值点的x坐标|| f0为x0对应的值</span></span><br><span class="line">syms t;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span>(<span class="built_in">length</span>(x) == <span class="built_in">length</span>(y))</span><br><span class="line">    n = <span class="built_in">length</span>(x);</span><br><span class="line">    c(<span class="number">1</span>:n) = <span class="number">0.0</span>;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">disp</span>(<span class="string">'x和y的维数不相等！'</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"> </span><br><span class="line">f = y(<span class="number">1</span>);</span><br><span class="line">y1 = <span class="number">0</span>;</span><br><span class="line">l  = <span class="number">1</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">for</span>(<span class="built_in">i</span>=<span class="number">1</span>:n<span class="number">-1</span>)   </span><br><span class="line">    <span class="keyword">for</span>(<span class="built_in">j</span>=<span class="built_in">i</span>+<span class="number">1</span>:n)</span><br><span class="line">        y1(<span class="built_in">j</span>) = (y(<span class="built_in">j</span>)-y(<span class="built_in">i</span>))/(x(<span class="built_in">j</span>)-x(<span class="built_in">i</span>));</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    c(<span class="built_in">i</span>) = y1(<span class="built_in">i</span>+<span class="number">1</span>);     </span><br><span class="line">    l = l*(t-x(<span class="built_in">i</span>));  </span><br><span class="line">    f = f + c(<span class="built_in">i</span>)*l;</span><br><span class="line">    simplify(f);</span><br><span class="line">    y = y1;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">i</span>==n<span class="number">-1</span>)</span><br><span class="line">        <span class="keyword">if</span>(nargin == <span class="number">3</span>)</span><br><span class="line">            f = subs(f,<span class="string">'t'</span>,x0);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            f = collect(f);                <span class="comment">%将插值多项式展开</span></span><br><span class="line">            f = vpa(f, <span class="number">6</span>);</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><strong>为了使用上面两个函数，脚本文件如下：</strong></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">clear all</span><br><span class="line">clc</span><br><span class="line">format long </span><br><span class="line">format compact</span><br><span class="line"> </span><br><span class="line">x=[<span class="number">8.1</span> <span class="number">8.3</span> <span class="number">8.6</span> <span class="number">8.7</span> ];</span><br><span class="line">y=[ <span class="number">16.94410</span> <span class="number">17.56492</span> <span class="number">18.50515</span> <span class="number">18.82091</span>];</span><br><span class="line">x0=<span class="number">8.4</span>;</span><br><span class="line"><span class="built_in">disp</span>(<span class="string">'拉格朗日插值法：'</span>)</span><br><span class="line"><span class="built_in">disp</span>(Language(x,y,x0))</span><br><span class="line"><span class="built_in">disp</span>(<span class="string">'牛顿插值法：'</span>)</span><br><span class="line"><span class="built_in">disp</span>(Newton(x,y,x0))</span><br></pre></td></tr></table></figure>
+<p><strong>结果显示如下：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150122/20150122_fig002.jpg" width="600" height="450" title="图2" alt="图2" ></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2015/01/22/[20150122]/" title="【数值分析】拉格朗日插值与牛顿插值">http://tengweitw.com/2015/01/22/[20150122]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Math/" rel="tag"><i class="fa fa-tag"></i> Math</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/01/20/%5B20150120%5D/" rel="prev" title="【数值分析】误差的分析与减少及Matlab解线性方程的四种方法">
+      <i class="fa fa-chevron-left"></i> 【数值分析】误差的分析与减少及Matlab解线性方程的四种方法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/01/27/%5B20150127%5D/" rel="next" title="【随机过程】马氏链的理论与仿真">
+      【随机过程】马氏链的理论与仿真 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#拉格朗日插值法"><span class="nav-number">1.</span> <span class="nav-text">拉格朗日插值法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#牛顿插值法"><span class="nav-number">2.</span> <span class="nav-text">牛顿插值法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Matlab实现多种插值函数"><span class="nav-number">3.</span> <span class="nav-text">Matlab实现多种插值函数</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

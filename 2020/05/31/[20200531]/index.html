@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="参数估计：给定一个数据集，我们希望用一个给定的分布去拟合该数据集的分布，确定该分布的参数的过程就是参数估计。例如，我们用二项分布去拟合多次投掷硬币的情况，计算该二项分布的最优参数（出现正面的概率 $\theta$）就是参数估计。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【图解例说机器学习】参数估计 (MLE and MAP)">
+<meta property="og:url" content="http://tengweitw.com/2020/05/31/[20200531]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="参数估计：给定一个数据集，我们希望用一个给定的分布去拟合该数据集的分布，确定该分布的参数的过程就是参数估计。例如，我们用二项分布去拟合多次投掷硬币的情况，计算该二项分布的最优参数（出现正面的概率 $\theta$）就是参数估计。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200531/Parameter_Estimation_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200531/Parameter_Estimation_fig002.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200531/Parameter_Estimation_fig003.jpg">
+<meta property="article:published_time" content="2020-05-31T11:00:21.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.788Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Machine Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200531/Parameter_Estimation_fig001.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2020/05/31/[20200531]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【图解例说机器学习】参数估计 (MLE and MAP) | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/05/31/%5B20200531%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【图解例说机器学习】参数估计 (MLE and MAP)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-31 19:00:21" itemprop="dateCreated datePublished" datetime="2020-05-31T19:00:21+08:00">2020-05-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>11 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>参数估计：给定一个数据集，我们希望用一个给定的分布去拟合该数据集的分布，确定该分布的参数的过程就是参数估计。例如，我们用二项分布去拟合多次投掷硬币的情况，计算该二项分布的最优参数（出现正面的概率 $\theta$）就是参数估计。</p>
+<a id="more"></a>
+<p>下面，我们介绍在机器学习中常用的参数估计：极大似然估计 (Maximum Likelihood Estimation, MLE)，最大后验概率估计 (Maximum A Posteriori, MAP)，贝叶斯估计 (Bayesian Estimation, BE)。在此之前，我们介绍一下参数估计中常用的一些概念.</p>
+<hr>
+<ul>
+<li><p>频率学派 VS. 贝叶斯学派</p>
+<ul>
+<li>频率学派：事件本身是服从某种参数$\theta$固定的分布。频率学派认为概率即是频率，某次得到的样本$\mathrm x$只是无数次可能的试验结果的一个具体实现，样本中未出现的结果不是不可能出现，只是这次抽样没有出现而已。在参数估计中，频率学派的代表是最大似然估计 MLE。</li>
+<li>贝叶斯学派：参数$\theta$也是随机分布的。贝叶斯学派认为只能依靠得到的样本$\mathrm x$去做推断，而不能考虑那些有可能出现而未出现的结果。同时，贝叶斯学派引入了主观的概念，认为一个事件在发生之前，人们应该对它是有所认知，即先验概率$p(\theta)$，然后根据样本$\mathrm x$ 通过贝叶斯定理来得到后验概率$p(\theta\mid\mathrm x)$。在参数估计中，贝叶斯学派的代表是最大后验概率估计 MAP。</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>概率 VS. 统计</p>
+<p>概率与统计可以看成是互逆的概念。在<a href="http://stanford.edu/~lanhuong/refresher/notes/probstat-section3.pdf中对概念与统计推断作了简要概述：" target="_blank" rel="noopener">http://stanford.edu/~lanhuong/refresher/notes/probstat-section3.pdf中对概念与统计推断作了简要概述：</a></p>
+<blockquote>
+<p>• The basic problem of probability is: Given the distribution of the data, what are the properties (e.g. its expectation) of the outcomes (i.e. the data)? </p>
+<p>• The basic problem of statistical inference is the inverse of probability: Given the outcomes, what can we say about the process that generated the data?</p>
+</blockquote>
+<p>对于在机器学习中的常见问题，这里的data就是我们的训练样例，且机器学习的目的就是 say about the process that generated the data, 即学习生成训练样例的模型。</p>
+</li>
+</ul>
+<ul>
+<li><p>似然函数 VS. 概率函数<br>似然函数和概率函数的数学表达式一样，只是以不同的角度看待该函数表达式：</p>
+<ul>
+<li>若$\theta$已知，$\mathrm x$是变量，$P(\mathrm x\mid\theta)$ 被称为概率函数；</li>
+<li>若$\mathrm x$已知，$\theta$是变量，$P(\mathrm x\mid\theta)$ 被称为似然函数；</li>
+</ul>
+</li>
+</ul>
+<p>​        一般为了保持符号的一致性，似然函数也经常写作$L(\theta\mid\mathrm x)$。</p>
+<hr>
+<h2 id="极大似然估计-MLE"><a href="#极大似然估计-MLE" class="headerlink" title="极大似然估计 (MLE)"></a>极大似然估计 (MLE)</h2><p>最大似然估计MLE的思想是，寻找使得观测到的数据出现概率最大的参数$\theta$。</p>
+<p>对于抛硬币来说，在一次抛硬币时，其结果的概率分布如下：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+P(\mathrm x_i\mid\theta)&=\begin{cases}
+\theta,\quad\quad\hspace{4mm}\mathrm x_i=1\\
+1-\theta,\quad\mathrm x_i=0
+\end{cases}\\
+&=\theta^{\mathrm x_i}(1-\theta)^{1-\mathrm x_i}
+\end{aligned}\tag{1}</script><p>其中$\mathrm x_i=1$表示第$i$抛硬币时正面朝上。那么抛$N$次硬币，其结果为${\mathrm x_1,\mathrm x_2,\cdots,\mathrm x_N}$的概率为</p>
+<script type="math/tex; mode=display">
+P(\mathrm x_1,\mathrm x_2,\cdots,\mathrm x_N\mid\theta)=\prod\limits_{i=1}^{N}\theta^{\mathrm x_i}(1-\theta)^{1-\mathrm x_i}\tag{2}</script><p>MLE就是寻找最优的$\theta$最大化公式(2)的概率，即求解</p>
+<script type="math/tex; mode=display">
+\theta^\star=\arg\max_{\theta}\prod\limits_{i=1}^{N}\theta^{\mathrm x_i}(1-\theta)^{1-\mathrm x_i}\tag{3}</script><p>对于优化问题(3)，我们一般考虑将其转为对数目标函数，一方面可以将连乘转化为加和，防止计算溢出；另一方面使得目标函数更加精炼，便于通过求导求解最优解(连乘的导数不易计算)。为此，优化问题(3)可以转化为：</p>
+<script type="math/tex; mode=display">
+\theta^\star=\arg\max_{\theta}\sum\limits_{i=1}^{N}\log{\theta^{\mathrm x_i}(1-\theta)^{1-\mathrm x_i}}=\arg\max_{\theta}\sum\limits_{i=1}^{N}\mathrm x_i\log{\theta}+(1-\mathrm x_i)\log{(1-\theta)}\tag{4}</script><p>对(4)的目标函数对$\theta$求导，并令导数为0 (目标函数为凹函数，在导数为0点取得极值)，我们有：</p>
+<script type="math/tex; mode=display">
+\sum\limits_{i=1}^{N}\mathrm x_i\frac{1}{\theta}+(1-\mathrm x_i)\frac{-1}{1-\theta}=0\rightarrow\theta=\frac{\sum\nolimits_{i=1}^{N}\mathrm x_i}{\sum\nolimits_{i=1}^{N}1}\tag{5}</script><p>公式(5)的结果比较符合直观：比如抛硬币10次，发现5次正面朝上，我们就说出现正面朝上的概率为0.5. 但是，也可能出现7次正面朝上的情况，这时我们说出现正面朝上的概率为0.7，显然这时与实际情况不符合(假定硬币是均匀的)。也就是说，当试验次数较少时，使用最大似然函数时的误差会较大。</p>
+<hr>
+<p>上式(1)-(5)详细推导了离散的二项分布的最大似然估计(5)。对于常用的连续分布正态分布$\mathcal N(\mu,\sigma^2)$，我们只需要将公式(2)中的连乘项改为正态分布的概率密度函数，然后通过对数、求导为零，可以得到其最大似然估计为：</p>
+<script type="math/tex; mode=display">
+\mu=\frac{1}{N}\sum\limits_{i=1}^{N}x_i\tag{6}</script><script type="math/tex; mode=display">
+\sigma^2=\frac{1}{N}\sum\limits_{i=1}^{N}(x_i-\mu^\star)^2\tag{7}</script><p>其中，我们这里假设总共有$N$个样本，$x_1,x_2,\cdots,x_N$。</p>
+<hr>
+<h2 id="最大后验概率估计-MAP"><a href="#最大后验概率估计-MAP" class="headerlink" title="最大后验概率估计 (MAP)"></a>最大后验概率估计 (MAP)</h2><p>在最大后验概率MAP中，参数$\theta$被看作为一个随机变量，服从某种概率分布，被称为先验概率$P(\theta)$。</p>
+<p>还是以上述抛硬币为例，考虑到先验概率，优化问题(3)被改写为：</p>
+<script type="math/tex; mode=display">
+\theta^\star=\arg\max_{\theta}\prod\limits_{i=1}^{N}\theta^{\mathrm x_i}(1-\theta)^{1-\mathrm x_i}p(\theta)\tag{8}</script><p>同样地，将公式(8)进行对数化可得：</p>
+<script type="math/tex; mode=display">
+\theta^\star=\arg\max_{\theta}\sum\limits_{i=1}^{N}\log{\theta^{\mathrm x_i}(1-\theta)^{1-\mathrm x_i}}p(\theta)=\arg\max_{\theta}\sum\limits_{i=1}^{N}\mathrm x_i\log{\theta}+(1-\mathrm x_i)\log{(1-\theta)}+\log p(\theta)\tag{9}</script><p>一般地，我们假设硬币是均匀地，即$p(\theta=\frac{1}{2})=1$，即此时参数$\theta$时一个固定的未知量。此时，对(8)的目标函数对$\theta$求导，并令导数为0，我们可以得到和公式(5)一样的结果。这说明，当先验分布为均匀分布时，MLE等价于MAP。但是，在最大后验概率中，我们可以假设$\theta$是服从某一概率分布的。这里我们假设$\theta\sim N(\mu,\sigma)$，即</p>
+<script type="math/tex; mode=display">
+p(\theta)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(\theta-\mu)^2}{2\sigma^2}}\tag{10}</script><p>将公式(10)带入公式(9)可得：</p>
+<script type="math/tex; mode=display">
+\theta^\star=\arg\max_{\theta}\sum\limits_{i=1}^{N}\mathrm x_i\log{\theta}+(1-\mathrm x_i)\log{(1-\theta)}+\log{\frac{1}{\sqrt{2\pi}\sigma}}-\frac{(\theta-\mu)^2}{2\sigma^2}\tag{11}</script><p>注意：由于正态分布的概率密度函数(10)是关于$\theta$ 的凹函数，公式(4)也是凹函数，所以公式(11)中的目标函数也是凹函数，所以我们可以利用导数为0取得最优的参数值$\theta^\star$。但是此时，我们一般无法得到如公式(5)一样简洁的解析表达式。在下面的具体实例中，我们直接给出目标函数的图像，从而可以形象地直接确定其最优解。对于比较复杂的目标函数，我们就需要借助其他迭代算法来求解了。</p>
+<p>对于一个具体实例 ($\mu=0.5,\sigma=0.1$，事件$\mathrm x$为10次试验有7次为正面朝上)，此时问题(8)中的目标函数为：</p>
+<script type="math/tex; mode=display">
+P(\theta\mid\mathrm x)=P(\mathrm x\mid\theta)P(\theta)=\theta^7(1-\theta)^3\frac{10}{\sqrt{2\pi}}e^{-50(\theta-0.5)^2}\tag{12}</script><p>我们可以画出其函数曲线如下：</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200531/Parameter_Estimation_fig001.jpg"  ></center>  <center>图1 </center></td>
+    </tr>
+</table>
+
+
+
+<p>从图1中可以看出，当我们采用不同的先验概率分布时 ($\mu=0.5,\mu=0.8$)，最终得到的参数也不同 ($\theta^\star=0.56,\theta^\star=0.76$)。在这里，我们假设硬币是均匀的，即正面朝上的概率为$\theta=0.5$，此时与MLE相比 ($\theta=0.7$)，MAP的性能时好时坏，也就是说，MAP的性能与先验概率分布的选取有关。</p>
+<hr>
+<h2 id="等效情况"><a href="#等效情况" class="headerlink" title="等效情况"></a>等效情况</h2><p>如前面所提及的，<strong>当先验概率为均匀分布时</strong>，MLE和MAP等效，因为此时$\theta$服从均匀分布，没有提供有效的关于$\theta$的先验信息。MLE和MAP等效的另一种情况就是：在频率学派所代表的MLE，<strong>当观测数据变大时(例子中对应抛硬币次数)</strong>，这时观测数据的本身就提供了足够的信息，先验概率的影响变得微不足道，此时MLE和MAP等效，即最终估计的参数值$\theta^\star$相同。如下图2和3，表示了当100次抛硬币70次为正面，和1000次抛硬币700次为正面时，对应的似然函数和后验概率函数：</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200531/Parameter_Estimation_fig002.jpg"  >图2</center></td>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200531/Parameter_Estimation_fig003.jpg"  >图3</center></td>
+    </tr>
+</table>
+
+<hr>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><p>下面给出图1-3的python源代码，由于代码简单，所以就没有注释</p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        图1的python源代码：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- encoding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">@File    : Parameter_Estimation_fig001.py</span></span><br><span class="line"><span class="string">@Time    : 2020/5/31 14:46</span></span><br><span class="line"><span class="string">@Author  : tengweitw</span></span><br><span class="line"><span class="string">@Email   : tengweitw@foxmail.com</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the format of labels</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LabelFormat</span><span class="params">(plt)</span>:</span></span><br><span class="line">    ax = plt.gca()</span><br><span class="line">    plt.tick_params(labelsize=<span class="number">14</span>)</span><br><span class="line">    labels = ax.get_xticklabels() + ax.get_yticklabels()</span><br><span class="line">    [label.set_fontname(<span class="string">'Times New Roman'</span>) <span class="keyword">for</span> label <span class="keyword">in</span> labels]</span><br><span class="line">    font = &#123;<span class="string">'family'</span>: <span class="string">'Times New Roman'</span>,</span><br><span class="line">            <span class="string">'weight'</span>: <span class="string">'normal'</span>,</span><br><span class="line">            <span class="string">'size'</span>: <span class="number">16</span>,</span><br><span class="line">            &#125;</span><br><span class="line">    <span class="keyword">return</span> font</span><br><span class="line"></span><br><span class="line">sigma=<span class="number">0.1</span></span><br><span class="line">mu1=<span class="number">0.5</span></span><br><span class="line">mu2=<span class="number">0.8</span></span><br><span class="line"></span><br><span class="line">theta=np.linspace(<span class="number">0</span>,<span class="number">1</span>,<span class="number">1000</span>)</span><br><span class="line">p_theta_x1=theta**<span class="number">7</span>*(<span class="number">1</span>-theta)**<span class="number">3</span>/(np.sqrt(<span class="number">2</span>*np.pi)*sigma)*np.exp(-np.square(theta-mu1)/<span class="number">2</span>/np.square(sigma))</span><br><span class="line">p_theta_x2=theta**<span class="number">7</span>*(<span class="number">1</span>-theta)**<span class="number">3</span>/(np.sqrt(<span class="number">2</span>*np.pi)*sigma)*np.exp(-np.square(theta-mu2)/<span class="number">2</span>/np.square(sigma))</span><br><span class="line"></span><br><span class="line">p_theta_x0=theta**<span class="number">7</span>*(<span class="number">1</span>-theta)**<span class="number">3</span>/(np.sqrt(<span class="number">2</span>*np.pi)*sigma)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p_max_ind0=np.argmax(p_theta_x0)</span><br><span class="line">print(theta[p_max_ind0])</span><br><span class="line"></span><br><span class="line">p_max_ind1=np.argmax(p_theta_x1)</span><br><span class="line">print(theta[p_max_ind1])</span><br><span class="line"></span><br><span class="line">p_max_ind2=np.argmax(p_theta_x2)</span><br><span class="line">print(theta[p_max_ind2])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">plt.figure()</span><br><span class="line">plt.plot(theta,p_theta_x0,<span class="string">'r-'</span>)</span><br><span class="line">plt.plot(theta,p_theta_x1,<span class="string">'g-'</span>)</span><br><span class="line">plt.plot(theta,p_theta_x2,<span class="string">'b-'</span>)</span><br><span class="line"></span><br><span class="line">plt.plot([theta[p_max_ind0],theta[p_max_ind0]],[<span class="number">0</span>,p_theta_x0[p_max_ind0]],<span class="string">'r--'</span>)</span><br><span class="line">plt.plot([theta[p_max_ind1],theta[p_max_ind1]],[<span class="number">0</span>,p_theta_x1[p_max_ind1]],<span class="string">'g--'</span>)</span><br><span class="line">plt.plot([theta[p_max_ind2],theta[p_max_ind2]],[<span class="number">0</span>,p_theta_x2[p_max_ind2]],<span class="string">'b--'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">plt.legend([<span class="string">"MLE"</span>,<span class="string">r"MAP, $\mu=0.5$"</span>,<span class="string">r"MAP, $\mu=0.8$"</span>])</span><br><span class="line"></span><br><span class="line">font = LabelFormat(plt)</span><br><span class="line">plt.xlabel(<span class="string">r'$\theta$'</span>, font)</span><br><span class="line">plt.ylabel(<span class="string">r'$P(\theta\mid\mathrm&#123;x&#125;)$'</span>, font)</span><br><span class="line">plt.xlim(<span class="number">0</span>,<span class="number">1</span>)</span><br><span class="line">plt.ylim(<span class="number">0</span>,<span class="number">0.01</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+    </div>
+</div>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        图2-3的python源代码：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- encoding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">@File    : Parameter_Estimation_fig002.py</span></span><br><span class="line"><span class="string">@Time    : 2020/5/31 16:01</span></span><br><span class="line"><span class="string">@Author  : tengweitw</span></span><br><span class="line"><span class="string">@Email   : tengweitw@foxmail.com</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the format of labels</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LabelFormat</span><span class="params">(plt)</span>:</span></span><br><span class="line">    ax = plt.gca()</span><br><span class="line">    plt.tick_params(labelsize=<span class="number">14</span>)</span><br><span class="line">    labels = ax.get_xticklabels() + ax.get_yticklabels()</span><br><span class="line">    [label.set_fontname(<span class="string">'Times New Roman'</span>) <span class="keyword">for</span> label <span class="keyword">in</span> labels]</span><br><span class="line">    font = &#123;<span class="string">'family'</span>: <span class="string">'Times New Roman'</span>,</span><br><span class="line">            <span class="string">'weight'</span>: <span class="string">'normal'</span>,</span><br><span class="line">            <span class="string">'size'</span>: <span class="number">16</span>,</span><br><span class="line">            &#125;</span><br><span class="line">    <span class="keyword">return</span> font</span><br><span class="line"></span><br><span class="line">sigma=<span class="number">0.1</span></span><br><span class="line">mu1=<span class="number">0.5</span></span><br><span class="line">mu2=<span class="number">0.8</span></span><br><span class="line"></span><br><span class="line">theta=np.linspace(<span class="number">0</span>,<span class="number">1</span>,<span class="number">1000</span>)</span><br><span class="line"><span class="comment"># Here to change 700 300 to 70 30 vice verse</span></span><br><span class="line">p_theta_x1=theta**<span class="number">70</span>*(<span class="number">1</span>-theta)**<span class="number">30</span>/(np.sqrt(<span class="number">2</span>*np.pi)*sigma)*np.exp(-np.square(theta-mu1)/<span class="number">2</span>/np.square(sigma))</span><br><span class="line">p_theta_x2=theta**<span class="number">70</span>*(<span class="number">1</span>-theta)**<span class="number">30</span>/(np.sqrt(<span class="number">2</span>*np.pi)*sigma)*np.exp(-np.square(theta-mu2)/<span class="number">2</span>/np.square(sigma))</span><br><span class="line">p_theta_x0=theta**<span class="number">70</span>*(<span class="number">1</span>-theta)**<span class="number">30</span>/(np.sqrt(<span class="number">2</span>*np.pi)*sigma)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p_max_ind0=np.argmax(p_theta_x0)</span><br><span class="line">print(theta[p_max_ind0])</span><br><span class="line"></span><br><span class="line">p_max_ind1=np.argmax(p_theta_x1)</span><br><span class="line">print(theta[p_max_ind1])</span><br><span class="line"></span><br><span class="line">p_max_ind2=np.argmax(p_theta_x2)</span><br><span class="line">print(theta[p_max_ind2])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">plt.figure()</span><br><span class="line">plt.plot(theta,p_theta_x0,<span class="string">'r-'</span>)</span><br><span class="line">plt.plot(theta,p_theta_x1,<span class="string">'g-'</span>)</span><br><span class="line">plt.plot(theta,p_theta_x2,<span class="string">'b-'</span>)</span><br><span class="line"></span><br><span class="line">plt.plot([theta[p_max_ind0],theta[p_max_ind0]],[<span class="number">0</span>,p_theta_x0[p_max_ind0]],<span class="string">'r--'</span>)</span><br><span class="line">plt.plot([theta[p_max_ind1],theta[p_max_ind1]],[<span class="number">0</span>,p_theta_x1[p_max_ind1]],<span class="string">'g--'</span>)</span><br><span class="line">plt.plot([theta[p_max_ind2],theta[p_max_ind2]],[<span class="number">0</span>,p_theta_x2[p_max_ind2]],<span class="string">'b--'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">plt.legend([<span class="string">"MLE"</span>,<span class="string">r"MAP, $\mu=0.5$"</span>,<span class="string">r"MAP, $\mu=0.8$"</span>])</span><br><span class="line"></span><br><span class="line">font = LabelFormat(plt)</span><br><span class="line">plt.xlabel(<span class="string">r'$\theta$'</span>, font)</span><br><span class="line">plt.ylabel(<span class="string">r'$P(\theta\mid\mathrm&#123;x&#125;)$'</span>, font)</span><br><span class="line">plt.xlim(<span class="number">0</span>,<span class="number">1</span>)</span><br><span class="line">plt.ylim(ymin=<span class="number">0</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+
+    </div>
+</div>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2020/05/31/[20200531]/" title="【图解例说机器学习】参数估计 (MLE and MAP)">http://tengweitw.com/2020/05/31/[20200531]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"><i class="fa fa-tag"></i> Machine Learning</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/28/%5B20200528%5D/" rel="prev" title="【图解例说机器学习】朴素贝叶斯 (Naive Bayes)">
+      <i class="fa fa-chevron-left"></i> 【图解例说机器学习】朴素贝叶斯 (Naive Bayes)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/09/%5B20200609%5D/" rel="next" title="【图解例说机器学习】神经网络 (Neural Networks)">
+      【图解例说机器学习】神经网络 (Neural Networks) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#极大似然估计-MLE"><span class="nav-number">1.</span> <span class="nav-text">极大似然估计 (MLE)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最大后验概率估计-MAP"><span class="nav-number">2.</span> <span class="nav-text">最大后验概率估计 (MAP)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#等效情况"><span class="nav-number">3.</span> <span class="nav-text">等效情况</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录"><span class="nav-number">4.</span> <span class="nav-text">附录</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

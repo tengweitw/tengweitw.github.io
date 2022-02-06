@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="在我们日常生活中，我们经常会遇到使用到预测的事例，而预测的值一般可以是连续的，或离散的。比如，在天气预报中，预测明天的最高温，最低温(连续)，亦或是明天是否下雨(离散)。在机器学习中，预测连续性变量的模型称为回归(Regression)模型，比如标准的线性回归，多项式回归；预测离散型变量的模型称为分类(Classification)模型，比如这里要介绍的逻辑回归和以后要提到的支持向量机(SVM)等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【图解例说机器学习】逻辑回归(Logistic Regression)">
+<meta property="og:url" content="http://tengweitw.com/2020/04/14/[20200414]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="在我们日常生活中，我们经常会遇到使用到预测的事例，而预测的值一般可以是连续的，或离散的。比如，在天气预报中，预测明天的最高温，最低温(连续)，亦或是明天是否下雨(离散)。在机器学习中，预测连续性变量的模型称为回归(Regression)模型，比如标准的线性回归，多项式回归；预测离散型变量的模型称为分类(Classification)模型，比如这里要介绍的逻辑回归和以后要提到的支持向量机(SVM)等">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200414/20200414_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200414/20200414_fig002.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200414/20200414_fig003.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200414/20200414_fig004.jpg">
+<meta property="article:published_time" content="2020-04-14T04:54:52.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.786Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Machine Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200414/20200414_fig001.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2020/04/14/[20200414]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【图解例说机器学习】逻辑回归(Logistic Regression) | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/04/14/%5B20200414%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【图解例说机器学习】逻辑回归(Logistic Regression)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-14 12:54:52" itemprop="dateCreated datePublished" datetime="2020-04-14T12:54:52+08:00">2020-04-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在我们日常生活中，我们经常会遇到使用到预测的事例，而预测的值一般可以是连续的，或离散的。比如，在天气预报中，预测明天的最高温，最低温(连续)，亦或是明天是否下雨(离散)。在机器学习中，预测连续性变量的模型称为回归(Regression)模型，比如标准的线性回归，多项式回归；预测离散型变量的模型称为分类(Classification)模型，比如这里要介绍的逻辑回归和以后要提到的支持向量机(SVM)等。</p>
+<hr>
+<a id="more"></a>
+<h2 id="回归与分类的联系"><a href="#回归与分类的联系" class="headerlink" title="回归与分类的联系"></a>回归与分类的联系</h2><p>根据上面的论述，回归与分类的区别在于预测的变量是否是连续的。具体来说，回归是求得一个函数$y=f(\mathrm x)$进行输入变量 $\mathrm x$ 到连续型输出变量 $y_r$ 的映射；分类是是求得一个函数$y=f(\mathrm x)$进行输入变量 $\mathrm x$ 到离散型输出变量 $y_c$ 的映射，可以将其看成是一个分段函数。</p>
+<p>一个直觉的想法是，通过一个函数$y_c=g(y_r)$可以把回归模型转化为分类模型，即$y=g(f(x))$。逻辑回归正是用到了这一思想：逻辑回归是在回归模型的基础上，将回归模型的输出$y_r$映射成离散输出$y_c$，我想这也是为什么取名逻辑回归而不是逻辑分类吧。 需要注意，逻辑回归是用来解决分类问题的。</p>
+<hr>
+<h4 id="一个例子"><a href="#一个例子" class="headerlink" title="一个例子"></a>一个例子</h4><p>如图1所示，假定我们有6个样本点，3个正例($y=1$)和3个反例($y=0$)。我们对其进行线性回归。当使用最简单的线性回归模型(即$\hat y=\omega_0+\omega_1x$)时，我们可以得到其最佳函数表达式为$\hat y=x$，如图中虚线所示。当我们使用复杂的回归模型时(比如考虑$x$的高阶项)时，此时我们可以得到一个十分接近$\hat y=\frac{1}{1+e^{-x}}$的函数表达式。显然，后者的效果更好，但是复杂度十分高。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200414/20200414_fig001.jpg" width="400" height="300" title="图1" alt="图1" ></p>
+<p>从分类问题的角度来看，我们并不关心每一个样例点的预测值，只是关心最终每个样例点属于哪一类。分类问题就是找到一个好的分段函数，使得输入$x$在不同区间的时候，输出$\hat y$分成不同类。比如图1中，当$x<0$时，判别为类别$0$；当$x>0$时，判别为类别$1$，于是我们有如下分段函数表达式：</p>
+<script type="math/tex; mode=display">
+\hat y=\begin{cases}
+0\quad x<0\\
+1\quad x>0
+\end{cases}\tag{1}</script><p>分段函数(1)虽然形式简单，但是在$x=0$处不可导，不利于后面使用梯度下降法。为此，一般通过图1中的Sigmoid函数$\hat y=\frac{1}{1+e^{-x}}$来近似。</p>
+<h2 id="模型描述"><a href="#模型描述" class="headerlink" title="模型描述"></a>模型描述</h2><p>在逻辑回归中，输入 $\mathrm x$ 与输出 $\hat y$ 的函数表达式为</p>
+<script type="math/tex; mode=display">
+\hat y=g(h(\mathrm x))\tag{1}</script><p>其中，$\mathrm z=h(\mathrm x)=\omega_0+\mathrm{w^T}\phi(\mathrm x)$ 是线性回归的函数表达式，$g(\mathrm z)=[1+e^{-\mathrm z}]^{-1}$ 是Sigmoid函数。</p>
+<p>注意：Sigmoid函数$g(\mathrm z)$的作用是将线性回归的输出$\mathrm z=h(\mathrm x)$映射到$0$到$1$的取值范围。</p>
+<hr>
+<h2 id="误差函数"><a href="#误差函数" class="headerlink" title="误差函数"></a>误差函数</h2><p>损失函数有很多种选择：在线性回归中，我们一般采用的是最小均方误差，即$E=\sum_i{(\hat y_i-y_i)^2}$ 。然而在逻辑回归中，使用最小均方误差后，误差函数$E$对于变量$\mathrm w$不一定是凸函数，不利于求解。为此，有人提出了使用<strong>交叉熵</strong>作为误差函数：</p>
+<script type="math/tex; mode=display">
+E=-\sum\limits_{i=1}^{N}{[y_i\log{\hat y_i}+(1-y_i)\log{(1-\hat y_i)}]}\tag{2}</script><hr>
+<h2 id="问题求解"><a href="#问题求解" class="headerlink" title="问题求解"></a>问题求解</h2><p>逻辑回归就是寻找一组参数 $\bar{\mathrm w}={\omega_0,\mathrm w}$ 使得误差函数值最小，即：</p>
+<script type="math/tex; mode=display">
+\min\limits_{\mathrm w}\quad E=-\sum\limits_{i=1}^{N}{[y_i\log{\hat y_i}+(1-y_i)\log{(1-\hat y_i)}]}\tag{8}</script><p>这是一个凸优化问题，和线性回归类似，我们可以考虑的方法有正规方程法和梯度下降法。但是由于该函数表达式比较复杂，正规方程法一般无法得到其解析解。为此，下面我们采用梯度下降法进行求解。</p>
+<h4 id="梯度下降法"><a href="#梯度下降法" class="headerlink" title="梯度下降法"></a>梯度下降法</h4><p>梯度下降法的一般表达式如下：</p>
+<script type="math/tex; mode=display">
+\bar{\mathrm w}^{t+1}=\bar{\mathrm w}^{t}-\eta\frac{\partial{E}}{\partial{\mathrm{\bar w}}}</script><p>对于每一个训练样例$\mathrm x_i$采用求导的链式法则，我们有：</p>
+<script type="math/tex; mode=display">
+\frac{\partial}{\partial{\omega_j}}=\frac{\partial E}{\partial \hat y_i}\frac{\partial\hat y_i }{\partial z_i}\frac{\partial z_i}{\partial\omega_j}</script><p>将公式(1)和(2)带入可得</p>
+<script type="math/tex; mode=display">
+\frac{\partial E}{\partial \hat y_i}=\frac{1-y_i}{1-\hat y_i}-\frac{y_i}{\hat y_i},\quad \frac{\partial \hat y_i}{\partial z_i}=\hat y_i(1-\hat y_i),\quad \frac{\partial z_i}{\omega_j}=x_i^{(j)}</script><script type="math/tex; mode=display">
+\frac{\partial}{\partial{\omega_j}}=(\hat y_i-y_i)x_i^{(j)}</script><p>最终，逻辑回归问题的迭代表达式为</p>
+<script type="math/tex; mode=display">
+\omega_j^{t+1}=\omega_j^{t}-\eta\sum\limits_{i=1}^N{(\hat y_i-y_i)x_i^{(j)}}</script><hr>
+<h2 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h2><p>我们这里使用iris数据集(sklearn库中自带)，这里面有150个训练样例，4个feature, 总共分3类。我们只考虑了前2个feature，这么做是为了在二维图中展示分类结果。并且将类别2和类别3划分为同一类别，这样我们考虑的是一个二分类问题。</p>
+<p>图2给出了使用梯度下降法时，误差的收敛情况。这里我们假设学习率 $\eta=1e^{-3}$，算法差不多需要迭代3000次左右收敛。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200414/20200414_fig002.jpg" width="400" height="300" title="图2" alt="图2" ></p>
+<p>在这150个样例中，我们取出第25,75,125个样例作为测试样例(其label分别为0,1,1)，其他147个作为训练样例。下图为测试结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200414/20200414_fig003.jpg" width="500" height="150" title="图3" alt="图3" ></p>
+<p>图4给出了这3三个测试样例的预测结果，其输出$\hat y$就是这3个测试样例属于类别 $1$ 的概率。当$\hat y&gt;0.5$时，判别为$1$，否则判别为$0$。图5更加直观地显示了图4的判别结果。其中，空心方块即为我们要预测的点，颜色代表所处类别，红色为类别$0$，蓝色为类别$1$，可见，我们对于这个三个点的预测正确。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200414/20200414_fig004.jpg" width="400" height="300" title="图4" alt="图4" ></p>
+<hr>
+<h2 id="附录："><a href="#附录：" class="headerlink" title="附录："></a>附录：</h2><p>这里我们给出图1-图4的Python源代码</p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        图1的python源代码:
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># @Time : 2020/4/12 14:52</span></span><br><span class="line"><span class="comment"># @Author : tengweitw</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the format of labels</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LabelFormat</span><span class="params">(plt)</span>:</span></span><br><span class="line">    ax = plt.gca()</span><br><span class="line">    plt.tick_params(labelsize=<span class="number">14</span>)</span><br><span class="line">    labels = ax.get_xticklabels() + ax.get_yticklabels()</span><br><span class="line">    [label.set_fontname(<span class="string">'Times New Roman'</span>) <span class="keyword">for</span> label <span class="keyword">in</span> labels]</span><br><span class="line">    font = &#123;<span class="string">'family'</span>: <span class="string">'Times New Roman'</span>,</span><br><span class="line">            <span class="string">'weight'</span>: <span class="string">'normal'</span>,</span><br><span class="line">            <span class="string">'size'</span>: <span class="number">16</span>,</span><br><span class="line">            &#125;</span><br><span class="line">    <span class="keyword">return</span> font</span><br><span class="line"></span><br><span class="line">x=np.linspace(<span class="number">-10</span>,<span class="number">10</span>,<span class="number">100</span>)</span><br><span class="line">y=<span class="number">1</span>/(<span class="number">1</span>+np.exp(-x))</span><br><span class="line"></span><br><span class="line">x_train0=np.array([<span class="number">-10</span>,<span class="number">-7.5</span>,<span class="number">-5</span>])</span><br><span class="line">y_train0=np.array([<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>])</span><br><span class="line">x_train1=np.array([<span class="number">5</span>,<span class="number">7.5</span>,<span class="number">10</span>])</span><br><span class="line">y_train1=np.array([<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">plt.figure()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p1,=plt.plot(x,y,<span class="string">'k-'</span>)</span><br><span class="line">p2,=plt.plot([<span class="number">-7.5</span>,<span class="number">7.5</span>],[<span class="number">0</span>,<span class="number">1</span>],<span class="string">'k--'</span>)</span><br><span class="line">p3=plt.scatter(x_train0,y_train0,marker = <span class="string">'o'</span>, color=<span class="string">'r'</span>)</span><br><span class="line">p4=plt.scatter(x_train1,y_train1,marker = <span class="string">'D'</span>, color=<span class="string">'r'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the labels</span></span><br><span class="line">font = LabelFormat(plt)</span><br><span class="line">plt.xlabel(<span class="string">'$x$'</span>, font)</span><br><span class="line">plt.ylabel(<span class="string">'$\hat y$'</span>, font)</span><br><span class="line"></span><br><span class="line">plt.yticks([<span class="number">0</span>,<span class="number">0.25</span>,<span class="number">0.5</span>,<span class="number">0.75</span>,<span class="number">1.0</span>])</span><br><span class="line">plt.grid()</span><br><span class="line">l1=plt.legend([p1,p2],[<span class="string">'$\hat y=\\frac&#123;1&#125;&#123;1+e^&#123;-x&#125;&#125;$'</span>,<span class="string">'$\hat y=x$'</span>], loc=<span class="string">'upper left'</span>,fontsize=<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line">l2=plt.legend([p3,p4],[<span class="string">'Positive instances'</span>,<span class="string">'Negative instances'</span>], loc=<span class="string">'lower right'</span>,fontsize=<span class="number">14</span>, scatterpoints=<span class="number">1</span>)</span><br><span class="line">plt.gca().add_artist(l1)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+    </div>
+</div>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        图2-4的python源代码:
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># @Time : 2020/4/13 15:24</span></span><br><span class="line"><span class="comment"># @Author : tengweitw</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> matplotlib.colors <span class="keyword">import</span> ListedColormap</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span>  datasets</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create color maps for three types of labels</span></span><br><span class="line">cmap_light = ListedColormap([<span class="string">'tomato'</span>, <span class="string">'limegreen'</span>, <span class="string">'cornflowerblue'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the format of labels</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LabelFormat</span><span class="params">(plt)</span>:</span></span><br><span class="line">    ax = plt.gca()</span><br><span class="line">    plt.tick_params(labelsize=<span class="number">14</span>)</span><br><span class="line">    labels = ax.get_xticklabels() + ax.get_yticklabels()</span><br><span class="line">    [label.set_fontname(<span class="string">'Times New Roman'</span>) <span class="keyword">for</span> label <span class="keyword">in</span> labels]</span><br><span class="line">    font = &#123;<span class="string">'family'</span>: <span class="string">'Times New Roman'</span>,</span><br><span class="line">             <span class="string">'weight'</span>: <span class="string">'normal'</span>,</span><br><span class="line">             <span class="string">'size'</span>: <span class="number">16</span>,</span><br><span class="line">             &#125;</span><br><span class="line">    <span class="keyword">return</span> font</span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot the training points: different</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">PlotTrainPoint</span><span class="params">(train_data,train_target)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(train_target)):</span><br><span class="line">        <span class="keyword">if</span> train_target[i] == <span class="number">0</span>:</span><br><span class="line">            plt.plot(train_data[i][<span class="number">0</span>], train_data[i][<span class="number">1</span>], <span class="string">'rs'</span>, markersize=<span class="number">6</span>, markerfacecolor=<span class="string">"r"</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            plt.plot(train_data[i][<span class="number">0</span>], train_data[i][<span class="number">1</span>], <span class="string">'bs'</span>, markersize=<span class="number">6</span>, markerfacecolor=<span class="string">"b"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">PlotTestPoint</span><span class="params">(test_data,test_target,y_predict_test)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(test_target)):</span><br><span class="line">        <span class="keyword">if</span> test_target[i] == <span class="number">0</span>:</span><br><span class="line">            plt.plot(test_data[i][<span class="number">0</span>], test_data[i][<span class="number">1</span>], <span class="string">'rs'</span>, markerfacecolor=<span class="string">'none'</span>, markersize=<span class="number">6</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            plt.plot(test_data[i][<span class="number">0</span>], test_data[i][<span class="number">1</span>], <span class="string">'bs'</span>, markersize=<span class="number">6</span>, markerfacecolor=<span class="string">"none"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Logistic_regression_gradient_descend</span><span class="params">(train_data, train_target, test_data, test_target)</span>:</span></span><br><span class="line">    <span class="comment"># learning rate</span></span><br><span class="line">    eta = <span class="number">1e-3</span></span><br><span class="line">    M = np.size(train_data, <span class="number">1</span>)</span><br><span class="line">    N = np.size(train_data, <span class="number">0</span>)</span><br><span class="line">    w_bar = np.zeros((M + <span class="number">1</span>, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># the 1st column is 1 i.e., x_0=1</span></span><br><span class="line">    temp = np.ones([N, <span class="number">1</span>])</span><br><span class="line">    <span class="comment"># X is a N*(1+M)-dim matrix</span></span><br><span class="line">    X = np.concatenate((temp, train_data), axis=<span class="number">1</span>)</span><br><span class="line">    train_target = np.mat(train_target).T</span><br><span class="line"></span><br><span class="line">    iter = <span class="number">0</span></span><br><span class="line">    num_iter = <span class="number">3000</span></span><br><span class="line">    E_train = np.zeros((num_iter, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> iter &lt; num_iter:</span><br><span class="line">        <span class="comment"># Predicting training data</span></span><br><span class="line">        z = np.matmul(X, w_bar)</span><br><span class="line">        y_predict_train = <span class="number">1</span> / (<span class="number">1</span> + np.exp(-z))</span><br><span class="line">        <span class="comment"># Update w</span></span><br><span class="line">        temp = np.matmul(X.T, y_predict_train - train_target)</span><br><span class="line">        w_bar = w_bar - eta * temp</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Training Error</span></span><br><span class="line">        E=<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(train_target)):</span><br><span class="line">            <span class="comment"># print(y_predict_train[i])</span></span><br><span class="line">            E=E-train_target[i]*np.log(y_predict_train[i])-(<span class="number">1</span>-train_target[i])*np.log(<span class="number">1</span>-y_predict_train[i])</span><br><span class="line">        E_train[iter] = E</span><br><span class="line">        iter += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Predicting</span></span><br><span class="line">    x0 = np.ones((np.size(test_data, <span class="number">0</span>), <span class="number">1</span>))</span><br><span class="line">    test_data1 = np.concatenate((x0, test_data), axis=<span class="number">1</span>)</span><br><span class="line">    y_predict_test_temp = np.matmul(test_data1, w_bar)</span><br><span class="line"></span><br><span class="line">    y_predict_test=<span class="number">1</span>/(<span class="number">1</span>+np.exp(-y_predict_test_temp))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> y_predict_test,E_train,w_bar</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># import dataset of iris</span></span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line"></span><br><span class="line"><span class="comment"># The first two-dim feature for simplicity</span></span><br><span class="line">data = iris.data[:, :<span class="number">2</span>]</span><br><span class="line"><span class="comment"># The labels</span></span><br><span class="line">label = iris.target</span><br><span class="line"></span><br><span class="line"><span class="comment"># Group 2 and 3 as one group, and label them as 1</span></span><br><span class="line">label[<span class="number">50</span>:]=<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Choose the 25,75,125th instance as testing points</span></span><br><span class="line">test_data = [data[<span class="number">25</span>, :], data[<span class="number">75</span>, :], data[<span class="number">125</span>, :]]</span><br><span class="line">test_target = label[[<span class="number">25</span>, <span class="number">75</span>, <span class="number">125</span>]]</span><br><span class="line"></span><br><span class="line">data = np.delete(data, [<span class="number">25</span>, <span class="number">75</span>, <span class="number">125</span>], axis=<span class="number">0</span>)</span><br><span class="line">label = np.delete(label, [<span class="number">25</span>, <span class="number">75</span>, <span class="number">125</span>], axis=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">train_data = data</span><br><span class="line">train_target = label</span><br><span class="line"></span><br><span class="line">y_predict_test,E_train,w_bar=Logistic_regression_gradient_descend(train_data, train_target, test_data, test_target)</span><br><span class="line">print(<span class="string">'The probability of being class 1 is: '</span>)</span><br><span class="line">print(y_predict_test)</span><br><span class="line"></span><br><span class="line">plt.figure()</span><br><span class="line">plt.plot(E_train, <span class="string">'r-'</span>)</span><br><span class="line"><span class="comment"># Set the labels</span></span><br><span class="line">font = LabelFormat(plt)</span><br><span class="line">plt.xlabel(<span class="string">'Iteration'</span>, font)</span><br><span class="line">plt.ylabel(<span class="string">'Error'</span>, font)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line">plt.figure()</span><br><span class="line">PlotTrainPoint(train_data,train_target)</span><br><span class="line">PlotTestPoint(test_data,test_target,y_predict_test)</span><br><span class="line">font = LabelFormat(plt)</span><br><span class="line">plt.xlabel(<span class="string">'$x^&#123;(1)&#125;$'</span>, font)</span><br><span class="line">plt.ylabel(<span class="string">'$x^&#123;(2)&#125;$'</span>, font)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+    </div>
+</div>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2020/04/14/[20200414]/" title="【图解例说机器学习】逻辑回归(Logistic Regression)">http://tengweitw.com/2020/04/14/[20200414]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"><i class="fa fa-tag"></i> Machine Learning</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/06/%5B20200406%5D/" rel="prev" title="【图解例说机器学习】线性回归">
+      <i class="fa fa-chevron-left"></i> 【图解例说机器学习】线性回归
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/17/%5B20200417%5D/" rel="next" title="【图解例说机器学习】模型选择：偏差与方差 (Bias vs. Variance)">
+      【图解例说机器学习】模型选择：偏差与方差 (Bias vs. Variance) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#回归与分类的联系"><span class="nav-number">1.</span> <span class="nav-text">回归与分类的联系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一个例子"><span class="nav-number">1.0.1.</span> <span class="nav-text">一个例子</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型描述"><span class="nav-number">2.</span> <span class="nav-text">模型描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#误差函数"><span class="nav-number">3.</span> <span class="nav-text">误差函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题求解"><span class="nav-number">4.</span> <span class="nav-text">问题求解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#梯度下降法"><span class="nav-number">4.0.1.</span> <span class="nav-text">梯度下降法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法实现"><span class="nav-number">5.</span> <span class="nav-text">算法实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录："><span class="nav-number">6.</span> <span class="nav-text">附录：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

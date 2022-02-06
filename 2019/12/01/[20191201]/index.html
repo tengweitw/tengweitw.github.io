@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="IBM CPLEX可以解SOCP问题，但是需要先将这个SOCP问题化为指定的格式。本文首先介绍SOCP问题，然后举例介绍如何将SOCP问题转化为CPLEX认可的输入格式并求解。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【漫漫科研路\C&amp;C++】CPLEX解SOCP问题">
+<meta property="og:url" content="http://tengweitw.com/2019/12/01/[20191201]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="IBM CPLEX可以解SOCP问题，但是需要先将这个SOCP问题化为指定的格式。本文首先介绍SOCP问题，然后举例介绍如何将SOCP问题转化为CPLEX认可的输入格式并求解。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191201/20191201_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191201/20191201_fig002.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191201/20191201_fig003.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191201/20191201_fig004.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191201/20191201_fig005.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191201/20191201_fig006.jpg">
+<meta property="article:published_time" content="2019-12-01T12:54:58.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.785Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Research">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191201/20191201_fig001.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2019/12/01/[20191201]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【漫漫科研路\C&C++】CPLEX解SOCP问题 | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2019/12/01/%5B20191201%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【漫漫科研路\C&C++】CPLEX解SOCP问题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-01 20:54:58" itemprop="dateCreated datePublished" datetime="2019-12-01T20:54:58+08:00">2019-12-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>9 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>IBM CPLEX可以解SOCP问题，但是需要先将这个SOCP问题化为指定的格式。本文首先介绍SOCP问题，然后举例介绍如何将SOCP问题转化为CPLEX认可的输入格式并求解。</p>
+<a id="more"></a>
+<h2 id="SOCP的介绍"><a href="#SOCP的介绍" class="headerlink" title="SOCP的介绍"></a>SOCP的介绍</h2><p>关于SOCP问题的介绍，可以参考Boyd等人写的<a href="http://stanford.edu/~boyd/cvxbook/" target="_blank" rel="noopener">Convex Optimization</a> 或者是<a href="https://en.wikipedia.org/wiki/Second-order_cone_programming" target="_blank" rel="noopener">维基百科的SOCP词条</a> 。这里摘录Convex Optimization一书中关于SOCP的定义：</p>
+<p>​    <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191201/20191201_fig001.jpg" width="600" height="350" title="图1" alt="图1" ></p>
+<h2 id="CPLEX求解SOCP问题"><a href="#CPLEX求解SOCP问题" class="headerlink" title="CPLEX求解SOCP问题"></a>CPLEX求解SOCP问题</h2><p>使用CPLEX求解SOCP问题，一般需要将问题转化为CPLEX可以识别的格式。CPLEX的例子ilosocpex1(位于安装目录的examples文件夹内，例如：C:\Program Files\IBM\ILOG\CPLEX_Enterprise_Server129\CPLEX_Studio\cplex\examples)给予了格式说明：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191201/20191201_fig002.jpg" width="600" height="550" title="图2" alt="图2" ><br>下面我们首先给一个直接可以使用CPLEX求解的例子，然后在此基础上考虑一个更一般的例子（需要变量替换来符合格式）。</p>
+<h4 id="一个简单的例子"><a href="#一个简单的例子" class="headerlink" title="一个简单的例子"></a>一个简单的例子</h4><p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191201/20191201_fig003.jpg" width="600" height="350" title="图3" alt="图3" ><br>如上图所示，q1, q2可以直接转化为前面提到的CPLEX认可格式。下面给出源代码如下（注意项目需要预先配置好，配置请见<a href="https://tengweitw.blog.csdn.net/article/details/103113392" target="_blank" rel="noopener">上一篇博文</a>）：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ilcplex/ilocplex.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">ILOSTLBEGIN <span class="comment">// import namespace std</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Tolerance for testing KKT conditions.</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TESTTOL 1e-9</span></span><br><span class="line"><span class="comment">// Tolerance for barrier convergence.</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CONVTOL 1e-9</span></span><br><span class="line"></span><br><span class="line"> <span class="comment">//  A Simple Example</span></span><br><span class="line"> <span class="comment">//  Minimize</span></span><br><span class="line"> <span class="comment">//   obj: x1 + x2 + x3 + x4 + x5 + x6</span></span><br><span class="line"> <span class="comment">//  Subject To</span></span><br><span class="line"> <span class="comment">//   c1: x1 + x2      + x5      = 8</span></span><br><span class="line"> <span class="comment">//   c2:           x3 + x5 + x6 = 10</span></span><br><span class="line"> <span class="comment">//   q1: x1 &gt;= |(x2, x3)| ----&gt;&gt;&gt;&gt;  q1: [ -x1^2 + x2^2 + x3^2 ] &lt;= 0 and x1 &gt;=0</span></span><br><span class="line"> <span class="comment">//   q2: x4 &gt;= |x5|       ----&gt;&gt;&gt;&gt;  q2: [ -x4^2 + x5^2 ] &lt;= 0 and x4 &gt;=0</span></span><br><span class="line"> <span class="comment">//  Bounds</span></span><br><span class="line"> <span class="comment">//   x2 Free</span></span><br><span class="line"> <span class="comment">//   x3 Free</span></span><br><span class="line"> <span class="comment">//   x5 Free</span></span><br><span class="line"> <span class="comment">//   x6 Free</span></span><br><span class="line"> <span class="comment">//  End</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">createmodel(IloModel&amp; model, IloObjective &amp;obj, IloNumVarArray &amp;x,</span><br><span class="line">	IloRangeArray &amp;rngs, IloIntArray&amp; cone)</span><br><span class="line">&#123;</span><br><span class="line">	IloEnv env = model.getEnv();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Create variables.</span></span><br><span class="line">	x.add(IloNumVar(env, <span class="number">0</span>, IloInfinity));</span><br><span class="line">	x.add(IloNumVar(env, -IloInfinity, IloInfinity));</span><br><span class="line">	x.add(IloNumVar(env, -IloInfinity, IloInfinity));</span><br><span class="line">	x.add(IloNumVar(env, <span class="number">0</span>, IloInfinity));</span><br><span class="line">	x.add(IloNumVar(env, -IloInfinity, IloInfinity));</span><br><span class="line">	x.add(IloNumVar(env, -IloInfinity, IloInfinity));</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Create objective function and immediately store it in return value.</span></span><br><span class="line">	<span class="comment">// obj = IloMinimize(env, x1 + x2 + x3 + x4 + x5 + x6);</span></span><br><span class="line">	obj = IloMinimize(env, x[<span class="number">0</span>]+x[<span class="number">1</span>] + x[<span class="number">2</span>] + x[<span class="number">3</span>] + x[<span class="number">4</span>] + x[<span class="number">5</span>]);</span><br><span class="line">	<span class="comment">// Setup model.</span></span><br><span class="line">	model.add(x[<span class="number">0</span>] + x[<span class="number">1</span>] + x[<span class="number">4</span>]==<span class="number">8</span>);</span><br><span class="line">	model.add(x[<span class="number">2</span>] + x[<span class="number">4</span>] + x[<span class="number">5</span>]==<span class="number">10</span>);</span><br><span class="line">	model.add(-x[<span class="number">0</span>] * x[<span class="number">0</span>] + x[<span class="number">1</span>] * x[<span class="number">1</span>] + x[<span class="number">2</span>] * x[<span class="number">2</span>]&lt;=<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//equal to model.add(-x[3] * x[3] + x[4] * x[4]&lt;=0), useful for lots of variables</span></span><br><span class="line">	<span class="keyword">double</span> a[] = &#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>, <span class="number">-1</span>,<span class="number">1</span> &#125;;</span><br><span class="line">	<span class="function">IloExpr <span class="title">temp</span><span class="params">(env)</span></span>;</span><br><span class="line">	<span class="keyword">for</span> (IloInt i = <span class="number">3</span>; i &lt; <span class="number">5</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		temp += a[i] * x[i] * x[i];</span><br><span class="line">	&#125;</span><br><span class="line">	model.add(temp &lt;= <span class="number">0</span>);</span><br><span class="line">	temp.end();</span><br><span class="line"></span><br><span class="line">	model.add(obj);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span></span><br><span class="line">main(<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">	IloEnv env;</span><br><span class="line">	<span class="keyword">int</span> retval = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		<span class="comment">// Create the model.</span></span><br><span class="line">		<span class="function">IloModel <span class="title">model</span><span class="params">(env)</span></span>;</span><br><span class="line">		<span class="function">IloCplex <span class="title">cplex</span><span class="params">(env)</span></span>;</span><br><span class="line">		<span class="function">IloObjective <span class="title">obj</span><span class="params">(env)</span></span>;</span><br><span class="line">		<span class="function">IloNumVarArray <span class="title">vars</span><span class="params">(env)</span></span>;</span><br><span class="line">		<span class="function">IloRangeArray <span class="title">rngs</span><span class="params">(env)</span></span>;</span><br><span class="line">		<span class="function">IloIntArray <span class="title">cone</span><span class="params">(env)</span></span>;</span><br><span class="line">		createmodel(model, obj, vars, rngs, cone);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Extract model.</span></span><br><span class="line">		cplex.extract(model);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Solve the problem. If we cannot find an _optimal_ solution then</span></span><br><span class="line">		<span class="comment">// there is no point in checking the KKT conditions and we throw an</span></span><br><span class="line">		<span class="comment">// exception.</span></span><br><span class="line">		cplex.setParam(IloCplex::Param::Barrier::QCPConvergeTol, CONVTOL);</span><br><span class="line">		<span class="keyword">if</span> (!cplex.solve() || cplex.getStatus() != IloAlgorithm::Optimal)</span><br><span class="line">			<span class="keyword">throw</span> <span class="built_in">string</span>(<span class="string">"Failed to solve problem to optimality"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="function">IloNumArray <span class="title">vals_x</span><span class="params">(env)</span></span>;</span><br><span class="line">		env.out() &lt;&lt; <span class="string">"Solution status = "</span> &lt;&lt; cplex.getStatus() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		env.out() &lt;&lt; <span class="string">"Solution value  = "</span> &lt;&lt; cplex.getObjValue() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		cplex.getValues(vals_x, vars);</span><br><span class="line">		env.out() &lt;&lt; <span class="string">"Values        = "</span> &lt;&lt; vals_x &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		env.end();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">catch</span> (IloException &amp;e) &#123;</span><br><span class="line">		<span class="built_in">cerr</span> &lt;&lt; <span class="string">"IloException: "</span> &lt;&lt; e &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">if</span> (env.getImpl())</span><br><span class="line">			env.end();</span><br><span class="line">		::<span class="built_in">abort</span>();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">catch</span> (<span class="built_in">string</span>&amp; e) &#123;</span><br><span class="line">		<span class="built_in">cerr</span> &lt;&lt; e &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">if</span> (env.getImpl())</span><br><span class="line">			env.end();</span><br><span class="line">		::<span class="built_in">abort</span>();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> retval;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果如下图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191201/20191201_fig004.jpg" width="600" height="450" title="图4" alt="图4" ></p>
+<hr>
+<h4 id="一个更一般的例子"><a href="#一个更一般的例子" class="headerlink" title="一个更一般的例子"></a>一个更一般的例子</h4><p>在前面例子的基础上，我们只是改变了约束q1，使其更一般化，如下图所示：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191201/20191201_fig005.jpg" width="600" height="350" title="图5" alt="图5" ></p>
+<p>为了将q1转化为合适的格式，我们使用变量替换  $x_7=x_1+x_2 $ 。因此只需在前面源代码中更改 createmodel 函数中的部分代码。为保持代码完整性，我们依旧给出完整的代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ilcplex/ilocplex.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">ILOSTLBEGIN <span class="comment">// import namespace std</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Tolerance for testing KKT conditions.</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TESTTOL 1e-9</span></span><br><span class="line"><span class="comment">// Tolerance for barrier convergence.</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CONVTOL 1e-9</span></span><br><span class="line"></span><br><span class="line"> <span class="comment">//  A Simple Example</span></span><br><span class="line"> <span class="comment">//  Minimize</span></span><br><span class="line"> <span class="comment">//   obj: x1 + x2 + x3 + x4 + x5 + x6</span></span><br><span class="line"> <span class="comment">//  Subject To</span></span><br><span class="line"> <span class="comment">//   c1: x1 + x2      + x5      = 8</span></span><br><span class="line"> <span class="comment">//   c2:           x3 + x5 + x6 = 10</span></span><br><span class="line"> <span class="comment">//   q1: x1 + x2 &gt;= |(x1, x2, x3)| ----&gt;&gt;&gt;&gt; q1:[-x7^2+x1^2+x2^2+x3^2]&lt;=0 and x7=x1+x2&gt;=0</span></span><br><span class="line"> <span class="comment">//   q2: x4 &gt;= |x5|       ----&gt;&gt;&gt;&gt;  q2: [ -x4^2 + x5^2 ] &lt;= 0 and x4 &gt;=0</span></span><br><span class="line"> <span class="comment">//  Bounds</span></span><br><span class="line"> <span class="comment">//   x1 Free</span></span><br><span class="line"> <span class="comment">//   x2 Free</span></span><br><span class="line"> <span class="comment">//   x3 Free</span></span><br><span class="line"> <span class="comment">//   x5 Free</span></span><br><span class="line"> <span class="comment">//   x6 Free</span></span><br><span class="line"> <span class="comment">//  End</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">createmodel(IloModel&amp; model, IloObjective &amp;obj, IloNumVarArray &amp;x,</span><br><span class="line">	IloRangeArray &amp;rngs, IloIntArray&amp; cone)</span><br><span class="line">&#123;</span><br><span class="line">	IloEnv env = model.getEnv();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Create variables.</span></span><br><span class="line">	x.add(IloNumVar(env, -IloInfinity, IloInfinity));</span><br><span class="line">	x.add(IloNumVar(env, -IloInfinity, IloInfinity));</span><br><span class="line">	x.add(IloNumVar(env, -IloInfinity, IloInfinity));</span><br><span class="line">	x.add(IloNumVar(env, <span class="number">0</span>, IloInfinity));</span><br><span class="line">	x.add(IloNumVar(env, -IloInfinity, IloInfinity));</span><br><span class="line">	x.add(IloNumVar(env, -IloInfinity, IloInfinity));</span><br><span class="line">	x.add(IloNumVar(env, <span class="number">0</span>, IloInfinity));<span class="comment">// x7</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// Create objective function and immediately store it in return value.</span></span><br><span class="line">	<span class="comment">// obj = IloMinimize(env, x1 + x2 + x3 + x4 + x5 + x6);</span></span><br><span class="line">	obj = IloMinimize(env, x[<span class="number">0</span>]+x[<span class="number">1</span>] + x[<span class="number">2</span>] + x[<span class="number">3</span>] + x[<span class="number">4</span>] + x[<span class="number">5</span>]);</span><br><span class="line">	<span class="comment">// Setup model.</span></span><br><span class="line">	model.add(x[<span class="number">0</span>] + x[<span class="number">1</span>] + x[<span class="number">4</span>]==<span class="number">8</span>);</span><br><span class="line">	model.add(x[<span class="number">2</span>] + x[<span class="number">4</span>] + x[<span class="number">5</span>]==<span class="number">10</span>);</span><br><span class="line">	model.add(x[<span class="number">6</span>] - x[<span class="number">0</span>] - x[<span class="number">1</span>] == <span class="number">0</span>); <span class="comment">// x7 = x1 + x2</span></span><br><span class="line">	model.add(-x[<span class="number">6</span>] * x[<span class="number">6</span>]+ x[<span class="number">0</span>] * x[<span class="number">0</span>] + x[<span class="number">1</span>] * x[<span class="number">1</span>] + x[<span class="number">2</span>] * x[<span class="number">2</span>]&lt;=<span class="number">0</span>); <span class="comment">//[-x7^2+x1^2+x2^2+x3^2]&lt;=0</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//equal to model.add(-x[3] * x[3] + x[4] * x[4]&lt;=0), useful for lots of variables</span></span><br><span class="line">	<span class="keyword">double</span> a[] = &#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>, <span class="number">-1</span>,<span class="number">1</span> &#125;;</span><br><span class="line">	<span class="function">IloExpr <span class="title">temp</span><span class="params">(env)</span></span>;</span><br><span class="line">	<span class="keyword">for</span> (IloInt i = <span class="number">3</span>; i &lt; <span class="number">5</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		temp += a[i] * x[i] * x[i];</span><br><span class="line">	&#125;</span><br><span class="line">	model.add(temp &lt;= <span class="number">0</span>);</span><br><span class="line">	temp.end();</span><br><span class="line"></span><br><span class="line">	model.add(obj);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span></span><br><span class="line">main(<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">	IloEnv env;</span><br><span class="line">	<span class="keyword">int</span> retval = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		<span class="comment">// Create the model.</span></span><br><span class="line">		<span class="function">IloModel <span class="title">model</span><span class="params">(env)</span></span>;</span><br><span class="line">		<span class="function">IloCplex <span class="title">cplex</span><span class="params">(env)</span></span>;</span><br><span class="line">		<span class="function">IloObjective <span class="title">obj</span><span class="params">(env)</span></span>;</span><br><span class="line">		<span class="function">IloNumVarArray <span class="title">vars</span><span class="params">(env)</span></span>;</span><br><span class="line">		<span class="function">IloRangeArray <span class="title">rngs</span><span class="params">(env)</span></span>;</span><br><span class="line">		<span class="function">IloIntArray <span class="title">cone</span><span class="params">(env)</span></span>;</span><br><span class="line">		createmodel(model, obj, vars, rngs, cone);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Extract model.</span></span><br><span class="line">		cplex.extract(model);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Solve the problem. If we cannot find an _optimal_ solution then</span></span><br><span class="line">		<span class="comment">// there is no point in checking the KKT conditions and we throw an</span></span><br><span class="line">		<span class="comment">// exception.</span></span><br><span class="line">		cplex.setParam(IloCplex::Param::Barrier::QCPConvergeTol, CONVTOL);</span><br><span class="line">		<span class="keyword">if</span> (!cplex.solve() || cplex.getStatus() != IloAlgorithm::Optimal)</span><br><span class="line">			<span class="keyword">throw</span> <span class="built_in">string</span>(<span class="string">"Failed to solve problem to optimality"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="function">IloNumArray <span class="title">vals_x</span><span class="params">(env)</span></span>;</span><br><span class="line">		env.out() &lt;&lt; <span class="string">"Solution status = "</span> &lt;&lt; cplex.getStatus() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		env.out() &lt;&lt; <span class="string">"Solution value  = "</span> &lt;&lt; cplex.getObjValue() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		cplex.getValues(vals_x, vars);</span><br><span class="line">		env.out() &lt;&lt; <span class="string">"Values        = "</span> &lt;&lt; vals_x &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		env.end();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">catch</span> (IloException &amp;e) &#123;</span><br><span class="line">		<span class="built_in">cerr</span> &lt;&lt; <span class="string">"IloException: "</span> &lt;&lt; e &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">if</span> (env.getImpl())</span><br><span class="line">			env.end();</span><br><span class="line">		::<span class="built_in">abort</span>();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">catch</span> (<span class="built_in">string</span>&amp; e) &#123;</span><br><span class="line">		<span class="built_in">cerr</span> &lt;&lt; e &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">if</span> (env.getImpl())</span><br><span class="line">			env.end();</span><br><span class="line">		::<span class="built_in">abort</span>();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> retval;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果如下图：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191201/20191201_fig006.jpg" width="600" height="450" title="图6" alt="图6" ></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2019/12/01/[20191201]/" title="【漫漫科研路\C&amp;C++】CPLEX解SOCP问题">http://tengweitw.com/2019/12/01/[20191201]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Research/" rel="tag"><i class="fa fa-tag"></i> Research</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/11/24/%5B20191124%5D/" rel="prev" title="【漫漫科研路\C&C++】Win10 + VS2017 + CUDA10.1 + CPLEX12.9 配置">
+      <i class="fa fa-chevron-left"></i> 【漫漫科研路\C&C++】Win10 + VS2017 + CUDA10.1 + CPLEX12.9 配置
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/12/08/%5B20191208%5D/" rel="next" title="【漫漫科研路】科研环境软硬件">
+      【漫漫科研路】科研环境软硬件 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SOCP的介绍"><span class="nav-number">1.</span> <span class="nav-text">SOCP的介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPLEX求解SOCP问题"><span class="nav-number">2.</span> <span class="nav-text">CPLEX求解SOCP问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一个简单的例子"><span class="nav-number">2.0.1.</span> <span class="nav-text">一个简单的例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一个更一般的例子"><span class="nav-number">2.0.2.</span> <span class="nav-text">一个更一般的例子</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

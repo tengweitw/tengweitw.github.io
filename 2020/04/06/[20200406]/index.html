@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="线性回归之于机器学习，正如Hello World之于编程语言，也如MINST之于深度学习。  首先，我们先定义一些即将用到的数学符号：     Notations Meaning Notations Meaning     $M$ Number of parameters $\mathrm w$ $N$ Number of instances   $\mathrm X&#x3D;{\mathrm x_1,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【图解例说机器学习】线性回归">
+<meta property="og:url" content="http://tengweitw.com/2020/04/06/[20200406]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="线性回归之于机器学习，正如Hello World之于编程语言，也如MINST之于深度学习。  首先，我们先定义一些即将用到的数学符号：     Notations Meaning Notations Meaning     $M$ Number of parameters $\mathrm w$ $N$ Number of instances   $\mathrm X&#x3D;{\mathrm x_1,">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig002.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig003.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig004.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig005.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig006.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig007.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig008.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig009.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig010.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig011.jpg">
+<meta property="article:published_time" content="2020-04-06T12:46:01.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.786Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Machine Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig001.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2020/04/06/[20200406]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【图解例说机器学习】线性回归 | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/04/06/%5B20200406%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【图解例说机器学习】线性回归
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-06 20:46:01" itemprop="dateCreated datePublished" datetime="2020-04-06T20:46:01+08:00">2020-04-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>22k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>31 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>线性回归之于机器学习，正如Hello World之于编程语言，也如MINST之于深度学习。</p>
+</blockquote>
+<p>首先，我们先定义一些即将用到的数学符号：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Notations</th>
+<th style="text-align:left">Meaning</th>
+<th style="text-align:center">Notations</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$M$</td>
+<td style="text-align:left">Number of parameters $\mathrm w$</td>
+<td style="text-align:center">$N$</td>
+<td>Number of instances</td>
+</tr>
+<tr>
+<td style="text-align:center">$\mathrm X={\mathrm x_1,\mathrm x_2,\cdots,\mathrm x_N}^{\mathrm T}$</td>
+<td style="text-align:left">$N\times M$ matrix for training</td>
+<td style="text-align:center">$D$</td>
+<td>Number of features</td>
+</tr>
+<tr>
+<td style="text-align:center">$\mathrm y={y_1,y_2,\cdots,y_N}^\mathrm{T}$</td>
+<td style="text-align:left">Set of  targets</td>
+<td style="text-align:center">$y_i$</td>
+<td>Target of instance $i$</td>
+</tr>
+<tr>
+<td style="text-align:center">$\mathrm{x}_i={x_i^{(1)},x_i^{(2)},\cdots,x_i^{(D)}}^\mathrm{T}$</td>
+<td style="text-align:left">Set of features  for instance $i$</td>
+<td style="text-align:center">$x_i^{(j)}$</td>
+<td>Feature $j$ for instance $i$</td>
+</tr>
+<tr>
+<td style="text-align:center">$\mathrm w={\omega_1,\omega_2,\cdots,\omega_M}^\mathrm{T}$</td>
+<td style="text-align:left">Weights of input $\mathrm x$</td>
+<td style="text-align:center">$\omega_i$</td>
+<td>Weight of  feature $i$</td>
+</tr>
+<tr>
+<td style="text-align:center">$\phi={\phi_1,\phi_2,\cdots,\phi_M}^\mathrm{T}$</td>
+<td style="text-align:left">Set of functions</td>
+<td style="text-align:center">$\phi_i(\mathrm x)$</td>
+<td>Function of features</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<a id="more"></a>
+<h2 id="模型描述"><a href="#模型描述" class="headerlink" title="模型描述"></a>模型描述</h2><p>在线性回归中，假设目标值与<strong>参数</strong> $\mathrm{w}={\omega_n}$之间<strong>线性相关</strong>，通过构建<strong>损失函数</strong>$E$，求解损失函数最小时的参数。也就是说，线性回归试图学习得到如下函数：</p>
+<script type="math/tex; mode=display">
+\hat y=\omega_0+\sum\limits_{j=1}^{M}\omega_j\phi_j(\mathrm x)=\omega_0+\mathrm w^{\mathrm T}\phi(\mathrm x)\tag{1}</script><p>公式(1)是线性回归模型的一般形式，看起来不是那么直观。其常见的形式如下：</p>
+<ul>
+<li><p>当$D=1,\phi_j(x)=x^j$时，公式(1)可以表示为：</p>
+<script type="math/tex; mode=display">
+\hat y=\omega_0+\omega_1x+\omega_2x^2+\cdots+\omega_Mx^M\tag{2}</script><p>此时，线性回归就变成了多项式回归。</p>
+</li>
+<li><p>当$D=M,\phi_j(\mathrm x)=x^{(j)}$时，公式(1)可以表示为：</p>
+<script type="math/tex; mode=display">
+\hat y=\omega_0+\omega_1x^{(1)}+\omega_2x^{(2)}+\cdots+\omega_Mx^{(M)}\tag{3}</script><p>此时，线性回归就变成了我们通常所说的线性回归—-多元一次方程。当只有一维特征($M=1$) 时，可以得到我们初中就学过的一元一次方程</p>
+</li>
+</ul>
+<script type="math/tex; mode=display">
+\hat y=\omega_1x+\omega_0\tag{4}</script><p>为使本文通俗易懂，除非作特别说明，本文仿真都以这个一元一次方程为例介绍线性回归</p>
+<hr>
+<h2 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h2><p>线性回归的目的就是使得我们预测得到的$\hat y$与真实值$y$之间的误差最小。这里的误差可以用不同的<a href="https://blog.csdn.net/tengweitw/article/details/103950425" target="_blank" rel="noopener">距离度量</a>，这里我们使用平方和。此时，代价函数就可以表示为</p>
+<script type="math/tex; mode=display">
+E=\sum\limits_{i=1}^N{(\hat y_i-y_i)^2}=\sum\limits_{i=1}^N{(\omega_0+\mathrm w^{\mathrm T}\phi(\mathrm x_i)-y_i)^2}=\sum\limits_{i=1}^{N}{[\omega_0+\sum\limits_{j=1}^{M}{\omega_j\phi_j(\mathrm{x}_i)-y_i]^2}}\tag{5}</script><p>下面我们在二维空间($M=1$)和三维空间($M=2$)画出代价函数图像。这里我们假定$\phi_i(\mathrm x)=x^{(i)}$，$\omega_0,\omega_1,\omega_2$已知，则公式(1)可以分别表示为：</p>
+<script type="math/tex; mode=display">
+\hat y=\omega_0+\omega_1x^{(1)}\tag{6}</script><script type="math/tex; mode=display">
+\hat y=\omega_0+\omega_1x^{(1)}+\omega_2x^{(2)}\tag{7}</script><p>根据公式(6),(7)，我们可以得到图1和图2中的直线和二维平面：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig001.jpg" width="600" height="450" title="图1" alt="图1" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig002.jpg" width="600" height="450" title="图2" alt="图2" ></p>
+<p>图1和图2中的红色的点是 $\mathrm x$ 对应的真实值 $\mathrm y$ ，红色线段即为误差值。</p>
+<hr>
+<h2 id="一个例子"><a href="#一个例子" class="headerlink" title="一个例子"></a>一个例子</h2><p>图1和图2展示的是给定参数$\omega_0,\omega_1,\omega_2$下的真实值$y$与预测值$\hat { y}$的误差。不同的参数可以得到不同的误差值，线性回归的目的就是寻找一组参数是的误差最小。下面我们通过图3和图4来说明：</p>
+<p>我们假设训练集有3组数据$(x, y)$：$(1, 0.8) (2, 2) (3, 3.1)$ 。我们这里使用一元线性回归，即公式(6)，此时线性回归的目的就是找到一条直线$\hat y=\omega_1x+\omega_0$使得这3组数据点离直线最近。 </p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig003.jpg" width="600" height="450" title="图3" alt="图3" ></p>
+<p>图3画出了当$\omega_0=0,\omega_1=0.5\sim1.5$时，直线$\hat y=\omega_1x+\omega_0$的图像。图4给出了当$\omega_1$取不同值时，代价函数值的变化。从图3和图4可以看出，当$\omega_1=1$时，代价最小。 </p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig004.jpg" width="600" height="450" title="图4" alt="图4" ></p>
+<hr>
+<h2 id="正规方程与梯度下降"><a href="#正规方程与梯度下降" class="headerlink" title="正规方程与梯度下降"></a>正规方程与梯度下降</h2><p>线性回归的本质就是解如下优化问题：</p>
+<script type="math/tex; mode=display">
+\min\limits_{\mathrm w}\quad E=\sum\limits_{i=1}^{N}{[\omega_0+\sum\limits_{j=1}^{M}{\omega_j\phi_j(\mathrm{x}_i)-y_i]^2}}\tag{8}</script><p>令$\bar{\mathrm w}={\omega_0,\mathrm w},\bar{\phi}={\phi_0,\phi},\phi_0(\mathrm x)=1$，并将问题(8)表示成向量相乘的形式：</p>
+<script type="math/tex; mode=display">
+\min\limits_{\mathrm {\bar w}}\quad E=[\bar\phi(\mathrm X)\mathrm{\bar w}-\mathrm y]^{\mathrm T}[\bar\phi(\mathrm X)\mathrm{\bar w}-\mathrm y]\tag{9}</script><p>公式(9)中，$\bar{\phi}(\mathrm X)$是一个$N\times M+1$维的矩阵:</p>
+<script type="math/tex; mode=display">
+\bar\phi(\mathrm X)=
+\left\{\begin{matrix}
+   \phi_0(\mathrm x_1) & \phi_1(\mathrm x_1) & \cdots & \phi_M(\mathrm x_1)\\
+   \phi_0(\mathrm x_2) & \phi_1(\mathrm x_2) & \cdots & \phi_M(\mathrm x_2)\\
+   \vdots & \vdots & \cdots &\vdots \\
+   \phi_0(\mathrm x_N) & \phi_1(\mathrm x_N) & \cdots & \phi_M(\mathrm x_N)
+  \end{matrix} 
+  \right\}\tag{10}</script><p>通过求表达式(8)的Hessian矩阵，可以知道这是一个凸优化问题。那么问题就变得十分简单了，可以用现成的工具来求解：比如CVX, CPLEX, MATLAB等等。这些解法器一般都是通过梯度法(后面会讲解)来求解问题的。当然我们也可以通过凸问题的性质，得到其解析解。</p>
+<hr>
+<h4 id="正规方程法"><a href="#正规方程法" class="headerlink" title="正规方程法"></a>正规方程法</h4><p>由于误差函数(8)是一个凸函数，所以其导数为0的点就是最优点。为此，我们将$E$对$\mathrm{\bar w}$进行微分求导入下：</p>
+<script type="math/tex; mode=display">
+\frac{\partial{E}}{\partial{\mathrm{\bar w}}}=\bar\phi^{\mathrm T}(X)[\bar\phi(\mathrm X)\mathrm{\bar w}-\mathrm y]=0\tag{11}</script><script type="math/tex; mode=display">
+\bar\phi^{\mathrm T}(X)\bar\phi(\mathrm X)\mathrm{\bar w}=\bar\phi^{\mathrm T}(\mathrm X)\mathrm y\rightarrow\mathrm{\bar w}=[\bar\phi^{\mathrm T}(X)\bar\phi(\mathrm X)]^{-1}\bar\phi^{\mathrm T}(\mathrm X)\mathrm y\tag{12}</script><p>由公式(11)可知，给定训练数据$\mathrm X$，我们就可以求出最佳的$\mathrm{\bar w}$。需要注意的是，这里需要求矩阵的逆，计算量比较大，不适合当训练数据较大的情况。这时我们可以通过梯度下降法来求解。</p>
+<hr>
+<h4 id="梯度下降法"><a href="#梯度下降法" class="headerlink" title="梯度下降法"></a>梯度下降法</h4><p>使用梯度下降法，可以对凸问题求得最优解，对非凸问题，可以找到局部最优解。梯度下降法的算法思想如下图5和图6所示：</p>
+<ul>
+<li>在左图(图5)中，梯度为$\frac{d\hat y}{d x}=x-2$。当$x<2$时，梯度小于零，此时$x$应当向右移动来减小函数值(负梯度方向)；当$x>2$时，梯度大于零，此时$x$应当向左移动来减小函数值(负梯度方向)。<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig005.jpg" width="600" height="450" title="图5" alt="图5" ></li>
+<li>在右图(图6)中，函数不是凸函数的情况下，使用梯度下降法会得到局部最优解(假定初始值为$x=0$)。当初始值$x=7$时，我们可以得到最优解。因此，初始值对梯度下降法影响较大，我们可以通过随机选择初始值来克服陷入局部最优解的情况。<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig006.jpg" width="600" height="450" title="图6" alt="图6" ></li>
+</ul>
+<p>根据(10)得到的梯度表达式，梯度下降的每一次迭代过程如下：</p>
+<script type="math/tex; mode=display">
+\bar{\mathrm w}^{t+1}=\bar{\mathrm w}^{t}-\eta\frac{\partial{E}}{\partial{\mathrm{\bar w}}}=\bar{\mathrm w}^{t}-\eta\bar\phi^{\mathrm T}(X)[\bar\phi(\mathrm X)\mathrm{\bar w}-\mathrm y]\tag{13}</script><p>将公式(13)的矩阵相乘展开可以得到</p>
+<script type="math/tex; mode=display">
+\omega_j^{t+1}=\omega_j^t-\eta\sum\limits_{i=1}^{N}{[\omega_0+\sum\limits_{j=1}^{M}{\omega_j\phi_j(\mathrm{x}_i)-y_i]}\phi_j(\mathrm x_i)}\tag{14}</script><p>公式(13)或(14)就是标准的梯度下降法，其中$\eta$是每次迭代的步长大小。</p>
+<ul>
+<li>$\eta$较小时，迭代较慢，当时可以保证收敛到最优解(凸函数的情况下)；$\eta$较大时，函数值下降较快，但容易发生震荡。</li>
+<li>每次迭代时，需要使用所有的样本点$\mathrm x_i,i=1,2,\cdots,N$。当数据样本点非常大时，开销十分大。</li>
+</ul>
+<p>为此，有人提出了<strong>随机梯度下降</strong>，其迭代公式如下：</p>
+<script type="math/tex; mode=display">
+\omega_j^{t+1}=\omega_j^t-\eta{[\omega_0+\sum\limits_{j=1}^{M}{\omega_j\phi_j(\mathrm{x_i})-y_i]}\phi_j(\mathrm x_i)}\tag{15}</script><p>随机梯度下降又称连续梯度下降，比较适合于实时系统，即整个数据集$\mathrm x_i$不是可以一次性获得的，但是我们需要作出预测的场景。相较于梯度下降法(14)，随机梯度只根据当前样本更新迭代，随机性较大。因此有可能跳出标准梯度下降法的局部最优解。</p>
+<hr>
+<h2 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h2><p>这里我们使用sklearn中波士顿房价的数据集，该数据集有13维特征，506个样例。为简便起见，我们只取前2维特征作为输入($M=D=2,\hat y=\omega_0+\omega_1<em>x^{(1)}+\omega_2</em>x^{(2)}$)，前500个作为输入样例，后6个作为预测样例。在算法实现中，我们分别考虑了<strong>正规方程法</strong>和<strong>梯度下降法</strong>。并且，考虑到$x^{(1)}$和$x^{(2)}$的取值范围差距较大，我们还考虑了<strong>特征值缩放</strong>。为此，我们实现了上述四种算法的组合[特征不缩放(特征缩放)+正规方程法(梯度下降法)]。</p>
+<hr>
+<h4 id="算法结果"><a href="#算法结果" class="headerlink" title="算法结果"></a>算法结果</h4><p>图7给出了上述4种算法的结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig007.jpg" width="600" height="550" title="图7" alt="图7" ></p>
+<p>图7中，E_train为训练误差，即前500个样例的真实值与预测值的误差，E_test为预测误差，即最后6个样例的真实值与预测值的误差。由于误差函数对于参数w是凸函数，我们总能得到最优解，即最小的训练误差，所以上述四种方法的训练误差相同。</p>
+<hr>
+<h4 id="特征缩放与梯度下降法"><a href="#特征缩放与梯度下降法" class="headerlink" title="特征缩放与梯度下降法"></a>特征缩放与梯度下降法</h4><p>图7能得到最小误差函数值，是因为目标函数$E$是参数$\omega_1$和$\omega_2$的凸函数。为方便起见，对于具体实例，我们给出$E$的表达式：</p>
+<script type="math/tex; mode=display">
+E(\omega_0,\omega_1,\omega_2)=\sum\limits_{i=1}^{500}(\omega_0+\omega_1*x^{(1)}+\omega_2*x^{(2)}-y_i)^2\tag{16}</script><p>公式(16)中，$\omega_0$与具体样例无关，$\omega_0$的值不改变$E$的图像形状，改变$\omega_0$相当于进行位移，我们这里假定$\omega_0=0$。为此，当给定波士顿房价数据集，即$x^{(1)},x^{(2)},y_i$ 给定时，我们可以画出公式(16)对应的等高线图，图8。</p>
+<ul>
+<li><p>从图8可以看出，当改变$\omega_2$时，$E$变的较快(等高线在$\omega_2$方向较为稀疏)。这是因为$\omega_2$的系数为$x^{(2)}$，而$x^{(2)}$相对于$x^{(1)}$有较大的取值。在这种情况下，对梯度下降法就十分不友好—很容易跳过最优解。也就是说，步长设置要十分小，这就会导致收敛速度慢。在我们这个实例中，步长最大只能设置为$\eta=5e^{-6}$，此时需要差不多30000次迭代才能收敛到最优，如图10所示。<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig008.jpg" width="600" height="450" title="图8" alt="图8" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig009.jpg" width="600" height="450" title="图9" alt="图9" ></p>
+</li>
+<li><p>特征缩放是一种解决上述情况下，梯度下降法收敛慢的方法。特征缩放的表达式都十分简单，这里不再赘述，我们这里是直接使用的sklearn库中的preprocessing.StandardScaler()函数对样例进行特征缩放。对$x^{(1)},x^{(2)}$缩放后，我们可以用相同的方式画出对应的等高线图，图9，以及收敛图，图11。经过特征缩放后，图9中等高线在$\omega_1,\omega_2$方向上的稀疏程度差不多。图11中，步长可以设置得较大($\eta=1e^{-3}$)，收敛速度变得极快，只需要迭代8次左右就达到最优。<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig010.jpg" width="600" height="450" title="图10" alt="图10" ></p>
+</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200406/20200406_fig011.jpg" width="600" height="450" title="图11" alt="图11" ></p>
+<hr>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><p>下面给出图1—图11的Python源代码如下：</p>
+<ul>
+<li><div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        图1和图2的python源代码:
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> mpl_toolkits.mplot3d <span class="keyword">import</span> Axes3D</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the format of labels</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LabelFormat</span><span class="params">(plt)</span>:</span></span><br><span class="line">    ax = plt.gca()</span><br><span class="line">    plt.tick_params(labelsize=<span class="number">14</span>)</span><br><span class="line">    labels = ax.get_xticklabels() + ax.get_yticklabels()</span><br><span class="line">    [label.set_fontname(<span class="string">'Times New Roman'</span>) <span class="keyword">for</span> label <span class="keyword">in</span> labels]</span><br><span class="line">    font = &#123;<span class="string">'family'</span>: <span class="string">'Times New Roman'</span>,</span><br><span class="line">            <span class="string">'weight'</span>: <span class="string">'normal'</span>,</span><br><span class="line">            <span class="string">'size'</span>: <span class="number">16</span>,</span><br><span class="line">            &#125;</span><br><span class="line">    <span class="keyword">return</span> font</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2-d case</span></span><br><span class="line">omega_0 = <span class="number">0</span></span><br><span class="line">omega_1 = <span class="number">1</span></span><br><span class="line">data_train = [[<span class="number">0.5</span>, <span class="number">0.2</span>], [<span class="number">1</span>, <span class="number">0.8</span>], [<span class="number">1.5</span>, <span class="number">1.2</span>], [<span class="number">2</span>, <span class="number">2</span>], [<span class="number">2.5</span>, <span class="number">2.8</span>], [<span class="number">3</span>, <span class="number">3.1</span>], [<span class="number">3.5</span>, <span class="number">3.8</span>]]</span><br><span class="line">x_train = [d[<span class="number">0</span>] <span class="keyword">for</span> d <span class="keyword">in</span> data_train]</span><br><span class="line">y_train = [d[<span class="number">1</span>] <span class="keyword">for</span> d <span class="keyword">in</span> data_train]</span><br><span class="line"></span><br><span class="line">x = np.linspace(<span class="number">0</span>, <span class="number">4</span>, <span class="number">30</span>).reshape(<span class="number">30</span>, <span class="number">1</span>)</span><br><span class="line">y = omega_1 * x + omega_0</span><br><span class="line"></span><br><span class="line">x_test = x_train</span><br><span class="line">y_test = y_train</span><br><span class="line">y_hat = omega_1 * x_test</span><br><span class="line"></span><br><span class="line">plt.figure()</span><br><span class="line">plt.plot(x, y, <span class="string">'k-'</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(x_test)):</span><br><span class="line">    plt.stem([x_test[i], ], [y_test[i], ], linefmt=<span class="string">'rx'</span>, bottom=y_hat[i], basefmt=<span class="string">'ko'</span>, markerfmt=<span class="string">'C3o'</span>,</span><br><span class="line">             use_line_collection=<span class="literal">True</span>)</span><br><span class="line"><span class="comment"># Set the labels</span></span><br><span class="line">font = LabelFormat(plt)</span><br><span class="line">plt.xlabel(<span class="string">'$x$'</span>, font)</span><br><span class="line">plt.ylabel(<span class="string">'$\hat y$'</span>, font)</span><br><span class="line">plt.title(<span class="string">'$M=1,\omega_0=0,\omega_1=1$'</span>)</span><br><span class="line">plt.xlim(<span class="number">0</span>, <span class="number">4</span>)</span><br><span class="line">plt.ylim(<span class="number">0</span>, <span class="number">4</span>)</span><br><span class="line">plt.grid()</span><br><span class="line"></span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3-d case</span></span><br><span class="line">omega_0 = <span class="number">2</span></span><br><span class="line">omega_1 = <span class="number">0.25</span></span><br><span class="line">omega_2 = <span class="number">0.5</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">x1 = np.linspace(<span class="number">0</span>, <span class="number">4</span>, <span class="number">30</span>).reshape(<span class="number">30</span>, <span class="number">1</span>)</span><br><span class="line">x2 = np.linspace(<span class="number">0</span>, <span class="number">4</span>, <span class="number">30</span>).reshape(<span class="number">30</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">X1, X2 = np.meshgrid(x1, x2)</span><br><span class="line">y_hat = omega_0 + omega_1 * X1 + omega_2 * X2</span><br><span class="line">fig = plt.figure()</span><br><span class="line">ax = fig.gca(projection=<span class="string">'3d'</span>)</span><br><span class="line"></span><br><span class="line">x1_test=np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">x2_test=np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">X1_test, X2_test = np.meshgrid(x1_test, x2_test)</span><br><span class="line"></span><br><span class="line">y_test = omega_0 + omega_1 * X1_test + omega_2 * X2_test+<span class="number">8</span>*np.random.rand(<span class="number">3</span>,<span class="number">3</span>)<span class="number">-4</span></span><br><span class="line"></span><br><span class="line">ax.plot_surface(X1, X2, y_hat, cmap=<span class="string">'rainbow'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(x1_test)):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(len(x2_test)):</span><br><span class="line">        y_predict= omega_0 + omega_1 * x1_test[i] + omega_2 * x2_test[j]</span><br><span class="line">        ax.plot([x1_test[i],x1_test[i]],[x2_test[j],x2_test[j]],[y_test[i][j],y_predict],<span class="string">'r-o'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the labels</span></span><br><span class="line">font = LabelFormat(plt)</span><br><span class="line">ax.set_xlabel(<span class="string">'$x^&#123;(1)&#125;$'</span>, font)</span><br><span class="line">ax.set_ylabel(<span class="string">'$x^&#123;(2)&#125;$'</span>, font)</span><br><span class="line">ax.set_zlabel(<span class="string">'$\hat y$'</span>, font)</span><br><span class="line">ax.set_xlim(<span class="number">0</span>, <span class="number">4</span>)</span><br><span class="line">ax.set_ylim(<span class="number">0</span>, <span class="number">4</span>)</span><br><span class="line">ax.set_zlim(<span class="number">0</span>, <span class="number">8</span>)</span><br><span class="line">ax.set_xticks([<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>])</span><br><span class="line">ax.set_yticks([<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>])</span><br><span class="line">ax.set_title(<span class="string">'$M=2,\omega_0=2,\omega_1=0.25,\omega_2=0.5$'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Customize the view angle so it's easier to see that the scatter points lie</span></span><br><span class="line">ax.view_init(elev=<span class="number">5.</span>, azim=<span class="number">-25</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+
+    </div>
+</div>
+</li>
+</ul>
+<ul>
+<li><div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        图3和图4的python源代码:
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> matplotlib.colors <span class="keyword">import</span> ListedColormap</span><br><span class="line"><span class="keyword">import</span> matplotlib <span class="keyword">as</span> mpl</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the format of labels</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LabelFormat</span><span class="params">(plt)</span>:</span></span><br><span class="line">    ax = plt.gca()</span><br><span class="line">    plt.tick_params(labelsize=<span class="number">14</span>)</span><br><span class="line">    labels = ax.get_xticklabels() + ax.get_yticklabels()</span><br><span class="line">    [label.set_fontname(<span class="string">'Times New Roman'</span>) <span class="keyword">for</span> label <span class="keyword">in</span> labels]</span><br><span class="line">    font = &#123;<span class="string">'family'</span>: <span class="string">'Times New Roman'</span>,</span><br><span class="line">             <span class="string">'weight'</span>: <span class="string">'normal'</span>,</span><br><span class="line">             <span class="string">'size'</span>: <span class="number">16</span>,</span><br><span class="line">             &#125;</span><br><span class="line">    <span class="keyword">return</span> font</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot the training points: different</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">PlotTrainPoint</span><span class="params">(X)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(X)):</span><br><span class="line">        plt.plot(X[i][<span class="number">0</span>], X[i][<span class="number">1</span>], <span class="string">'rs'</span>, markersize=<span class="number">6</span>, markerfacecolor=<span class="string">"r"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Loss function--Square Error function</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LossFunction</span><span class="params">(Y, predictedY)</span>:</span></span><br><span class="line">    lengthY = len(Y)</span><br><span class="line">    error = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(lengthY):</span><br><span class="line">        error += pow(Y[i] - predictedY[i], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> math.sqrt(error)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">trainData = [[<span class="number">1</span>, <span class="number">0.8</span>], [<span class="number">2</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">3.1</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Predicted function: y=\omega_1*x+\omega_0 Here \omega_0 is assumed to be 0 for simplifcity</span></span><br><span class="line"></span><br><span class="line">x = np.linspace(<span class="number">0</span>, <span class="number">4</span>, <span class="number">30</span>).reshape(<span class="number">30</span>, <span class="number">1</span>)</span><br><span class="line">omega_1 = np.linspace(<span class="number">0.5</span>, <span class="number">1.5</span>, <span class="number">41</span>).reshape(<span class="number">41</span>, <span class="number">1</span>)</span><br><span class="line">omega_0 = <span class="number">0</span></span><br><span class="line">y_hat = []</span><br><span class="line"><span class="comment">#Get the value of x and y in the trainData</span></span><br><span class="line">x_train = [d[<span class="number">0</span>] <span class="keyword">for</span> d <span class="keyword">in</span> trainData]</span><br><span class="line">y_train = [d[<span class="number">1</span>] <span class="keyword">for</span> d <span class="keyword">in</span> trainData]</span><br><span class="line">error_all = []</span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot the figure to show the function: y=\omega_1*x+\omega_0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(omega_1)):</span><br><span class="line">    y_hat.append(omega_1[i] * x)</span><br><span class="line">    <span class="keyword">if</span> omega_1[i]==<span class="number">0.5</span>:</span><br><span class="line">        plt.plot(x, y_hat[i],  color=<span class="string">'cyan'</span>, alpha=<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">elif</span> omega_1[i]==<span class="number">1</span>:</span><br><span class="line">        plt.plot(x, y_hat[i], color=<span class="string">'blue'</span>, alpha=<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">elif</span> omega_1[i]==<span class="number">1.5</span>:</span><br><span class="line">        plt.plot(x, y_hat[i], color=<span class="string">'orange'</span>, alpha=<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        plt.plot(x, y_hat[i], color=<span class="string">'black'</span>, alpha=<span class="number">0.3</span>)</span><br><span class="line">    <span class="comment"># Compute the errors for each omega_1</span></span><br><span class="line">    error_all.append(LossFunction(y_train, omega_1[i].T*x_train+omega_0))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the axis</span></span><br><span class="line">font=LabelFormat(plt)</span><br><span class="line">PlotTrainPoint(trainData)</span><br><span class="line"><span class="comment"># Label the critical points</span></span><br><span class="line">plt.annotate(<span class="string">'$\omega_1=1.5$'</span>, xy=(<span class="number">2.5</span>, <span class="number">2.5</span>*<span class="number">1.5</span>), xycoords=<span class="string">'data'</span>,</span><br><span class="line">             xytext=(<span class="number">-35</span>, <span class="number">35</span>), textcoords=<span class="string">'offset points'</span>, color=<span class="string">'orange'</span>, fontsize=<span class="number">12</span>, arrowprops=dict(arrowstyle=<span class="string">"-&gt;"</span>,</span><br><span class="line">             connectionstyle=<span class="string">"arc,rad=90"</span>, color=<span class="string">'orange'</span>))</span><br><span class="line">plt.annotate(<span class="string">'$\omega_1=1$'</span>, xy=(<span class="number">2.5</span>, <span class="number">2.5</span>*<span class="number">1</span>), xycoords=<span class="string">'data'</span>,</span><br><span class="line">             xytext=(<span class="number">-45</span>, <span class="number">95</span>), textcoords=<span class="string">'offset points'</span>, color=<span class="string">'b'</span>, fontsize=<span class="number">12</span>, arrowprops=dict(arrowstyle=<span class="string">"-&gt;"</span>,</span><br><span class="line">             connectionstyle=<span class="string">"arc,rad=90"</span>, color=<span class="string">'b'</span>))</span><br><span class="line">plt.annotate(<span class="string">'$\omega_1=0.5$'</span>, xy=(<span class="number">2.5</span>, <span class="number">2.5</span>*<span class="number">0.5</span>), xycoords=<span class="string">'data'</span>,</span><br><span class="line">             xytext=(<span class="number">-75</span>, <span class="number">155</span>), textcoords=<span class="string">'offset points'</span>, color=<span class="string">'cyan'</span>, fontsize=<span class="number">12</span>, arrowprops=dict(arrowstyle=<span class="string">"-&gt;"</span>,</span><br><span class="line">             connectionstyle=<span class="string">"arc,rad=90"</span>, color=<span class="string">'cyan'</span>))</span><br><span class="line"></span><br><span class="line">plt.annotate(<span class="string">'$\omega_1=0.5\sim 1.5$'</span>, xy=(<span class="number">1</span>, <span class="number">2.2</span>), xycoords=<span class="string">'data'</span>,</span><br><span class="line">             xytext=(<span class="number">8</span>, <span class="number">-125</span>), textcoords=<span class="string">'offset points'</span>, color=<span class="string">'k'</span>, fontsize=<span class="number">12</span>, arrowprops=dict(arrowstyle=<span class="string">"-&gt;"</span>,</span><br><span class="line">             connectionstyle=<span class="string">"arc,rad=90"</span>, color=<span class="string">'k'</span>))</span><br><span class="line">plt.xlabel(<span class="string">'$x$'</span>,font)</span><br><span class="line">plt.ylabel(<span class="string">'$\hat y$'</span>,font)</span><br><span class="line">plt.xlim([<span class="number">0</span>,<span class="number">3.2</span>])</span><br><span class="line">plt.ylim([<span class="number">0</span>,<span class="number">4.5</span>])</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Show the error when omega_1 changes</span></span><br><span class="line">plt.figure()</span><br><span class="line">font=LabelFormat(plt)</span><br><span class="line">plt.plot(omega_1,error_all, <span class="string">'k-s'</span>)</span><br><span class="line">error_min=min(error_all)</span><br><span class="line">index_min=error_all.index(error_min)</span><br><span class="line">print(index_min)</span><br><span class="line"><span class="comment"># plot the error at the given three point</span></span><br><span class="line">plt.plot(omega_1[index_min],error_min,<span class="string">'bs'</span>)</span><br><span class="line">plt.plot(omega_1[<span class="number">0</span>],error_all[<span class="number">0</span>],<span class="string">'cyan'</span>,marker=<span class="string">'s'</span>)</span><br><span class="line">plt.plot(omega_1[<span class="number">-1</span>],error_all[<span class="number">-1</span>],<span class="string">'orange'</span>,marker=<span class="string">'s'</span>)</span><br><span class="line"></span><br><span class="line">plt.xlabel(<span class="string">'$\omega_1$'</span>, font)</span><br><span class="line">plt.ylabel(<span class="string">'Value of loss function'</span>, font)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+    </div>
+</div>
+</li>
+<li><div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        图5和图6的python源代码:
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the format of labels</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LabelFormat</span><span class="params">(plt)</span>:</span></span><br><span class="line">    ax = plt.gca()</span><br><span class="line">    plt.tick_params(labelsize=<span class="number">14</span>)</span><br><span class="line">    labels = ax.get_xticklabels() + ax.get_yticklabels()</span><br><span class="line">    [label.set_fontname(<span class="string">'Times New Roman'</span>) <span class="keyword">for</span> label <span class="keyword">in</span> labels]</span><br><span class="line">    font = &#123;<span class="string">'family'</span>: <span class="string">'Times New Roman'</span>,</span><br><span class="line">            <span class="string">'weight'</span>: <span class="string">'normal'</span>,</span><br><span class="line">            <span class="string">'size'</span>: <span class="number">16</span>,</span><br><span class="line">            &#125;</span><br><span class="line">    <span class="keyword">return</span> font</span><br><span class="line"></span><br><span class="line">x = np.linspace(<span class="number">0</span>, <span class="number">4</span>, <span class="number">30</span>).reshape(<span class="number">30</span>, <span class="number">1</span>)</span><br><span class="line">y=(x<span class="number">-2</span>)**<span class="number">2</span>/<span class="number">2</span></span><br><span class="line"></span><br><span class="line">plt.figure()</span><br><span class="line">plt.plot(x,y,<span class="string">'k-'</span>)</span><br><span class="line">plt.plot(<span class="number">3.5</span>,<span class="number">1.5</span>**<span class="number">2</span>/<span class="number">2</span>,<span class="string">'ro'</span>)</span><br><span class="line">plt.annotate(<span class="string">'$\\frac&#123;dE&#125;&#123;dx&#125;$'</span>, xy=(<span class="number">3.5</span>, <span class="number">1.5</span>**<span class="number">2</span>/<span class="number">2</span>), xycoords=<span class="string">'data'</span>,</span><br><span class="line">             xytext=(<span class="number">-60</span>, <span class="number">-125</span>), textcoords=<span class="string">'offset points'</span>,color=<span class="string">'r'</span>, fontsize=<span class="number">14</span>, arrowprops=dict(arrowstyle=<span class="string">"&lt;-"</span>,</span><br><span class="line">             connectionstyle=<span class="string">"arc,rad=90"</span>, color=<span class="string">'r'</span>))</span><br><span class="line"></span><br><span class="line">plt.plot(<span class="number">0.5</span>,<span class="number">1.5</span>**<span class="number">2</span>/<span class="number">2</span>,<span class="string">'ro'</span>)</span><br><span class="line">plt.annotate(<span class="string">'$\\frac&#123;dE&#125;&#123;dx&#125;$'</span>, xy=(<span class="number">0.5</span>, <span class="number">1.5</span>**<span class="number">2</span>/<span class="number">2</span>), xycoords=<span class="string">'data'</span>,</span><br><span class="line">             xytext=(<span class="number">48</span>, <span class="number">-125</span>), textcoords=<span class="string">'offset points'</span>,color=<span class="string">'r'</span>, fontsize=<span class="number">14</span>, arrowprops=dict(arrowstyle=<span class="string">"&lt;-"</span>,</span><br><span class="line">             connectionstyle=<span class="string">"arc,rad=90"</span>, color=<span class="string">'r'</span>))</span><br><span class="line"></span><br><span class="line">plt.annotate(<span class="string">'$\hat y=\\frac&#123;1&#125;&#123;2&#125;(x-2)^2$'</span>, xy=(<span class="number">0.25</span>, <span class="number">1.75</span>**<span class="number">2</span>/<span class="number">2</span>), xycoords=<span class="string">'data'</span>,</span><br><span class="line">             xytext=(<span class="number">108</span>, <span class="number">0</span>), textcoords=<span class="string">'offset points'</span>,color=<span class="string">'k'</span>, fontsize=<span class="number">14</span>, arrowprops=dict(arrowstyle=<span class="string">"&lt;-"</span>,</span><br><span class="line">             connectionstyle=<span class="string">"arc,rad=90"</span>, color=<span class="string">'w'</span>))</span><br><span class="line"><span class="comment"># Set the labels</span></span><br><span class="line">font = LabelFormat(plt)</span><br><span class="line">plt.xlabel(<span class="string">'$x$'</span>, font)</span><br><span class="line">plt.ylabel(<span class="string">'$\hat y$'</span>, font)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># To plot figure 6</span></span><br><span class="line">x1 = np.linspace(<span class="number">0</span>, <span class="number">5</span>/<span class="number">4.0</span>*np.pi, <span class="number">50</span>).reshape(<span class="number">50</span>, <span class="number">1</span>)</span><br><span class="line">y1=np.cos(x1)</span><br><span class="line"></span><br><span class="line">x2 = np.linspace(<span class="number">5</span>/<span class="number">4.0</span>*np.pi, <span class="number">8</span>, <span class="number">50</span>).reshape(<span class="number">50</span>, <span class="number">1</span>)</span><br><span class="line">y2=<span class="number">0.5</span>*np.cos(<span class="number">2</span>*x2+<span class="number">1</span>*np.pi)<span class="number">-0.71</span></span><br><span class="line"></span><br><span class="line">plt.figure()</span><br><span class="line">plt.plot(x1,y1,<span class="string">'k-'</span>)</span><br><span class="line">plt.plot(x2,y2,<span class="string">'k-'</span>)</span><br><span class="line">plt.plot(np.pi,<span class="number">-1</span>,<span class="string">'ro'</span>)</span><br><span class="line">plt.annotate(<span class="string">'Local optimal'</span>, xy=(np.pi, <span class="number">-1</span>), xycoords=<span class="string">'data'</span>,</span><br><span class="line">             xytext=(<span class="number">-48</span>, <span class="number">125</span>), textcoords=<span class="string">'offset points'</span>,color=<span class="string">'r'</span>, fontsize=<span class="number">14</span>, arrowprops=dict(arrowstyle=<span class="string">"-&gt;"</span>,</span><br><span class="line">             connectionstyle=<span class="string">"arc,rad=90"</span>, color=<span class="string">'r'</span>))</span><br><span class="line"></span><br><span class="line">plt.plot(np.pi*<span class="number">2</span>,<span class="number">-1.21</span>,<span class="string">'ro'</span>)</span><br><span class="line">plt.annotate(<span class="string">'Global optimal'</span>, xy=(<span class="number">2</span>*np.pi, <span class="number">-1.21</span>), xycoords=<span class="string">'data'</span>,</span><br><span class="line">             xytext=(<span class="number">-48</span>, <span class="number">125</span>), textcoords=<span class="string">'offset points'</span>,color=<span class="string">'r'</span>, fontsize=<span class="number">14</span>, arrowprops=dict(arrowstyle=<span class="string">"-&gt;"</span>,</span><br><span class="line">             connectionstyle=<span class="string">"arc,rad=90"</span>, color=<span class="string">'r'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the labels</span></span><br><span class="line">font = LabelFormat(plt)</span><br><span class="line">plt.xlabel(<span class="string">'$x$'</span>, font)</span><br><span class="line">plt.ylabel(<span class="string">'$\hat y$'</span>, font)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+    </div>
+</div>
+</li>
+<li><div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        图7和图11的python源代码:
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># @Time : 2020/4/7 11:28</span></span><br><span class="line"><span class="comment"># @Author : tengweitw</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_boston</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> mpl_toolkits.mplot3d <span class="keyword">import</span> Axes3D</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Linear_regression_normal_equation</span><span class="params">(train_data, train_target, test_data, test_target)</span>:</span></span><br><span class="line">    <span class="comment"># the 1st column is 1 i.e., x_0=1</span></span><br><span class="line">    temp = np.ones([np.size(train_data, <span class="number">0</span>), <span class="number">1</span>])</span><br><span class="line">    <span class="comment"># X is a 500*(1+2)-dim matrix</span></span><br><span class="line">    X = np.concatenate((temp, train_data), axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Normal equation</span></span><br><span class="line">    w_bar = np.matmul(np.linalg.inv(np.matmul(X.T, X)), np.matmul(X.T, train_target))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Training Error</span></span><br><span class="line">    y_predict_train = np.matmul(X, w_bar)</span><br><span class="line">    E_train = np.linalg.norm(y_predict_train - train_target)/len(y_predict_train)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Predicting</span></span><br><span class="line">    x0 = np.ones((np.size(test_data, <span class="number">0</span>), <span class="number">1</span>))</span><br><span class="line">    test_data1 = np.concatenate((x0, test_data), axis=<span class="number">1</span>)</span><br><span class="line">    y_predict_test = np.matmul(test_data1, w_bar)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Prediction Error</span></span><br><span class="line">    E_test = np.linalg.norm(y_predict_test - test_target)/len(y_predict_test)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> y_predict_test, E_train, E_test</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Linear_regression_normal_equation_scale</span><span class="params">(train_data, train_target, test_data, test_target)</span>:</span></span><br><span class="line">    <span class="comment"># Data processing: scaling</span></span><br><span class="line">    <span class="comment"># For training data</span></span><br><span class="line">    ss = preprocessing.StandardScaler()</span><br><span class="line">    ss.partial_fit(train_data)</span><br><span class="line">    train_data_scale = ss.fit_transform(train_data)</span><br><span class="line">    <span class="comment"># For testing data</span></span><br><span class="line">    ss.partial_fit(test_data)</span><br><span class="line">    test_data_scale = ss.fit_transform(test_data)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># the 1st column is 1 i.e., x_0=1</span></span><br><span class="line">    temp = np.ones([np.size(train_data_scale, <span class="number">0</span>), <span class="number">1</span>])</span><br><span class="line">    <span class="comment"># X is a 500*(1+2)-dim matrix</span></span><br><span class="line">    X = np.concatenate((temp, train_data_scale), axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Normal equation</span></span><br><span class="line">    w_bar = np.matmul(np.linalg.inv(np.matmul(X.T, X)), np.matmul(X.T, train_target))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Training Error</span></span><br><span class="line">    y_predict_train = np.matmul(X, w_bar)</span><br><span class="line">    E_train = np.linalg.norm(y_predict_train - train_target) / len(y_predict_train)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Predicting</span></span><br><span class="line">    x0 = np.ones((np.size(test_data_scale, <span class="number">0</span>), <span class="number">1</span>))</span><br><span class="line">    test_data1 = np.concatenate((x0, test_data_scale), axis=<span class="number">1</span>)</span><br><span class="line">    y_predict_test = np.matmul(test_data1, w_bar)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Prediction Error</span></span><br><span class="line">    E_test = np.linalg.norm(y_predict_test - test_target) / len(y_predict_test)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> y_predict_test, E_train, E_test</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Linear_regression_gradient_descend</span><span class="params">(train_data, train_target, test_data, test_target)</span>:</span></span><br><span class="line">    <span class="comment"># learning rate</span></span><br><span class="line">    eta = <span class="number">5e-6</span></span><br><span class="line">    M = np.size(train_data, <span class="number">1</span>)</span><br><span class="line">    N = np.size(train_data, <span class="number">0</span>)</span><br><span class="line">    w_bar = np.zeros((M + <span class="number">1</span>, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># the 1st column is 1 i.e., x_0=1</span></span><br><span class="line">    temp = np.ones([N, <span class="number">1</span>])</span><br><span class="line">    <span class="comment"># X is a N*(1+M)-dim matrix</span></span><br><span class="line">    X = np.concatenate((temp, train_data), axis=<span class="number">1</span>)</span><br><span class="line">    train_target = np.mat(train_target).T</span><br><span class="line"></span><br><span class="line">    iter = <span class="number">0</span></span><br><span class="line">    num_iter = <span class="number">5000</span></span><br><span class="line">    E_train = np.zeros((num_iter, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> iter &lt; num_iter:</span><br><span class="line">        temp = np.matmul(X, w_bar) - train_target</span><br><span class="line">        w_bar = w_bar - eta * np.matmul(X.T, temp)</span><br><span class="line">        <span class="comment"># Predicting training data</span></span><br><span class="line">        y_predict_train = np.matmul(X, w_bar)</span><br><span class="line">        <span class="comment"># Training Error</span></span><br><span class="line">        E_train[iter]=np.linalg.norm(y_predict_train - train_target)/len(y_predict_train)</span><br><span class="line">        iter += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Predicting</span></span><br><span class="line">    x0 = np.ones((np.size(test_data, <span class="number">0</span>), <span class="number">1</span>))</span><br><span class="line">    test_data1 = np.concatenate((x0, test_data), axis=<span class="number">1</span>)</span><br><span class="line">    y_predict_test = np.matmul(test_data1, w_bar)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Prediction Error</span></span><br><span class="line">    E_test = np.linalg.norm(y_predict_test.ravel()- test_target)/len(y_predict_test)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> y_predict_test, E_train, E_test</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Linear_regression_gradient_descend_scale</span><span class="params">(train_data, train_target, test_data, test_target)</span>:</span></span><br><span class="line">    <span class="comment"># Data processing: scaling</span></span><br><span class="line">    <span class="comment"># For training data</span></span><br><span class="line">    ss = preprocessing.StandardScaler()</span><br><span class="line">    ss.partial_fit(train_data)</span><br><span class="line">    train_data_scale = ss.fit_transform(train_data)</span><br><span class="line">    <span class="comment"># For testing data</span></span><br><span class="line">    ss.partial_fit(test_data)</span><br><span class="line">    test_data_scale = ss.fit_transform(test_data)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># learning rate</span></span><br><span class="line">    eta = <span class="number">1e-3</span></span><br><span class="line">    M = np.size(train_data_scale, <span class="number">1</span>)</span><br><span class="line">    N = np.size(train_data_scale, <span class="number">0</span>)</span><br><span class="line">    w_bar = np.zeros((M + <span class="number">1</span>, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># the 1st column is 1 i.e., x_0=1</span></span><br><span class="line">    temp = np.ones([N, <span class="number">1</span>])</span><br><span class="line">    <span class="comment"># X is a N*(1+M)-dim matrix</span></span><br><span class="line">    X = np.concatenate((temp, train_data_scale), axis=<span class="number">1</span>)</span><br><span class="line">    train_target = np.mat(train_target).T</span><br><span class="line"></span><br><span class="line">    iter = <span class="number">0</span></span><br><span class="line">    num_iter = <span class="number">10</span></span><br><span class="line">    E_train = np.zeros((num_iter, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> iter &lt; num_iter:</span><br><span class="line">        temp = np.matmul(X, w_bar) - train_target</span><br><span class="line">        w_bar = w_bar - eta * np.matmul(X.T, temp)</span><br><span class="line">        <span class="comment"># Predicting training data</span></span><br><span class="line">        y_predict_train = np.matmul(X, w_bar)</span><br><span class="line">        <span class="comment"># Training Error</span></span><br><span class="line">        E_train[iter]=np.linalg.norm(y_predict_train - train_target)/len(y_predict_train)</span><br><span class="line">        iter += <span class="number">1</span></span><br><span class="line">    <span class="comment"># Predicting</span></span><br><span class="line">    x0 = np.ones((np.size(test_data_scale, <span class="number">0</span>), <span class="number">1</span>))</span><br><span class="line">    test_data1 = np.concatenate((x0, test_data_scale), axis=<span class="number">1</span>)</span><br><span class="line">    y_predict_test = np.matmul(test_data1, w_bar)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Prediction Error</span></span><br><span class="line">    E_test = np.linalg.norm(y_predict_test.ravel()- test_target)/len(y_predict_test)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> y_predict_test, E_train, E_test</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the format of labels</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LabelFormat</span><span class="params">(plt)</span>:</span></span><br><span class="line">    ax = plt.gca()</span><br><span class="line">    plt.tick_params(labelsize=<span class="number">14</span>)</span><br><span class="line">    labels = ax.get_xticklabels() + ax.get_yticklabels()</span><br><span class="line">    [label.set_fontname(<span class="string">'Times New Roman'</span>) <span class="keyword">for</span> label <span class="keyword">in</span> labels]</span><br><span class="line">    font = &#123;<span class="string">'family'</span>: <span class="string">'Times New Roman'</span>,</span><br><span class="line">            <span class="string">'weight'</span>: <span class="string">'normal'</span>,</span><br><span class="line">            <span class="string">'size'</span>: <span class="number">16</span>,</span><br><span class="line">            &#125;</span><br><span class="line">    <span class="keyword">return</span> font</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Plot_error_vs_omega</span><span class="params">(train_data,train_target)</span>:</span></span><br><span class="line">    <span class="comment"># ---------Show the contour of E with respect to omegas---------------------</span></span><br><span class="line">    x1 = train_data[:, <span class="number">0</span>]</span><br><span class="line">    x2 = train_data[:, <span class="number">1</span>]</span><br><span class="line">    omega_1 = np.linspace(<span class="number">-30</span>, <span class="number">30</span>, <span class="number">30</span>)</span><br><span class="line">    omega_2 = np.linspace(<span class="number">-30</span>, <span class="number">30</span>, <span class="number">30</span>)</span><br><span class="line"></span><br><span class="line">    Y_hat = np.zeros((len(omega_1),len( omega_2)))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(omega_1)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(omega_2)):</span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> range(len(train_data)):</span><br><span class="line">                temp=train_target[k] - (omega_1[i] * x1[k] + omega_2[j] * x2[k])</span><br><span class="line">                Y_hat[i][j] = Y_hat[i][j] + np.square(temp)</span><br><span class="line"></span><br><span class="line">    fig = plt.figure()</span><br><span class="line"></span><br><span class="line">    plt.contour(omega_2,omega_1,Y_hat,<span class="number">20</span>)</span><br><span class="line">    <span class="comment"># Set the labels</span></span><br><span class="line">    font = LabelFormat(plt)</span><br><span class="line">    plt.xlabel(<span class="string">'$\omega_1$'</span>, font)</span><br><span class="line">    plt.ylabel(<span class="string">'$\omega_2$'</span>, font)</span><br><span class="line"></span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Plot_error_vs_omega_scale</span><span class="params">(train_data, train_target)</span>:</span></span><br><span class="line">    <span class="comment"># ---------Show the contour of E with respect to omegas---------------------</span></span><br><span class="line">    <span class="comment"># Data processing: scaling</span></span><br><span class="line">    <span class="comment"># For training data</span></span><br><span class="line">    ss = preprocessing.StandardScaler()</span><br><span class="line">    ss.partial_fit(train_data)</span><br><span class="line">    train_data_scale = ss.fit_transform(train_data)</span><br><span class="line"></span><br><span class="line">    x1 = train_data_scale[:, <span class="number">0</span>]</span><br><span class="line">    x2 = train_data_scale[:, <span class="number">1</span>]</span><br><span class="line">    omega_1 = np.linspace(<span class="number">-30</span>, <span class="number">30</span>, <span class="number">30</span>)</span><br><span class="line">    omega_2 = np.linspace(<span class="number">-30</span>, <span class="number">30</span>, <span class="number">30</span>)</span><br><span class="line"></span><br><span class="line">    Y_hat = np.zeros((len(omega_1), len(omega_2)))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(omega_1)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(omega_2)):</span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> range(len(train_data_scale)):</span><br><span class="line">                temp = train_target[k] - (omega_1[i] * x1[k] + omega_2[j] * x2[k])</span><br><span class="line">                Y_hat[i][j] = Y_hat[i][j] + np.square(temp)</span><br><span class="line"></span><br><span class="line">    fig = plt.figure()</span><br><span class="line"></span><br><span class="line">    plt.contour(omega_2, omega_1, Y_hat, <span class="number">20</span>)</span><br><span class="line">    <span class="comment"># Set the labels</span></span><br><span class="line">    font = LabelFormat(plt)</span><br><span class="line">    plt.xlabel(<span class="string">'$\omega_1$'</span>, font)</span><br><span class="line">    plt.ylabel(<span class="string">'$\omega_2$'</span>, font)</span><br><span class="line"></span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line"></span><br><span class="line">    <span class="comment"># load house price of Boston</span></span><br><span class="line">    data, target = load_boston(return_X_y=<span class="literal">True</span>)</span><br><span class="line">    <span class="comment"># The number of selected features</span></span><br><span class="line">    M = <span class="number">2</span></span><br><span class="line">    <span class="comment"># The first 500 data for training</span></span><br><span class="line">    train_data = data[<span class="number">0</span>:<span class="number">500</span>, <span class="number">0</span>:<span class="number">0</span> + M]</span><br><span class="line">    train_target = target[<span class="number">0</span>:<span class="number">500</span>]</span><br><span class="line">    train_target.reshape(len(train_data), <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># ------------------------------</span></span><br><span class="line">    <span class="comment"># The last 6 data for testing</span></span><br><span class="line">    test_data = data[<span class="number">500</span>:, <span class="number">0</span>:<span class="number">0</span> + M]</span><br><span class="line">    test_target = target[<span class="number">500</span>:]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># To show the contour of error function E with respect to omega</span></span><br><span class="line">    <span class="comment"># We can see that it's a convex function, not easy for gradient descend</span></span><br><span class="line">    Plot_error_vs_omega(train_data, train_target)</span><br><span class="line">    Plot_error_vs_omega_scale(train_data, train_target)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#---------------------------------#</span></span><br><span class="line">    y_predict_normal_equation, E_train,E_test = Linear_regression_normal_equation(train_data, train_target, test_data,</span><br><span class="line">                                                                         test_target)</span><br><span class="line">    print(<span class="string">"Linear Regression Using Normal Equation: E_train=%f, E_test=%f"</span> % (E_train,E_test))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(test_data)):</span><br><span class="line">        print(<span class="string">"True value: %f    Predicted value: %f"</span> % (test_target[i], y_predict_normal_equation[i]))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># ---------------------------------#</span></span><br><span class="line">    y_predict_normal_equation_scale, E_train,E_test = Linear_regression_normal_equation_scale(train_data, train_target,</span><br><span class="line">                                                                                     test_data, test_target)</span><br><span class="line">    print(<span class="string">"Linear Regression Using Normal Equation with scaling: E_train=%f, E_test=%f"</span> % (E_train,E_test))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(test_data)):</span><br><span class="line">        print(<span class="string">"True value: %f    Predicted value: %f"</span> % (test_target[i], y_predict_normal_equation_scale[i]))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># ---------------------------------#</span></span><br><span class="line">    y_predict_gradient_descent, E_train,E_test = Linear_regression_gradient_descend(train_data, train_target, test_data,</span><br><span class="line">                                                                           test_target)</span><br><span class="line">    print(<span class="string">"Linear Regression Using Gradient Descend: E_train=%f, E_test=%f"</span> % (E_train[<span class="number">-1</span>],E_test))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(test_data)):</span><br><span class="line">        print(<span class="string">"True value: %f    Predicted value: %f"</span> % (test_target[i], y_predict_gradient_descent[i]))</span><br><span class="line"></span><br><span class="line">    plt.figure()</span><br><span class="line">    plt.plot(E_train,<span class="string">'r-'</span>)</span><br><span class="line">    <span class="comment"># Set the labels</span></span><br><span class="line">    font = LabelFormat(plt)</span><br><span class="line">    plt.xlabel(<span class="string">'Iteration'</span>, font)</span><br><span class="line">    plt.ylabel(<span class="string">'Average error: $E/N$'</span>, font)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># ---------------------------------#</span></span><br><span class="line">    y_predict_gradient_descent_scale, E_train,E_test = Linear_regression_gradient_descend_scale(train_data, train_target,</span><br><span class="line">                                                                                       test_data, test_target)</span><br><span class="line">    print(<span class="string">"Linear Regression Using Gradient Descend with scaling: E_train=%f, E_test=%f"</span> % (E_train[<span class="number">-1</span>],E_test))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(test_data)):</span><br><span class="line">        print(<span class="string">"True value: %f    Predicted value: %f"</span> % (test_target[i], y_predict_gradient_descent_scale[i]))</span><br><span class="line">    plt.figure()</span><br><span class="line">    plt.plot(E_train,<span class="string">'r-'</span>)</span><br><span class="line">    <span class="comment"># Set the labels</span></span><br><span class="line">    font = LabelFormat(plt)</span><br><span class="line">    plt.xlabel(<span class="string">'Iteration'</span>, font)</span><br><span class="line">    plt.ylabel(<span class="string">'Average error: $E/N$'</span>, font)</span><br><span class="line"></span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+    </div>
+</div>
+</li>
+</ul>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2020/04/06/[20200406]/" title="【图解例说机器学习】线性回归">http://tengweitw.com/2020/04/06/[20200406]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"><i class="fa fa-tag"></i> Machine Learning</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/18/%5B20200318%5D/" rel="prev" title="【漫漫科研路\LaTeX】使用Sublime Text3撰写科研论文">
+      <i class="fa fa-chevron-left"></i> 【漫漫科研路\LaTeX】使用Sublime Text3撰写科研论文
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/14/%5B20200414%5D/" rel="next" title="【图解例说机器学习】逻辑回归(Logistic Regression)">
+      【图解例说机器学习】逻辑回归(Logistic Regression) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#模型描述"><span class="nav-number">1.</span> <span class="nav-text">模型描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代价函数"><span class="nav-number">2.</span> <span class="nav-text">代价函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一个例子"><span class="nav-number">3.</span> <span class="nav-text">一个例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正规方程与梯度下降"><span class="nav-number">4.</span> <span class="nav-text">正规方程与梯度下降</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#正规方程法"><span class="nav-number">4.0.1.</span> <span class="nav-text">正规方程法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#梯度下降法"><span class="nav-number">4.0.2.</span> <span class="nav-text">梯度下降法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法实现"><span class="nav-number">5.</span> <span class="nav-text">算法实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算法结果"><span class="nav-number">5.0.1.</span> <span class="nav-text">算法结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#特征缩放与梯度下降法"><span class="nav-number">5.0.2.</span> <span class="nav-text">特征缩放与梯度下降法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录"><span class="nav-number">6.</span> <span class="nav-text">附录</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

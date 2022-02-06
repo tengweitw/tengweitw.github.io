@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Win10下搭建VS2017+CUDA10.1+CPLEX12.9开发环境想来已经有三、四年没有用过C&#x2F;C++了，一直都是使用MATLAB进行算法的实现。相比于C&#x2F;C++, MATLAB更加适合快速地实现算法，可视化仿真结果。但最近想学习并行计算（尽管MATLAB也可以实现并行化），并且实验室的服务器又装有RTX2080Ti的显卡，因此考虑使用CUDA平台实现GPU并行编程。另一方面，我需要使用I">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【漫漫科研路\C&amp;C++】Win10 + VS2017 + CUDA10.1 + CPLEX12.9 配置">
+<meta property="og:url" content="http://tengweitw.com/2019/11/24/[20191124]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="Win10下搭建VS2017+CUDA10.1+CPLEX12.9开发环境想来已经有三、四年没有用过C&#x2F;C++了，一直都是使用MATLAB进行算法的实现。相比于C&#x2F;C++, MATLAB更加适合快速地实现算法，可视化仿真结果。但最近想学习并行计算（尽管MATLAB也可以实现并行化），并且实验室的服务器又装有RTX2080Ti的显卡，因此考虑使用CUDA平台实现GPU并行编程。另一方面，我需要使用I">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig002.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig003.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig004.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig005.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig006.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig007.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig008.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig009.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig010.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig011.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig012.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig013.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig014.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig015.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig016.jpg">
+<meta property="article:published_time" content="2019-11-24T09:48:08.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.785Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Research">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig001.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2019/11/24/[20191124]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【漫漫科研路\C&C++】Win10 + VS2017 + CUDA10.1 + CPLEX12.9 配置 | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2019/11/24/%5B20191124%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【漫漫科研路\C&C++】Win10 + VS2017 + CUDA10.1 + CPLEX12.9 配置
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-24 17:48:08" itemprop="dateCreated datePublished" datetime="2019-11-24T17:48:08+08:00">2019-11-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Win10下搭建VS2017-CUDA10-1-CPLEX12-9开发环境"><a href="#Win10下搭建VS2017-CUDA10-1-CPLEX12-9开发环境" class="headerlink" title="Win10下搭建VS2017+CUDA10.1+CPLEX12.9开发环境"></a>Win10下搭建VS2017+CUDA10.1+CPLEX12.9开发环境</h2><p>想来已经有三、四年没有用过C/C++了，一直都是使用MATLAB进行算法的实现。相比于C/C++, MATLAB更加适合快速地实现算法，可视化仿真结果。但最近想学习并行计算（尽管MATLAB也可以实现并行化），并且实验室的服务器又装有RTX2080Ti的显卡，因此考虑使用CUDA平台实现GPU并行编程。另一方面，我需要使用IBM的CPLEX工具来验证算法的结果，于是乎就有了这篇文章。</p>
+<a id="more"></a>
+<h2 id="VS2017的安装"><a href="#VS2017的安装" class="headerlink" title="VS2017的安装"></a>VS2017的安装</h2><p>VS2017的安装比较简单，我就不作介绍了。但是有两点需要注意：</p>
+<ul>
+<li>最好先安装VS2017，然后再安装CUDA和CPLEX，</li>
+<li>最好不要安装最新版本VS2019，CPLEX12.9目前支持的是VS2015和VS2017</li>
+</ul>
+<h2 id="CUDA10-1的安装"><a href="#CUDA10-1的安装" class="headerlink" title="CUDA10.1的安装"></a>CUDA10.1的安装</h2><p>直接从NVIDIA官网下载<a href="https://developer.nvidia.com/cuda-downloads" target="_blank" rel="noopener">最新版本的CUDA</a>进行安装，也可以安装<a href="https://developer.nvidia.com/cuda-toolkit-archive" target="_blank" rel="noopener">历史发行版本</a>。按照默认设置安装即可。</p>
+<p><strong>测试是否安装成功</strong><br>最快捷的方法是运行cuda安装完成后自带的样例，默认安装在C:\ProgramData\NVIDIA Corporation\CUDA Samples\v10.1。下面我们介绍一般的方法，方便自己创建cuda项目：</p>
+<ul>
+<li>在VS2017中创建一个HelloWorld_GPU的项目，如下图所示：<br> <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig001.jpg" width="600" height="400" title="图1" alt="图1" ><ul>
+<li>项目中自带一个kernel.cu的文件，可以直接运行，看是否运行成功。这里，我们依照传统，写一个更为简单的hello world程序来进行测试。删除kernel.cu文件，在项目中添加一个CUDA C/C++文件取名为Hello_World，程序如下：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"cuda_runtime.h"</span></span></span><br><span class="line"></span><br><span class="line">__<span class="function">global__ <span class="keyword">void</span> <span class="title">helloFromGPU</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Hello World from GPU!\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Hello World from CPU.\n\n"</span>);<span class="comment">//Hello from CPU</span></span><br><span class="line"></span><br><span class="line">	helloFromGPU &lt;&lt; &lt;<span class="number">1</span>, <span class="number">10</span> &gt;&gt; &gt; ();<span class="comment">//call for 10 threads</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+运行结果如下：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig002.jpg" width="600" height="400" title="图2" alt="图2" ></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="CPLEX12-9的安装"><a href="#CPLEX12-9的安装" class="headerlink" title="CPLEX12.9的安装"></a>CPLEX12.9的安装</h2><p>CPLEX12.9的安装是相对来说比较复杂的，简单来说，分为<strong>CPLEX12.9的下载</strong>、<strong>项目的配置</strong>。具体细节如下：</p>
+<h4 id="CPLEX12-9教育版的下载"><a href="#CPLEX12-9教育版的下载" class="headerlink" title="CPLEX12.9教育版的下载"></a>CPLEX12.9教育版的下载</h4><p>普通免费版本支持1000个变量或约束的优化，<a href="https://www.ibm.com/products/ilog-cplex-optimization-studio" target="_blank" rel="noopener">下载地址</a>及网页如下：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig003.jpg" width="600" height="400" title="图3" alt="图3" ><br>为不受限制，我们需要使用学生邮箱进行验证下载(Get student and faculty editions for free).  然后在如下网页注册：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig004.jpg" width="600" height="300" title="图4" alt="图4" ><br>最后选择如下版本进行下载：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig005.jpg" width="600" height="300" title="图5" alt="图5" ></p>
+<hr>
+<h4 id="CPLEX项目配置"><a href="#CPLEX项目配置" class="headerlink" title="CPLEX项目配置"></a>CPLEX项目配置</h4><h6 id="项目的创建："><a href="#项目的创建：" class="headerlink" title="项目的创建："></a>项目的创建：</h6><p>首先创建一个C/C++项目，在项目中添加一个test.cpp（名称自取）文件，其代码来自于 <a href="https://www.ibm.com/support/knowledgecenter/SSSA5P_12.8.0/ilog.odms.studio.help/pdf/gscplex.pdf?origURL=SSSA5P_12.8.0/ilog.odms.studio.help/Optimization_Studio/topics/PLUGINS_ROOT/ilog.odms.studio.help/pdf/gscplex.pdf" target="_blank" rel="noopener">IBM ILOG CPLEX Optimization Studio Getting Started with CPLEX</a> 的样例，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ilcplex/ilocplex.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line">ILOSTLBEGIN</span><br><span class="line"><span class="keyword">int</span></span><br><span class="line">main(<span class="keyword">void</span> *) &#123;</span><br><span class="line">	IloEnv env;</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		<span class="function">IloModel <span class="title">model</span><span class="params">(env)</span></span>;</span><br><span class="line">		<span class="function">IloNumVarArray <span class="title">vars</span><span class="params">(env)</span></span>;</span><br><span class="line">		vars.add(IloNumVar(env, <span class="number">0.0</span>, <span class="number">40.0</span>));  <span class="comment">// 0 &lt;= x1 &lt;= 40</span></span><br><span class="line">		vars.add(IloNumVar(env));  <span class="comment">// 0 &lt;= x2</span></span><br><span class="line">		vars.add(IloNumVar(env));  <span class="comment">// 0 &lt;= x3</span></span><br><span class="line">		model.add(IloMaximize(env, vars[<span class="number">0</span>] + <span class="number">2</span> * vars[<span class="number">1</span>] + <span class="number">3</span> * vars[<span class="number">2</span>])); <span class="comment">//maximize x1 + 2 x2 + 3 x3</span></span><br><span class="line">		model.add(-vars[<span class="number">0</span>] + vars[<span class="number">1</span>] + vars[<span class="number">2</span>] &lt;= <span class="number">20</span>);<span class="comment">//subject to -x1 + x2 + x3 &lt;= 20</span></span><br><span class="line">		model.add(vars[<span class="number">0</span>] - <span class="number">3</span> * vars[<span class="number">1</span>] + vars[<span class="number">2</span>] &lt;= <span class="number">30</span>);<span class="comment">//x1 - 3 x2 + x3 &lt;=30</span></span><br><span class="line">		<span class="function">IloCplex <span class="title">cplex</span><span class="params">(model)</span></span>;</span><br><span class="line">		<span class="keyword">if</span> (!cplex.solve()) &#123;</span><br><span class="line">			env.error() &lt;&lt; <span class="string">"Failed to optimize LP."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">			<span class="keyword">throw</span>(<span class="number">-1</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="function">IloNumArray <span class="title">vals</span><span class="params">(env)</span></span>;</span><br><span class="line">		env.out() &lt;&lt; <span class="string">"Solution status = "</span> &lt;&lt; cplex.getStatus() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		env.out() &lt;&lt; <span class="string">"Solution value = "</span> &lt;&lt; cplex.getObjValue() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		cplex.getValues(vals, vars);</span><br><span class="line">		env.out() &lt;&lt; <span class="string">"Values = "</span> &lt;&lt; vals &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">catch</span> (IloException &amp; e) &#123; <span class="built_in">cerr</span> &lt;&lt; <span class="string">"Concert exception caught: "</span> &lt;&lt; e &lt;&lt; <span class="built_in">endl</span>; &#125;</span><br><span class="line">	<span class="keyword">catch</span> (...) &#123; <span class="built_in">cerr</span> &lt;&lt; <span class="string">"Unknown exception caught"</span> &lt;&lt; <span class="built_in">endl</span>; &#125;</span><br><span class="line">	env.end();</span><br><span class="line">	system(<span class="string">"pause"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意：VS2017创建C/C++会自带pch.h和pch.cpp文件，我们可以删除这两个文件而不影响程序运行，具体可以通过项目-&gt;属性-&gt; C/C++ -&gt; Precompiled Headers -&gt; Precompiled Header一项中选择Not Using Precompiled Headers 实现。</p>
+<hr>
+<h6 id="系统环境和项目的配置："><a href="#系统环境和项目的配置：" class="headerlink" title="系统环境和项目的配置："></a>系统环境和项目的配置：</h6><p>本文的配置完全依照 <a href="https://www.ibm.com/support/knowledgecenter/SSSA5P_12.8.0/ilog.odms.studio.help/pdf/gscplex.pdf?origURL=SSSA5P_12.8.0/ilog.odms.studio.help/Optimization_Studio/topics/PLUGINS_ROOT/ilog.odms.studio.help/pdf/gscplex.pdf" target="_blank" rel="noopener">IBM ILOG CPLEX Optimization Studio Getting Started with CPLEX</a> 以及安装完CPLEX后，位于默认安装目录C:\ProgramFiles\IBM\ILOG\CPLEX_Enterprise_Server129\CPLEX_Studio\cplex的c_cpp.html文件</p>
+<ul>
+<li><strong>电脑的系统环境变量配置</strong>参考<a href="https://www.ibm.com/support/knowledgecenter/SSSA5P_12.8.0/ilog.odms.studio.help/pdf/gscplex.pdf?origURL=SSSA5P_12.8.0/ilog.odms.studio.help/Optimization_Studio/topics/PLUGINS_ROOT/ilog.odms.studio.help/pdf/gscplex.pdf" target="_blank" rel="noopener">IBM ILOG CPLEX Optimization Studio Getting Started with CPLEX</a> 中<em>Setting up CPLEX on Windows</em>一节中的设置：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig006.jpg" width="600" height="300" title="图6" alt="图6" ><br><em>具体操作如下</em>：右击我的电脑-&gt;属性-&gt;高级系统设置-&gt;环境变量，编辑(添加)Path变量如下：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig007.jpg" width="600" height="450" title="图7" alt="图7" ></li>
+</ul>
+<hr>
+<ul>
+<li><p><strong>项目的配置</strong>参考前面提及的<strong>c_cpp.html</strong>中<em>Building your own project which links with CPLEX</em>一节的第4点：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig008.jpg" width="600" height="650" title="图8" alt="图8" ><br>根据上图所示，<em>项目具体配置如下</em>：</p>
+<ol>
+<li>将调试环境改为 release 和 x64:<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig009.jpg" width="600" height="150" title="图9" alt="图19" ></li>
+<li><p>右击项目、选择属性、然后选择C/C++一项：</p>
+<p>1).  在General(常规)一项中，选择Additional Include Directories，添加如下：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig010.jpg" width="600" height="400" title="图10" alt="图10" ><br>2). 在Preprocessor(预处理器)中，选择Preprocessor Definitions, 编辑如下：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig011.jpg" width="600" height="400" title="图11" alt="图11" ><br>3). 选择Code Generation（代码生成），然后选择Runtime Library（运行库）， 设置如下 ：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig012.jpg" width="600" height="400" title="图12" alt="图12" ></p>
+</li>
+</ol>
+</li>
+</ul>
+<ol>
+<li><p>右击项目、选择属性、然后选择Link一项，然后进行如下操作：<br>1).选择  General一项，在 Additional Library Directories中添加如下库目录：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig013.jpg" width="600" height="200" title="图13" alt="图13" ></p>
+<p>2). 选择Input，然后选择Additional Dependencies，设置如下：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig014.jpg" width="600" height="150" title="图14" alt="图14" ><br>完成上述项目配置后，注意按下确定按钮。注意：上述配置中的目录都是你CPLEX的安装目录。最后在菜单栏Build选项中选择Configuration Manager也需要选择Release和x64，如图所示：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig015.jpg" width="600" height="200" title="图15" alt="图15" ><br>至此，所有配置完成，运行项目，结果如下：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191124/20191124_fig016.jpg" width="600" height="250" title="图16" alt="图16" ></p>
+</li>
+</ol>
+<hr>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2019/11/24/[20191124]/" title="【漫漫科研路\C&amp;C++】Win10 + VS2017 + CUDA10.1 + CPLEX12.9 配置">http://tengweitw.com/2019/11/24/[20191124]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Research/" rel="tag"><i class="fa fa-tag"></i> Research</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/12/17/%5B20171217%5D/" rel="prev" title="【漫漫科研路\pgfplots】最小跳数最大权重算法">
+      <i class="fa fa-chevron-left"></i> 【漫漫科研路\pgfplots】最小跳数最大权重算法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/12/01/%5B20191201%5D/" rel="next" title="【漫漫科研路\C&C++】CPLEX解SOCP问题">
+      【漫漫科研路\C&C++】CPLEX解SOCP问题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Win10下搭建VS2017-CUDA10-1-CPLEX12-9开发环境"><span class="nav-number">1.</span> <span class="nav-text">Win10下搭建VS2017+CUDA10.1+CPLEX12.9开发环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VS2017的安装"><span class="nav-number">2.</span> <span class="nav-text">VS2017的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CUDA10-1的安装"><span class="nav-number">3.</span> <span class="nav-text">CUDA10.1的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPLEX12-9的安装"><span class="nav-number">4.</span> <span class="nav-text">CPLEX12.9的安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CPLEX12-9教育版的下载"><span class="nav-number">4.0.1.</span> <span class="nav-text">CPLEX12.9教育版的下载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CPLEX项目配置"><span class="nav-number">4.0.2.</span> <span class="nav-text">CPLEX项目配置</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#项目的创建："><span class="nav-number">4.0.2.0.1.</span> <span class="nav-text">项目的创建：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#系统环境和项目的配置："><span class="nav-number">4.0.2.0.2.</span> <span class="nav-text">系统环境和项目的配置：</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="​    说起迷宫想必大家都很熟悉，个人感觉迷宫对人的方向感是很大的考验，至少我的方向感是不好的，尤其是在三维空间中。由于这段时间帮导师做项目用到了三维作图，便心血来潮想做个三维迷宫玩玩。要想画出三维的迷宫游戏，我们需要先从二维开始。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Qt编程】3D迷宫游戏">
+<meta property="og:url" content="http://tengweitw.com/2014/10/18/[20141018]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="​    说起迷宫想必大家都很熟悉，个人感觉迷宫对人的方向感是很大的考验，至少我的方向感是不好的，尤其是在三维空间中。由于这段时间帮导师做项目用到了三维作图，便心血来潮想做个三维迷宫玩玩。要想画出三维的迷宫游戏，我们需要先从二维开始。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig002.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig003.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig004.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig005.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig006.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig007.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig008.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig009.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig010.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig011.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig012.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig013.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig014.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig015.jpg">
+<meta property="article:published_time" content="2014-10-18T10:30:38.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.779Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Qt Coding">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig001.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2014/10/18/[20141018]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【Qt编程】3D迷宫游戏 | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/10/18/%5B20141018%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【Qt编程】3D迷宫游戏
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-10-18 18:30:38" itemprop="dateCreated datePublished" datetime="2014-10-18T18:30:38+08:00">2014-10-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>9.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>13 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>​    说起迷宫想必大家都很熟悉，个人感觉迷宫对人的方向感是很大的考验，至少我的方向感是不好的，尤其是在三维空间中。由于这段时间帮导师做项目用到了三维作图，便心血来潮想做个三维迷宫玩玩。要想画出三维的迷宫游戏，我们需要先从二维开始。</p>
+<a id="more"></a>
+<h2 id="二维迷宫："><a href="#二维迷宫：" class="headerlink" title="二维迷宫："></a>二维迷宫：</h2><p><strong>迷宫的程序描述：</strong></p>
+<p>​    现实生活中，我们经常将问题用数学的方法来描述并解决（数学建模）。同样的，我们想用程序来解决问题，就得把问题程序化。废话不多说，进入正题：</p>
+<p>​    <strong>我们可以用一个矩阵matrix来描绘整个迷宫</strong>：<strong>元素为1，代表是空的，元素为0代表墙</strong>。<strong>为了描述问题的方便，下面都采用9行9列的矩阵来说明问题，并且假设（0，0）为入口，（1，1）为出口。</strong></p>
+<p>​    <strong>网上也有一些常见的迷宫程序，但是它们都有一种特点，就是生成的迷宫可能没有从入口到出口的可达路径(可以通过循环来生成迷宫，直到有可达路径)，或则从入口到出口有几条可达路径(如果想要只有唯一可达路径，就不行了)</strong>。这些算法大多数是通过随机数来产生迷宫矩阵matrix(随机产生0，1元素)，然后通过迭代、回溯算法来找入口到出口的路径。由于矩阵matrix是随机的，这就不能保证入口到出口是可达的，这就是导致上面问题。</p>
+<hr>
+<p><strong>算法思想：</strong></p>
+<p>​    想必大家都学过<strong>树(关于树的相关操作可以看我之前的文章)</strong>这种数据结构，比如说树的遍历DFS、BFS，树的深度等等操作。当然树的类型也有很多，如完全二叉树、红黑树、B树等等。但是我现在要说的不是这些，<strong>而是另一个我发现的性质：一个节点到另一个节点的路径有且只有一条！</strong> 现在就能和前面我说的那个问题联系起来了。<strong>下面看看是怎么联系的：</strong></p>
+<p>​    我们首先将整个矩阵matrix的元素初始化为0即认为全都是墙，<strong>我们的任务就是拆墙（使元素等于1）来构成迷宫。怎么拆墙是我们算法的关键！</strong></p>
+<ul>
+<li><p><strong>首先</strong>，我们随便在矩阵中找一个初始点A（4，4），将该点的值设为1，即将该点的墙拆掉。 </p>
+</li>
+<li><p><strong>然后</strong>，产生一个0到3的随机整数randnum（0，1，2，3分布代表上下左右四个方向），在随机数randnum表示的方向进行拆墙（<strong>注意是连拆两块</strong>），如果该方向上与目前位置隔一块的位置没有墙，就不能拆，则需要再产生随机数，在其他方向上拆墙。（<strong>注意拆墙的前提是该方向隔一块的位置是墙</strong>）  </p>
+</li>
+<li><p>最后，在上一步骤中，一直循环，直到当前位置四个方向的隔一块的位置都没有墙可拆，就进行回溯（回退到当前位置的上一个位置），然后进行上一步骤的操作，直至没有墙可拆！</p>
+</li>
+</ul>
+<hr>
+<p>​    我一直相信图像是比文字更能说话的，下面我们用图像来说明上述步骤：</p>
+<p>​    <strong>在强调一下：我们举例都采用9行9列的矩阵，初始点为（4，4）。</strong></p>
+<ul>
+<li>最开始时，只有初始点处的墙被拆掉<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig001.jpg" width="400" height="300" title="图1" alt="图1" ></li>
+</ul>
+<ul>
+<li><p>随机数randnum=2，开始向左边拆墙，由于（4，2）为0（有墙），可以拆，于是拆掉（4，2）、（4，3）位置的墙，则结果如下：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig002.jpg" width="400" height="300" title="图2" alt="图2" ></p>
+</li>
+<li><p>接着产生随机数randnum=1,开始向下拆墙，由于（6，2）为0（有墙），可以拆，于是拆掉（5，2）、（6，2）位置的墙，结果如下：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig003.jpg" width="400" height="300" title="图3" alt="图3" ></p>
+</li>
+</ul>
+<ul>
+<li>继续产生随机数randnum=0,开始向上拆墙，由于（4，2）为1没有墙，不可以拆，于是重新产生随机数，结果与上一张图一样：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig004.jpg" width="400" height="300" title="图4" alt="图4" ></li>
+</ul>
+<ul>
+<li>继续产生随机数randnum=3,开始向右拆墙，由于（6，4）为0有墙，可以拆，于是拆掉（6，3）、（6，4）位置的墙，结果如下：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig005.jpg" width="400" height="300" title="图5" alt="图5" ></li>
+</ul>
+<p><strong>按照上述步骤重复下去，最终得到一个可能的迷宫矩阵如下：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig006.jpg" width="400" height="300" title="图6" alt="图6" ></p>
+<p><strong>注意事项：</strong></p>
+<p>1、迷宫矩阵的行和列必须为基数，初始点的位置必须为偶数。（这是由算法决定的，因为算法总是从初始点出发，步长为2，到达入口点和出口点，所以初始点与入口点、出口点的横纵坐标的距离都应该是步长2的倍数）。</p>
+<p>2、初始点的选择最好在矩阵的中间位置，可以这样想象：算法的本质就是从初始点出发到达其他点，中间会产生分支（回溯的原因，如果回溯到初始点，则是在初始点就产生分支）到达其它点（包括入口点和出口点）。因此我们可以描述成一棵树，而初始点便是树的根节点。为了更快的找到出口点与入口点的可达路径，应使树的深度较小，这样就应该将初始点选在中间位置。</p>
+<p>3、在进行判断时，为什么要选择看隔一块是否是墙，而不是相邻块、或则隔几块？因为隔一块的话，路与墙的宽度就一样了（取相邻块或则隔几块的情况大家可以实验推导一下！）</p>
+<hr>
+<p><strong>上面我用图文并茂的方法讲述了如何生成迷宫，下面我们来看看如何生成入口到出口的可达路径：</strong></p>
+<p>如上一张图所示，黄色部分就是可达路径（是唯一一条），由于迷宫较小，我们可以一眼看出，当迷宫较大时，我们就要靠矩阵来计算了。在上面的迷宫生成算法中，我们可以在拆墙的时候来记录节点，则当拆到入口时，便记录了从初始点到入口的路径，同理，我们也可以得到初始点到出口的路径，这样根据这两条路径就很容易得到入口到出口的路径了。<strong>前面我也说过，整个算法就是生成树的过程，其中初始点为根节点，找到可达路径相当于找到树中入口节点到出口节点的路径。前面我也提到，该树中任意两个节点的可达路径是唯一的，所以该算法生成的迷宫的入口到出口的路径是唯一的。</strong></p>
+<p>至此，我们已经讲述了整个的算法思想和流程，下面给出源代码(c++,vs2010实现),源文件给出了详细的注释，就不过多解释。<strong>程序总共5个文件</strong>：1、Maze.h  2、Maze.cpp  3、MazeStack.h  4、MazeStack.cpp  5、main.cpp。<strong>具体内容如下：</strong></p>
+<p><strong>1、Maze.h</strong></p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        Maze.h 源代码：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;ctime&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> M 9<span class="comment">//迷宫的行</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 9<span class="comment">//迷宫的列</span></span></span><br><span class="line"><span class="comment">//构造迷宫类型//</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MazeStack</span>;</span><span class="comment">//申明该类</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Maze</span>//定义迷宫节点信息。</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">int</span> j;</span><br><span class="line">    <span class="keyword">int</span> state;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MazeMat</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    Maze matrix[M][N];<span class="comment">//迷宫矩阵</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;Maze&gt; EntryPath;<span class="comment">//从初始点到入口的路径</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;Maze&gt; ExitPath;<span class="comment">//从初始点到出口的路径</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;Maze&gt; FinalPath;<span class="comment">//从入口到出口的路径</span></span><br><span class="line">    MazeStack *mazeStack;<span class="comment">//定义栈</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">initMaze</span><span class="params">()</span></span>;<span class="comment">//初始化迷宫矩阵</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">createMaze</span><span class="params">()</span></span>;<span class="comment">//产生迷宫矩阵</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">displayMaze</span><span class="params">()</span></span>;<span class="comment">//显示迷宫矩阵</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">FindWay</span><span class="params">()</span></span>;<span class="comment">//寻找入口到出口的路径</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//////////////////</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+</div>
+<p><strong>2、Maze.cpp</strong></p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        Maze.cpp 源代码：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"MazeStack.h"</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> MazeMat::initMaze()<span class="comment">//初始化迷宫矩阵</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;M;i++)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;N;j++)</span><br><span class="line">        &#123;</span><br><span class="line">            matrix[i][j].i=i;</span><br><span class="line">            matrix[i][j].j=j;</span><br><span class="line">            matrix[i][j].state=<span class="number">0</span>;<span class="comment">//初始化迷宫矩阵元素为0，即全为墙</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        mazeStack=<span class="keyword">new</span> MazeStack();</span><br><span class="line"></span><br><span class="line">        EntryPath.clear();<span class="comment">//初始化各个路径</span></span><br><span class="line">        ExitPath.clear();</span><br><span class="line">        FinalPath.clear();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> MazeMat::createMaze()<span class="comment">//产生迷宫矩阵，中间也记录了从初始点到入口、出口的路径</span></span><br><span class="line">&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> i=<span class="number">4</span>;<span class="comment">//初始点设定，注意i,j必须为偶数</span></span><br><span class="line">    <span class="keyword">int</span> j=<span class="number">4</span>;</span><br><span class="line">    <span class="keyword">bool</span> Left=<span class="literal">false</span>;<span class="comment">//初始化四个方向，false代表可以朝这个方向搜索</span></span><br><span class="line">    <span class="keyword">bool</span> Right=<span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">bool</span> Up=<span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">bool</span> Down=<span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    matrix[i][j].state=<span class="number">1</span>;<span class="comment">//设置初始点是空的，即不是墙</span></span><br><span class="line">    srand((<span class="keyword">int</span>)time(<span class="number">0</span>));<span class="comment">//产生随机数种子，使得每次运行情况不同</span></span><br><span class="line">    Maze temp;</span><br><span class="line"></span><br><span class="line">    temp.i=i;</span><br><span class="line">    temp.j=j;</span><br><span class="line">    temp.state=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> count1=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> num1=<span class="number">0</span>;</span><br><span class="line">   </span><br><span class="line">    </span><br><span class="line">    mazeStack-&gt;Push(temp);<span class="comment">//将初始点进栈</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)<span class="comment">//不断循环搜索可行方向，形成迷宫</span></span><br><span class="line">    &#123;</span><br><span class="line">        </span><br><span class="line">        temp.i=i;</span><br><span class="line">        temp.j=j;</span><br><span class="line">        <span class="keyword">int</span> randNum=<span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        randNum=rand()%<span class="number">4</span>;<span class="comment">//0,1,2,3</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">//我们假设迷宫矩阵的第一个元素(0,0)为入口，最后一个元素（M-1,N-2）为出口</span></span><br><span class="line">        <span class="keyword">if</span>(temp.i==<span class="number">0</span>&amp;&amp;temp.j==<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            EntryPath.clear();</span><br><span class="line">          <span class="keyword">while</span>(mazeStack-&gt;isEmpty() == <span class="literal">false</span>)</span><br><span class="line">          &#123;</span><br><span class="line">              </span><br><span class="line">             EntryPath.push_back(mazeStack-&gt;GetTop());<span class="comment">//获得从初始点到入口的路径</span></span><br><span class="line">             mazeStack-&gt;Pop();</span><br><span class="line">            </span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">for</span>(<span class="keyword">int</span> ii=EntryPath.size()<span class="number">-1</span>;ii&gt;=<span class="number">0</span>;ii--)</span><br><span class="line">          &#123;</span><br><span class="line">              mazeStack-&gt;Push(EntryPath[ii]);<span class="comment">//还原栈</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(temp.i==M<span class="number">-1</span>&amp;&amp;temp.j==N<span class="number">-1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ExitPath.clear();</span><br><span class="line">          <span class="keyword">while</span>(mazeStack-&gt;isEmpty() == <span class="literal">false</span>)</span><br><span class="line">          &#123;</span><br><span class="line">              </span><br><span class="line">             ExitPath.push_back(mazeStack-&gt;GetTop());<span class="comment">//获得从初始点到出口的路径</span></span><br><span class="line">             mazeStack-&gt;Pop();</span><br><span class="line">            </span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">for</span>(<span class="keyword">int</span> i=ExitPath.size()<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">          &#123;</span><br><span class="line">              mazeStack-&gt;Push(ExitPath[i]);<span class="comment">//还原栈</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">switch</span>(randNum)</span><br><span class="line">        &#123;</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>:<span class="comment">//向上搜索</span></span><br><span class="line">            <span class="keyword">if</span>(Up==<span class="literal">false</span>&amp;&amp;i&gt;<span class="number">1</span>&amp;&amp;matrix[i<span class="number">-2</span>][j].state!=<span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                mazeStack-&gt;Push(temp);</span><br><span class="line">                matrix[i<span class="number">-1</span>][j].state=<span class="number">1</span>;</span><br><span class="line">                matrix[i<span class="number">-2</span>][j].state=<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">                i=i<span class="number">-2</span>;</span><br><span class="line">                Left=<span class="literal">false</span>;</span><br><span class="line">                Right=<span class="literal">false</span>;</span><br><span class="line">                Up=<span class="literal">false</span>;</span><br><span class="line">                Down=<span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                Up=<span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:<span class="comment">//向下搜索</span></span><br><span class="line">            <span class="keyword">if</span>(Down==<span class="literal">false</span>&amp;&amp;i&lt;M<span class="number">-2</span>&amp;&amp;matrix[i+<span class="number">2</span>][j].state!=<span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                mazeStack-&gt;Push(temp);</span><br><span class="line">                matrix[i+<span class="number">1</span>][j].state=<span class="number">1</span>;</span><br><span class="line">                matrix[i+<span class="number">2</span>][j].state=<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">                i=i+<span class="number">2</span>;</span><br><span class="line">                Left=<span class="literal">false</span>;</span><br><span class="line">                Right=<span class="literal">false</span>;</span><br><span class="line">                Up=<span class="literal">false</span>;</span><br><span class="line">                Down=<span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                Down=<span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">         <span class="keyword">case</span> <span class="number">2</span>:<span class="comment">//向左搜索</span></span><br><span class="line">             <span class="keyword">if</span>(Left==<span class="literal">false</span>&amp;&amp;j&gt;<span class="number">1</span>&amp;&amp;matrix[i][j<span class="number">-2</span>].state!=<span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                mazeStack-&gt;Push(temp);</span><br><span class="line">                matrix[i][j<span class="number">-1</span>].state=<span class="number">1</span>;</span><br><span class="line">                matrix[i][j<span class="number">-2</span>].state=<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">                j=j<span class="number">-2</span>;</span><br><span class="line">                Left=<span class="literal">false</span>;</span><br><span class="line">                Right=<span class="literal">false</span>;</span><br><span class="line">                Up=<span class="literal">false</span>;</span><br><span class="line">                Down=<span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                Left=<span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">         <span class="keyword">case</span> <span class="number">3</span>:<span class="comment">//向右搜索</span></span><br><span class="line">             <span class="keyword">if</span>(Right==<span class="literal">false</span>&amp;&amp;j&lt;N<span class="number">-2</span>&amp;&amp;matrix[i][j+<span class="number">2</span>].state!=<span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                mazeStack-&gt;Push(temp);</span><br><span class="line">                matrix[i][j+<span class="number">1</span>].state=<span class="number">1</span>;</span><br><span class="line">                matrix[i][j+<span class="number">2</span>].state=<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">                j=j+<span class="number">2</span>;</span><br><span class="line">                Left=<span class="literal">false</span>;</span><br><span class="line">                Right=<span class="literal">false</span>;</span><br><span class="line">                Up=<span class="literal">false</span>;</span><br><span class="line">                Down=<span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                Right=<span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;<span class="comment">//end switch</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(Left&amp;&amp;Right&amp;&amp;Up&amp;&amp;Down)   <span class="comment">//当上下左右都不可行时，进行回溯</span></span><br><span class="line">          &#123;   </span><br><span class="line">              <span class="keyword">if</span>(mazeStack-&gt;isEmpty()) <span class="comment">//回溯完毕，生成迷宫 </span></span><br><span class="line">               &#123;</span><br><span class="line">                    <span class="keyword">return</span> ;</span><br><span class="line">               &#125;</span><br><span class="line">               <span class="keyword">else</span>    <span class="comment">//进行出栈操作</span></span><br><span class="line">               &#123;   </span><br><span class="line">                    i = mazeStack-&gt;GetTop().i;   </span><br><span class="line">                    j = mazeStack-&gt;GetTop().j;</span><br><span class="line">                    mazeStack-&gt;Pop();</span><br><span class="line">                  </span><br><span class="line">                    Left=<span class="literal">false</span>;</span><br><span class="line">                    Right=<span class="literal">false</span>;</span><br><span class="line">                    Up=<span class="literal">false</span>;</span><br><span class="line">                    Down=<span class="literal">false</span>;  </span><br><span class="line">               &#125;  </span><br><span class="line">              </span><br><span class="line">          &#125;   </span><br><span class="line"></span><br><span class="line">    &#125;<span class="comment">//end while</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> MazeMat::displayMaze()<span class="comment">//显示迷宫</span></span><br><span class="line">&#123;</span><br><span class="line">    </span><br><span class="line">     matrix[<span class="number">0</span>][<span class="number">0</span>].state = matrix[M<span class="number">-1</span>][N<span class="number">-1</span>].state = <span class="number">2</span>;<span class="comment">//2表示入口和出口   </span></span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;FinalPath.size();i++)</span><br><span class="line">     &#123;</span><br><span class="line">         matrix[FinalPath.at(i).i][FinalPath.at(i).j].state=<span class="number">3</span>;<span class="comment">//3表示可达路径点</span></span><br><span class="line">     &#125;</span><br><span class="line">     <span class="built_in">cout</span>&lt;&lt;<span class="string">"左上角为入口，右下角为出口，oo代表可达路径."</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;N+<span class="number">2</span>;k++)<span class="comment">//在迷宫矩阵的外围墙</span></span><br><span class="line">         <span class="built_in">cout</span>&lt;&lt;<span class="string">"■"</span>;</span><br><span class="line">     <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">     <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; M; i++)   </span><br><span class="line">     &#123;   </span><br><span class="line">          <span class="built_in">cout</span>&lt;&lt;<span class="string">"■"</span>;</span><br><span class="line">          <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;N; j++) </span><br><span class="line">          &#123;</span><br><span class="line">              <span class="keyword">switch</span> ( matrix[i][j].state )   </span><br><span class="line">                &#123;   </span><br><span class="line">                   <span class="keyword">case</span> <span class="number">0</span>:<span class="built_in">cout</span>&lt;&lt;<span class="string">"■"</span>;<span class="keyword">break</span>;<span class="comment">// 显示墙 </span></span><br><span class="line">                   <span class="keyword">case</span> <span class="number">1</span>:<span class="built_in">cout</span>&lt;&lt;<span class="string">"  "</span>;<span class="keyword">break</span>;<span class="comment">//显示空</span></span><br><span class="line">                   <span class="keyword">case</span> <span class="number">2</span>:<span class="built_in">cout</span>&lt;&lt;<span class="string">"↘"</span>;<span class="keyword">break</span>;<span class="comment">//显示入口和出口</span></span><br><span class="line">                   <span class="keyword">case</span> <span class="number">3</span>:<span class="built_in">cout</span>&lt;&lt;<span class="string">"oo"</span>;<span class="keyword">break</span>;<span class="comment">//显示可达路径</span></span><br><span class="line">                &#125; </span><br><span class="line">          &#125;</span><br><span class="line">          <span class="built_in">cout</span>&lt;&lt;<span class="string">"■"</span>;</span><br><span class="line">          <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;   </span><br><span class="line">     &#125;  </span><br><span class="line">      <span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;N+<span class="number">2</span>;k++)</span><br><span class="line">         <span class="built_in">cout</span>&lt;&lt;<span class="string">"■"</span>;</span><br><span class="line">     <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> MazeMat::FindWay()<span class="comment">//寻找可达路径</span></span><br><span class="line">&#123;</span><br><span class="line">    FinalPath.clear();<span class="comment">//清零</span></span><br><span class="line">    <span class="keyword">int</span> i=<span class="number">0</span>,j=<span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(i=EntryPath.size()<span class="number">-1</span>,j=ExitPath.size()<span class="number">-1</span>;i&gt;=<span class="number">0</span>&amp;&amp;j&gt;=<span class="number">0</span>;i--,j--)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(EntryPath.at(i).i!=ExitPath.at(j).i||EntryPath.at(i).j!=ExitPath.at(j).j)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(i&lt;<span class="number">0</span>)<span class="comment">//初始点到出口的路径中经过入口</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> k=ExitPath.size()-EntryPath.size()<span class="number">-1</span>;k&gt;=<span class="number">0</span>;k--)</span><br><span class="line">        &#123;</span><br><span class="line">            FinalPath.push_back(ExitPath.at(k));</span><br><span class="line">        &#125;</span><br><span class="line">            </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(j&lt;<span class="number">0</span>)<span class="comment">//初始点到入口的路径中经过出口</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> k=EntryPath.size()-ExitPath.size()<span class="number">-1</span>;k&gt;=<span class="number">0</span>;k--)</span><br><span class="line">        &#123;</span><br><span class="line">            FinalPath.push_back(EntryPath.at(k));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">else</span><span class="comment">//初始点到入口、出口的路径有部分重叠或则没有重叠</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;=i+<span class="number">1</span>;k++)</span><br><span class="line">        &#123;</span><br><span class="line">            FinalPath.push_back(EntryPath.at(k));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> k=j;k&gt;=<span class="number">0</span>;k--)</span><br><span class="line">        &#123;</span><br><span class="line">            FinalPath.push_back(ExitPath.at(k));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+</div>
+<p><strong>3、MazeStack.h</strong></p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        MazeStack.h 源代码：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"Maze.h"</span></span></span><br><span class="line"><span class="keyword">typedef</span> Maze ElementType;</span><br><span class="line"><span class="comment">//这里是栈的定义</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ElementType data;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125;Node;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MazeStack</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    MazeStack():bottom(<span class="literal">NULL</span>),top(<span class="literal">NULL</span>),Size(<span class="literal">NULL</span>)&#123;&#125;</span><br><span class="line">    ~MazeStack()&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isEmpty</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">Push</span><span class="params">(ElementType e)</span></span>;</span><br><span class="line">    <span class="function">ElementType <span class="title">GetTop</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">ElementType <span class="title">Pop</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Node *bottom;</span><br><span class="line">    Node *top;</span><br><span class="line">    <span class="keyword">int</span> Size;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+    </div>
+</div>
+<p><strong>4、MazeStack.cpp</strong></p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        MazeStack.cpp 源代码：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"MazeStack.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> MazeStack::isEmpty()<span class="comment">//判断栈是否为空</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(top==bottom)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> MazeStack::Push(Maze m)<span class="comment">//进栈</span></span><br><span class="line">&#123;</span><br><span class="line">    Node *temp;</span><br><span class="line">    temp=top;</span><br><span class="line">    top=<span class="keyword">new</span> Node();</span><br><span class="line">    <span class="keyword">if</span>(!top)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    top-&gt;data=m;</span><br><span class="line">    top-&gt;next=temp;</span><br><span class="line">    Size++;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Maze MazeStack::Pop()<span class="comment">//出栈</span></span><br><span class="line">&#123;</span><br><span class="line">    Node temp;</span><br><span class="line">    temp.data=top-&gt;data;</span><br><span class="line">    temp.next=top-&gt;next;</span><br><span class="line">    <span class="keyword">delete</span> top;</span><br><span class="line">    top=temp.next;</span><br><span class="line">    Size--;</span><br><span class="line">    <span class="keyword">return</span> temp.data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Maze MazeStack::GetTop()<span class="comment">//取栈顶元素</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> top-&gt;data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+</div>
+<p><strong>5、main.cpp</strong></p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        main.cpp 源代码：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"MazeStack.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    MazeMat matrix;</span><br><span class="line">    matrix.initMaze();</span><br><span class="line">    matrix.createMaze();</span><br><span class="line">    </span><br><span class="line">    matrix.FindWay();</span><br><span class="line">    matrix.displayMaze();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+</div>
+<p><strong>具体的程序截图如下：</strong></p>
+<p><strong>1、9行9列的迷宫：</strong><br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig007.jpg" width="500" height="350" title="图7" alt="图7" ></p>
+<p><strong>2、19行19列的迷宫：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig008.jpg" width="500" height="350" title="图8" alt="图8" ></p>
+<p><strong>3、29行29列的迷宫：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig009.jpg" width="500" height="450" title="图9" alt="图9" ></p>
+<hr>
+<h2 id="2维到3维的转化"><a href="#2维到3维的转化" class="headerlink" title="2维到3维的转化"></a>2维到3维的转化</h2><p>​    上面的程序实现是在二维平面上用控制台通过c++实现的，显然不够生动形象。<strong>于是我用Qt5+opengl实现了3d效果</strong>，并且可以通过鼠标操作。之所以选择Qt是因为它也是用c++编程的，所以前面写的程序几乎不用改动就可以直接运行。</p>
+<p><strong>编程思想：</strong></p>
+<p>1、首先是利用前面的程序生成迷宫矩阵matrix。</p>
+<p>2、利用迷宫矩阵信息生成三维的图像</p>
+<p>3、利用视角改变函数gluLookat不断的来改变视角，从而模拟走迷宫的场景</p>
+<p><strong>使用指南：</strong></p>
+<p>1、上下键控制前进、后退</p>
+<p>2、左右键控制左转、右转</p>
+<p>3、开始时，处于俯视图状态，可以看清地图的全貌以及自己在地图的位置（黄色）。</p>
+<p>4、按下I键进入游戏模式，即可进行走迷宫，按下O键退出游戏模式，进入俯视图模式查看信息。</p>
+<p>5、按p键，可以显示从入口到出口的可达路径（绿色）</p>
+<p>6、分别用红色、绿色表示入口、出口</p>
+<p><strong>具体的显示效果如下：</strong></p>
+<p>1、初始情况（俯视图）：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig010.jpg" width="500" height="400" title="图10" alt="图10" ></p>
+<p>2、俯视图下显示可达路径：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig011.jpg" width="500" height="400" title="图11" alt="图11" ></p>
+<p>3、游戏模式中：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig012.jpg" width="500" height="400" title="图12" alt="图12" ></p>
+<p>4、游戏模式中显示可达路径：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig013.jpg" width="500" height="400" title="图13" alt="图13" ></p>
+<p>5、游戏模式转到俯视图查看当前位置：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig014.jpg" width="500" height="400" title="图14" alt="图14" ></p>
+<p>6、到达出口：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20141018/20141018_fig015.jpg" width="500" height="400" title="图15" alt="图15" ></p>
+<p>3D效果的不足之处：由于采用纹理轮廓不明显，导致转角处显示不明显，移动的步幅有点大，未经多次测试，可能存在bug。</p>
+<p><strong>由于篇幅有限，就不在此粘贴代码，具体源代码和可执行程序见下面链接：</strong></p>
+<p><a href="http://download.csdn.net/detail/tengweitw/8154195" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8154195</a></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2014/10/18/[20141018]/" title="【Qt编程】3D迷宫游戏">http://tengweitw.com/2014/10/18/[20141018]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Qt-Coding/" rel="tag"><i class="fa fa-tag"></i> Qt Coding</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2014/10/13/%5B20141013%5D/" rel="prev" title="【线性代数】矩阵的零空间">
+      <i class="fa fa-chevron-left"></i> 【线性代数】矩阵的零空间
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2014/10/26/%5B20141026%5D/" rel="next" title="【算法导论】多项式求和">
+      【算法导论】多项式求和 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#二维迷宫："><span class="nav-number">1.</span> <span class="nav-text">二维迷宫：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2维到3维的转化"><span class="nav-number">2.</span> <span class="nav-text">2维到3维的转化</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

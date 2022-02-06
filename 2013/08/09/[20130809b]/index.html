@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="​     在了解红黑树之前，我们必须先了解二叉搜索树（又称二叉排序树，我在上一篇文章中有介绍），因为红黑树是一种特殊的二叉排序树：在每个节点上增加一个存储位来表示节点的颜色，因此红黑树共有五个域：color,key,lchild,rchild,p。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【算法导论】红黑树">
+<meta property="og:url" content="http://tengweitw.com/2013/08/09/[20130809b]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="​     在了解红黑树之前，我们必须先了解二叉搜索树（又称二叉排序树，我在上一篇文章中有介绍），因为红黑树是一种特殊的二叉排序树：在每个节点上增加一个存储位来表示节点的颜色，因此红黑树共有五个域：color,key,lchild,rchild,p。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig002.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig003.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig004.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig005.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig006.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig007.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig008.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig009.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig010.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig011.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig012.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig013.jpg">
+<meta property="article:published_time" content="2013-08-09T12:25:53.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.770Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Algorithm Design">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig001.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2013/08/09/[20130809b]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【算法导论】红黑树 | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/08/09/%5B20130809b%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【算法导论】红黑树
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2013-08-09 20:25:53" itemprop="dateCreated datePublished" datetime="2013-08-09T20:25:53+08:00">2013-08-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>20k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>28 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>​     在了解红黑树之前，我们必须先了解二叉搜索树（又称二叉排序树，我在上一篇文章中有介绍），因为红黑树是一种特殊的二叉排序树：在每个节点上增加一个存储位来表示节点的颜色，因此红黑树共有五个域：color,key,lchild,rchild,p。</p>
+<a id="more"></a>
+<p>​     红黑树的提出：一个高度为h的二叉排序树可以实现任何一种基本的动态集合操作:插入、删除、查找等操作，但是当树才高度比较高时，二叉树就会退化成链表。而红黑树能确保在最坏的情况下，基本的动态集合操作的时间为$O(logn)$.</p>
+<p>红黑树的性质决定了红黑树的性能，<strong>红黑树共有五大性质</strong>：</p>
+<p>1、  每个节点不是红的，就是黑的。</p>
+<p>2、  根节点是黑的。</p>
+<p>3、  每个叶节点都是黑的。</p>
+<p>4、  若一个节点是红的，则他的子节点都是黑的。</p>
+<p>5、  对于每个节点，从该节点出发到其子孙叶节点的所有路径上包含相同数目的黑节点。</p>
+<p>图片的信息比笔述更加清新明了，<strong>下图1-3就是一棵红黑树的几种形式</strong>：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig001.jpg" width="600" height="300" title="图1" alt="图1" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig002.jpg" width="600" height="300" title="图2" alt="图3" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig003.jpg" width="600" height="200" title="图3" alt="图3" ></p>
+<p>上图中，为了便于处理边界问题，我们采用一个哨兵来代表NIL。哨兵NIL是一个与普通节点有相同域的对象。它的color域为BLACK，其它域可随意设置。我在程序中将p、lchild、rchild设置为NULL，将key设置为-1.将所有指向NIL的指针都指向哨兵NIL。</p>
+<p><strong>下面先说明两个概念:</strong>内节点和外节点</p>
+<p><strong>内节点</strong>：把带关键字的节点称为内节点。</p>
+<p><strong>外节点</strong>：把没有子节点或父节点的节点称为外节点，我们把外节点都看成是哨兵NIL。</p>
+<p>由于我们关注的是关键字key,因此我们主要关心内节点，所以在画红黑树的时候，常常忽略叶子，如上图3所示。</p>
+<p>在介绍红黑树的插入和删除前，我们先必须介绍旋转这个概念。因为它在红黑树的插入、删除中，要用到很多。</p>
+<p><strong>旋转：</strong>分为左旋、右旋，它能够<strong>保持二叉排序树性质</strong>的<strong>局部</strong>操作。至于为什么能够保持性质，我也没有深入研究。前人不知道怎么发现这个操作。</p>
+<p>我始终认为图像更能直观的表达更准确丰富的含义，我相信大家通过下图即可以明白左旋和右旋了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig004.jpg" width="400" height="150" title="图4" alt="图4" ></p>
+<p>如果对上图4还是不太明了，也没关系，具体举例能使你有更深刻的认识，下图5是在x上左旋的过程：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig005.jpg" width="500" height="400" title="图5" alt="图5" ></p>
+<p><strong>下面附上左旋和右旋的代码：</strong><br><div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        左旋和右旋的源代码：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*************************************************\</span></span><br><span class="line"><span class="comment">函数功能：左旋</span></span><br><span class="line"><span class="comment">输入：    根节点、要左旋的节点、哨兵</span></span><br><span class="line"><span class="comment">输出：    根节点</span></span><br><span class="line"><span class="comment">\*************************************************/</span></span><br><span class="line"><span class="function">RBTree* <span class="title">Left_Rotate</span><span class="params">(RBTree* root,RBTree* x,RBTree* NIL)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    RBTree* y=<span class="literal">NULL</span>;</span><br><span class="line">    y=x-&gt;rchild;</span><br><span class="line">    x-&gt;rchild=y-&gt;lchild;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(y-&gt;lchild!=NIL)</span><br><span class="line">        y-&gt;lchild-&gt;p=x;</span><br><span class="line">    y-&gt;p=x-&gt;p;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(y-&gt;p==NIL)</span><br><span class="line">       root=y;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(x==x-&gt;p-&gt;lchild)</span><br><span class="line">        x-&gt;p-&gt;lchild=y;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        x-&gt;p-&gt;rchild=y;</span><br><span class="line">    y-&gt;lchild=x;</span><br><span class="line">    x-&gt;p=y;</span><br><span class="line">    <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*************************************************\</span></span><br><span class="line"><span class="comment">函数功能：在节点z上右旋</span></span><br><span class="line"><span class="comment">输入：    根节点、要右旋的节点、哨兵</span></span><br><span class="line"><span class="comment">输出：    根节点</span></span><br><span class="line"><span class="comment">\*************************************************/</span></span><br><span class="line"><span class="function">RBTree* <span class="title">Right_Rotate</span><span class="params">(RBTree* root,RBTree* x,RBTree* NIL)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    RBTree* y=<span class="literal">NULL</span>;</span><br><span class="line">    y=x-&gt;lchild;</span><br><span class="line">    x-&gt;lchild=y-&gt;rchild;</span><br><span class="line">    <span class="keyword">if</span>(y-&gt;rchild!=NIL)</span><br><span class="line">        y-&gt;rchild-&gt;p=x;</span><br><span class="line">    y-&gt;p=x-&gt;p;</span><br><span class="line">    <span class="keyword">if</span>(y-&gt;p==NIL)</span><br><span class="line">       root=y;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(x==x-&gt;p-&gt;lchild)</span><br><span class="line">        x-&gt;p-&gt;lchild=y;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        x-&gt;p-&gt;rchild=y;</span><br><span class="line">    y-&gt;rchild=x;</span><br><span class="line">    x-&gt;p=y;</span><br><span class="line">    <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+</div></p>
+<hr>
+<h2 id="插入操作：插入函数和插入修正函数"><a href="#插入操作：插入函数和插入修正函数" class="headerlink" title="插入操作：插入函数和插入修正函数"></a><strong>插入操作：</strong>插入函数和插入修正函数</h2><p>​    在前一篇文章中我已经介绍了二叉排序树，其中也有插入和删除操作。因为红黑树也是二叉排序树，因此其插入操作大同小异，不同之处在于，红黑树的性质会被插入和删除操作所破坏，因此就需要修正。<strong>修正包括两个操作</strong>：<strong>重新着色、旋转</strong>。</p>
+<p>从上面的分析可知，<strong>红黑树的插入操作分为两步</strong>，首先像二叉排序树一样进行插入操作，然后调用修正函数来保持红黑树的性质。在插入操作中，我们都设置插入节点的color域为红而不是黑（如果是黑的话，性质4就不会破坏），为什么？请读者好好思考。<strong>下面为插入函数的实现：</strong></p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        插入函数源代码：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*************************************************\</span></span><br><span class="line"><span class="comment">函数功能：插入一个节点z</span></span><br><span class="line"><span class="comment">输入：    根节点、插入的节点、哨兵</span></span><br><span class="line"><span class="comment">输出：    根节点</span></span><br><span class="line"><span class="comment">\*************************************************/</span></span><br><span class="line"><span class="function">RBTree* <span class="title">Insert</span><span class="params">(RBTree* root,RBTree* z,RBTree* NIL)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="comment">//    printf("ok ");</span></span><br><span class="line">    RBTree* leaf=NIL;</span><br><span class="line">    RBTree* p=root;<span class="comment">//指向根节点</span></span><br><span class="line">    <span class="keyword">while</span>(p!=NIL)<span class="comment">//根节点不为空</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//printf("dd");</span></span><br><span class="line">        leaf=p;    <span class="comment">//指向父节点</span></span><br><span class="line">        <span class="keyword">if</span>(z-&gt;key&lt;p-&gt;key)</span><br><span class="line">            p=p-&gt;lchild;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            p=p-&gt;rchild;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    z-&gt;p=leaf; <span class="comment">//z为y的孩子节点 y=leaf</span></span><br><span class="line">    <span class="keyword">if</span>(leaf==NIL) <span class="comment">//根节点为空</span></span><br><span class="line">        root=z;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(z-&gt;key&lt;leaf-&gt;key)</span><br><span class="line">        leaf-&gt;lchild=z;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        leaf-&gt;rchild=z;</span><br><span class="line">    </span><br><span class="line"><span class="comment">//    printf("%d ",root-&gt;key);</span></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"><span class="comment">//    printf("%d ",root-&gt;color);</span></span><br><span class="line">    <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+</div>
+<p>​    在Insert_FixUp插入修正函数中，循环截止条件为 z-&gt;p是黑色。如果z-&gt;p是红色，显然这就违返了红黑的树性质4。在循环中，我们要讨论6种情况，但是其中三种与另外三种是相互对称的，它可以由插入节点的父节点为祖父节点的左孩子还是右孩子来区分。<strong>下面我只讨论插入节点的父节点为祖父节点的左孩子的情况。</strong>在每一次迭代中，我们可能遇到以下三种情况。</p>
+<ul>
+<li><p><strong>情况一：叔叔是红色的</strong><br>这时只要把插入节点z的父亲z-&gt;p和uncle都设成黑色，并把祖父z-&gt;p-&gt;p设成红色。这样仍然确保了每一条路径上的黑色节点数不变。然后把z指向z-&gt;p-&gt;p，并开始新一轮的迭代。如下图6：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig006.jpg" width="500" height="300" title="图6" alt="图6" ></p>
+</li>
+</ul>
+<ul>
+<li><strong>情况二：叔叔是黑色的情况下，插入节点为右孩子</strong><br>这时我们只要把z指向z-&gt;p，然后做一次Left-Rotate(z)。就可以把情况转化成情况三。</li>
+</ul>
+<ul>
+<li><strong>情况三：叔叔是黑色的情况下，插入节点为左孩子</strong><br>只要把z-&gt;p设成黑色，把z-&gt;p-&gt;p设成红色，然后就调用  Right_Rotate(z-&gt;p-&gt;p)，整棵树就修正了。情况二和情况三如下图：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig007.jpg" width="500" height="200" title="图7" alt="图7" ></li>
+</ul>
+<p><strong>插入修正函数的具体实现如下：</strong></p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        插入修正函数源代码：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*************************************************\</span></span><br><span class="line"><span class="comment">函数功能：插入修正来维持红黑树的性质</span></span><br><span class="line"><span class="comment">输入：    根节点、插入的节点、哨兵</span></span><br><span class="line"><span class="comment">输出：    根节点</span></span><br><span class="line"><span class="comment">\*************************************************/</span></span><br><span class="line"><span class="function">RBTree* <span class="title">Insert_FixUp</span><span class="params">(RBTree* root,RBTree* z,RBTree* NIL)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    RBTree* y=z;</span><br><span class="line">    <span class="keyword">while</span>(y-&gt;p-&gt;color==RED)<span class="comment">//循环截止条件为父节点为黑</span></span><br><span class="line">    &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(y-&gt;p==y-&gt;p-&gt;p-&gt;lchild)<span class="comment">//插入节点的父节点为祖父节点的左孩子</span></span><br><span class="line">        &#123;</span><br><span class="line">            RBTree* pr=y-&gt;p-&gt;p-&gt;rchild;</span><br><span class="line">            <span class="keyword">if</span>(pr-&gt;color==RED)<span class="comment">//情况一：叔叔是红色的</span></span><br><span class="line">            &#123;</span><br><span class="line">                y-&gt;p-&gt;color=BLACK;</span><br><span class="line">                pr-&gt;color=BLACK;</span><br><span class="line">                y-&gt;p-&gt;p-&gt;color=RED;</span><br><span class="line">                y=y-&gt;p-&gt;p;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="comment">//叔叔是黑色的，分两种情况</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(y==y-&gt;p-&gt;rchild)<span class="comment">//情况二：叔叔是黑色的情况下，插入节点为右孩子</span></span><br><span class="line">                &#123;</span><br><span class="line">                    y=y-&gt;p;</span><br><span class="line">                    root=Left_Rotate(root,y,NIL);<span class="comment">//情况二可以通过左旋变成情况三</span></span><br><span class="line">                &#125;</span><br><span class="line">                y-&gt;p-&gt;color=BLACK;<span class="comment">//情况三：叔叔是黑色的情况下，插入节点为左孩子</span></span><br><span class="line">                y-&gt;p-&gt;p-&gt;color=RED;</span><br><span class="line">                root=Right_Rotate(root,y-&gt;p-&gt;p,NIL);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span><span class="comment">//插入节点的父节点为祖父节点的左孩子,下面的情况与上面类似</span></span><br><span class="line">            &#123;</span><br><span class="line">            RBTree* pl=y-&gt;p-&gt;p-&gt;lchild;</span><br><span class="line">            <span class="keyword">if</span>(pl-&gt;color==RED)</span><br><span class="line">            &#123;</span><br><span class="line">                y-&gt;p-&gt;color=BLACK;</span><br><span class="line">                pl-&gt;color=BLACK;</span><br><span class="line">                y-&gt;p-&gt;p-&gt;color=RED;</span><br><span class="line">                y=y-&gt;p-&gt;p;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> </span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(y==y-&gt;p-&gt;lchild)</span><br><span class="line">                &#123;</span><br><span class="line">                    y=y-&gt;p;</span><br><span class="line">                    root=Left_Rotate(root,y,NIL);</span><br><span class="line">                &#125;</span><br><span class="line">                y-&gt;p-&gt;color=BLACK;</span><br><span class="line">                y-&gt;p-&gt;p-&gt;color=RED;</span><br><span class="line">                root=Left_Rotate(root,y-&gt;p-&gt;p,NIL);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    root-&gt;color=BLACK;</span><br><span class="line">    <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+</div>
+<hr>
+<h2 id="删除操作：删除函数和删除修正函数"><a href="#删除操作：删除函数和删除修正函数" class="headerlink" title="删除操作：删除函数和删除修正函数"></a>删除操作：删除函数和删除修正函数</h2><p>​     删除操作和插入操作一样，都可以和二叉排序树一样进行对比。红黑树的删除操作分为两步，首先像二叉排序树一样进行删除操作，然后调用修正函数来保持红黑树的性质。前一篇二叉排序树的文章也讲过，删除操作要比插入操作复杂一些，红黑树也不例外。<strong>删除函数的具体实现如下</strong>：</p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        删除函数源代码：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*************************************************\</span></span><br><span class="line"><span class="comment">函数功能：删除一个节点z</span></span><br><span class="line"><span class="comment">输入：    根节点、要删除的节点、哨兵</span></span><br><span class="line"><span class="comment">输出：    根节点</span></span><br><span class="line"><span class="comment">\*************************************************/</span></span><br><span class="line"> <span class="function">RBTree* <span class="title">Delete</span><span class="params">(RBTree* root,RBTree* node,RBTree* NIL)</span> </span></span><br><span class="line"><span class="function"> </span>&#123;</span><br><span class="line">        RBTree* toDel = node;</span><br><span class="line">        <span class="keyword">if</span> (node-&gt;lchild != NIL &amp;&amp; node-&gt;rchild != NIL) </span><br><span class="line">        &#123;</span><br><span class="line">            toDel = TreeNext(node,NIL);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        RBTree* temp = toDel;</span><br><span class="line">        <span class="keyword">while</span> (temp-&gt;p != NIL)</span><br><span class="line">        &#123;</span><br><span class="line">            </span><br><span class="line">            temp = temp-&gt;p;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        RBTree* replace = (toDel-&gt;lchild != NIL)? toDel-&gt;lchild: toDel-&gt;rchild;</span><br><span class="line">        replace-&gt;p = toDel-&gt;p;</span><br><span class="line">        <span class="keyword">if</span> (replace-&gt;p == NIL) </span><br><span class="line">        &#123;</span><br><span class="line">            root = replace;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (toDel == toDel-&gt;p-&gt;lchild) </span><br><span class="line">        &#123;</span><br><span class="line">            replace-&gt;p-&gt;lchild = replace;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">        &#123;</span><br><span class="line">            replace-&gt;p-&gt;rchild = replace;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (toDel != node) </span><br><span class="line">        &#123;</span><br><span class="line">            node-&gt;key = toDel-&gt;key;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (toDel-&gt;color == BLACK)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//修改树，以保持平衡。</span></span><br><span class="line">            root=Del_FixUp(root,replace,NIL);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">delete</span> toDel;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;&lt;span style=<span class="string">"font-family: Calibri, sans-serif;"</span>&gt;&lt;span style=<span class="string">"font-size: 19px;"</span>&gt;</span><br><span class="line">&lt;/span&gt;&lt;/span&gt;</span><br></pre></td></tr></table></figure>
+    </div>
+</div>
+<p>​     在Del_FixUp删除操作修正函数中，循环截止条件为z-&gt;color== RED。如果z-&gt;p是黑色，即删除的节点为黑色，显然这就违返了红黑的树性质5。在循环中，我们要讨论8种情况，但是其中4种与另外4种是相互对称的，它可以由删除的节点为父节点的左孩子还是右孩子来区分。<strong>下面我只讨论删除的节点为父节点的左孩子的情况</strong>:<br>在每一次迭代中，我们可能遇到以下4种情况：</p>
+<ul>
+<li><p><strong>情况一：兄弟为红色</strong><br>这时我们根据红黑树的性质可以肯定删除的节点x-&gt;p是黑色、其兄弟节点w-&gt;lchild是黑色。我们把x-&gt;pt与brother的颜色互换，然后做一次Left-Rotate(x-&gt;p)。做完之后x的新的兄弟：原w-&gt;lchild，是黑色的。因此我们在不破坏红黑树性质的前提下，把情况一转换成了情况二、情况三、情况四中的一个，如下图8：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig008.jpg" width="500" height="150" title="图8" alt="图8" ></p>
+</li>
+<li><p><strong>情况二：兄弟为黑色，其两个孩子为黑色</strong><br>这时我们只要把w设成红色,然后把x移到x-&gt;p，这一次操作不会破坏红黑树的性质。如下图9（图中节点B不一定是红色，也可能是黑色）：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig009.jpg" width="500" height="150" title="图9" alt="图9" ></p>
+</li>
+<li><p><strong>情况三：兄弟为黑色，且其左孩子为红色，右孩子为黑色</strong><br>我们把w与w-&gt;lchild的颜色互换，然后做Right-Rotate(w)。这样做不会破坏红黑树的性质。这时x的新的兄弟就是原w-&gt;lchild。而情况3被转化成了情况4,如图10：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig010.jpg" width="500" height="150" title="图10" alt="图10" ></p>
+</li>
+<li><p><strong>情况四：兄弟为黑色，且其右孩子为红色</strong><br>先把w与x-&gt;parent的颜色互换，再做Left-Rotate(x-&gt;parent)。这时图中节点E（也就是原w-&gt;rchild）所在的路径就肯定少了一个黑色，而x所在的路径则多了一个黑色。那么我们就把使E也为黑色，这样就保持了红黑树的性质。如下图11：</p>
+</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig011.jpg" width="500" height="150" title="图11" alt="图11" ></p>
+<p><strong>具体的代码实现如下：</strong><br><div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        完整源代码：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;malloc.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> Color&#123;RED,BLACK&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">node</span>//红黑树的节点结构</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">enum</span> Color color;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">p</span>,*<span class="title">lchild</span>,*<span class="title">rchild</span>;</span></span><br><span class="line">    <span class="keyword">int</span> key;</span><br><span class="line">&#125;RBTree;</span><br><span class="line"></span><br><span class="line"><span class="function">RBTree* <span class="title">Insert</span><span class="params">(RBTree* root,RBTree* z,RBTree* NIL)</span></span>;<span class="comment">//插入</span></span><br><span class="line"><span class="function">RBTree* <span class="title">Insert_FixUp</span><span class="params">(RBTree* root,RBTree* z,RBTree* NIL)</span></span>;<span class="comment">//插入修正</span></span><br><span class="line"><span class="function">RBTree* <span class="title">Left_Rotate</span><span class="params">(RBTree* root,RBTree* x,RBTree* NIL)</span></span>;<span class="comment">//左旋</span></span><br><span class="line"><span class="function">RBTree* <span class="title">Right_Rotate</span><span class="params">(RBTree* root,RBTree* x,RBTree* NIL)</span></span>;<span class="comment">//右旋</span></span><br><span class="line"><span class="function">RBTree* <span class="title">Delete</span><span class="params">(RBTree* root,RBTree* node,RBTree* NIL)</span></span>;<span class="comment">//删除</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Layer</span><span class="params">(RBTree *p,<span class="keyword">int</span> n)</span></span>;<span class="comment">//广度优先遍历，用于查看红黑树的节点</span></span><br><span class="line"><span class="function">RBTree* <span class="title">TreeNext</span><span class="params">(RBTree* node,RBTree* NIL)</span></span>;<span class="comment">// 查找后继</span></span><br><span class="line"><span class="function">RBTree* <span class="title">TreePre</span><span class="params">(RBTree* node,RBTree* NIL)</span></span>;<span class="comment">// 查找前趋</span></span><br><span class="line"><span class="function">RBTree* <span class="title">TreeMax</span><span class="params">(RBTree* root,RBTree* NIL)</span></span>;<span class="comment">// 查找最大值</span></span><br><span class="line"><span class="function">RBTree* <span class="title">TreeMin</span><span class="params">(RBTree* root,RBTree* NIL)</span></span>;<span class="comment">// 查找最小值</span></span><br><span class="line"><span class="function">RBTree* <span class="title">Del_FixUp</span><span class="params">(RBTree* root,RBTree* delNode,RBTree* NIL)</span></span>;<span class="comment">//删除修正</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> arrayA[]=&#123;<span class="number">11</span>,<span class="number">2</span>,<span class="number">14</span>,<span class="number">1</span>,<span class="number">7</span>,<span class="number">15</span>,<span class="number">5</span>,<span class="number">8</span>,<span class="number">4</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> n=<span class="keyword">sizeof</span>(arrayA)/<span class="keyword">sizeof</span>(<span class="keyword">int</span>);</span><br><span class="line"><span class="comment">//    printf("%d\n",BLACK);</span></span><br><span class="line"></span><br><span class="line">    RBTree* NIL=(RBTree*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(RBTree));<span class="comment">//哨兵节点即外节点</span></span><br><span class="line">    NIL-&gt;color=BLACK;</span><br><span class="line">    NIL-&gt;key=<span class="number">-1</span>;</span><br><span class="line">    NIL-&gt;lchild=NIL-&gt;rchild=<span class="literal">NULL</span>;</span><br><span class="line">    NIL-&gt;p=<span class="literal">NULL</span>;</span><br><span class="line">    RBTree *root=<span class="literal">NULL</span>;<span class="comment">//根节点</span></span><br><span class="line">    root=NIL;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        RBTree* z=(RBTree*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(RBTree));</span><br><span class="line">        z-&gt;color=RED;</span><br><span class="line">        z-&gt;key=arrayA[i];</span><br><span class="line">        z-&gt;lchild=NIL;</span><br><span class="line">        z-&gt;rchild=NIL;</span><br><span class="line">        z-&gt;p=NIL;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n插入节点的关键值为%d "</span>,z-&gt;key);    </span><br><span class="line">        root=Insert(root,z,NIL);    </span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n插入修正前的广度遍历:\n"</span>);</span><br><span class="line">        Layer(root,n);</span><br><span class="line">        root=Insert_FixUp(root,z,NIL);</span><br><span class="line">    <span class="comment">//    printf("%d\n",i);</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"插入修正后的广度遍历:\n"</span>);</span><br><span class="line">        Layer(root,n);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"插入操作完成！！\n\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"删除节点的关键值为%d\n "</span>,root-&gt;lchild-&gt;rchild-&gt;key);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n删除顶节点后的广度遍历：\n"</span>);</span><br><span class="line">    root=Delete(root,root-&gt;lchild-&gt;rchild,NIL);</span><br><span class="line">    n=n<span class="number">-1</span>;<span class="comment">//删除一个节点 n减一</span></span><br><span class="line">    Layer(root,n);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*************************************************\</span></span><br><span class="line"><span class="comment">函数功能：插入一个节点z</span></span><br><span class="line"><span class="comment">输入：    根节点、插入的节点、哨兵</span></span><br><span class="line"><span class="comment">输出：    根节点</span></span><br><span class="line"><span class="comment">\*************************************************/</span></span><br><span class="line"><span class="function">RBTree* <span class="title">Insert</span><span class="params">(RBTree* root,RBTree* z,RBTree* NIL)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="comment">//    printf("ok ");</span></span><br><span class="line">    RBTree* leaf=NIL;</span><br><span class="line">    RBTree* p=root;<span class="comment">//指向根节点</span></span><br><span class="line">    <span class="keyword">while</span>(p!=NIL)<span class="comment">//根节点不为空</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//printf("dd");</span></span><br><span class="line">        leaf=p;    <span class="comment">//指向父节点</span></span><br><span class="line">        <span class="keyword">if</span>(z-&gt;key&lt;p-&gt;key)</span><br><span class="line">            p=p-&gt;lchild;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            p=p-&gt;rchild;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    z-&gt;p=leaf; <span class="comment">//z为y的孩子节点 y=leaf</span></span><br><span class="line">    <span class="keyword">if</span>(leaf==NIL) <span class="comment">//根节点为空</span></span><br><span class="line">        root=z;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(z-&gt;key&lt;leaf-&gt;key)</span><br><span class="line">        leaf-&gt;lchild=z;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        leaf-&gt;rchild=z;</span><br><span class="line">    </span><br><span class="line"><span class="comment">//    printf("%d ",root-&gt;key);</span></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"><span class="comment">//    printf("%d ",root-&gt;color);</span></span><br><span class="line">    <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*************************************************\</span></span><br><span class="line"><span class="comment">函数功能：插入修正来维持红黑树的性质</span></span><br><span class="line"><span class="comment">输入：    根节点、插入的节点、哨兵</span></span><br><span class="line"><span class="comment">输出：    根节点</span></span><br><span class="line"><span class="comment">\*************************************************/</span></span><br><span class="line"><span class="function">RBTree* <span class="title">Insert_FixUp</span><span class="params">(RBTree* root,RBTree* z,RBTree* NIL)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    RBTree* y=z;</span><br><span class="line">    <span class="keyword">while</span>(y-&gt;p-&gt;color==RED)<span class="comment">//循环截止条件为父节点为黑</span></span><br><span class="line">    &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(y-&gt;p==y-&gt;p-&gt;p-&gt;lchild)<span class="comment">//插入节点的父节点为祖父节点的左孩子</span></span><br><span class="line">        &#123;</span><br><span class="line">            RBTree* pr=y-&gt;p-&gt;p-&gt;rchild;</span><br><span class="line">            <span class="keyword">if</span>(pr-&gt;color==RED)<span class="comment">//情况一：叔叔是红色的</span></span><br><span class="line">            &#123;</span><br><span class="line">                y-&gt;p-&gt;color=BLACK;</span><br><span class="line">                pr-&gt;color=BLACK;</span><br><span class="line">                y-&gt;p-&gt;p-&gt;color=RED;</span><br><span class="line">                y=y-&gt;p-&gt;p;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="comment">//叔叔是黑色的，分两种情况</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(y==y-&gt;p-&gt;rchild)<span class="comment">//情况二：叔叔是黑色的情况下，插入节点为右孩子</span></span><br><span class="line">                &#123;</span><br><span class="line">                    y=y-&gt;p;</span><br><span class="line">                    root=Left_Rotate(root,y,NIL);<span class="comment">//情况二可以通过左旋变成情况三</span></span><br><span class="line">                &#125;</span><br><span class="line">                y-&gt;p-&gt;color=BLACK;<span class="comment">//情况三：叔叔是黑色的情况下，插入节点为左孩子</span></span><br><span class="line">                y-&gt;p-&gt;p-&gt;color=RED;</span><br><span class="line">                root=Right_Rotate(root,y-&gt;p-&gt;p,NIL);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span><span class="comment">//插入节点的父节点为祖父节点的左孩子,下面的情况与上面类似</span></span><br><span class="line">            &#123;</span><br><span class="line">            RBTree* pl=y-&gt;p-&gt;p-&gt;lchild;</span><br><span class="line">            <span class="keyword">if</span>(pl-&gt;color==RED)</span><br><span class="line">            &#123;</span><br><span class="line">                y-&gt;p-&gt;color=BLACK;</span><br><span class="line">                pl-&gt;color=BLACK;</span><br><span class="line">                y-&gt;p-&gt;p-&gt;color=RED;</span><br><span class="line">                y=y-&gt;p-&gt;p;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> </span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(y==y-&gt;p-&gt;lchild)</span><br><span class="line">                &#123;</span><br><span class="line">                    y=y-&gt;p;</span><br><span class="line">                    root=Left_Rotate(root,y,NIL);</span><br><span class="line">                &#125;</span><br><span class="line">                y-&gt;p-&gt;color=BLACK;</span><br><span class="line">                y-&gt;p-&gt;p-&gt;color=RED;</span><br><span class="line">                root=Left_Rotate(root,y-&gt;p-&gt;p,NIL);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    root-&gt;color=BLACK;</span><br><span class="line">    <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*************************************************\</span></span><br><span class="line"><span class="comment">函数功能：左旋</span></span><br><span class="line"><span class="comment">输入：    根节点、要左旋的节点、哨兵</span></span><br><span class="line"><span class="comment">输出：    根节点</span></span><br><span class="line"><span class="comment">\*************************************************/</span></span><br><span class="line"><span class="function">RBTree* <span class="title">Left_Rotate</span><span class="params">(RBTree* root,RBTree* x,RBTree* NIL)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    RBTree* y=<span class="literal">NULL</span>;</span><br><span class="line">    y=x-&gt;rchild;</span><br><span class="line">    x-&gt;rchild=y-&gt;lchild;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(y-&gt;lchild!=NIL)</span><br><span class="line">        y-&gt;lchild-&gt;p=x;</span><br><span class="line">    y-&gt;p=x-&gt;p;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(y-&gt;p==NIL)</span><br><span class="line">       root=y;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(x==x-&gt;p-&gt;lchild)</span><br><span class="line">        x-&gt;p-&gt;lchild=y;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        x-&gt;p-&gt;rchild=y;</span><br><span class="line">    y-&gt;lchild=x;</span><br><span class="line">    x-&gt;p=y;</span><br><span class="line">    <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*************************************************\</span></span><br><span class="line"><span class="comment">函数功能：在节点z上右旋</span></span><br><span class="line"><span class="comment">输入：    根节点、要右旋的节点、哨兵</span></span><br><span class="line"><span class="comment">输出：    根节点</span></span><br><span class="line"><span class="comment">\*************************************************/</span></span><br><span class="line"><span class="function">RBTree* <span class="title">Right_Rotate</span><span class="params">(RBTree* root,RBTree* x,RBTree* NIL)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    RBTree* y=<span class="literal">NULL</span>;</span><br><span class="line">    y=x-&gt;lchild;</span><br><span class="line">    x-&gt;lchild=y-&gt;rchild;</span><br><span class="line">    <span class="keyword">if</span>(y-&gt;rchild!=NIL)</span><br><span class="line">        y-&gt;rchild-&gt;p=x;</span><br><span class="line">    y-&gt;p=x-&gt;p;</span><br><span class="line">    <span class="keyword">if</span>(y-&gt;p==NIL)</span><br><span class="line">       root=y;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(x==x-&gt;p-&gt;lchild)</span><br><span class="line">        x-&gt;p-&gt;lchild=y;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        x-&gt;p-&gt;rchild=y;</span><br><span class="line">    y-&gt;rchild=x;</span><br><span class="line">    x-&gt;p=y;</span><br><span class="line">    <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*************************************************\</span></span><br><span class="line"><span class="comment">函数功能：删除一个节点z</span></span><br><span class="line"><span class="comment">输入：    根节点、要删除的节点、哨兵</span></span><br><span class="line"><span class="comment">输出：    根节点</span></span><br><span class="line"><span class="comment">\*************************************************/</span></span><br><span class="line"> <span class="function">RBTree* <span class="title">Delete</span><span class="params">(RBTree* root,RBTree* node,RBTree* NIL)</span> </span></span><br><span class="line"><span class="function"> </span>&#123;</span><br><span class="line">        RBTree* toDel = node;</span><br><span class="line">        <span class="keyword">if</span> (node-&gt;lchild != NIL &amp;&amp; node-&gt;rchild != NIL) </span><br><span class="line">        &#123;</span><br><span class="line">            toDel = TreeNext(node,NIL);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        RBTree* temp = toDel;</span><br><span class="line">        <span class="keyword">while</span> (temp-&gt;p != NIL)</span><br><span class="line">        &#123;</span><br><span class="line">            </span><br><span class="line">            temp = temp-&gt;p;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        RBTree* replace = (toDel-&gt;lchild != NIL)? toDel-&gt;lchild: toDel-&gt;rchild;</span><br><span class="line">        replace-&gt;p = toDel-&gt;p;</span><br><span class="line">        <span class="keyword">if</span> (replace-&gt;p == NIL) </span><br><span class="line">        &#123;</span><br><span class="line">            root = replace;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (toDel == toDel-&gt;p-&gt;lchild) </span><br><span class="line">        &#123;</span><br><span class="line">            replace-&gt;p-&gt;lchild = replace;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">        &#123;</span><br><span class="line">            replace-&gt;p-&gt;rchild = replace;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (toDel != node) </span><br><span class="line">        &#123;</span><br><span class="line">            node-&gt;key = toDel-&gt;key;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (toDel-&gt;color == BLACK)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//修改树，以保持平衡。</span></span><br><span class="line">            root=Del_FixUp(root,replace,NIL);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">delete</span> toDel;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*************************************************\</span></span><br><span class="line"><span class="comment">函数功能：删除修正 维持红黑树的性质</span></span><br><span class="line"><span class="comment">输入：    根节点、要删除的节点、哨兵</span></span><br><span class="line"><span class="comment">输出：    根节点</span></span><br><span class="line"><span class="comment">\*************************************************/</span></span><br><span class="line">   <span class="function">RBTree* <span class="title">Del_FixUp</span><span class="params">(RBTree* root,RBTree* delNode,RBTree* NIL)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">        RBTree* p = delNode;</span><br><span class="line">        <span class="keyword">while</span> (p != root &amp;&amp; p-&gt;color == BLACK)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (p == p-&gt;p-&gt;lchild)<span class="comment">//要删除的节点为父节点的左孩子</span></span><br><span class="line">            &#123;</span><br><span class="line">                RBTree* brother = p-&gt;p-&gt;rchild;</span><br><span class="line">                <span class="keyword">if</span> (brother-&gt;color == RED) <span class="comment">//情况一：兄弟为红色</span></span><br><span class="line">                &#123;</span><br><span class="line">                    brother-&gt;color = BLACK;</span><br><span class="line">                    p-&gt;p-&gt;color = RED;</span><br><span class="line">                    root=Left_Rotate(root,p-&gt;p,NIL);<span class="comment">//经过旋转后 兄弟变为黑色，进入下面三种情况之一</span></span><br><span class="line">                    brother = p-&gt;p-&gt;rchild;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (brother-&gt;lchild-&gt;color == BLACK&amp;&amp; brother-&gt;rchild-&gt;color == BLACK)<span class="comment">//情况二：兄弟为黑色，其两个孩子为黑色</span></span><br><span class="line">                &#123;</span><br><span class="line">                    brother-&gt;color = RED;</span><br><span class="line">                    p = p-&gt;p;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> </span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">if</span> (brother-&gt;rchild-&gt;color == BLACK)<span class="comment">//情况三：兄弟为黑色，且其左孩子为红色，右孩子为黑色</span></span><br><span class="line">                    &#123;</span><br><span class="line">                        brother-&gt;lchild-&gt;color = BLACK;</span><br><span class="line">                        brother-&gt;color = RED;</span><br><span class="line">                        root=Right_Rotate(root,brother,NIL);<span class="comment">//转变为情况四</span></span><br><span class="line">                        brother  = brother-&gt;p;</span><br><span class="line">                    &#125;</span><br><span class="line">                    brother-&gt;color = brother-&gt;p-&gt;color;<span class="comment">//情况四：兄弟为黑色，且其右孩子为红色</span></span><br><span class="line">                    brother-&gt;p-&gt;color = BLACK;</span><br><span class="line">                    brother-&gt;rchild-&gt;color = BLACK;</span><br><span class="line">                    root=Left_Rotate(root,brother-&gt;p,NIL);</span><br><span class="line">                    p = root;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span><span class="comment">//删除的节点为父节点的右孩子,下面的情况与上面类似</span></span><br><span class="line">            &#123;</span><br><span class="line">                RBTree* brother = p-&gt;p-&gt;lchild;</span><br><span class="line">                <span class="keyword">if</span> (brother-&gt;color == RED) </span><br><span class="line">                &#123;</span><br><span class="line">                    brother-&gt;color = BLACK;</span><br><span class="line">                    p-&gt;p-&gt;color = RED;</span><br><span class="line">                    root=Right_Rotate(root,p-&gt;p,NIL);</span><br><span class="line">                    brother = p-&gt;p-&gt;lchild;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (brother-&gt;lchild-&gt;color == BLACK&amp;&amp; brother-&gt;rchild-&gt;color == BLACK)</span><br><span class="line">                &#123;</span><br><span class="line">                    brother-&gt;color = RED;</span><br><span class="line">                    p = p-&gt;p;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> </span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">if</span> (brother-&gt;lchild-&gt;color == BLACK) </span><br><span class="line">                    &#123;</span><br><span class="line">                        brother-&gt;rchild-&gt;color = BLACK;</span><br><span class="line">                        brother-&gt;color = RED;</span><br><span class="line">                        root=Left_Rotate(root,brother,NIL);</span><br><span class="line">                        brother = brother-&gt;p;</span><br><span class="line">                    &#125;</span><br><span class="line">                    brother-&gt;color = brother-&gt;p-&gt;color;</span><br><span class="line">                    brother-&gt;p-&gt;color = BLACK;</span><br><span class="line">                    brother-&gt;lchild-&gt;color = BLACK;</span><br><span class="line">                    root=Right_Rotate(root,brother-&gt;p,NIL);</span><br><span class="line">                    p = root;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        p-&gt;color = BLACK;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/*************************************************\</span></span><br><span class="line"><span class="comment">函数功能：广度优先遍历</span></span><br><span class="line"><span class="comment">输入：    根节点、节点数</span></span><br><span class="line"><span class="comment">输出：    无</span></span><br><span class="line"><span class="comment">\*************************************************/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Layer</span><span class="params">(RBTree *p,<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    RBTree* <span class="built_in">queue</span>[<span class="number">40</span>];<span class="comment">//queue数组用于存储节点地址</span></span><br><span class="line">    <span class="keyword">int</span> count=<span class="number">0</span>;</span><br><span class="line">    RBTree* s;</span><br><span class="line">    <span class="keyword">int</span> rear=<span class="number">0</span>;  <span class="comment">//队列尾指针</span></span><br><span class="line">    <span class="keyword">int</span> front=<span class="number">0</span>; <span class="comment">//队列头指针</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(p!=<span class="literal">NULL</span>)<span class="comment">//输入的树不为空</span></span><br><span class="line">    &#123;</span><br><span class="line">        rear=<span class="number">1</span>; <span class="comment">//初始化</span></span><br><span class="line">        front=<span class="number">0</span>;</span><br><span class="line">        <span class="built_in">queue</span>[rear]=p;</span><br><span class="line">        <span class="keyword">while</span>(front&lt;rear)<span class="comment">//判断队列是否为空</span></span><br><span class="line">        &#123;</span><br><span class="line">            front++;</span><br><span class="line">            s=<span class="built_in">queue</span>[front];</span><br><span class="line">            <span class="keyword">if</span>(s-&gt;key!=<span class="number">-1</span>)</span><br><span class="line">                count++;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"key=%d color=%d\n"</span>,s-&gt;key,s-&gt;color);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(s-&gt;lchild!=<span class="literal">NULL</span>) <span class="comment">//存储左右子节点</span></span><br><span class="line">            &#123;</span><br><span class="line">                rear++;</span><br><span class="line">                <span class="built_in">queue</span>[rear]=s-&gt;lchild;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(s-&gt;rchild!=<span class="literal">NULL</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                rear++;</span><br><span class="line">                <span class="built_in">queue</span>[rear]=s-&gt;rchild;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>(count&gt;=n)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*************************************************\</span></span><br><span class="line"><span class="comment">函数功能：查找一个节点在中序遍列中的下一个节点(后继)</span></span><br><span class="line"><span class="comment">输入：    一个节点、哨兵</span></span><br><span class="line"><span class="comment">输出：    该节点的后继节点</span></span><br><span class="line"><span class="comment">\*************************************************/</span></span><br><span class="line"> <span class="function">RBTree* <span class="title">TreeNext</span><span class="params">(RBTree* node,RBTree* NIL)</span> </span></span><br><span class="line"><span class="function"> </span>&#123;</span><br><span class="line">        RBTree* result;</span><br><span class="line">        <span class="keyword">if</span> (node-&gt;rchild!=NIL) </span><br><span class="line">        &#123;</span><br><span class="line">            result = TreeMin(node-&gt;rchild,NIL);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">        &#123;</span><br><span class="line">            result = node-&gt;p;</span><br><span class="line">            RBTree* temp = node;</span><br><span class="line">            <span class="keyword">while</span> (result!=NIL&amp;&amp;temp==result-&gt;rchild) </span><br><span class="line">            &#123;</span><br><span class="line">                temp = result;</span><br><span class="line">                result = result-&gt;p;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"><span class="comment">/*************************************************\</span></span><br><span class="line"><span class="comment">函数功能：一个节点在中序遍列中的前一个节点(前趋)</span></span><br><span class="line"><span class="comment">输入：    一个节点、哨兵</span></span><br><span class="line"><span class="comment">输出：    该节点的前趋节点</span></span><br><span class="line"><span class="comment">\*************************************************/</span></span><br><span class="line">    <span class="function">RBTree* <span class="title">TreePre</span><span class="params">(RBTree* node,RBTree* NIL)</span> </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        RBTree* result;</span><br><span class="line">        <span class="keyword">if</span> (node-&gt;lchild !=NIL)</span><br><span class="line">        &#123;</span><br><span class="line">            result = TreeMax(node-&gt;rchild,NIL);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">        &#123;</span><br><span class="line">            result = node-&gt;p;</span><br><span class="line">            RBTree* temp = node;</span><br><span class="line">            <span class="keyword">while</span> (result != NIL &amp;&amp; temp == result-&gt;lchild)</span><br><span class="line">            &#123;</span><br><span class="line">                temp = result;</span><br><span class="line">                result = result-&gt;p;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line"><span class="comment">/*************************************************\</span></span><br><span class="line"><span class="comment">函数功能：找到子树中最大的节点</span></span><br><span class="line"><span class="comment">输入：    根节点、哨兵</span></span><br><span class="line"><span class="comment">输出：    子树中最大的节点</span></span><br><span class="line"><span class="comment">\*************************************************/</span></span><br><span class="line">    <span class="function">RBTree* <span class="title">TreeMax</span><span class="params">(RBTree* root,RBTree* NIL)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        RBTree* result = root;</span><br><span class="line">        <span class="keyword">while</span> (result-&gt;rchild !=NIL) </span><br><span class="line">        &#123;</span><br><span class="line">            result = result-&gt;rchild;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"><span class="comment">/*************************************************\</span></span><br><span class="line"><span class="comment">函数功能：找到子树中最小的节点</span></span><br><span class="line"><span class="comment">输入：    根节点、哨兵</span></span><br><span class="line"><span class="comment">输出：    子树中最小的节点</span></span><br><span class="line"><span class="comment">\*************************************************/</span></span><br><span class="line">    <span class="function">RBTree* <span class="title">TreeMin</span><span class="params">(RBTree* root,RBTree* NIL)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        RBTree* result = root;</span><br><span class="line">        <span class="keyword">while</span> (result-&gt;lchild !=NIL) </span><br><span class="line">        &#123;</span><br><span class="line">            result = result-&gt;lchild;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+    </div>
+</div></p>
+<hr>
+<h2 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h2><p>最后给出运行结果的说明：在我电脑上的运行结果为：<br><div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        运行结果：
+    </div>
+    <div class='spoiler-content'>
+        <p>（key为关键字，color=0表示为红色，color=1表示为黑色，key=-1代表空节点）</p>
+<p>插入节点的关键值为11<br>插入修正前的广度遍历:<br>key=11 color=0<br>key=-1 color=1<br>key=-1 color=1<br>插入修正后的广度遍历:<br>key=11 color=1<br>key=-1 color=1<br>key=-1 color=1</p>
+<p>插入节点的关键值为2<br>插入修正前的广度遍历:<br>key=11 color=1<br>key=2 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>插入修正后的广度遍历:<br>key=11 color=1<br>key=2 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1</p>
+<p>插入节点的关键值为14<br>插入修正前的广度遍历:<br>key=11 color=1<br>key=2 color=0<br>key=14 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>插入修正后的广度遍历:<br>key=11 color=1<br>key=2 color=0<br>key=14 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1</p>
+<p>插入节点的关键值为1<br>插入修正前的广度遍历:<br>key=11 color=1<br>key=2 color=0<br>key=14 color=0<br>key=1 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>插入修正后的广度遍历:<br>key=11 color=1<br>key=2 color=1<br>key=14 color=1<br>key=1 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1</p>
+<p>插入节点的关键值为7<br>插入修正前的广度遍历:<br>key=11 color=1<br>key=2 color=1<br>key=14 color=1<br>key=1 color=0<br>key=7 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>插入修正后的广度遍历:<br>key=11 color=1<br>key=2 color=1<br>key=14 color=1<br>key=1 color=0<br>key=7 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1</p>
+<p>插入节点的关键值为15<br>插入修正前的广度遍历:<br>key=11 color=1<br>key=2 color=1<br>key=14 color=1<br>key=1 color=0<br>key=7 color=0<br>key=-1 color=1<br>key=15 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>插入修正后的广度遍历:<br>key=11 color=1<br>key=2 color=1<br>key=14 color=1<br>key=1 color=0<br>key=7 color=0<br>key=-1 color=1<br>key=15 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1</p>
+<p>插入节点的关键值为5<br>插入修正前的广度遍历:<br>key=11 color=1<br>key=2 color=1<br>key=14 color=1<br>key=1 color=0<br>key=7 color=0<br>key=-1 color=1<br>key=15 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=5 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>插入修正后的广度遍历:<br>key=11 color=1<br>key=2 color=0<br>key=14 color=1<br>key=1 color=1<br>key=7 color=1<br>key=-1 color=1<br>key=15 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=5 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1</p>
+<p>插入节点的关键值为8<br>插入修正前的广度遍历:<br>key=11 color=1<br>key=2 color=0<br>key=14 color=1<br>key=1 color=1<br>key=7 color=1<br>key=-1 color=1<br>key=15 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=5 color=0<br>key=8 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>插入修正后的广度遍历:<br>key=11 color=1<br>key=2 color=0<br>key=14 color=1<br>key=1 color=1<br>key=7 color=1<br>key=-1 color=1<br>key=15 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=5 color=0<br>key=8 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1</p>
+<p>插入节点的关键值为4<br>插入修正前的广度遍历:<br>key=11 color=1<br>key=2 color=0<br>key=14 color=1<br>key=1 color=1<br>key=7 color=1<br>key=-1 color=1<br>key=15 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=5 color=0<br>key=8 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=4 color=0<br>插入修正后的广度遍历:<br>key=7 color=1<br>key=2 color=0<br>key=11 color=0<br>key=1 color=1<br>key=5 color=1<br>key=8 color=1<br>key=14 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=4 color=0<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=15 color=0</p>
+<p>插入操作完成！！</p>
+
+    </div>
+</div></p>
+<p>形成的红黑树为：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig012.jpg" width="400" height="250" title="图12" alt="图12" ></p>
+<p>删除节点的关键值为5</p>
+<p>删除顶节点后的广度遍历：<br>key=7 color=1<br>key=2 color=0<br>key=11 color=0<br>key=1 color=1<br>key=4 color=1<br>key=8 color=1<br>key=14 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=-1 color=1<br>key=15 color=0<br>请按任意键继续. . .</p>
+<p>删除节点5后的红黑树为：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20130809b/20130809b_fig013.jpg" width="400" height="250" title="图13" alt="图13" ></p>
+<p>本文参考资料：《算法导论》</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2013/08/09/[20130809b]/" title="【算法导论】红黑树">http://tengweitw.com/2013/08/09/[20130809b]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Algorithm-Design/" rel="tag"><i class="fa fa-tag"></i> Algorithm Design</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2013/08/09/%5B20130809%5D/" rel="prev" title="【算法导论】二叉排序树">
+      <i class="fa fa-chevron-left"></i> 【算法导论】二叉排序树
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2013/08/15/%5B20130815%5D/" rel="next" title="【妄言之言】随笔一">
+      【妄言之言】随笔一 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#插入操作：插入函数和插入修正函数"><span class="nav-number">1.</span> <span class="nav-text">插入操作：插入函数和插入修正函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除操作：删除函数和删除修正函数"><span class="nav-number">2.</span> <span class="nav-text">删除操作：删除函数和删除修正函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实验结果"><span class="nav-number">3.</span> <span class="nav-text">实验结果</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

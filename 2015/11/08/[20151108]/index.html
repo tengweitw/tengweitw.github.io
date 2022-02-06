@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="由于篇幅有限，前一篇文章《离散分布的产生》中只讲述了用均匀分布产生离散分布的方法，那么本文接着讲如何利用均匀分布产生连续分布的方法。 连续分布主要有以下几种：均匀分布 伽马分布 正态分布 贝塔分布 柯西分布 对数正态分布 双指数分布。 产生各种连续分布的方法有很多，我把它分为两类：通用方法、特殊方法。特殊方法就是根据各个连续分布的特性而特有的方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【概率统计】连续分布的产生">
+<meta property="og:url" content="http://tengweitw.com/2015/11/08/[20151108]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="由于篇幅有限，前一篇文章《离散分布的产生》中只讲述了用均匀分布产生离散分布的方法，那么本文接着讲如何利用均匀分布产生连续分布的方法。 连续分布主要有以下几种：均匀分布 伽马分布 正态分布 贝塔分布 柯西分布 对数正态分布 双指数分布。 产生各种连续分布的方法有很多，我把它分为两类：通用方法、特殊方法。特殊方法就是根据各个连续分布的特性而特有的方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20151108/20151108_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20151108/20151108_fig002.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20151108/20151108_fig003.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20151108/20151108_fig004.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20151108/20151108_fig005.jpg">
+<meta property="article:published_time" content="2015-11-08T02:42:06.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.784Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Probability Theory">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20151108/20151108_fig001.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2015/11/08/[20151108]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【概率统计】连续分布的产生 | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/11/08/%5B20151108%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【概率统计】连续分布的产生
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-11-08 10:42:06" itemprop="dateCreated datePublished" datetime="2015-11-08T10:42:06+08:00">2015-11-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>由于篇幅有限，前一篇文章《<a href="http://blog.csdn.net/tengweitw/article/details/45584597" target="_blank" rel="noopener">离散分布的产生</a>》中只讲述了用均匀分布产生离散分布的方法，<strong>那么本文接着讲如何利用均匀分布产生连续分布的方法。</strong></p>
+<p>连续分布主要有以下几种：<strong>均匀分布 伽马分布 正态分布 贝塔分布 柯西分布 对数正态分布 双指数分布</strong>。</p>
+<p>产生各种连续分布的方法有很多，我把它分为两类：<strong>通用方法、特殊方法</strong>。特殊方法就是根据各个连续分布的特性而特有的方法。</p>
+<a id="more"></a>
+<hr>
+<h2 id="通用方法"><a href="#通用方法" class="headerlink" title="通用方法"></a>通用方法</h2><p>通用方法指的是对于各种连续分布理论上都适用的方法。下面只讲解分布<strong>函数法</strong>、<strong>舍取法这两种通用的方法</strong>。</p>
+<h3 id="分布函数法"><a href="#分布函数法" class="headerlink" title="分布函数法"></a><strong>分布函数法</strong></h3><p><strong>概率积分变换定理</strong><br><em>设随机变量$X$有连续累计分布函数$F(x)$，令$U=F(X)$，则$U$服从$(0,1)$上的均匀分布。</em></p>
+<p>由概率积分变换定理可知，如果知道一个连续分布函数的累计分布函数$F(x)$，则可以求得随机变量：$X=F^{-1}(U)$，其中$U$服从$0$到$1$内的均匀分布。<strong>下面以指数分布来举例说明：</strong><br>指数分布的累计分布函数$F(x)$可以表示为：</p>
+<script type="math/tex; mode=display">F\left( x \right) = \left\{ \begin{array}{l}
+1 - {e^{ - \lambda x}},{\kern 1pt} {\kern 1pt} {\kern 1pt} x \ge 0\\
+{\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} 0{\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} {\kern 1pt} ,{\kern 3pt}x < 0
+\end{array} \right.</script><p>由于$U=F(X)$服从$(0,1)$上的均匀分布，则随机变量：$X=F^{-1}(U) =  - \frac{Ln\left( 1 - U \right)}{\lambda }$。因此只需要产生服从$(0,1)$上的均匀分布的$U$，就可以计算得到服从指数分布的随机变量$X$。</p>
+<ul>
+<li><strong>指数分布</strong>　</li>
+</ul>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%指数分布</span></span><br><span class="line"><span class="comment">%参数：到达率lambda</span></span><br><span class="line"><span class="comment">%mean=1/lamda,  var=1/lambda^2</span></span><br><span class="line">clear all</span><br><span class="line">close all</span><br><span class="line">clc</span><br><span class="line">lambda=<span class="number">1</span>;<span class="comment">%指数分布的产生lambda</span></span><br><span class="line">n=<span class="number">10</span>;<span class="comment">%x的取值为0到无穷大，这里只取前n个</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%------------------------由内置函数直接给出-------------------------%</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%指数分布的产生，即事件发生的时间间隔x,x取值为0到正无穷</span></span><br><span class="line">X=exprnd(<span class="number">1</span>/lambda);<span class="comment">%产生1均值为1/lamda的指数分布</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%指数分布的cdf</span></span><br><span class="line">x=<span class="number">0</span>:<span class="number">.1</span>:n;</span><br><span class="line">Fx=expcdf(x,<span class="number">1</span>/lambda);</span><br><span class="line"><span class="comment">%figure</span></span><br><span class="line"><span class="comment">%plot(x,Fx,'-')</span></span><br><span class="line"><span class="comment">%title('指数分布的cdf')</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%指数分布的pdf</span></span><br><span class="line">x=<span class="number">0</span>:<span class="number">.1</span>:n;</span><br><span class="line">Px=exppdf(x,<span class="number">1</span>/lambda);</span><br><span class="line"><span class="built_in">figure</span></span><br><span class="line"><span class="built_in">plot</span>(x,Px,<span class="string">'r-'</span>)</span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line">title(<span class="string">'指数分布的pdf'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">%-------------------------由均匀分布推导出（分布函数法）-------------------------%</span></span><br><span class="line">N=<span class="number">1000</span>;<span class="comment">%样本点数</span></span><br><span class="line">U=<span class="built_in">rand</span>(<span class="number">1</span>,N);<span class="comment">%U服从均匀分布</span></span><br><span class="line"></span><br><span class="line">X2=-(<span class="built_in">log</span>(<span class="number">1</span>-U))/lambda;<span class="comment">%X2服从指数分布，X2由分布函数法得到，对于不同的分布，分布函数不同，这里的表达式需作相应的改变！</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%下面的程序是绘制X2的概率密度函数pdf</span></span><br><span class="line">Max=<span class="built_in">ceil</span>(<span class="built_in">max</span>(X2));</span><br><span class="line">step=<span class="number">1</span>;<span class="comment">%步长</span></span><br><span class="line">range=<span class="number">0</span>:step:Max;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:<span class="built_in">length</span>(range)<span class="number">-1</span></span><br><span class="line">    YY(<span class="built_in">i</span>)=sum(range(<span class="built_in">i</span>)&lt;=X2&amp;X2&lt;=range(<span class="built_in">i</span>+<span class="number">1</span>))/N/step;<span class="comment">%统计落在区间中的点数</span></span><br><span class="line">    XX(<span class="built_in">i</span>)=(range(<span class="built_in">i</span>)+range(<span class="built_in">i</span>+<span class="number">1</span>))/<span class="number">2</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">plot</span>(XX,YY,<span class="string">'bo'</span>)</span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line">title(<span class="string">'指数分布的pdf'</span>)</span><br><span class="line"><span class="built_in">legend</span>(<span class="string">'内置函数产生'</span>,<span class="string">'分布函数法产生'</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>结果显示如下：</strong>(指数参数$\lambda=1$的情况)<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20151108/20151108_fig001.jpg" width="600" height="500" title="图1" alt="图1" ></p>
+<p><strong>分布函数法的局限性</strong>：由于该方法的关键就是求出分布函数的反函数，从而得到随机变量$X$关于均匀分布随机变量$U$的表达式。然而有些分布是不容易求得其反函数的，例如我们常见的正态分布，其分布函数需要用其概率密度函数表示如下：</p>
+<script type="math/tex; mode=display">
+F\left( x \right) = \frac{1}{\sigma\sqrt{2\pi} }\int_{ - \infty }^x e^{ - \frac{\left( {t - u} \right)^2}{2\sigma ^2}} dt</script><p>其中，$u$和$\sigma$分布为均值和标准差。显然，当得知$F(x)$的取值时，也很难求得此时的$x$的值。因此，当出现上述问题时，我们可以采用舍去法。</p>
+<hr>
+<h3 id="舍去法"><a href="#舍去法" class="headerlink" title="舍去法"></a><strong>舍去法</strong></h3><p><strong>定理</strong>：<em>设随机变量$Y,V$的概率密度函数分布为$f<em>{Y}(y)、f</em>{V}(v)$，其中，$f<em>{Y}(y)、f</em>{V}(v)$有相同的支撑集且</em><br>$M =\max\left{f<em>{Y}(y)/f</em>{V}(v)\right} &lt;  + \infty $<br><strong>*按下列步骤</strong>可以生成随机变量$Y$服从概率密度为$f_{Y}(y)$的分布：*</p>
+<ol>
+<li>生成独立的随机变量$U,V$，其中，$U$服从$0$到$1$的均匀分布,$V$服从概率密度函数为$f_{V}(v)$的分布</li>
+<li>如果$U &lt;\frac{1}{M}f<em>{Y}(V)/f</em>{V}(V)$,则令$Y=V$，否则返回到步骤1。</li>
+</ol>
+<p><strong>下面以用舍去法生成正态分布来具体说明</strong>：假设我们要用舍取法生成标准正态分布，标准正态分布的概率密度函数如下所示：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20151108/20151108_fig002.jpg" width="600" height="500" title="图2" alt="图2" ></p>
+<ul>
+<li><p><strong>确定$V$的分布</strong><br>由舍取法的步骤2可知，生成的正态分布变量$Y$的取值包含于随机变量$V$的取值中。因此，我们需要根据正态分布随机变量的取值范围，来选择$V$应该服从的分布！<strong>我们一般取$V$服从均匀分布</strong>（当然也可以取其他的分布，注意需要满足取值范围）。<br>理论上，正态随机变量的取值在整个实数域中，因此$V$应该服从区间为实数域的均匀分布，显然这个均匀分布我们很难表示出来。但由上图可知，标准正态分布的取值基本在$-5$到$5$之间，因此我们只需要使得$V$服从区间在$-5$到$5$的均匀分布即可以很好的近似。</p>
+</li>
+<li><p><strong>确定$M$的大小</strong><br> 在公式$M =\max\left{f<em>{Y}(y)/f</em>{V}(v)\right} $中，${f<em>V}(v) = \frac{1}{10}$，$\max\left{f</em>{Y}(y)\right} =f_{Y}(0)=\frac{1}{\sqrt {2\pi } }$。因此$M=\frac{10}{\sqrt {2\pi } }$</p>
+</li>
+</ul>
+<p>在确定了$V$的分布以及$M$的大小之后，便可以根据定理中步骤2的判决方法来生成服从指定分布的随机变量$Y$。具体的程序实现如下：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%-------------------正态分布-----------------------%</span></span><br><span class="line"><span class="comment">%参数：均值mu，方差sigma2</span></span><br><span class="line"><span class="comment">%mean=mu,  var=sigma2</span></span><br><span class="line">clear all</span><br><span class="line">close all</span><br><span class="line">clc</span><br><span class="line">mu=<span class="number">0</span>;</span><br><span class="line">sigma2=<span class="number">1</span>;</span><br><span class="line">n=<span class="number">10</span>;<span class="comment">%x的取值为正负无穷大，</span></span><br><span class="line"><span class="comment">%-------------------由内置函数直接给出----------------%</span></span><br><span class="line"><span class="comment">%正态分布的产生X</span></span><br><span class="line">X=normrnd(mu,<span class="built_in">sqrt</span>(sigma2));<span class="comment">%产生均值mu，方差sigma2的正态分布</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%正态分布的cdf</span></span><br><span class="line">x=<span class="number">0</span>:<span class="number">.1</span>:n;</span><br><span class="line">Fx=normcdf(x,mu,<span class="built_in">sqrt</span>(sigma2));</span><br><span class="line"><span class="comment">% figure</span></span><br><span class="line"><span class="comment">% plot(x,Fx,'-')</span></span><br><span class="line"><span class="comment">% title('正态分布的cdf')</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%指数分布的pdf</span></span><br><span class="line">x=<span class="number">-5</span>:<span class="number">.1</span>:<span class="number">5</span>;</span><br><span class="line">Px=normpdf(x,mu,<span class="built_in">sqrt</span>(sigma2));</span><br><span class="line"><span class="built_in">figure</span></span><br><span class="line"><span class="built_in">plot</span>(x,Px,<span class="string">'b-'</span>)</span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line"></span><br><span class="line"><span class="comment">%------由舍选法推导出--------%</span></span><br><span class="line"></span><br><span class="line">N=<span class="number">100</span>;</span><br><span class="line">A=<span class="number">-5</span>;<span class="comment">%A,B位均匀分布的取值区间</span></span><br><span class="line">B=<span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">i</span>=<span class="number">1</span>;</span><br><span class="line"><span class="keyword">while</span>(<span class="built_in">i</span>&lt;=N)</span><br><span class="line">    U=unifrnd(<span class="number">0</span>,<span class="number">1</span>);<span class="comment">%服从（0,1）的均匀分布</span></span><br><span class="line">    V=unifrnd(A,B);<span class="comment">%服从（A,B）的均匀分布</span></span><br><span class="line">    M=<span class="number">1</span>/<span class="built_in">sqrt</span>(<span class="number">2</span>*<span class="built_in">pi</span>)*(B-A);<span class="comment">%计算得到M</span></span><br><span class="line">    <span class="keyword">if</span>(U&lt;<span class="number">1</span>/M*<span class="number">1</span>/<span class="built_in">sqrt</span>(<span class="number">2</span>*<span class="built_in">pi</span>*sigma2)*<span class="built_in">exp</span>(-(V-mu)^<span class="number">2</span>/<span class="number">2</span>/sigma2));<span class="comment">%由定理得到的公式来生成随机变量X2</span></span><br><span class="line">        X2(<span class="built_in">i</span>)=V;<span class="comment">%X2就是我们要生成的指定分布的随机变量</span></span><br><span class="line">        <span class="built_in">i</span>=<span class="built_in">i</span>+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">end</span>  </span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%下面的程序是计算通过舍去法生成的正态分布X2的pdf</span></span><br><span class="line">Max=<span class="built_in">ceil</span>(<span class="built_in">max</span>(X2));</span><br><span class="line">step=<span class="number">1</span>;</span><br><span class="line">range=A:step:B;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:<span class="built_in">length</span>(range)<span class="number">-1</span></span><br><span class="line">    YY(<span class="built_in">i</span>)=sum(range(<span class="built_in">i</span>)&lt;=X2&amp;X2&lt;=range(<span class="built_in">i</span>+<span class="number">1</span>))/N/step;</span><br><span class="line">    XX(<span class="built_in">i</span>)=(range(<span class="built_in">i</span>)+range(<span class="built_in">i</span>+<span class="number">1</span>))/<span class="number">2</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">plot</span>(XX,YY,<span class="string">'ro'</span>)</span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line">title(<span class="string">'正态分布的pdf'</span>)</span><br><span class="line"><span class="built_in">legend</span>(<span class="string">'内部函数产生'</span>,<span class="string">'舍取法产生'</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>结果显示如下：</strong><br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20151108/20151108_fig003.jpg" width="600" height="500" title="图3" alt="图3" ></p>
+<p><strong>注意</strong>：使用这种方法的时候必须使$V$服从合适的分布来保证$M&lt;+\infty$，如若找不到这样的分布，则可以参考Markov Chain Monte Carlo(MCMC)方法。</p>
+<hr>
+<h2 id="特殊方法"><a href="#特殊方法" class="headerlink" title="特殊方法"></a>特殊方法</h2><p>上述的两种通用方法基本上可以用均匀分布产生大多数连续分布，不过由于每种分布有着各自的特性，因此也可以通过特殊的方法来生成。下面以生成标准正态分布(<strong>正态分布性质表明：任何正态分布都可以由标准正态分布转化得到</strong>)为例：</p>
+<h3 id="中心极限定理法"><a href="#中心极限定理法" class="headerlink" title="中心极限定理法"></a>中心极限定理法</h3><p><strong>中心极限定理</strong>是概率论中的一组定理。中心极限定理说明，大量相互独立的随机变量，其均值的分布以正态分布为极限。这组定理是数理统计学和误差分析的理论基础，<strong>指出了大量随机变量之和近似服从正态分布的条件</strong>。（摘自维基百科）<br>我们由中心极限定理可知，多个独立同分布的随机变量的和服从正态分布，而关于这个正态分布的均值和方差的确定，我们可以依据林德伯格－列维定理：<br><strong>林德伯格－列维(Lindeberg-Levy)定理</strong>：<br>设随机变量$X<em>1,X_2,\cdots,X_n$，且具有有限的数学期望$E({X_i}) = u,D( {X_i}) = {\sigma ^2} = 0\left( {i = 1,2, \cdots ,n} \right)$。记$\bar X = \frac{1}{n}\sum\limits</em>{i = 1}^n {X<em>i} ,Y = \frac{\bar X - u}{\sigma /\sqrt n }$，则$\mathop {\lim }\limits</em>{n \to \infty } P( Y &lt; z ) = \Phi ( z )$，其中$\Phi( z)$是标准正态分布的分布函数。</p>
+<p>在程序实现中，我利用$10$个相互独立的服从区间$-5$到$5$的均匀分布来生成标准正态分布$Y$。而由公式可知，区间$0$到$1$的均匀分布的均值为$u=\frac{ - 5 + 5}{2}=0,\sigma^2=(5-(-5))^2/12=100/12$.因此我们需要生成的服从标准正态的随机变量的表达式为：$Y = \frac{\bar X - 0.5}{\sqrt {100/12}/\sqrt n }$。<strong>具体程序实现如下：</strong></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%-------------------正态分布-----------------------%</span></span><br><span class="line"><span class="comment">%参数：均值mu，方差sigma2</span></span><br><span class="line"><span class="comment">%mean=mu,  var=sigma2</span></span><br><span class="line">clear all</span><br><span class="line">close all</span><br><span class="line">clc</span><br><span class="line">mu=<span class="number">0</span>;</span><br><span class="line">sigma2=<span class="number">1</span>;</span><br><span class="line">n=<span class="number">10</span>;<span class="comment">%x的取值为正负无穷大，</span></span><br><span class="line"><span class="comment">%------------------由内置函数直接给出--------------%</span></span><br><span class="line"><span class="comment">%正态分布的产生X</span></span><br><span class="line">X=normrnd(mu,<span class="built_in">sqrt</span>(sigma2));<span class="comment">%产生均值mu，方差sigma2的正态分布</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%正态分布的cdf</span></span><br><span class="line">x=<span class="number">0</span>:<span class="number">.1</span>:n;</span><br><span class="line">Fx=normcdf(x,mu,<span class="built_in">sqrt</span>(sigma2));</span><br><span class="line"><span class="comment">% figure</span></span><br><span class="line"><span class="comment">% plot(x,Fx,'-')</span></span><br><span class="line"><span class="comment">% title('正态分布的cdf')</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%指数分布的pdf</span></span><br><span class="line">x=<span class="number">-5</span>:<span class="number">.1</span>:<span class="number">5</span>;</span><br><span class="line">Px=normpdf(x,mu,<span class="built_in">sqrt</span>(sigma2));</span><br><span class="line"><span class="built_in">figure</span></span><br><span class="line"><span class="built_in">plot</span>(x,Px,<span class="string">'b-'</span>)</span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line"><span class="comment">%-------------------由中心极限定理推导出---------------------%</span></span><br><span class="line">N=<span class="number">1000</span>;<span class="comment">%样本点数</span></span><br><span class="line">A=<span class="number">-5</span>;<span class="comment">%A,B位均匀分布的取值区间</span></span><br><span class="line">B=<span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:<span class="number">10</span></span><br><span class="line">U(<span class="built_in">i</span>,<span class="number">1</span>:N)=unifrnd(A,B,<span class="number">1</span>,N);<span class="comment">%U存储10个独立的服从均匀分布的随机变量</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">meanX=<span class="built_in">mean</span>(U);</span><br><span class="line">X2=(meanX-(A+B)/<span class="number">2</span>)/<span class="built_in">sqrt</span>((B-A)^<span class="number">2</span>/<span class="number">12</span>)*<span class="built_in">sqrt</span>(<span class="number">10</span>);<span class="comment">%由林德伯格－列维定理的公式知X2服从正态分布</span></span><br><span class="line"><span class="built_in">mean</span>(X2);</span><br><span class="line"></span><br><span class="line"><span class="comment">%下面的程序是计算通过中心极限定理法生成的正态分布X2的pdf</span></span><br><span class="line">Max=<span class="built_in">ceil</span>(<span class="built_in">max</span>(X2));</span><br><span class="line">step=<span class="number">1</span>;</span><br><span class="line">range=A:step:B;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:<span class="built_in">length</span>(range)<span class="number">-1</span></span><br><span class="line">    YY(<span class="built_in">i</span>)=sum(range(<span class="built_in">i</span>)&lt;=X2&amp;X2&lt;=range(<span class="built_in">i</span>+<span class="number">1</span>))/N/step;</span><br><span class="line">    XX(<span class="built_in">i</span>)=(range(<span class="built_in">i</span>)+range(<span class="built_in">i</span>+<span class="number">1</span>))/<span class="number">2</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">plot</span>(XX,YY,<span class="string">'ro'</span>)</span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line">title(<span class="string">'正态分布的pdf'</span>)</span><br><span class="line"><span class="built_in">legend</span>(<span class="string">'内部函数产生'</span>,<span class="string">'中心极限定理法产生'</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>显示结果如下：</strong><br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20151108/20151108_fig004.jpg" width="600" height="500" title="图4" alt="图4" ></p>
+<hr>
+<h3 id="Box-Muller法"><a href="#Box-Muller法" class="headerlink" title="Box-Muller法"></a>Box-Muller法</h3><p><strong>基本思想</strong>：假设$U,V$是两个相互独立的且服从区间在$0$到$1$的均匀分布，并且随机变量$X,Y$的表达式如下：</p>
+<script type="math/tex; mode=display">X = \sqrt { - 2{\mathop{\rm lnU}\nolimits} } \cos ( 2\pi V ),Y = \sqrt { - 2{\mathop{\rm lnU}\nolimits} } \sin ( 2\pi V)</script><p>则$X,Y$是相互独立的，并且服从标准正态分布。</p>
+<p><strong>具体的程序实现如下：</strong></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%-------------------正态分布-----------------------%</span></span><br><span class="line"><span class="comment">%参数：均值mu，方差sigma2</span></span><br><span class="line"><span class="comment">%mean=mu,  var=sigma2</span></span><br><span class="line">clear all</span><br><span class="line">close all</span><br><span class="line">clc</span><br><span class="line">mu=<span class="number">0</span>;</span><br><span class="line">sigma2=<span class="number">1</span>;</span><br><span class="line">n=<span class="number">10</span>;<span class="comment">%x的取值为正负无穷大，</span></span><br><span class="line"><span class="comment">%--------------------由内置函数直接给出----------------------%</span></span><br><span class="line"><span class="comment">%正态分布的产生X</span></span><br><span class="line">X=normrnd(mu,<span class="built_in">sqrt</span>(sigma2));<span class="comment">%产生均值mu，方差sigma2的正态分布</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%正态分布的cdf</span></span><br><span class="line">x=<span class="number">0</span>:<span class="number">.1</span>:n;</span><br><span class="line">Fx=normcdf(x,mu,<span class="built_in">sqrt</span>(sigma2));</span><br><span class="line"><span class="comment">% figure</span></span><br><span class="line"><span class="comment">% plot(x,Fx,'-')</span></span><br><span class="line"><span class="comment">% title('正态分布的cdf')</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%指数分布的pdf</span></span><br><span class="line">x=<span class="number">-5</span>:<span class="number">.1</span>:<span class="number">5</span>;</span><br><span class="line">Px=normpdf(x,mu,<span class="built_in">sqrt</span>(sigma2));</span><br><span class="line"><span class="built_in">figure</span></span><br><span class="line"><span class="built_in">plot</span>(x,Px,<span class="string">'r-'</span>)</span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line"></span><br><span class="line"><span class="comment">%-----------------------Box-Muller法-----------------------%</span></span><br><span class="line">N=<span class="number">1000</span>;</span><br><span class="line">U=<span class="built_in">rand</span>(<span class="number">1</span>,N);<span class="comment">%U,V都是服从(0,1)的均匀分布</span></span><br><span class="line">V=<span class="built_in">rand</span>(<span class="number">1</span>,N);</span><br><span class="line">A=<span class="number">-5</span>;</span><br><span class="line">B=<span class="number">5</span>;</span><br><span class="line">R=<span class="built_in">sqrt</span>(<span class="number">-2.</span>*<span class="built_in">log</span>(U));</span><br><span class="line">theta=<span class="number">2</span>*<span class="built_in">pi</span>*V;</span><br><span class="line"></span><br><span class="line">X2=R.*<span class="built_in">cos</span>(theta);</span><br><span class="line">Y2=R.*<span class="built_in">sin</span>(theta);<span class="comment">%X，Y都是服从n(0,1)的正态分布</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%下面的程序是计算通过Box-Muller法生成的正态分布X的pdf</span></span><br><span class="line">Max=<span class="built_in">ceil</span>(<span class="built_in">max</span>(X2));</span><br><span class="line">step=<span class="number">1</span>;</span><br><span class="line">range=A:step:B;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:<span class="built_in">length</span>(range)<span class="number">-1</span></span><br><span class="line">    YY(<span class="built_in">i</span>)=sum(range(<span class="built_in">i</span>)&lt;=X2&amp;X2&lt;=range(<span class="built_in">i</span>+<span class="number">1</span>))/N/step;</span><br><span class="line">    XX(<span class="built_in">i</span>)=(range(<span class="built_in">i</span>)+range(<span class="built_in">i</span>+<span class="number">1</span>))/<span class="number">2</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">plot</span>(XX,YY,<span class="string">'bo'</span>)</span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line">title(<span class="string">'正态分布的pdf'</span>)</span><br><span class="line"><span class="built_in">legend</span>(<span class="string">'内部函数产生'</span>,<span class="string">'Box-Muller法产生'</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>显示结果如下：</strong><br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20151108/20151108_fig005.jpg" width="600" height="500" title="图5" alt="图5" ></p>
+<p>上面我们是以正态分布为例来讲述了特殊法的运用，主要是运用了<strong>正态分布与其他分布的关系</strong>：多个独立同分布的随机变量和服从正态分布；均匀分布与正态分布之间满足Box-Muller法中的关系。因此，当想要由一种分布生成另一种分布的时候，只需要知道它们之间的关系即可！</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2015/11/08/[20151108]/" title="【概率统计】连续分布的产生">http://tengweitw.com/2015/11/08/[20151108]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Probability-Theory/" rel="tag"><i class="fa fa-tag"></i> Probability Theory</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/10/07/%5B20151007%5D/" rel="prev" title="【妄言之言】遇见">
+      <i class="fa fa-chevron-left"></i> 【妄言之言】遇见
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/09/14/%5B20160914%5D/" rel="next" title="【妄言之言】西南游记">
+      【妄言之言】西南游记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#通用方法"><span class="nav-number">1.</span> <span class="nav-text">通用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分布函数法"><span class="nav-number">1.1.</span> <span class="nav-text">分布函数法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#舍去法"><span class="nav-number">1.2.</span> <span class="nav-text">舍去法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特殊方法"><span class="nav-number">2.</span> <span class="nav-text">特殊方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#中心极限定理法"><span class="nav-number">2.1.</span> <span class="nav-text">中心极限定理法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Box-Muller法"><span class="nav-number">2.2.</span> <span class="nav-text">Box-Muller法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

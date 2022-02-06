@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="kNN (k-nearest neighbor)的定义 针对一个测试实例，在给定训练集中，基于某种距离度量找到与之最近的k个实例点，然后基于这k个最邻近实例点的信息，以某种决策规则来对该测试实例进行分类或回归。  由定义可知，$kNN$模型包含三个基本要素：距离度量、k值选择以及决策规则。再详细描述这三要素之前，我们先用一个样图来简单描述$kNN$分类模型的效果。 我们以二维平面为例，假设输入的训">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【图解例说机器学习】K最近邻 (KNN)">
+<meta property="og:url" content="http://tengweitw.com/2020/01/12/[20200122]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="kNN (k-nearest neighbor)的定义 针对一个测试实例，在给定训练集中，基于某种距离度量找到与之最近的k个实例点，然后基于这k个最邻近实例点的信息，以某种决策规则来对该测试实例进行分类或回归。  由定义可知，$kNN$模型包含三个基本要素：距离度量、k值选择以及决策规则。再详细描述这三要素之前，我们先用一个样图来简单描述$kNN$分类模型的效果。 我们以二维平面为例，假设输入的训">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200122/20200122_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200122/20200122_fig002.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200122/20200122_fig003.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200122/20200122_fig004.jpg">
+<meta property="article:published_time" content="2020-01-12T14:12:55.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.786Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Machine Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200122/20200122_fig001.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2020/01/12/[20200122]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【图解例说机器学习】K最近邻 (KNN) | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/01/12/%5B20200122%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【图解例说机器学习】K最近邻 (KNN)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-12 22:12:55" itemprop="dateCreated datePublished" datetime="2020-01-12T22:12:55+08:00">2020-01-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>9.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>13 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="kNN-k-nearest-neighbor-的定义"><a href="#kNN-k-nearest-neighbor-的定义" class="headerlink" title="kNN (k-nearest neighbor)的定义"></a>kNN (k-nearest neighbor)的定义</h2><blockquote>
+<p>针对一个测试实例，在给定训练集中，基于<strong>某种距离度量</strong>找到与之<strong>最近的k个实例点</strong>，然后基于这k个最邻近实例点的信息，以<strong>某种决策规则</strong>来对该测试实例进行分类或回归。</p>
+</blockquote>
+<p>由定义可知，$kNN$模型包含三个基本要素：距离度量、k值选择以及决策规则。再详细描述这三要素之前，我们先用一个样图来简单描述$kNN$分类模型的效果。</p>
+<p>我们以二维平面为例，假设输入的训练集格式为$(x_1,x_2,l)$，其中$x_1, x_2$为横纵坐标，$l$为标签。这里我们考虑$k=1,3$的情况，决策规则为多数投票规则，即测试实例与k个实例中的多数属于同一类。图$1,2$分别是$k=1,3$时，二维特征空间划分图。</p>
+<p>​    <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200122/20200122_fig001.jpg" width="600" height="450" title="图1" alt="图1" ></p>
+<a id="more"></a>
+<hr>
+<h2 id="距离度量"><a href="#距离度量" class="headerlink" title="距离度量"></a>距离度量</h2><p>$kNN$的本质是“近朱者赤近墨者黑”，即测试点的类别由其最邻近的$k$个实例点决定。这里“最邻近”的意义根据距离度量的不同而不同。一般来说，我们最常见的便是欧氏距离。这里我们介绍包含欧氏距离，但比欧氏距离更普适的Minkowski距离。</p>
+<blockquote>
+<p>假定训练集中,每个实例包含$n$个特征，那么实例$x$可以分别表示为$x=(x_1,\cdots,x_n)$。假定测试实例为$y=(y_1,\cdots,y_n)$，那么$x, y$之间的Minkowski距离可以表示为：</p>
+</blockquote>
+<script type="math/tex; mode=display">
+L(x,y)=\left(\sum\limits_{i=1}^{n}{\lvert x_i-y_i\rvert}^p\right)^{\frac{1}{p}},</script><p>其中，$p&gt;0$是一个可变参数：</p>
+<script type="math/tex; mode=display">
+L(x,y)=
+\begin{cases}
+\sum\limits_{i=1}^{n}{\lvert x_i-y_i\rvert},\quad p=1\quad\text{(曼哈顿距离)}\\
+\left(\sum\limits_{i=1}^{n}{\lvert x_i-y_i\rvert}^2\right)^{\frac{1}{2}},\quad p=2\quad\text{(欧氏距离)}\\
+\max\limits_{i=1}^{n}{\lvert x_i-y_i\rvert},\quad p\to\infty,\quad\text{(切比雪夫距离)}
+\end{cases}</script><p>当然$p$也可以取小于$1$的值，如$p=\frac{1}{2}$。图$3$给出了当$p$取不同值时，与原点距离为$1$的图形：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200122/20200122_fig002.jpg" width="600" height="450" title="图3" alt="图3" ></p>
+<p>Note: 这里只是介绍了较常用的Minkowski距离，</p>
+<hr>
+<h2 id="k-值的选择"><a href="#k-值的选择" class="headerlink" title="$k$值的选择"></a>$k$值的选择</h2><p>调参是机器学习算法的重要一环。在$kNN$算法中，$k$值的选取对结果的影响较大。下面以图$4$来具体说明：</p>
+<p>（a）当$k$取值较小时，此时是根据测试实例周围较少的训练样例信息来进行分类。由于训练样例离测试样例比较近，因此训练误差比较小。当这些邻近的训练样例是噪声时，会严重影响分类结果，即泛化误差变大。<br>（b）当$k$取值较大时，此时是根据测试实例周围较多的训练样例信息来进行分类。这时与测试实例相距较远（相关性较小）的训练样例也对分类结果有影响，使得泛化误差较大。一个极端的例子就是以考虑所有的训练样例，这时测试样例被归为训练样例数最大的一类。</p>
+<p>Note: 模型复杂度的理解：对于有参模型来说（例如线性拟合），模型复杂度一般可以用参数的多少来判断。对于无参模型来说（例如这里的$kNN$），这里还需思考。可能的情况？考虑极端情况，当$k$取值为整个训练样例数时，这时的模型最简单，即测试样例被归为训练样例数最大的一类。当$k$取值为$1$时，每个测试样例都需要根据其最邻近节点来进行分类，这时模型变得很复杂。</p>
+<p>通常来说，我们可以通过交叉验证来选取$k$值。同时，我们也可以对这$k$个训练样例进行距离加权，来克服（b）的影响。</p>
+<hr>
+<h2 id="决策规则"><a href="#决策规则" class="headerlink" title="决策规则"></a>决策规则</h2><p>$kNN$既可进行分类，也可用于回归。</p>
+<ul>
+<li>对于分类问题来说，一般采用的是投票法，即测试样例被归为最邻近$k$个训练样例数中最大的一类。</li>
+<li>对于回归问题来说，一般采用的是平均法。顾名思义，测试样例的取值为这$k$个训练样例取值的平均值。</li>
+<li>最后，我们可以对这两种方法进行改进，即对这$k$个训练样例进行加权，离测试样例较近的训练样例一般具有更大的影响权重。</li>
+</ul>
+<hr>
+<h3 id="kNN-优缺点："><a href="#kNN-优缺点：" class="headerlink" title="$kNN$优缺点："></a>$kNN$优缺点：</h3><p>优点：</p>
+<p>最近更新于20-01-20，明早就回家过年了，年后再更新。<br><strong>未完待续。。。</strong><br>最近更新于20-03-30，优缺点还需用图示说明。</p>
+<hr>
+<h3 id="算法实践"><a href="#算法实践" class="headerlink" title="算法实践"></a>算法实践</h3><p>下面我们给出两种方式实现KNN分类算法：一、自己编程实现KNN算法；二、使用更加简单的scikit-learn库。<br>注意：数据集为iris数据集，有150个训练集，4个feature, 总共分3类。在方法一中，我们考虑了所有4个feature，将所有150个训练数据作为训练(即在程序中设置split=1)，读者可以通过设置split的值来获取测试集用于交叉检验得到最佳的k值。在方法二中，我们只考虑了前2个feature，这么做是为了在二维图中展示分类结果。</p>
+<h4 id="自写KNN算法"><a href="#自写KNN算法" class="headerlink" title="自写KNN算法"></a>自写KNN算法</h4><ul>
+<li>算法思路：</li>
+</ul>
+<ol>
+<li>计算已知数据集中的点与当前点之间的距离  </li>
+<li>按照距离递增次序进行排序  </li>
+<li>选取与当前点距离最小的K个点  </li>
+<li>确定这K个点所在类别的出现次数</li>
+<li>返回这K个点出现次数最多的类别作为当前点的预测分类</li>
+</ol>
+<ul>
+<li>代码实现 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets, neighbors</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># Divide the original dataset into training data and test data</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LoadDataSet</span><span class="params">(irisData, split, trainData, testData, trainLabel, testLabel)</span>:</span></span><br><span class="line">    allData = irisData.data</span><br><span class="line">    allLabel = irisData.target</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(allData)):</span><br><span class="line">        <span class="keyword">if</span> random.random() &lt; split:  <span class="comment">#</span></span><br><span class="line">            trainData.append(allData[i])</span><br><span class="line">            trainLabel.append(allLabel[i])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            testData.append(allData[i])</span><br><span class="line">            testLabel.append(allLabel[i])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Calculate the distance between two instance</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CalDist</span><span class="params">(instance1, instance2)</span>:</span></span><br><span class="line">    dist = <span class="number">0</span></span><br><span class="line">    length = len(instance1)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(length):</span><br><span class="line">        dist += pow((instance1[i] - instance2[i]), <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> math.sqrt(dist)</span><br><span class="line"></span><br><span class="line"><span class="comment"># The KNN algorithm</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">knn</span><span class="params">(instance, k, trainData, trainLabel)</span>:</span></span><br><span class="line">    allDist = []</span><br><span class="line">    <span class="comment"># Calculate distances from all training data</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(trainData)):</span><br><span class="line">        allDist.append([CalDist(instance, trainData[i]), i])</span><br><span class="line">    allDist.sort()</span><br><span class="line">    <span class="comment"># Determine the neighbors</span></span><br><span class="line">    neighbors = []</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(k):</span><br><span class="line">        neighbors.append(allDist[j][<span class="number">1</span>])</span><br><span class="line">    numLabels = len(np.unique(trainLabel))</span><br><span class="line">    vote = [<span class="number">0</span>] * numLabels</span><br><span class="line">    <span class="comment"># Vote to decide the resultant label</span></span><br><span class="line">    <span class="keyword">for</span> kk <span class="keyword">in</span> range(k):</span><br><span class="line">        vote[trainLabel[neighbors[kk]]] += <span class="number">1</span></span><br><span class="line">    <span class="comment"># print the result</span></span><br><span class="line">    print(vote.index(max(vote)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># load dataset of iris</span></span><br><span class="line">irisData = datasets.load_iris()</span><br><span class="line"></span><br><span class="line"><span class="comment"># All data are used for training</span></span><br><span class="line">split = <span class="number">1</span></span><br><span class="line"><span class="comment"># Number of neighbors</span></span><br><span class="line">k = <span class="number">3</span></span><br><span class="line">trainData = []</span><br><span class="line">trainLabel = []</span><br><span class="line">testData = []</span><br><span class="line">testLabel = []</span><br><span class="line">LoadDataSet(irisData, split, trainData, testData, trainLabel, testLabel)</span><br><span class="line"></span><br><span class="line">predictPoint=[<span class="number">7.6</span>, <span class="number">3.</span>, <span class="number">6.6</span>, <span class="number">2.1</span>]</span><br><span class="line"></span><br><span class="line">knn(predictPoint, k, trainData, trainLabel)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h4 id="使用scikit-learn库"><a href="#使用scikit-learn库" class="headerlink" title="使用scikit-learn库"></a>使用scikit-learn库</h4><ul>
+<li>代码实现</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> matplotlib.colors <span class="keyword">import</span> ListedColormap</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> neighbors, datasets</span><br><span class="line"></span><br><span class="line"><span class="comment"># The number of neighbors</span></span><br><span class="line">k = <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># import dataset of iris</span></span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line"></span><br><span class="line"><span class="comment"># The first two-dim feature for simplicity</span></span><br><span class="line">X = iris.data[:, :<span class="number">2</span>]</span><br><span class="line"><span class="comment"># The labels</span></span><br><span class="line">y = iris.target</span><br><span class="line"></span><br><span class="line">h = <span class="number">.02</span>  <span class="comment"># step size in the mesh</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Create color maps for three types of labels</span></span><br><span class="line">cmap_light = ListedColormap([<span class="string">'tomato'</span>, <span class="string">'limegreen'</span>, <span class="string">'cornflowerblue'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># we create an instance of Neighbours Classifier and fit the data.</span></span><br><span class="line">clf = neighbors.KNeighborsClassifier(k, <span class="string">'uniform'</span>)</span><br><span class="line">clf.fit(X, y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot the decision boundary. Assign a color to each point in the mesh.</span></span><br><span class="line">x_min, x_max = X[:, <span class="number">0</span>].min() - <span class="number">1</span>, X[:, <span class="number">0</span>].max() + <span class="number">1</span></span><br><span class="line">y_min, y_max = X[:, <span class="number">1</span>].min() - <span class="number">1</span>, X[:, <span class="number">1</span>].max() + <span class="number">1</span></span><br><span class="line">xx, yy = np.meshgrid(np.arange(x_min, x_max, h),</span><br><span class="line">                     np.arange(y_min, y_max, h))</span><br><span class="line">Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Z is a matrix (values) for the two-dim space</span></span><br><span class="line">Z = Z.reshape(xx.shape)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot the training points: different</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">PlotTrainPoint</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(X)):</span><br><span class="line">        <span class="keyword">if</span> y[i] == <span class="number">0</span>:</span><br><span class="line">            plt.plot(X[i][<span class="number">0</span>], X[i][<span class="number">1</span>], <span class="string">'rs'</span>, markersize=<span class="number">6</span>, markerfacecolor=<span class="string">"r"</span>)</span><br><span class="line">        <span class="keyword">elif</span> y[i] == <span class="number">1</span>:</span><br><span class="line">            plt.plot(X[i][<span class="number">0</span>], X[i][<span class="number">1</span>], <span class="string">'gs'</span>, markersize=<span class="number">6</span>, markerfacecolor=<span class="string">"g"</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            plt.plot(X[i][<span class="number">0</span>], X[i][<span class="number">1</span>], <span class="string">'bs'</span>, markersize=<span class="number">6</span>, markerfacecolor=<span class="string">"b"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the format of labels</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LabelFormat</span><span class="params">(plt)</span>:</span></span><br><span class="line">    ax = plt.gca()</span><br><span class="line">    plt.tick_params(labelsize=<span class="number">14</span>)</span><br><span class="line">    labels = ax.get_xticklabels() + ax.get_yticklabels()</span><br><span class="line">    [label.set_fontname(<span class="string">'Times New Roman'</span>) <span class="keyword">for</span> label <span class="keyword">in</span> labels]</span><br><span class="line">    font1 = &#123;<span class="string">'family'</span>: <span class="string">'Times New Roman'</span>,</span><br><span class="line">             <span class="string">'weight'</span>: <span class="string">'normal'</span>,</span><br><span class="line">             <span class="string">'size'</span>: <span class="number">16</span>,</span><br><span class="line">             &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot the boundary lines (contour figure)</span></span><br><span class="line">fig = plt.figure()</span><br><span class="line">plt.contour(xx, yy, Z, <span class="number">3</span>, colors=<span class="string">'black'</span>, linewidths=<span class="number">1</span>, linestyles=<span class="string">'solid'</span>)</span><br><span class="line">PlotTrainPoint()</span><br><span class="line">plt.title(<span class="string">"3-Class classification (k = %i, weights = '%s')"</span> % (k, <span class="string">'uniform'</span>), LabelFormat(plt))</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot the boundary maps (mesh figure)</span></span><br><span class="line">plt.figure()</span><br><span class="line">plt.pcolormesh(xx, yy, Z, cmap=cmap_light)</span><br><span class="line">PlotTrainPoint()</span><br><span class="line">plt.xlim(xx.min(), xx.max())</span><br><span class="line">plt.ylim(yy.min(), yy.max())</span><br><span class="line">plt.title(<span class="string">"3-Class classification (k = %i, weights = '%s')"</span> % (k, <span class="string">'uniform'</span>), LabelFormat(plt))</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>仿真结果<br>图4和图5没有本质区别，不同之处在于图4只画了分类的轮廓，图5是将整个空间的点进行了分类。从图中可以看出，kNN适合于非线性分类。</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200122/20200122_fig003.jpg" width="600" height="450" title="图4" alt="图4" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200122/20200122_fig004.jpg" width="600" height="450" title="图5" alt="图5" ></p>
+<hr>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><p>图1的python 源代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> matplotlib <span class="keyword">as</span> mpl</span><br><span class="line"><span class="keyword">from</span> scipy.spatial <span class="keyword">import</span> Voronoi, voronoi_plot_2d, cKDTree</span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line"><span class="comment"># The number of test points and train points</span></span><br><span class="line">Num_test = <span class="number">3</span></span><br><span class="line">Num_train = <span class="number">50</span></span><br><span class="line"><span class="comment"># Generate the two-dimension feature (x,y), Here x,y are coordinates</span></span><br><span class="line">Loc_x_train = <span class="number">1000</span> * np.random.rand(Num_train, <span class="number">1</span>)</span><br><span class="line">Loc_y_train = <span class="number">1000</span> * np.random.rand(Num_train, <span class="number">1</span>)</span><br><span class="line">Label_train = np.round(np.random.rand(Num_train, <span class="number">1</span>))</span><br><span class="line">Loc_train = <span class="number">1000</span> * np.random.rand(Num_train, <span class="number">2</span>)</span><br><span class="line">filename = <span class="string">'Loc_x_train'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Generate the test points</span></span><br><span class="line">Loc_x_test = <span class="number">1000</span> * np.random.rand(Num_test, <span class="number">1</span>)</span><br><span class="line">Loc_y_test = <span class="number">1000</span> * np.random.rand(Num_test, <span class="number">1</span>)</span><br><span class="line">Loc_test = <span class="number">1000</span> * np.random.rand(Num_test, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(Loc_x_train)):</span><br><span class="line">    Loc_train[i] = [Loc_x_train[i], Loc_y_train[i]]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(Loc_x_test)):</span><br><span class="line">    Loc_test[i] = [Loc_x_test[i], Loc_y_test[i]]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Use the scipy.spatial packets to form voronoi</span></span><br><span class="line">vor = Voronoi(Loc_train)</span><br><span class="line">fig = voronoi_plot_2d(vor, show_points=<span class="literal">False</span>, show_vertices=<span class="literal">False</span>,</span><br><span class="line">                      line_colors=<span class="string">'black'</span>, line_width=<span class="number">2</span>, line_alpha=<span class="number">1</span>,</span><br><span class="line">                      point_size=<span class="number">15</span>)</span><br><span class="line"><span class="comment"># Plot the train pints</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, Num_train):</span><br><span class="line">    <span class="keyword">if</span> Label_train[i]:</span><br><span class="line">        plt.plot(Loc_x_train[i], Loc_y_train[i], <span class="string">'rs'</span>, markersize=<span class="number">6</span>, markerfacecolor=<span class="string">"w"</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        plt.plot(Loc_x_train[i], Loc_y_train[i], <span class="string">'bs'</span>, markersize=<span class="number">6</span>, markerfacecolor=<span class="string">"w"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Use the kdtree to find the nearest train point for each test point</span></span><br><span class="line">voronoi_kdtree = cKDTree(Loc_train)</span><br><span class="line">test_point_dist, test_point_regions = voronoi_kdtree.query(Loc_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Classify the test points, the same color as the nearest train point</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, Num_test):</span><br><span class="line">    <span class="keyword">if</span> Label_train[test_point_regions[i]]:</span><br><span class="line">        plt.plot(Loc_x_test[i], Loc_y_test[i], <span class="string">'ro'</span>, markersize=<span class="number">6</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        plt.plot(Loc_x_test[i], Loc_y_test[i], <span class="string">'bo'</span>, markersize=<span class="number">6</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># The following are typical settings for plotting figures</span></span><br><span class="line">plt.axis([<span class="number">0</span>, <span class="number">1001</span>, <span class="number">0</span>, <span class="number">1001</span>])</span><br><span class="line">ax = plt.gca()</span><br><span class="line">plt.tick_params(labelsize=<span class="number">14</span>)</span><br><span class="line">labels = ax.get_xticklabels() + ax.get_yticklabels()</span><br><span class="line">[label.set_fontname(<span class="string">'Times New Roman'</span>) <span class="keyword">for</span> label <span class="keyword">in</span> labels]</span><br><span class="line">font1 = &#123;<span class="string">'family'</span>: <span class="string">'Times New Roman'</span>,</span><br><span class="line">         <span class="string">'weight'</span>: <span class="string">'normal'</span>,</span><br><span class="line">         <span class="string">'size'</span>: <span class="number">16</span>,</span><br><span class="line">         &#125;</span><br><span class="line"></span><br><span class="line">plt.xlabel(<span class="string">'X-axis (m)'</span>, font1)</span><br><span class="line">plt.ylabel(<span class="string">'Y-axis (m)'</span>, font1)</span><br><span class="line">plt.title(<span class="string">'k=1'</span>, font1)</span><br><span class="line">plt.savefig(<span class="string">'f2.png'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>图3的python源代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> matplotlib <span class="keyword">as</span> mpl</span><br><span class="line"><span class="keyword">from</span> scipy.spatial <span class="keyword">import</span> Voronoi, voronoi_plot_2d, cKDTree</span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">original_point = [<span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">x = np.linspace(<span class="number">-1</span>, <span class="number">1</span>, <span class="number">10000</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># p=0.5</span></span><br><span class="line">y1 = <span class="number">1</span> + np.abs(x) - <span class="number">2</span> * np.power(np.abs(x), <span class="number">0.5</span>)</span><br><span class="line">y2 = - y1</span><br><span class="line">plt.plot(x, y1, <span class="string">'g'</span>)</span><br><span class="line">plt.plot(x, y2, <span class="string">'g'</span>)</span><br><span class="line"><span class="comment"># p=1</span></span><br><span class="line">y1 = <span class="number">1</span> - np.abs(x)</span><br><span class="line">y2 = np.abs(x) - <span class="number">1</span></span><br><span class="line">plt.plot(x, y1, <span class="string">'r'</span>)</span><br><span class="line">plt.plot(x, y2, <span class="string">'r'</span>)</span><br><span class="line"><span class="comment"># p=2</span></span><br><span class="line">y1 = np.power(<span class="number">1</span> - np.power(x, <span class="number">2</span>), <span class="number">1</span> / <span class="number">2</span>)</span><br><span class="line">y2 = -y1</span><br><span class="line">plt.plot(x, y1, <span class="string">'b-'</span>)</span><br><span class="line">plt.plot(x, y2, <span class="string">'b-'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># p-&gt; infty</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(x)):</span><br><span class="line">    <span class="keyword">if</span> np.abs(x[i]) == <span class="number">1</span>:</span><br><span class="line">        y1[i] = <span class="number">0</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        y1[i] = <span class="number">1</span></span><br><span class="line">y2 = -y1</span><br><span class="line">plt.plot(x, y1, <span class="string">'k-'</span>)</span><br><span class="line">plt.plot(x, y2, <span class="string">'k-'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># To plot figures</span></span><br><span class="line">plt.axis(<span class="string">'equal'</span>)</span><br><span class="line">ax=plt.gca()</span><br><span class="line"></span><br><span class="line">plt.annotate(<span class="string">'$p=0.5$'</span>, xy=(<span class="number">0.25</span>, <span class="number">0.25</span>), xycoords=<span class="string">'data'</span>,</span><br><span class="line">             xytext=(<span class="number">-25</span>, <span class="number">-25</span>), textcoords=<span class="string">'offset points'</span>, color=<span class="string">'g'</span>, fontsize=<span class="number">12</span>, arrowprops=dict(arrowstyle=<span class="string">"-&gt;"</span>,</span><br><span class="line">             connectionstyle=<span class="string">"arc,rad=0"</span>, color=<span class="string">'g'</span>))</span><br><span class="line">plt.annotate(<span class="string">'$p=1$'</span>, xy=(<span class="number">0.5</span>, <span class="number">0.5</span>), xycoords=<span class="string">'data'</span>,</span><br><span class="line">             xytext=(<span class="number">-25</span>, <span class="number">-25</span>), textcoords=<span class="string">'offset points'</span>, color=<span class="string">'r'</span>, fontsize=<span class="number">12</span>, arrowprops=dict(arrowstyle=<span class="string">"-&gt;"</span>,</span><br><span class="line">             connectionstyle=<span class="string">"arc,rad=0"</span>, color=<span class="string">'r'</span>))</span><br><span class="line">plt.annotate(<span class="string">'$p=2$'</span>, xy=(<span class="number">0.7</span>, <span class="number">0.7</span>), xycoords=<span class="string">'data'</span>,</span><br><span class="line">             xytext=(<span class="number">-25</span>, <span class="number">-25</span>), textcoords=<span class="string">'offset points'</span>, color=<span class="string">'b'</span>, fontsize=<span class="number">12</span>, arrowprops=dict(arrowstyle=<span class="string">"-&gt;"</span>,</span><br><span class="line">             connectionstyle=<span class="string">"arc,rad=0"</span>, color=<span class="string">'b'</span>))</span><br><span class="line">plt.annotate(<span class="string">r'$p\to\infty$'</span>, xy=(<span class="number">1</span>, <span class="number">1</span>), xycoords=<span class="string">'data'</span>,</span><br><span class="line">             xytext=(<span class="number">-35</span>, <span class="number">-25</span>), textcoords=<span class="string">'offset points'</span>, color=<span class="string">'k'</span>, fontsize=<span class="number">12</span>, arrowprops=dict(arrowstyle=<span class="string">"-&gt;"</span>,</span><br><span class="line">             connectionstyle=<span class="string">"arc,rad=0"</span>, color=<span class="string">'k'</span>))</span><br><span class="line"></span><br><span class="line">plt.savefig(<span class="string">'f3.png'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure><link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2020/01/12/[20200122]/" title="【图解例说机器学习】K最近邻 (KNN)">http://tengweitw.com/2020/01/12/[20200122]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"><i class="fa fa-tag"></i> Machine Learning</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/05/%5B20200105%5D/" rel="prev" title="【漫漫科研路\pgfplots】画双Y坐标图">
+      <i class="fa fa-chevron-left"></i> 【漫漫科研路\pgfplots】画双Y坐标图
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/18/%5B20200318%5D/" rel="next" title="【漫漫科研路\LaTeX】使用Sublime Text3撰写科研论文">
+      【漫漫科研路\LaTeX】使用Sublime Text3撰写科研论文 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#kNN-k-nearest-neighbor-的定义"><span class="nav-number">1.</span> <span class="nav-text">kNN (k-nearest neighbor)的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#距离度量"><span class="nav-number">2.</span> <span class="nav-text">距离度量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#k-值的选择"><span class="nav-number">3.</span> <span class="nav-text">$k$值的选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#决策规则"><span class="nav-number">4.</span> <span class="nav-text">决策规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#kNN-优缺点："><span class="nav-number">4.1.</span> <span class="nav-text">$kNN$优缺点：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法实践"><span class="nav-number">4.2.</span> <span class="nav-text">算法实践</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#自写KNN算法"><span class="nav-number">4.2.1.</span> <span class="nav-text">自写KNN算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用scikit-learn库"><span class="nav-number">4.2.2.</span> <span class="nav-text">使用scikit-learn库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#附录"><span class="nav-number">4.3.</span> <span class="nav-text">附录</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

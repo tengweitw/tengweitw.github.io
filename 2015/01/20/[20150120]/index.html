@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="误差的来源 模型误差：数学模型与实际问题之间的误差 观测误差：测量数据与实际数据的误差 方法误差：数学模型的精确解与数值方法得到的数值解之间的误差：例如 舍入误差：对数据进行四舍五入后产生的误差">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【数值分析】误差的分析与减少及Matlab解线性方程的四种方法">
+<meta property="og:url" content="http://tengweitw.com/2015/01/20/[20150120]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="误差的来源 模型误差：数学模型与实际问题之间的误差 观测误差：测量数据与实际数据的误差 方法误差：数学模型的精确解与数值方法得到的数值解之间的误差：例如 舍入误差：对数据进行四舍五入后产生的误差">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150120/20150120_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150120/20150120_fig002.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150120/20150120_fig003.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150120/20150120_fig004.jpg">
+<meta property="article:published_time" content="2015-01-20T12:19:00.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.781Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Math">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150120/20150120_fig001.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2015/01/20/[20150120]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【数值分析】误差的分析与减少及Matlab解线性方程的四种方法 | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/01/20/%5B20150120%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【数值分析】误差的分析与减少及Matlab解线性方程的四种方法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-01-20 20:19:00" itemprop="dateCreated datePublished" datetime="2015-01-20T20:19:00+08:00">2015-01-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="误差的来源"><a href="#误差的来源" class="headerlink" title="误差的来源"></a>误差的来源</h2><ul>
+<li>模型误差：数学模型与实际问题之间的误差</li>
+<li>观测误差：测量数据与实际数据的误差</li>
+<li>方法误差：数学模型的精确解与数值方法得到的数值解之间的误差：例如</li>
+<li>舍入误差：对数据进行四舍五入后产生的误差</li>
+</ul>
+<a id="more"></a>
+<hr>
+<h2 id="减少误差的几种方法"><a href="#减少误差的几种方法" class="headerlink" title="减少误差的几种方法"></a>减少误差的几种方法</h2><p>​     现在，我们一般用计算机解决计算问题，使用最多的是Matlab软件。对实际问题进行数学建模时，可能存在模型误差，对数学模型进行数值求解时，我们使用的方法可能产生方法误差，我们输入计算机的数据一般是有测量误差的，计算机在运算过程的每一步又会产生舍入误差（十进制转化为二进制时可能产生舍入误差）。由此看来，解决一个问题，基本上会有以上四种四种误差。记得高中物理老师说过，错误是可以避免的，误差是不可避免的，我们只可以减少误差。下面我们就来介绍减少误差的几种方法：</p>
+<ul>
+<li><p><strong>避免两个相近的数相减</strong><br>比如: 当$x=10003$时，计算$\sqrt{x+1}-\sqrt{x}$的近似值。<br>如果使用$6$位十进制浮点运算，运算时取$6$位有效数字，结果如下：</p>
+<script type="math/tex; mode=display">
+\sqrt{x+1}-\sqrt{x}=100.020-100.015=0.005</script><p>结果只有一位有效数字，与之前相比，损失了$5$位有效数字。</p>
+<p>如果使用下面的方法：</p>
+<script type="math/tex; mode=display">
+\sqrt{x+1}-\sqrt{x}=\frac{1}{\sqrt{x+1}+\sqrt{x}}=\frac{1}{100.020+100.015}=0.00499913</script><p>则结果有$6$位有效数字，与精确值$0.00499912523117984\cdots$较为接近。</p>
+</li>
+<li><p><strong>防止重要的小数被大数吃掉</strong><br>比如: 已知$x=3\times 10^{12},y=7,z=-3\times 10^{12}$,求$x+y+z$<br>如果按照$(x+y)+z$的顺序来求的话，由于$x$远大于$y$，在计算机中可能导致$x+y=x$的情况，因此我们可以按照$(x+z)+y$的顺序计算得到正确的结果。</p>
+</li>
+<li><p><strong>避免除数的绝对值远小于被除数的绝对值</strong><br>比如：用消去法解线性方程组</p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l} 0.00003x_1-3x_2=0.6\\x_1+2x_2=1\end{array}\right.</script><p>这个方程组的正确解为：</p>
+<script type="math/tex; mode=display">
+x_1=1.399972, x_2=-0.199986</script><p>对于上述方程组，当我们将第一个方程除以$0.00003$减去第二个方程时，可以得到下面的化简和计算结果：</p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l} 0.00003x_1-3x_2=0.6\\-100000x_2=20000\end{array}\right.\rightarrow
+\left\{\begin{array}{l} x_1=0\\x_2=-0.2\end{array}\right.</script><p>显然上述结果严重失真，产生了很大的误差。这就是由于除数的绝对值远小于被除数的绝对值造成的。为了避免上述情况，我们可以用第二个方程消去第一个方程中的$x_1$，即第二个方程乘以$0.00003$减去第一个方程，得到如下表达式和结果：</p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}-3x_2=0.6\\x_1+2x_2=1\end{array}\right.\rightarrow
+\left\{\begin{array}{l} x_1=1.4\\x_2=-0.2\end{array}\right.</script><p>将结果与正确解相比发现，这是一组相当好的近似解。           </p>
+</li>
+<li><p><strong>注意算法的稳定性</strong><br>所谓算法的稳定性是指，一个算法如果输入数据有误差，而在计算过程中误差不增长，那么称此算法是数值稳定的。</p>
+</li>
+</ul>
+<hr>
+<p>上面的部分基本上都来源于《数值分析》一书，讲的挺好的，这些减小误差的方法，我们平时需要多注意，在用c进行编程实现时需要注意，而用Matlab实现时，上面的问题都不是问题了，不过我们要学习的是这种方法和技巧。<strong>下面讲讲，在实现上述方法的Matlab的知识：1、精度控制；2、解线性方程组。</strong></p>
+<h4 id="精度控制"><a href="#精度控制" class="headerlink" title="精度控制"></a>精度控制</h4><ul>
+<li>format  digits  vpa函数的使用</li>
+<li>format只用来控制显示精度的，并不控制计算精度，digits用来控制计算精度，vpa也是控制计算精度。</li>
+<li>digits必须与vpa配合使用，单独不起作用。</li>
+<li><p>vpa可单独控制计算精度</p>
+<p><strong>具体操作如下图：</strong></p>
+</li>
+</ul>
+<ol>
+<li><p>​    format的操作</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150120/20150120_fig001.jpg" width="300" height="500" title="图1" alt="图1" ></p>
+</li>
+<li><p>​    digits的操作<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150120/20150120_fig002.jpg" width="300" height="500" title="图2" alt="图2" ></p>
+</li>
+<li><p>​    vpa的操作<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150120/20150120_fig003.jpg" width="400" height="500" title="图3" alt="图3" ></p>
+</li>
+</ol>
+<hr>
+<h4 id="解非齐次线性方程组"><a href="#解非齐次线性方程组" class="headerlink" title="解非齐次线性方程组"></a>解非齐次线性方程组</h4><script type="math/tex; mode=display">
+\left\{\begin{array}{l} 6x_1+2x_2+3x_3+4x_4+5x_5=80\\
+2x_1-3x_2+7x_3+10x_4+13x_5=59\\
+3x_1+5x_2+11x_3-16x_4+21x_5=90\\
+2x_1-7x_2+7x_3+7x_4+2x_5=22\\
+7x_1+3x_2-5x_3+3x_4+10x_5=85
+\end{array}\right.</script><p><strong>可以通过以下四种方法求解该方程组：</strong></p>
+<p>用矩阵表示上述的线性方程组如下：</p>
+<script type="math/tex; mode=display">
+A=\left[\begin{array}{ccccc}6&2&3&4&5\\2&-3&7&10&13\\3&5&11&-16&21\\2&-7&7&7&2\\7&3&-5&3&10\end{array}\right],
+b=\left[\begin{array}{c}80\\59\\90\\22\\85\end{array}\right]</script><ul>
+<li><p><strong>求逆矩阵法</strong></p>
+<script type="math/tex; mode=display">
+Ax=b\rightarrow x=A^{-1}b</script></li>
+<li><p><strong>矩阵左除法</strong></p>
+<script type="math/tex; mode=display">
+x=A\backslash b</script></li>
+<li><p><strong>初等行变换</strong></p>
+<script type="math/tex; mode=display">
+Ax=b\rightarrow x=A^{-1}b\rightarrow rref\left[\begin{array}{c}A&b\end{array}\right]=\left[\begin{array}{c}A^{-1}A&A^{-1}b\end{array}\right]=\left[\begin{array}{c}I&x\end{array}\right]</script></li>
+<li><p><strong>卡莱姆法则</strong></p>
+<script type="math/tex; mode=display">
+x_i=\frac{\det(A_i)}{\det(A)}</script></li>
+</ul>
+<p><strong>具体的程序实现如下：</strong></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">clear all</span><br><span class="line">clc</span><br><span class="line"> </span><br><span class="line">A=[ <span class="number">6</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span></span><br><span class="line">    <span class="number">2</span> <span class="number">-3</span> <span class="number">7</span> <span class="number">10</span> <span class="number">13</span></span><br><span class="line">    <span class="number">3</span> <span class="number">5</span> <span class="number">11</span> <span class="number">-16</span> <span class="number">21</span></span><br><span class="line">    <span class="number">2</span> <span class="number">-7</span> <span class="number">7</span> <span class="number">7</span> <span class="number">2</span></span><br><span class="line">    <span class="number">7</span> <span class="number">3</span> <span class="number">-5</span> <span class="number">3</span> <span class="number">10</span>]</span><br><span class="line">b=[<span class="number">80</span> <span class="number">59</span> <span class="number">90</span> <span class="number">22</span> <span class="number">85</span>]'</span><br><span class="line"> </span><br><span class="line">x1=inv(A)*b<span class="comment">%逆矩阵法</span></span><br><span class="line">x2=A\b<span class="comment">%矩阵左除法</span></span><br><span class="line">x3=rref([A b])<span class="comment">%初等行变换</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">%克拉姆法则</span></span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:<span class="built_in">length</span>(A)</span><br><span class="line">    B=A;</span><br><span class="line">    B(:,<span class="built_in">i</span>)=b;</span><br><span class="line">    x(<span class="built_in">i</span>)=det(B)/det(A);</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">x'</span><br></pre></td></tr></table></figure>
+<p><strong>运行结果如下图：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150120/20150120_fig004.jpg" width="400" height="500" title="图4" alt="图4" ></p>
+<p><strong>注意事项：</strong>当系数矩阵$A$不是方阵，或$A$的行列式为$0$时，逆矩阵法和克拉姆法则无法使用，而初等行变换能适用于各种线性方程组的求解。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2015/01/20/[20150120]/" title="【数值分析】误差的分析与减少及Matlab解线性方程的四种方法">http://tengweitw.com/2015/01/20/[20150120]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Math/" rel="tag"><i class="fa fa-tag"></i> Math</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/01/16/%5B20150116%5D/" rel="prev" title="【生活随笔】Introspection of my life in 2014">
+      <i class="fa fa-chevron-left"></i> 【生活随笔】Introspection of my life in 2014
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/01/22/%5B20150122%5D/" rel="next" title="【数值分析】拉格朗日插值与牛顿插值">
+      【数值分析】拉格朗日插值与牛顿插值 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#误差的来源"><span class="nav-number">1.</span> <span class="nav-text">误差的来源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#减少误差的几种方法"><span class="nav-number">2.</span> <span class="nav-text">减少误差的几种方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#精度控制"><span class="nav-number">2.0.1.</span> <span class="nav-text">精度控制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解非齐次线性方程组"><span class="nav-number">2.0.2.</span> <span class="nav-text">解非齐次线性方程组</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

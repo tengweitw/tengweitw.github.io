@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="支持向量机(Support Vector Machine, SVM)，是一种常见的有监督的学习模型，通常用来进行模式识别、分类以及回归分析。本文主要介绍SVM在二分类问题的应用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【图解例说机器学习】支持向量机 (SVM)">
+<meta property="og:url" content="http://tengweitw.com/2020/05/12/[20200512]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="支持向量机(Support Vector Machine, SVM)，是一种常见的有监督的学习模型，通常用来进行模式识别、分类以及回归分析。本文主要介绍SVM在二分类问题的应用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200505/Perceptron_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200512/SVM_fig002.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200512/SVM_fig003.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200512/SVM_fig004.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200512/SVM_fig005.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200512/SVM_fig006.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200512/SVM_fig007.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200512/SVM_fig008.jpg">
+<meta property="article:published_time" content="2020-05-12T15:39:57.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.787Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Machine Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200505/Perceptron_fig001.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2020/05/12/[20200512]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【图解例说机器学习】支持向量机 (SVM) | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/05/12/%5B20200512%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【图解例说机器学习】支持向量机 (SVM)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-12 23:39:57" itemprop="dateCreated datePublished" datetime="2020-05-12T23:39:57+08:00">2020-05-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>22k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>32 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>支持向量机(Support Vector Machine, SVM)，是一种常见的有监督的学习模型，通常用来进行模式识别、分类以及回归分析。本文主要介绍SVM在二分类问题的应用。</p>
+<hr>
+<a id="more"></a>
+<h2 id="线性可分支持向量机"><a href="#线性可分支持向量机" class="headerlink" title="线性可分支持向量机"></a>线性可分支持向量机</h2><p>我们还是以【图解例说机器学习】感知机的二分类例子 (Toy Example) 说起。如图1，假设有一个线性可分的训练集，其中有三个样例 ($\mathrm x_1,\mathrm x_2, \mathrm x_3$)，分别标记为正例(红色方块)，反例(蓝色圆圈)。这里的 $x^{(1)},x^{(2)}$为训练样例的$2$个特征。</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200505/Perceptron_fig001.jpg"  ></center>  <center>图1 </center></td>
+    </tr>
+</table>
+
+<p>感知机的目的就是找到一个超平面 (在二维空间为一条直线) 能够将这三个样例分开。显然，这样的直线有无数条，比如图中的直线 $f(\mathrm x)=x^{(1)}+x^{(2)}-4=0, f(\mathrm x)=2x^{(1)}+x^{(2)}-5=0$ 就是可能得到其中的两条。</p>
+<p>感知机的结果，即分类超平面，与参数的初始值有关，也和在每次迭代时选取的误分类样例有关。在上面例子中，得到的两个分类超平面中，直觉上，直线$x^{(1)}+x^{(2)}-4=0$的分类效果要好于$2x^{(1)}+x^{(2)}-5=0$的分类效果好。这是因为，直线$x^{(1)}+x^{(2)}-4=0$位于正负样例的中间位置，其对训练样例的扰动具有较好的鲁棒性。由于训练集的局限性或者噪声，训练集外的样例可能比较接近分类超平面，此时直线$2x^{(1)}+x^{(2)}-5=0$就会使得这些样例错误分类，即泛化能力较差。</p>
+<p>为了克服感知机的上述问题，SVM的目的就是找到最佳的分类超平面，而不是仅仅对训练集的样例正确分类，也考虑如何对未见样例具备较强的泛化能力。</p>
+<hr>
+<h2 id="SVM-分类模型"><a href="#SVM-分类模型" class="headerlink" title="SVM 分类模型"></a>SVM 分类模型</h2><h4 id="间隔"><a href="#间隔" class="headerlink" title="间隔"></a>间隔</h4><p>在中学时，我们学过一个点$x$到一条直线$ax+by+c=0$的距离可以为$\lvert ax+by+c\rvert/\sqrt{a^2+b^2}$。类似地，空间中一点$\mathrm x$ 到一个超平面$\omega_0+\mathrm w^{\mathrm T}\mathrm x=0$的距离为：</p>
+<script type="math/tex; mode=display">
+d=\frac{\lvert\omega_0+\mathrm w^{\mathrm T}\mathrm x\rvert}{\lvert\mathrm w\rvert}\tag{1}</script><p>关于公式(1)的直观表示如下图2所示：</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200512/SVM_fig002.jpg"  ></center>  <center>图2 </center></td>
+    </tr>
+</table>
+
+<p>在图2中，$\frac{\mathrm w}{\lvert\mathrm w\rvert}$ 是直线$x^{(1)}+x^{(2)}-3=0$的单位法向量，$\mathrm x_1^\perp, \mathrm x_2^\perp$ 分别为$\mathrm x_1, \mathrm x_2$ 在该直线的投影。此时空间中的任意一点$\mathrm x$可以由其到该直线的投影$\mathrm x^\perp$ 和单位法向量表示：</p>
+<script type="math/tex; mode=display">
+\mathrm x=\mathrm x^\perp+d\frac{\mathrm w}{\lvert\mathrm w\rvert}\tag{2}</script><p>对于公式(2)，我们将其乘以$\mathrm w$ 加上$\omega_0$ 后有：</p>
+<script type="math/tex; mode=display">
+\mathrm w^{\mathrm T}\mathrm x+\omega_0=\mathrm w^{\mathrm T}\mathrm x^\perp+d\frac{\mathrm w}{\lvert\mathrm w\rvert}+\omega_0\tag{3}</script><p>由于$\mathrm x^{\mathrm T}$ 是直线$\omega_0+\mathrm w^{\mathrm T}\mathrm x=0$ 上的点，由公式(3)可得：</p>
+<script type="math/tex; mode=display">
+d=\frac{\mathrm w^{\mathrm T}\mathrm x+\omega_0}{\lvert\mathrm w\rvert}\tag{4}</script><p>结合图2和公式(2)和(3)，我们可以表示$\mathrm x_1,\mathrm x_2$如下：</p>
+<script type="math/tex; mode=display">
+\mathrm x_1=\mathrm x_1^\perp+\frac{\sqrt{2}}{2}\frac{\mathrm w}{\lvert\mathrm w\rvert}\tag{5}</script><script type="math/tex; mode=display">
+\mathrm x_2=\mathrm x_2^\perp-\frac{\sqrt{2}}{4}\frac{\mathrm w}{\lvert\mathrm w\rvert}\tag{6}</script><p>公式(5)和(6)表明：当$\mathrm x$为正例 (例如 $\mathrm x_1$) 时，$d$为正数；当$\mathrm x$为反例 (例如 $\mathrm x_2$) 时，$d$为负数。也就是说，公式(4)中的距离$d$是有方向的。具体来说，对于例子中的样例$\mathrm x_1$，是正例，即$y=+1$ ，其到直线 $\omega_0+\mathrm w^{\mathrm T}\mathrm x=0$ 的距离为$d=\frac{\mathrm w^{\mathrm T}\mathrm x_1+\omega_0}{\lvert\mathrm w\rvert}&gt;0$; 对于例子中的样例$\mathrm x_2$，是反例，即$y=-1$ ，其到直线$\omega_0+\mathrm w^{\mathrm T}\mathrm x=0$的距离为$d=\frac{\mathrm w^{\mathrm T}\mathrm x_2+\omega_0}{\lvert\mathrm w\rvert}&lt;0$.为此，对于任意样例$\mathrm x$ (无论正例还是反例)，其距离分类超平面的无方向距离(始终大于0)为：</p>
+<script type="math/tex; mode=display">
+\lvert d\rvert=\frac{\omega_0+\mathrm w^{\mathrm T}\mathrm x}{\lvert\mathrm w\rvert} y\tag{7}</script><p>注意：公式(7)是公式(6)在考虑样例分类情况下，将有方向的距离$d$化为无方向距离$\lvert d\rvert$的具体表达式。</p>
+<hr>
+<h4 id="优化问题"><a href="#优化问题" class="headerlink" title="优化问题"></a>优化问题</h4><p>SVM的中心思想就是找出离分类超平面最近的点(又称支持向量)，然后最大化这些点与分类超平面的距离。对于一个$M$维特征空间，超平面的表达式为：</p>
+<script type="math/tex; mode=display">
+\hat y=\omega_0+\omega_1x^{(1)}+\cdots+\omega_Mx^{(M)}=\omega_0+\mathrm w^{\mathrm T}\mathrm x\tag{8}</script><p>为此，我们可以得到如下的优化问题:</p>
+<script type="math/tex; mode=display">
+\max\limits_{\omega_0,\mathrm w}\min\limits_{i}\quad\frac{\omega_0+\mathrm w^{\mathrm T}\mathrm x_i}{\lvert\mathrm w\rvert} y_i\tag{9}</script><p>直接求解问题(9)比较复杂。这里我们发现，对于一个分类超平面 (例如，上面例子中的直线$\hat y=\omega_0+\mathrm w^{\mathrm T}\mathrm x=0$ )，同时对$\omega_0,\mathrm w$进行缩放并不改变该分类超平面，也就不改变任意点到该分类超平面的距离。为此我们可以将$\omega_0,\mathrm w$进行缩放，使得离分类超平面最近的点 (支持向量)满足$(\omega_0+\mathrm w^{\mathrm T}\mathrm x)y=1$。那么此时，训练集中所有其他样例点肯定满足$(\omega_0+\mathrm w^{\mathrm T}\mathrm x)y&gt;1$。这时，优化问题(9)可以转化为SVM优化问题的标准形式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\min\limits_{\omega_0,\mathrm w}\quad\frac{1}{2}\lvert\mathrm w\rvert^2\\
+&s.t.\quad  (\omega_0+\mathrm w^{\mathrm T}\mathrm x_i)y_i\ge1\quad\forall i=1,2,\cdots,N
+\end{aligned}\tag{10}</script><p>注意：问题(9)转为标准形式(10)的主要步骤：1)令支持向量对应的$(\omega_0+\mathrm w^{\mathrm T}\mathrm x)y=1$，从而去掉最小化，并将问题(9)中的分子加入到约束中；2)最小化$\frac{1}{\lvert\mathrm w\rvert}$等效于最大化$\frac{1}{2}{\lvert\mathrm w\rvert^2}$。</p>
+<p>从标准化的优化问题可以看出，该问题是凸二次优化问题，可以使用一些已有的工具箱求解，如CVX, Gurobi, CPLEX等。</p>
+<hr>
+<h4 id="基于CVX的问题求解"><a href="#基于CVX的问题求解" class="headerlink" title="基于CVX的问题求解"></a>基于CVX的问题求解</h4><p>我们还是以本文开始的小例子 (Toy Example) 为例。此时，我们得到的分类超平面应该是一条直线，形式为$\omega_0+\omega_1x^{(1)}+\omega_2x^{(2)}=0$。根据SVM的标准凸优化形式(10)，我们有</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\min\limits_{\omega_0,\omega_1,\omega_2}\quad&&\frac{1}{2}(\omega_1^2+\omega_2^2)\\
+&s.t.\quad&&(\omega_0+\omega_1x_1^{(1)}+\omega_2x_1^{(2)})y_1\ge1\\
+&\quad&&(\omega_0+\omega_1x_2^{(1)}+\omega_2x_2^{(2)})y_2\ge1\\
+&\quad&&(\omega_0+\omega_1x_3^{(1)}+\omega_2x_3^{(2)})y_3\ge1\\
+\end{aligned}\tag{11}</script><p>求解该问题，我们可以得到其最优解为$\omega_0=2,\omega_1=\omega_2=\frac{1}{2}$。此时的分离超平面为直线$\frac{1}{2}x^{(1)}+\frac{1}{2}x^{(2)}-2=0$。此时的决定该直线的支持向量为使得$\frac{1}{2}x^{(1)}+\frac{1}{2}x^{(2)}-2=1,-1$的样例点$\mathrm x_1(3,3)$和$\mathrm x_3(1,1)$。下图3具象地表达了这一结果：</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200512/SVM_fig003.jpg"  ></center>  <center>图3 </center></td>
+    </tr>
+</table>
+
+
+<hr>
+<p>关于CVX算法实现部分，由于这台电脑没有装MATLAB，此部分回学校后再写</p>
+<hr>
+<p>至此，最基本的SVM算法已经讲完了。由于上述SVM存在一些难点，下面我们对其进行扩展：</p>
+<ul>
+<li>SVM标准形式的凸优化问题不易求解，往往我们可以通过其对偶问题求解</li>
+<li>当训练集的样例线性不可分，而通过投影到高维空间后线性可分时，我们可以在对偶问题中使用核函数</li>
+<li>当训练集及其高维映射都不可分时，我们可以考虑容许部分样例分类错误</li>
+</ul>
+<hr>
+<h2 id="对偶问题"><a href="#对偶问题" class="headerlink" title="对偶问题"></a>对偶问题</h2><p>为例求解上述标准形式的凸二次优化问题(10)，我们除了使用工具箱直接求解外，还可以通过其对偶问题求解。一般来说，相对于求解原始问题，求解其对偶问题一般有以下好处：1）即使原始问题不是凸的，对偶函数仍是关于对偶变量的凸函数；2）具有更好的解释性，适用于分布式算法。对于SVM问题，我们发现求解其对偶问题的过程中可以使用核函数 (下一节提及)，可以使用一些启发式算法 (后文提及的SMO) 来加速算法。</p>
+<p>对约束引入拉格朗日乘子$\lambda={\lambda_i\ge 0\mid i=1,2,\cdots,N}$，我们得到如下的拉格朗日函数：</p>
+<script type="math/tex; mode=display">
+L(\lambda,\omega_0,\mathrm w)=\frac{1}{2}\lvert\mathrm w\rvert^2+\sum\limits_{i=1}^{N}\lambda_i[1-(\omega_0+\mathrm w^{\mathrm T}\mathrm x_i)y_i]\tag{12}</script><p>此时对应的对偶问题为：</p>
+<script type="math/tex; mode=display">
+\max\limits_{\lambda}\min\limits_{\omega_0,\mathrm w}\quad L(\lambda,\omega_0,\mathrm w)\tag{13}</script><p>由于原始问题(10)为凸问题，那么对偶问题与原始问题的解的gap为0. 通过求解对偶问题，我们就能得到原始问题的最优解。</p>
+<hr>
+<p>求解上述对偶问题 (极大极小问题) 的一般思路为，先固定$\lambda$ ，求解 $\min\nolimits<em>{\omega_0,\mathrm w}\quad L(\omega_0,\mathrm w\mid \lambda)$得到$\omega_0,\mathrm w$，然后一般通过梯度(或次梯度)更新$\lambda$。幸运地是，在求解 $\min\nolimits</em>{\omega<em>0,\mathrm w}\quad L(\omega_0,\mathrm w\mid \lambda)$ 时，我们可以得到其解析解 $\omega_0^\star,\mathrm w^\star$，所以我们不需要迭代，只需要直接求解$\max\nolimits</em>{\lambda}\quad L(\lambda\mid \omega_0^\star,\mathrm w^\star)$。具体步骤如下：</p>
+<ul>
+<li><p>求解$\min\nolimits_{\omega_0,\mathrm w}\quad L(\omega_0,\mathrm w\mid \lambda)$<br>由于该问题为凸二次规划问题，其最优解为一阶微分为0的点，即：</p>
+<script type="math/tex; mode=display">
+\frac{\partial L(\omega_0,\mathrm w\mid\lambda)}{\partial\omega_j}=\omega_j-\sum\limits_{i=1}^{N}\lambda_iy_ix_i^{(j)}=0\rightarrow\omega_j^\star=\sum\limits_{i=1}^{N}\lambda_iy_ix_i^{(j)}\tag{14}</script><script type="math/tex; mode=display">
+\frac{\partial L(\omega_0,\mathrm w\mid\lambda)}{\partial\omega_0}=-\sum\limits_{i=1}^{N}\lambda_iy_i=0\tag{15}</script><p>将公式(14)和(15)带入公式(10)，我们有：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+L(\lambda\mid\omega_0^\star,\mathrm w^\star)&=\frac{1}{2}\lvert\mathrm w\rvert^2+\sum\limits_{i=1}^{N}\lambda_i[1-(\omega_0+\mathrm w^{\mathrm T}\mathrm x_i)y_i]\\
+&=\frac{1}{2}\sum\limits_{j=1}^{M}\omega_j^2+\sum\limits_{i=1}^{N}\lambda_i-\sum\limits_{i=1}^{N}\lambda_iy_i(\omega_0+\sum\limits_{j=1}^{M}\omega_jx_i^{(j)})\\
+&=\frac{1}{2}\sum\limits_{j=1}^{M}\omega_j^2-\omega_0\sum\limits_{i=1}^{N}\lambda_iy_i-\sum\limits_{i=1}^{N}\lambda_iy_i\sum\limits_{j=1}^{M}\omega_jx_i^{(j)}+\sum\limits_{i=1}^{N}\lambda_i\\
+&=\frac{1}{2}\sum\limits_{j=1}^{M}\omega_j^2-\sum\limits_{i=1}^{N}\lambda_iy_i\sum\limits_{j=1}^{M}\omega_jx_i^{(j)}+\sum\limits_{i=1}^{N}\lambda_i\\
+&=\frac{1}{2}\sum\limits_{j=1}^{M}(\sum\limits_{i=1}^{N}\lambda_iy_ix_i^{(j)}\sum\limits_{i^\prime=1}^{N}\lambda_{i^\prime}y_{i^\prime}x_{i^\prime}^{(j)})-\sum\limits_{i=1}^{N}\lambda_iy_i\sum\limits_{j=1}^{M}(\sum\limits_{i^\prime=1}^{N}\lambda_{i^\prime}y_{i^\prime}x_{i^\prime}^{(j)})x_i^{(j)}+\sum\limits_{i=1}^{N}\lambda_i\\
+&=-\frac{1}{2}\sum\limits_{j=1}^{M}\sum\limits_{i=1}^{N}\sum\limits_{i^\prime=1}^{N}\lambda_i\lambda_{i^\prime}y_iy_{i^\prime}x_i^{(j)}x_{i^\prime}^{(j)}+\sum\limits_{i=1}^{N}\lambda_i
+\end{aligned}\tag{16}</script></li>
+<li><p>求解$\max\nolimits_{\lambda}\quad L(\lambda\mid \omega_0^\star,\mathrm w^\star)$<br>在求得参数$\mathrm w^\star$后，我们需要求解如下问题：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\max\limits_{\lambda}\quad L(\lambda\mid\omega_0^\star,\mathrm w^\star)\\
+&s.t.\quad  \sum\limits_{i=1}^{N}\lambda_iy_i=0,\lambda_i\ge=0,i=1,2,\cdots,N
+\end{aligned}\tag{17}</script><p>由公式(14)和(16)可以等效成如下问题：</p>
+</li>
+</ul>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\min\limits_{\lambda}\quad \frac{1}{2}\sum\limits_{j=1}^{M}\sum\limits_{i=1}^{N}\sum\limits_{i^\prime=1}^{N}\lambda_i\lambda_{i^\prime}y_iy_{i^\prime}x_i^{(j)}x_{i^\prime}^{(j)}-\sum\limits_{i=1}^{N}\lambda_i\\
+&s.t.\quad  \sum\limits_{i=1}^{N}\lambda_iy_i=0,\lambda_i\ge=0,i=1,2,\cdots,N
+\end{aligned}\tag{18}</script><p>将问题(18)向量化可得:</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\min\limits_{\lambda}\quad \frac{1}{2}\sum\limits_{i=1}^{N}\sum\limits_{i^\prime=1}^{N}\lambda_i\lambda_{i^\prime}y_iy_{i^\prime}\mathrm x_i^{\mathrm T}\mathrm x_{i^\prime}-\sum\limits_{i=1}^{N}\lambda_i\\
+&s.t.\quad  \sum\limits_{i=1}^{N}\lambda_iy_i=0,\lambda_i\ge=0,i=1,2,\cdots,N
+\end{aligned}\tag{19}</script><hr>
+<p>最终，我们需要求解问题(19)，当然由于问题(19)也是一个凸二次函数，我们同样可以利用工具箱求解，在此省略。求解问题(19)得到最优的$\lambda$后，我们将(14)带入超平面的表达式(8)中得到:</p>
+<script type="math/tex; mode=display">
+\hat y=\omega_0+\mathrm w^{\mathrm T}\mathrm x=\omega_0+\sum\limits_{j=1}^{M}\omega_jx^{(j)}=\omega_0+\sum\limits_{j=1}^{M}\sum\limits_{i=1}^{N}\lambda_iy_ix_i^{(j)}x^{(j)}=\omega_0+\sum\limits_{i=1}^{N}\lambda_iy_i\sum\limits_{j=1}^{M}x_i^{(j)}x^{(j)}\tag{20}</script><p>当对一个新的测试样例$\mathrm x$ 进行分类时，可以由上式可以判断：当$\hat y\ge1$ 时，判断为正例；当 $\hat y\le -1$ 时， 判断为反例。当然，上述问题在于$\omega_0$ 的值还无法得知。为此，我们可利用KKT条件(这里不具体描述，有需要会后续单独介绍)可得：</p>
+<script type="math/tex; mode=display">
+原问题的约束条件：(\omega_0+\mathrm w^{\mathrm T}\mathrm x_i)y_i\ge1\quad\forall i=1,2,\cdots,N\tag{21}</script><script type="math/tex; mode=display">
+对偶问题的约束条件：\lambda_i\ge=0, \forall i=1,2,\cdots,N\tag{22}</script><script type="math/tex; mode=display">
+互补松弛条件：\lambda_i[y_i(\omega_0+\mathrm w^{\mathrm T}\mathrm x_i)-1]= 0\quad\forall i=1,2,\cdots,N\tag{23}</script><p>由互补松弛条件(23)可知，要么$\lambda_i=0$，要么 $y_i(\omega_0+\mathrm w^{\mathrm T}\mathrm x_i)-1$。从分类超平面的表达式(20)可知，只有当$\lambda_i&gt;0$时，才对分类结果$\hat y$ 有影响，此时的样例点$\mathrm x_i$ 才对决定了分类超平面的表达式，这样的样例点就是我们所说的支持向量。当$\lambda_i&gt;0$时， 由(23)知$y_i(\omega_0+\mathrm w^{\mathrm T}\mathrm x_i)-1=0$，也就是对应了图3所示的支持向量所在的超平面。那么这时，由$y_i(\omega_0+\mathrm w^{\mathrm T}\mathrm x_i)-1=0$ 我们就有</p>
+<script type="math/tex; mode=display">
+\omega_0=\frac{1}{y_i}-\mathrm w^{\mathrm T}\mathrm x_i\tag{24}</script><hr>
+<p>下面我们同样通过上述的小例子来验证对偶算法的可行性：</p>
+<p>根据对偶问题的形式(18)或(19)，小例子对应的对偶问题可以写成：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\min\limits_{\lambda_1,\lambda_2,\lambda_3}&&\quad L(\lambda_1,\lambda_2,\lambda_3)=\frac{1}{2}\sum\limits_{j=1}^{2}\sum\limits_{i=1}^{3}\sum\limits_{i^\prime=1}^{3}\lambda_i\lambda_{i^\prime}y_iy_{i^\prime}x_i^{(j)}x_{i^\prime}^{(j)}-\sum\limits_{i=1}^{3}\lambda_i\\
+&&&\quad=\frac{1}{2}(18\lambda_1^2+25\lambda_2^2+2\lambda_3^2+42\lambda_1\lambda_2-12\lambda_1\lambda_3-14\lambda_2\lambda_3)-\lambda_1-\lambda_2-\lambda_3\\
+&s.t.&&\quad  \lambda_1+\lambda_2-\lambda_3=0,\lambda_1,\lambda_2,\lambda_3\ge0.
+\end{aligned}\tag{25}</script><p>为了求解问题(25)，我们替换变量$\lambda_3=\lambda_1+\lambda_2$可得</p>
+<script type="math/tex; mode=display">
+L(\lambda_1,\lambda_2)=4\lambda_1^2+\frac{13}{2}\lambda_2^2+10\lambda_1\lambda_2-2\lambda_1-2\lambda_2\tag{26}</script><p>令$L(\lambda_1,\lambda_2)$ 对于$\lambda_1,\lambda_2$ 的偏导为0，可知最优的解为$\lambda_1^\star=\frac{3}{2},\lambda_2^\star=-1$，不满足$\lambda_2\ge 0$。为此，最优解在边界处取得。若$\lambda_1^\star=0$，此时$\lambda_2^\star=\frac{2}{13}$，最优值为$L(\lambda_1^\star,\lambda_2^\star)=-\frac{2}{13}$。若$\lambda_2^\star=0$，此时$\lambda_1^\star=\frac{1}{4}$，最优值为$L(\lambda_1^\star,\lambda_2^\star)=-\frac{1}{4}$。所以，最终得到的最优解为$\lambda_1^\star=\frac{1}{4},\lambda_2^\star=0,\lambda_3^\star=\frac{1}{4}$。</p>
+<p>在得到最优解$\lambda^\star={\lambda_1^\star,\lambda_2^\star,\lambda_3^\star}$后，我们可以根据等式(14)求得$\omega_1=\omega_2=\frac{1}{2}$。又由于$\mathrm x_1,\mathrm x_3$为支持向量，由公式(25)我们有：</p>
+<script type="math/tex; mode=display">
+(\omega_0+\omega_1x_1^{(1)}+\omega_2x_1^{(2)})y_1=1\tag{27}</script><script type="math/tex; mode=display">
+(\omega_0+\omega_1x_2^{(1)}+\omega_2x_2^{(2)})y_2=1\tag{28}</script><p>由(27)或者(28)我们可以得到$\omega_0^\star=-2$。那么我们求得的最优分类超平面为直线$\frac{1}{2}x^{(1)}+\frac{1}{2}x^{(2)}-2=1$。</p>
+<hr>
+<p>我们发现，最后需要求解的对偶问题为(19)，也是一个凸二次优化问题。一般来说，二次优化问题的算法复杂度为$\mathcal O(K)$，其中$K$为变量的个数。在原始问题(10)中，变量为$\omega_0,\mathrm w$，个数为$M+1$；在对偶问题(19)中，变量为$\lambda$，个数为$N$。注意：这里的$M,N$分别为特征维数和样例个数。一般情况下，样例数大于特征维数，即($N&gt;M$)，此时好像更应该直接求解原始问题来降低复杂度。但是由于对偶问题的特性比较适合核函数的使用，我们更倾向于求解对偶问题。</p>
+<hr>
+<h2 id="核函数"><a href="#核函数" class="headerlink" title="核函数"></a>核函数</h2><p>在上述模型中，我们假设训练集是线性可分的。但一般情况下，原始的特征空间是线性不可分的，如下面的两个例子：</p>
+<ul>
+<li><p>异或问题：假设我们考虑2个特征$x^{(1)},x^{(2)}$，训练集中有两个正例 $\mathrm x_1 (0,1), \mathrm x_2 (1,0)$ 和两个反例 $\mathrm x_3 (0,0), \mathrm x_4 (1,1)$，如图4所示。显然，我们无法在该二维空间中找到一条直线将训练集正确分类。如果我们将这两个特征$x^{(1)},x^{(2)}$映射到三维空间的三个特征$z^{(1)},z^{(2)},z^{(3)}$, 且映射关系为: $z^{(1)}=x^{(1)}x^{(2)}, z^{(2)}=x^{(1)}, z^{(3)}=x^{(2)}$。那么此时训练样例坐标为：$\mathrm x_1 (0,0,1), \mathrm x_2 (0,1,0), \mathrm x_3 (0,0,0), \mathrm x_4 (1,1,1)$，如图5所示。显然，我们可以找到一个分类超平面将该训练集正确分类。</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200512/SVM_fig004.jpg"  >图4</center></td>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200512/SVM_fig005.jpg"  >图5</center></td>
+    </tr>
+</table>
+
+
+</li>
+</ul>
+<ul>
+<li><p>圆环问题：假设我们考虑2个特征 $\mathrm x={x^{(1)}, x^{(2)}}$，训练集由两个通过原点的同心圆 $\lvert \mathrm x\rvert^2=C$ 产生正例 ($C=3$) 和反例 ($C=1$)，如图6所示。显然，我们无法在该二维空间中找到一条直线将训练集正确分类，此时的最佳分类超平面应该是一个圆环 $\lvert \mathrm x\rvert^2=2$ 。此时，若我们将这两个特征映射成两个新的特征 $z^{(1)},z^{(2)}$，且映射关系为 $z^{(1)}=[x^{(1)}]^2,z^{(2)}=[x^{(2)}]^2$，那么此时对应的最优分类超平面为直线$z^{(1)}+z^{(2)}=2$，如图7所示。</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200512/SVM_fig006.jpg"  >图6</center></td>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200512/SVM_fig007.jpg"  >图7</center></td>
+    </tr>
+</table>
+
+</li>
+</ul>
+<p>上面的两个例子说明，当原始的特征空间线性不可分时，我们可以将原始特征空间映射为新的特征空间，使其线性可分。这里，我们将上述的映射关系用数学表达式定义为</p>
+<script type="math/tex; mode=display">
+\mathrm z=\phi(\mathrm x)\tag{29}</script><p>那么此时，经过特征映射后，优化问题(19)转化为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\min\limits_{\lambda}\quad \frac{1}{2}\sum\limits_{i=1}^{N}\sum\limits_{i^\prime=1}^{N}\lambda_i\lambda_{i^\prime}y_iy_{i^\prime}\phi(\mathrm x_i)^{\mathrm T}\phi(\mathrm x_{i^\prime})-\sum\limits_{i=1}^{N}\lambda_i\\
+&s.t.\quad  \sum\limits_{i=1}^{N}\lambda_iy_i=0,\lambda_i\ge=0,i=1,2,\cdots,N
+\end{aligned}\tag{30}</script><p>为简便起见，我们定义</p>
+<script type="math/tex; mode=display">
+\mathcal k(\mathrm x_i,\mathrm x_{i^\prime})=\phi(\mathrm x_i)^{\mathrm T}\phi(\mathrm x_{i^\prime})\tag{31}</script><p>公式(31)就是我们提到的<strong>核函数</strong>。</p>
+<p> 那么这里难点在于如何找到好的映射函数和核函数，也就是公式(31)的表达式？对于上面的例子，由于十分简单，我们可以很容易的定义映射函数。然而，对于实际中比较复杂的训练集，我们一般采用下面几种比较常见的核函数:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">表达式</th>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">表达式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">线性核</td>
+<td style="text-align:center">$\mathcal k(\mathrm x<em>i,\mathrm x</em>{i^\prime})=\mathrm x<em>i^{\mathrm T}\mathrm x</em>{i^\prime}$</td>
+<td style="text-align:center">高斯核</td>
+<td style="text-align:center">$\mathcal k(\mathrm x<em>i,\mathrm x</em>{i^\prime})=\exp(-\frac{\lvert\mathrm x<em>i-\mathrm x</em>{i^\prime}\rvert^2}{2\sigma^2})$</td>
+</tr>
+<tr>
+<td style="text-align:center">多项式核</td>
+<td style="text-align:center">$\mathcal k(\mathrm x<em>i,\mathrm x</em>{i^\prime})=(a\mathrm x<em>i^{\mathrm T}\mathrm x</em>{i^\prime}+b)^c$</td>
+<td style="text-align:center">指数核</td>
+<td style="text-align:center">$\mathcal k(\mathrm x<em>i,\mathrm x</em>{i^\prime})=\exp(-\frac{\lvert\mathrm x<em>i-\mathrm x</em>{i^\prime}\rvert}{2\sigma^2})$</td>
+</tr>
+<tr>
+<td style="text-align:center">Sigmoid核</td>
+<td style="text-align:center">$\mathcal k(\mathrm x<em>i,\mathrm x</em>{i^\prime})=\tanh(a\mathrm x<em>i^{\mathrm T}\mathrm x</em>{i^\prime}+b)$</td>
+<td style="text-align:center">拉普拉斯核</td>
+<td style="text-align:center">$\mathcal k(\mathrm x<em>i,\mathrm x</em>{i^\prime})=\exp(-\frac{\lvert\mathrm x<em>i-\mathrm x</em>{i^\prime}\rvert}{\sigma})$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>下面我们以一个具体的多项式核 $\mathcal k(\mathrm x<em>i,\mathrm x</em>{i^\prime})=(\mathrm x<em>i^{\mathrm T}\mathrm x</em>{i^\prime}+1)^2$ 来说明核函数的好处。这里我们考虑原始特征空间为二维，即$\mathrm x={x^{(1)},x^{(2)}}$。那么此时核函数可以表示为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\mathcal k(\mathrm x_i,\mathrm x_{i^\prime})&=(\mathrm x_i^{\mathrm T}\mathrm x_{i^\prime}+1)^2\\
+&=(1+x_i^{(1)}x_{i^\prime}^{(1)}+x_i^{(2)}x_{i^\prime}^{(2)})^2\\
+&=1+2\mathrm x_{i}^{(1)}\mathrm x_{i^\prime}^{(1)}+2\mathrm x_{i}^{(2)}\mathrm x_{i^\prime}^{(2)}+[\mathrm x_{i}^{(1)}\mathrm x_{i^\prime}^{(1)}]^2+2\mathrm x_{i}^{(1)}\mathrm x_{i^\prime}^{(1)}\mathrm x_{i}^{(2)}\mathrm x_{i^\prime}^{(2)}+[\mathrm x_{i}^{(2)}\mathrm x_{i^\prime}^{(2)}]^2\\
+&=[1,\sqrt{2}\mathrm x_{i}^{(1)},\sqrt{2}\mathrm x_{i}^{(2)},[\mathrm x_{i}^{(1)}]^2,\sqrt{2}\mathrm x_{i}^{(1)}\mathrm x_{i}^{(2)},[\mathrm x_{i}^{(2)}]^2][1,\sqrt{2}\mathrm x_{i^\prime}^{(1)},\sqrt{2}\mathrm x_{i^\prime}^{(2)},[\mathrm x_{i^\prime}^{(1)}]^2,\sqrt{2}\mathrm x_{i^\prime}^{(1)}\mathrm x_{i^\prime}^{(2)},[\mathrm x_{i^\prime}^{(2)}]^2]^{\mathrm T}\\
+&=\phi(\mathrm x_i)^{\mathrm T}\phi(\mathrm x_{i^\prime})
+\end{aligned}\tag{32}</script><p>从公式(31)可以看出我们把原始二维特征空间映射到了六维特征空间。最终计算$\phi(\mathrm x<em>i)^{\mathrm T}\phi(\mathrm x</em>{i^\prime})$是两个六维空间向量的内积，需要6次加法和6次乘法。然而，我们可以直接通过核函数$\mathcal k(\mathrm x<em>i,\mathrm x</em>{i^\prime})=(\mathrm x<em>i^{\mathrm T}\mathrm x</em>{i^\prime}+1)^2$  计算$\phi(\mathrm x<em>i)^{\mathrm T}\phi(\mathrm x</em>{i^\prime})$，此时只需要进行二维空间的内积，总共需要3次加法和3次乘法。也就是说，通过核函数，我们可以直接在原始特征空间计算结果，从而避免在映射后的高维特征空间中计算内积。</p>
+<hr>
+<h2 id="线性不可分SVM"><a href="#线性不可分SVM" class="headerlink" title="线性不可分SVM"></a>线性不可分SVM</h2><p>最基本的SVM模型可以对原始特征空间线性可分的训练集进行正确分类，如我们开头提到的小例子。利用核函数，我们可以对于原始特征空间，线性不可分，而在映射的特征空间线性可分的训练集进行正确分类，如图4-7提到的例子。然而我们还会遇到原始特征空间线性不可分，映射后的特征空间也线性不可分，或者说我们找不到一个好的核函数使新的特征空间线性可分的情况。下面这部分内容就是考虑线性不可分的情况。</p>
+<p>对于线性不可分的情况，一个比较基本的方式，就是不一定需要所有的训练样例都正确分类，我们可以容忍部分样例被错误分类。如图8所示：</p>
+<p><table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200512/SVM_fig008.jpg"  ></center>  <center>图8 </center></td>
+    </tr>
+</table><br>在图8中，我们假定分类超平面和支持向量和图3一样，即分类超平面为绿色直线$\hat y=\omega<em>0+\mathrm w^{\mathrm T}\mathrm x=\frac{1}{2}x^{(1)}+\frac{1}{2}x^{(2)}-2=0$ ，支持向量为$\mathrm x_1, \mathrm x_3$ 。样例点 $\mathrm x_6,\mathrm x</em>{10},\mathrm x<em>{11},\mathrm x</em>{12}$ 位于直线 $\hat y=+1,-1$ 之间，即不满足我们前面提到的正确分类需要满足(10)中的约束， 其中，样例点 $\mathrm x<em>6,\mathrm x</em>{12}$ 被错误分类。</p>
+<p>为了解决这一问题，我们可以为每一个样例点 $\mathrm x_i$ 引入一个松弛变量 $\xi_i\ge 0$ :</p>
+<script type="math/tex; mode=display">
+\xi_i=\lvert y_i-(\omega_0+\mathrm w^{\mathrm T}\mathrm x)\rvert\tag{33}</script><p>根据公式(33)我们可知：</p>
+<ul>
+<li>位于 $\hat y=+1,-1$ 之外的样例点$\mathrm x_i,i=2,4,5,7,8,9$ 对应的松弛变量 $\xi_i=0,i=2,4,5,7,8,9$ 。</li>
+<li>位于$\hat y=+1,-1$ 之上的样例点 (支持向量) $\mathrm x_i,i=1,3$ 对应的松弛变量 $\xi_i=0,i=1,3$ 。</li>
+<li>位于$\hat y=+1,-1$ 之内的样例点$\mathrm x_i,i=6,10,11,12$ ：<ul>
+<li>若其能正确分类，其对应的松弛变量 $0&lt;\xi_i&lt;1,i=11,12$ ；</li>
+<li>若其被错误分类，其对应的松弛变量$\xi_i&gt;1,i=6,10$ 。</li>
+</ul>
+</li>
+</ul>
+<p>此时问题(10)中的约束可变为：</p>
+<script type="math/tex; mode=display">
+(\omega_0+\mathrm w^{\mathrm T}\mathrm x_i)y_i\ge1-\xi_i\tag{34}</script><p>由公式(34)可以看出，当样例$\mathrm x_i$ 被错误分类时，即 $(\omega_0+\mathrm w^{\mathrm T}\mathrm x_i)y_i\le 0$ ，此时对应的松弛变量为$\xi_i&gt;1$ 。所以，松弛变量 $\xi_i$的引入是为了让所有的样例点都满足约束，使得带松弛的优化问题有解。但是，引入松弛变量容许样例点被错误分类，这并不是我们想要的结果。为此，我们需要在原问题(10)的目标(最大化间隔)基础上，考虑最小化错误分类带来的影响。这里我们一般最直观地，直接地使用 $\xi_i$作为引入松弛变量$\xi_i$ 带来的误差。因此，在原问题(10)的基础上我们有：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\min\limits_{\omega_0,\mathrm w, \xi_i}\quad\frac{1}{2}\lvert\mathrm w\rvert^2+C\sum\limits_{i=1}^{N}\xi_i\\
+&s.t.\quad  (\omega_0+\mathrm w^{\mathrm T}\mathrm x_i)y_i\ge1-\xi_i\quad\forall i=1,2,\cdots,N\\
+&\quad\quad\quad\xi_i>0\quad\forall i=1,2,\cdots,N
+\end{aligned}\tag{35}</script><p>在优化问题(35)中，$C&gt;0$ 是一个权重因子，用于平衡最大化间隔和最小化训练误差(即样例点被错误分类)。当 $ C \to \infty $  时，相当于我们十分在乎训练误差，不容许训练样例被错误分类，此时所有的$\xi_i=0$。此时，问题(35)退化为问题(10)。</p>
+<hr>
+<h4 id="求解带松弛变量的优化问题"><a href="#求解带松弛变量的优化问题" class="headerlink" title="求解带松弛变量的优化问题"></a>求解带松弛变量的优化问题</h4><p>问题(35)也是一个凸二次优化问题，所以可以完全按照前面求解问题(10)的方式求解，在此我们只给出解析表达式。同样利用拉格朗日乘子法得到拉格朗日函数并对变量求偏导，令偏导为0，我们有：</p>
+<script type="math/tex; mode=display">
+\omega_j^\star=\sum\limits_{i=1}^{N}\lambda_iy_ix_i^{(j)}\tag{36}</script><script type="math/tex; mode=display">
+\sum\limits_{i=1}^{N}\lambda_iy_i=0\tag{37}</script><script type="math/tex; mode=display">
+C=\lambda_i+\mu_i\tag{38}</script><p>在公式(38)中，$\lambda_i,\mu_i$ 分别为(35)中约束对应的拉格朗日乘子。将公式(36), (37)和 (38)带入问题 (35)，我们有如下的对偶问题：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\min\limits_{\lambda}\quad \frac{1}{2}\sum\limits_{i=1}^{N}\sum\limits_{i^\prime=1}^{N}\lambda_i\lambda_{i^\prime}y_iy_{i^\prime}\mathrm x_i^{\mathrm T}\mathrm x_{i^\prime}-\sum\limits_{i=1}^{N}\lambda_i\\
+&s.t.\quad  \sum\limits_{i=1}^{N}\lambda_iy_i=0,0\le\lambda_i\le C,i=1,2,\cdots,N
+\end{aligned}\tag{39}</script><p>对比线性可分原问题(10)的对偶问题(19)，这里的对偶问题(39)唯一的差别就是添加了约束 $\lambda_i\le  C$。因此，问题(19)的解法与问题(39)的解法基本一致，并且前面所讲的核函数方法也同样适用。</p>
+<p>求解问题(39)得到最优的$\lambda$后，我们将(36)带入超平面的表达式(8)中得到:</p>
+<script type="math/tex; mode=display">
+\hat y=\omega_0+\mathrm w^{\mathrm T}\mathrm x=\omega_0+\sum\limits_{j=1}^{M}\omega_jx^{(j)}=\omega_0+\sum\limits_{j=1}^{M}\sum\limits_{i=1}^{N}\lambda_iy_ix_i^{(j)}x^{(j)}=\omega_0+\sum\limits_{i=1}^{N}\lambda_iy_i\sum\limits_{j=1}^{M}x_i^{(j)}x^{(j)}\tag{40}</script><p>当对一个新的测试样例$\mathrm x$ 进行分类时，可以由上式可以判断：当$\hat y\ge0$ 时，判断为正例；当 $\hat y\le 0$ 时， 判断为反例。当然，上述问题在于$\omega_0$ 的值还无法得知。为此，我们可利用KKT条件可得：</p>
+<script type="math/tex; mode=display">
+原问题的约束条件：(\omega_0+\mathrm w^{\mathrm T}\mathrm x_i)y_i\ge1-\xi_i, \xi_i\ge0\quad\forall i=1,2,\cdots,N\tag{41}</script><script type="math/tex; mode=display">
+对偶问题的约束条件：\lambda_i\ge 0, \mu_i\ge 0, \forall i=1,2,\cdots,N\tag{42}</script><script type="math/tex; mode=display">
+互补松弛条件1：\lambda_i[y_i(\omega_0+\mathrm w^{\mathrm T}\mathrm x_i)-1+\xi_i]= 0\quad\forall i=1,2,\cdots,N\tag{43}</script><script type="math/tex; mode=display">
+互补松弛条件2：\mu_i\xi_i= 0\quad\forall i=1,2,\cdots,N\tag{44}</script><p>由互补松弛条件(43)可知，要么$\lambda_i=0$，要么 $y_i(\omega_0+\mathrm w^{\mathrm T}\mathrm x_i)-1+\xi_i=0$ 。从分类超平面的表达式(40)可知，只有当$\lambda_i&gt;0$时，即$y_i(\omega_0+\mathrm w^{\mathrm T}\mathrm x_i)-1+\xi_i=0$，才对分类结果$\hat y$ 有影响，此时的样例点$\mathrm x_i $ 才对决定了分类超平面的表达式，这样的样例点就是我们所说的支持向量，在图8中对应的支持向量为 $\mathrm x_i,i=1,3,6,10,11,12$ 。</p>
+<p>当 $0&lt; \lambda_i &lt; C $ 时，由公式(38)知 $ \mu_i &gt; 0 $，又由公式(44)可知，此时$\xi_i=0$，即该样例是位于 $\hat y=+1,-1$ 之上或之外的样例点。当$\lambda_i=C$ 时，有$\mu_i=0$: 此时若$\xi_i&gt;1 $ ，该样例被错误分类，若$\xi_i\le1$，此时样例位于 $\hat y=+1,-1$ 之间，但是被正确分类的样例点. 这里的分析与我们前面对图8的解释一致。当$0&lt;\lambda_i&lt;C$时， 由(43)知 $y_i(\omega_0+\mathrm w^{\mathrm T}\mathrm x_i)-1+\xi_i=0$  ，且$\xi_i=0$。那么这时有 $y_i(\omega_0+\mathrm w^{\mathrm T}\mathrm x_i)-1=0$  我们就有</p>
+<script type="math/tex; mode=display">
+\omega_0=\frac{1}{y_i}-\mathrm w^{\mathrm T}\mathrm x_i\tag{45}</script><hr>
+<h2 id="SMO算法"><a href="#SMO算法" class="headerlink" title="SMO算法"></a>SMO算法</h2><p>虽然对偶问题(19)和(39)都是凸二次函数，我们可以利用工具箱求解，在此省略。但是复杂度与样例成正比。当样例较多时，复杂度很高。为此我们介绍如何利用问题(39)的性质，使用SMO算法进行求解。SMO算法的主要思想本质上与坐标轮询法类似，即以一个变量$\lambda_i$ 为变量，其他$\lambda$ 固定来简化优化问题。也就是说，在参数$\lambda$ 初始化后，不断执行下列步骤直到收敛：</p>
+<ul>
+<li>按照一定规则选取需要更新的 $\lambda<em>i$ 和 $\lambda</em>{i^\prime}$</li>
+<li>固定除$\lambda<em>i,\lambda</em>{i^\prime}$的所有其他参数，求解简化后的问题(39)</li>
+</ul>
+<p>从上述步骤可以看出，我们的重点在<strong>如何选择$\lambda<em>i,\lambda</em>{i^\prime}$</strong>以及<strong>如何求解问题(39)</strong>。</p>
+<h4 id="参数-lambdai-lambda-i-prime-的选择"><a href="#参数-lambdai-lambda-i-prime-的选择" class="headerlink" title="参数$\lambdai,\lambda{i^\prime}$ 的选择"></a>参数$\lambda<em>i,\lambda</em>{i^\prime}$ 的选择</h4><p>对于一个凸二次优化问题，满足KKT条件是最优解的充要条件。为此，我们可以找一个违背该KKT条件的样例点对应的$\lambda<em>i$作为需要更新的参数。对于另一个参数$\lambda</em>{i^\prime}$ ，我们需要选择一个离$\lambda<em>i$对应样例点较远的样例点，这样$\lambda_i$与$\lambda</em>{i^\prime}$ 之间差别较大。这时，算法每次迭代都能有效地减少目标函数值。</p>
+<hr>
+<h4 id="解析解"><a href="#解析解" class="headerlink" title="解析解"></a>解析解</h4><p>当选择$\lambda<em>i,\lambda</em>{i^\prime}$作为我们的优化变量，问题(39)可以简化为(为表述简单，我们假定选择的变量为$\lambda_1,\lambda_2$ ) ：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\min\limits_{\lambda_1,\lambda_2}\quad \frac{1}{2}\lambda_1^2\mathrm x_1^{\mathrm T}\mathrm x_1+\frac{1}{2}\lambda_2^2\mathrm x_2^{\mathrm T}\mathrm x_2+\lambda_1\lambda_2y_1y_2\mathrm x_1^{\mathrm T}\mathrm x_2\\&\qquad+\sum\limits_{i=3}^{N}\lambda_iy_i\lambda_1y_1\mathrm x_1^{\mathrm T}\mathrm x_i+\sum\limits_{i=3}^{N}\lambda_iy_i\lambda_2y_2\mathrm x_2^{\mathrm T}\mathrm x_i-\lambda_1-\lambda_2-\sum\limits_{i=3}^{N}\lambda_i\\
+&s.t.\quad  \lambda_1y_1+\lambda_2y_2=-\sum\limits_{i=3}^{N}\lambda_iy_i=\eta,0\le\lambda_i\le C,i=1,2
+\end{aligned}\tag{46}</script><p>对于优化问题(46)，我们首先分析其约束条件。由于只有两个变量，我们可以通过图像形象地表示如下：</p>
+<p>图9和图10分别表示当$y_1\neq y_2$ 和 $y_1=y_2$时，变量$\lambda_1,\lambda_2$的取值范围和关系。</p>
+<ul>
+<li>在图9中，即$y_1\neq y_2$，由问题(46)的约束我们有 $\lambda_1-\lambda_2=\eta$ 或 $-\lambda_1+\lambda_2=\eta$ ，此时$\lambda_2$的最小值$L=\max{0,-\eta}$，最大值为$H=\min{C,C-\eta}$ 。</li>
+<li>在图10中，即$y_1= y_2$，由问题(46)的约束我们有 $\lambda_1+\lambda_2=\eta$ 或 $-\lambda_1-\lambda_2=\eta$ ，此时$\lambda_2$的最小值$L=\max{0,\eta-C}$，最大值为$H=\min{C,\eta}$ 。</li>
+</ul>
+<p>综合起来也就是：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+L\le\lambda_2\le H\mid \begin{cases}
+L=\max\{0,-\eta\}, H=\min\{C,C-\eta\}\quad y_1\neq y_2\\
+L=\max\{0,\eta-C\}, H=\min\{C,\eta\}\quad y_1= y_2
+\end{cases}
+\end{aligned}\tag{47}</script><hr>
+<p>将问题(46)中的约束$\lambda_1y_1+\lambda_2y_2=\eta$ 同时乘以 $y_1$，我们有</p>
+<script type="math/tex; mode=display">
+\lambda_1=(\eta-\lambda_2y_2)y_1\tag{48}</script><p>当我们不考虑问题(46)中的约束 $0\le\lambda_i\le C$，且将变量$\lambda_1$由自变量$\lambda_2$ 表示后，问题(46)可以表示为：</p>
+<script type="math/tex; mode=display">
+\min\limits_{\lambda_2}\quad \frac{1}{2}[(\eta-\lambda_2y_2)y_1]^2\mathrm x_1^{\mathrm T}\mathrm x_1+\frac{1}{2}\lambda_2^2\mathrm x_2^{\mathrm T}\mathrm x_2+(\eta-\lambda_2y_2)y_1\lambda_2y_1y_2\mathrm x_1^{\mathrm T}\mathrm x_2\\\qquad+\sum\limits_{i=3}^{N}\lambda_iy_i(\eta-\lambda_2y_2)y_1y_1\mathrm x_1^{\mathrm T}\mathrm x_i+\sum\limits_{i=3}^{N}\lambda_iy_i\lambda_2y_2\mathrm x_2^{\mathrm T}\mathrm x_i-(\eta-\lambda_2y_2)y_1-\lambda_2-\sum\limits_{i=3}^{N}\lambda_i\tag{49}</script><p>将问题(49)中的常数项(不含变量$\lambda_2$ 的项 ) 删除不会影响最优解,且$y_1y_1=1$，于是我们有：</p>
+<script type="math/tex; mode=display">
+\min\limits_{\lambda_2}\quad \frac{1}{2}[(\eta-\lambda_2y_2)y_1]^2\mathrm x_1^{\mathrm T}\mathrm x_1+\frac{1}{2}\lambda_2^2\mathrm x_2^{\mathrm T}\mathrm x_2+(\eta-\lambda_2y_2)\lambda_2y_2\mathrm x_1^{\mathrm T}\mathrm x_2\\\quad\quad-\sum\limits_{i=3}^{N}\lambda_iy_i\lambda_2y_2\mathrm x_1^{\mathrm T}\mathrm x_i+\sum\limits_{i=3}^{N}\lambda_iy_i\lambda_2y_2\mathrm x_2^{\mathrm T}\mathrm x_i-(\eta-\lambda_2y_2)y_1-\lambda_2\tag{50}</script><p>问题(50)是一个无约束的凸优化问题，为此，其最优解$\lambda_2^\star$满足: 目标函数关于$\lambda_2$ 导数为0，在此省略求导过程，直接给出最优解的解析表达式：</p>
+<script type="math/tex; mode=display">
+\lambda_2^\star=\lambda_2+\frac{y_2(E_1-E_2)}{\mathrm x_1^{\mathrm T}\mathrm x_1+\mathrm x_2^{\mathrm T}\mathrm x_2-2\mathrm x_1^{\mathrm T}\mathrm x_2}\tag{51}</script><p>其中，训练样例误差$E<em>1=\omega_0+\sum\limits</em>{i=1}^{N}\lambda<em>iy_i\sum\limits</em>{j=1}^{M}x<em>i^{(j)}x_1^{(j)}-y_1, E_2=\omega_0+\sum\limits</em>{i=1}^{N}\lambda<em>iy_i\sum\limits</em>{j=1}^{M}x_i^{(j)}x_2^{(j)}-y_2$ 。</p>
+<p>注意：公式(51)表明当最优的$\lambda_2^\star $ 与当前参数$\lambda_2$ 有关。换句话说，当$\lambda_2$ 不同时，得到的最优解$\lambda_2^\star $ 。这样我们可以通过不断迭代(51)可以最终使得$\lambda_2^\star $不变，即收敛。即，在第$t$ 次迭代初，我们知道所有的参数值$\lambda$ ，然后根据(51)更新$\lambda_2$，重复该迭代过程，直至收敛。另一方面，当我们考虑(47)中$\lambda_2$ 的取值范围，我们有</p>
+<script type="math/tex; mode=display">
+\lambda_2^\star=\begin{cases}
+H,\quad\lambda_2^\star>H\\
+\lambda_2^\star,\quad L\le\lambda_2^\star\le H\\
+L,\quad\lambda_2^\star<L\\
+\end{cases}\tag{52}</script><p>在每次迭代中，得到最优$\lambda_2^\star$ , 根据问题(46)的等式约束，我们可以得到该次迭代中最优的$\lambda_1^\star$:</p>
+<script type="math/tex; mode=display">
+\lambda_1^\star=\lambda_1+y_1y_2(\lambda_2-\lambda_2^\star)\tag{53}</script><p>当在某次迭代中得到最优的解$\lambda_1^\star,\lambda_2^\star$ 后，根据公式(36)得到最优的$\mathrm w$ ，那么我们只需要更新$\omega_0$的值，从而可以确定分类超平面。我们更新$\omega_0$的宗旨就是使得$\lambda_1,\lambda_2$ 对应的KKT条件(42)满足。当$0&lt;\lambda_i&lt;C,i=1,2$ 时，此时 $\xi_i=0$，$(\omega_0+\mathrm w^{\mathrm T}\mathrm x_i)-1+\xi_i=0$。于是，我们有:</p>
+<script type="math/tex; mode=display">
+\omega_0=\omega_{0,1}=\omega_{0,2}=\frac{1}{y_i}-\mathrm w^{\mathrm T}\mathrm x_i\tag{54}</script><p>当$\lambda<em>i=0, C, i=1,2$时，此时$\omega</em>{0,1},\omega<em>{0,2}$之间的值都满足KKT条件，为简便起见，我们取两者的中间值$\omega_0=\frac{\omega</em>{0,1}+\omega_{0,2}}{2}$ 。</p>
+<hr>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2020/05/12/[20200512]/" title="【图解例说机器学习】支持向量机 (SVM)">http://tengweitw.com/2020/05/12/[20200512]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"><i class="fa fa-tag"></i> Machine Learning</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/05/%5B20200505%5D/" rel="prev" title="【图解例说机器学习】感知机 (Perceptron)">
+      <i class="fa fa-chevron-left"></i> 【图解例说机器学习】感知机 (Perceptron)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/28/%5B20200528%5D/" rel="next" title="【图解例说机器学习】朴素贝叶斯 (Naive Bayes)">
+      【图解例说机器学习】朴素贝叶斯 (Naive Bayes) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线性可分支持向量机"><span class="nav-number">1.</span> <span class="nav-text">线性可分支持向量机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SVM-分类模型"><span class="nav-number">2.</span> <span class="nav-text">SVM 分类模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#间隔"><span class="nav-number">2.0.1.</span> <span class="nav-text">间隔</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优化问题"><span class="nav-number">2.0.2.</span> <span class="nav-text">优化问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于CVX的问题求解"><span class="nav-number">2.0.3.</span> <span class="nav-text">基于CVX的问题求解</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对偶问题"><span class="nav-number">3.</span> <span class="nav-text">对偶问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#核函数"><span class="nav-number">4.</span> <span class="nav-text">核函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线性不可分SVM"><span class="nav-number">5.</span> <span class="nav-text">线性不可分SVM</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#求解带松弛变量的优化问题"><span class="nav-number">5.0.1.</span> <span class="nav-text">求解带松弛变量的优化问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SMO算法"><span class="nav-number">6.</span> <span class="nav-text">SMO算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#参数-lambdai-lambda-i-prime-的选择"><span class="nav-number">6.0.1.</span> <span class="nav-text">参数$\lambdai,\lambda{i^\prime}$ 的选择</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解析解"><span class="nav-number">6.0.2.</span> <span class="nav-text">解析解</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

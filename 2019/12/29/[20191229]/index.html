@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="工欲善其事，必先利其器。  本文介绍如何使用Vim作为编辑器进行科研工作。一般来说，在学术界，使用Vim来写论文的人应该很少。即使是在工程界，大部分也都是使用的是各种IDE，使用Vim来编写代码的也属少数。大多数科研工作者一般都是使用WinEdt，Lyx，TeXstudio等集成IDE，其中Lyx所见即所得的效果比较好。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【漫漫科研路\LaTeX】使用Vim撰写科研论文">
+<meta property="og:url" content="http://tengweitw.com/2019/12/29/[20191229]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="工欲善其事，必先利其器。  本文介绍如何使用Vim作为编辑器进行科研工作。一般来说，在学术界，使用Vim来写论文的人应该很少。即使是在工程界，大部分也都是使用的是各种IDE，使用Vim来编写代码的也属少数。大多数科研工作者一般都是使用WinEdt，Lyx，TeXstudio等集成IDE，其中Lyx所见即所得的效果比较好。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191229/20191229_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191229/20191229_fig002.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191229/20191229_fig003.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191229/20191229_fig004.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191229/20191229_fig005.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191229/20191229_fig006.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191229/20191229_fig007.jpg">
+<meta property="article:published_time" content="2019-12-29T15:15:42.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.785Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Research">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191229/20191229_fig001.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2019/12/29/[20191229]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【漫漫科研路\LaTeX】使用Vim撰写科研论文 | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2019/12/29/%5B20191229%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【漫漫科研路\LaTeX】使用Vim撰写科研论文
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-29 23:15:42" itemprop="dateCreated datePublished" datetime="2019-12-29T23:15:42+08:00">2019-12-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>工欲善其事，必先利其器。</p>
+</blockquote>
+<p>本文介绍如何使用Vim作为编辑器进行科研工作。一般来说，在学术界，使用Vim来写论文的人应该很少。即使是在工程界，大部分也都是使用的是各种IDE，使用Vim来编写代码的也属少数。大多数科研工作者一般都是使用<a href="http://www.winedt.com/" target="_blank" rel="noopener">WinEdt</a>，<a href="https://www.lyx.org/" target="_blank" rel="noopener">Lyx</a>，<a href="http://texstudio.sourceforge.net/" target="_blank" rel="noopener">TeXstudio</a>等集成IDE，其中Lyx所见即所得的效果比较好。</p>
+<a id="more"></a>
+<p>我最早接触LaTeX是在大二暑假数学建模的时候，当时是使用的WinEdt。后来大四毕业设计的时候，果断选择LaTeX来编写毕业论文。读博之后，实验室普遍推荐用Lyx，我还是用的WinEdt。一方面，用的顺手了比较熟悉；另一方面，论文提交的时候有的要求LaTeX源代码，使用Lyx的话还得转换。又过了一年，偶然间发现了Sublime Text这款比较好的编辑器，于是想着使用Sublime+TexLive+SumatraPDF的组合，并安装了相关插件。相比于WinEdt，使用Sublime Text3写论文有两大好处：</p>
+<pre><code>主题可自由选择，语法高亮清晰，可读性好
+可视化效果好，鼠标悬停在行间公式或图片处既可以预览
+</code></pre><p>又过了两年，决定以后去工程界发展，开始学习熟悉所谓的编辑器之神，便考虑将所有的科研任务使用Vim中使用，这其中就包括了C/C++，LaTeX，Python文件等编辑及运行。下图给出了使用Vim编写论文的基础环境：<br>    <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191229/20191229_fig001.jpg" width="600" height="450" title="图1" alt="图1" ></p>
+<hr>
+<p>下面我通过介绍一些写作比较好用的插件和相关的vimrc配置，来说说使用Vim进行论文编写的一些特点：</p>
+<h2 id="lervag-vimtex插件"><a href="#lervag-vimtex插件" class="headerlink" title="lervag/vimtex插件"></a>lervag/vimtex插件</h2><p>vimtex是写LaTeX的主要插件，具体使用可以在Vim中输入命令 <code>:help vimtex</code>，其中最主要的命令如下：</p>
+<ul>
+<li><p><code>\ll</code> ：编译.tex文件；</p>
+</li>
+<li><p><code>\lv</code>:  查看生成的pdf文件，正向索引，即会用黄色高亮PDF中对应光标在源文件的位置。反向索引：鼠标焦点在PDF，按下快捷键<code>command(Ctrl)+shift</code>，单机或者双击鼠标；<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191229/20191229_fig002.jpg" width="600" height="200" title="图2" alt="图2" ><br><strong>正向索引</strong>：输入<code>:\lv</code>即可得下图：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191229/20191229_fig003.jpg" width="600" height="250" title="图3" alt="图3" ></p>
+</li>
+<li><p><code>\lc</code>: 清除编译过程中产生的中间文件，有时编译错误的时候需要清除这类文件</p>
+</li>
+<li><p><code>\lt</code>: 打开论文中的label目录，继而可以根据label进行跳转，如下图所示：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191229/20191229_fig004.jpg" width="600" height="450" title="图4" alt="图4" ><br>具体在.vimrc的配置如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">"----------------Configuration for LaTeX---------------"</span><br><span class="line">"Type help vimtex for detailed information</span><br><span class="line">let g:tex_flavor='latex'</span><br><span class="line">let g:vimtex_view_method='skim' "Use Skim as the pdf viewer</span><br><span class="line">let g:vimtex_view_automatic=1</span><br><span class="line">let g:vimtex_quickfix_mode=2</span><br><span class="line">let g:vimtex_quickfix_autoclose_after_keystrokes=1</span><br><span class="line">set conceallevel=2</span><br><span class="line">let g:tex_conceal='abdmg'</span><br><span class="line">let g:vimtex_quickfix_autojump=1</span><br><span class="line">let g:vimtex_compiler_latexmk = &#123;</span><br><span class="line">    \ 'options' : [</span><br><span class="line">    \   '-xelatex',</span><br><span class="line">    \   '-verbose',</span><br><span class="line">    \   '-file-line-error',</span><br><span class="line">    \   '-synctex=1',</span><br><span class="line">    \   '-interaction=nonstopmode',</span><br><span class="line">    \ ],</span><br><span class="line">    \&#125;</span><br><span class="line"></span><br><span class="line">let g:vimtex_complete_ignore_case=1</span><br><span class="line">let g:vimtex_complete_close_braces=1</span><br><span class="line"></span><br><span class="line">"In insert mode show the details, show the math equations othewise</span><br><span class="line">autocmd FileType tex inoremap jk &lt;esc&gt;:set conceallevel=2&lt;cr&gt;</span><br><span class="line">autocmd FileType tex nnoremap i :set conceallevel=0&lt;cr&gt;i</span><br><span class="line">autocmd FileType tex nnoremap s :set conceallevel=0&lt;cr&gt;s</span><br><span class="line">autocmd FileType tex nnoremap a :set conceallevel=0&lt;cr&gt;a</span><br><span class="line">autocmd Filetype tex setlocal nofoldenable</span><br><span class="line"></span><br><span class="line">"-------set the shortcuts for compiling, viewing, and cleaning .tex files</span><br><span class="line">autocmd FileType tex nmap &lt;leader&gt;b  \ll</span><br><span class="line">autocmd FileType tex nmap &lt;leader&gt;v \lv</span><br><span class="line">autocmd FileType tex  nmap &lt;leader&gt;c \lc</span><br><span class="line">autocmd FileType tex nmap &lt;leader&gt;t \lt</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h2 id="xuhdev-vim-latex-live-preview-插件"><a href="#xuhdev-vim-latex-live-preview-插件" class="headerlink" title="xuhdev/vim-latex-live-preview 插件"></a>xuhdev/vim-latex-live-preview 插件</h2><p>该插件可以实现<strong>实时预览</strong>，但是目前来说，我使用skim和zathura阅读器效果都不太好，容易出现卡顿现象。该插件在.vimrc的配置如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"----------Settings for xuhdev/vim-latex-live-preview</span><br><span class="line">autocmd Filetype tex setl updatetime=15 "To set the update time for live view</span><br><span class="line">let g:livepreview_previewer='open -a skim'</span><br></pre></td></tr></table></figure>
+<p>若要使用该功能可以在Vim输入命令 <code>:LLPStarPreview</code></p>
+<hr>
+<h2 id="sirver-ultisnips-和-honza-vim-snippets自定义代码块插件"><a href="#sirver-ultisnips-和-honza-vim-snippets自定义代码块插件" class="headerlink" title="sirver/ultisnips 和 honza/vim-snippets自定义代码块插件"></a><a href="https://github.com/SirVer/ultisnips" target="_blank" rel="noopener">sirver/ultisnips</a> 和 <a href="https://github.com/honza/vim-snippets" target="_blank" rel="noopener">honza/vim-snippets</a>自定义代码块插件</h2><p>其中，ultisnips需要自己定义替代规则，而vim-snippets提供了常用的一些代码块。安装这两个插件需要在.vimrc中添加相应代码：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Plugin 'sirver/ultisnips'</span><br><span class="line">Plugin 'honza/vim-snippets'</span><br></pre></td></tr></table></figure><br>其中调用补全的快捷键设置如下：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let g:UltiSnipsExpandTrigger = '&lt;tab&gt;'</span><br><span class="line">let g:UltiSnipsJumpForwardTrigger = '&lt;tab&gt;'</span><br><span class="line">let g:UltiSnipsJumpBackwardTrigger = '&lt;s-tab&gt;'</span><br></pre></td></tr></table></figure></p>
+<p>对于不同类型的文件都有不同的.snippets，比如tex.snippets文件中就是关于LateX文件的一些常用代码块，其目录位于/Users/tengweitw/.vim/bundle/vim-snippets/UltiSnips/tex.snippets （MacOS系统）。查看tex.snippets 文件，我们可以看到几个科研写作中比较常用的代码块：</p>
+<ul>
+<li>在插入模式下，在句首输入b或者begin之后按Tab键，会补全整个\begin….\end环境<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191229/20191229_fig005.jpg" width="400" height="150" title="图5" alt="图5" ></li>
+<li>在插入模式下，输入fig后按Tab键，会补全整个插入图片的代码段<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191229/20191229_fig006.jpg" width="400" height="150" title="图6" alt="图6" ></li>
+<li>在插入模式下，输入sec或者sub后按Tab键，会补全章节\section{}（\subsection{}）并添加label<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20191229/20191229_fig007.jpg" width="400" height="100" title="图7" alt="图7" ><br>该文件中还有一些其他快捷代码块，都比较好理解，可自行查看。当然我们也可以自己在这个文件中添加自定义的代码块，我最常用的就是插入行内公式代码块，添加如下代码即可：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">snippet mk &quot;Math&quot; wA</span><br><span class="line">$$&#123;1&#125;$&#96;!p</span><br><span class="line">if t[2] and t[2][0] not in [&#39;,&#39;, &#39;.&#39;, &#39;?&#39;, &#39;-&#39;, &#39; &#39;]:</span><br><span class="line">    snip.rv &#x3D; &#39; &#39;</span><br><span class="line">else:</span><br><span class="line">    snip.rv &#x3D; &#39;&#39;</span><br><span class="line">&#96;$2</span><br><span class="line">endsnippet</span><br></pre></td></tr></table></figure>
+<p>该代码块的作用是，当我们输入<code>mk</code>时，自动添加行内公式环境，并且鼠标位于$$中间。这里不需要按Tab键，因为代码中的A(uto)意味着自动补全。注意这里使用<code>mk</code>是因为以<code>mk</code>为首的英文字母不常见。 关于如何自定义代码块，请读者自行网上搜索。</p>
+<hr>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2019/12/29/[20191229]/" title="【漫漫科研路\LaTeX】使用Vim撰写科研论文">http://tengweitw.com/2019/12/29/[20191229]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Research/" rel="tag"><i class="fa fa-tag"></i> Research</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/12/22/%5B20191222%5D/" rel="prev" title="【漫漫科研路\pgfplots】克服绘制色温图时，数据量大出现的内存限制">
+      <i class="fa fa-chevron-left"></i> 【漫漫科研路\pgfplots】克服绘制色温图时，数据量大出现的内存限制
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/01/05/%5B20200105%5D/" rel="next" title="【漫漫科研路\pgfplots】画双Y坐标图">
+      【漫漫科研路\pgfplots】画双Y坐标图 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#lervag-vimtex插件"><span class="nav-number">1.</span> <span class="nav-text">lervag&#x2F;vimtex插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xuhdev-vim-latex-live-preview-插件"><span class="nav-number">2.</span> <span class="nav-text">xuhdev&#x2F;vim-latex-live-preview 插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sirver-ultisnips-和-honza-vim-snippets自定义代码块插件"><span class="nav-number">3.</span> <span class="nav-text">sirver&#x2F;ultisnips 和 honza&#x2F;vim-snippets自定义代码块插件</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

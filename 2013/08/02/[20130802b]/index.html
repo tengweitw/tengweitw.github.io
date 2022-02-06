@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="​    从六月初开始看算法导论，陆陆续续看了有2个月了，但实际看的时间只有半个月左右。这期间都忙着找导师、期末考试，同时还回家修养了十来天。真正专心的看算法是在离家返校后，由于没有考试和作业的烦恼，天天都沉浸在算法中，感觉效率较高。这段时间学到的东西较多，下面来总结一下：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【算法导论】排序算法总结">
+<meta property="og:url" content="http://tengweitw.com/2013/08/02/[20130802b]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="​    从六月初开始看算法导论，陆陆续续看了有2个月了，但实际看的时间只有半个月左右。这期间都忙着找导师、期末考试，同时还回家修养了十来天。真正专心的看算法是在离家返校后，由于没有考试和作业的烦恼，天天都沉浸在算法中，感觉效率较高。这段时间学到的东西较多，下面来总结一下：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2013-08-02T04:15:58.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.769Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Algorithm Design">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://tengweitw.com/2013/08/02/[20130802b]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【算法导论】排序算法总结 | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2013/08/02/%5B20130802b%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【算法导论】排序算法总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2013-08-02 12:15:58" itemprop="dateCreated datePublished" datetime="2013-08-02T12:15:58+08:00">2013-08-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>​    从六月初开始看算法导论，陆陆续续看了有2个月了，但实际看的时间只有半个月左右。这期间都忙着找导师、期末考试，同时还回家修养了十来天。真正专心的看算法是在离家返校后，由于没有考试和作业的烦恼，天天都沉浸在算法中，感觉效率较高。这段时间学到的东西较多，下面来总结一下：</p>
+<a id="more"></a>
+<p>​    <strong>学到的排序算法可以分为两类：比较排序、非比较排序。</strong>(这些排序算法的详细介绍及c程序实现在本文末都给出了链接，欢迎参考与指正！)</p>
+<p>​    比较排序有：插入排序法、合并排序法、堆排序法、冒泡排序法、选择排序法、快速排序法等等、</p>
+<p>​    非比较排序有：计数排序法、基数排序法、桶排序法。</p>
+<p>​    下面以我的理解来分别说说它们各自的特点。不过在此之前，我先阐述两个概念： <strong>原地排序  稳定排序</strong></p>
+<p>​    <strong>原地排序</strong>：如果对数组A进行排序，则这些数据是在A中进行重新排序的，在任何时候，至多只有其中的常数个数字是存储在数组之外的。</p>
+<p>​    <strong>稳定排序</strong>：原数组中相同元素的相对位置（即前后关系）在经过排序后仍然不变。例如$a[5]={3,2,3,1,5}$,经过稳定排序后为：$a[5]={1,2,3,3,5}$.</p>
+<p>​    谁最实用？对于较短的数组，比如说元素个数才十几二十个，用冒泡排序法就可以了，因为我们大多数人对冒泡排序法可谓是信手拈来，可以不假思索就可以写出，尽管其时间复杂度比较大。当然快速排序法是非常值得推荐的，他的适用范围很广，用的十分普遍。</p>
+<p>​    <strong>插入排序</strong>：时间复杂度：$O(n*n)$，是原定排序，稳定排序(在本文中所有说稳定排序的意思是可以是稳定排序，对于是否是稳定排序，还取决于具体的程序，看进行数据间比较时是否带等号，但是快速排序肯定不是稳定排序)。其实我们玩斗地主，摸牌的过程就是在进行插入排序！当原始数组为正序排列时，所用时间最短；当原始数组为逆序排序时，所用时间最长。所以插入排序适合于原数组大多数元素已经排好的情况。(所谓正序、逆序只是相对的概念，如果要对数组从小到大排序，则如果原数组本身是从大到小排列的，则称为逆序，否则称为正序)。</p>
+<p>​    <strong>合并排序</strong>：时间复杂度：$O(nlogn)$， 不是原地排序，可以是稳定排序。它和快速排序一样是基于分而治之的思想的（稍有不同），但是它比快速排序要快一点。尽管如此，由于它不是原地排序，需要占用较多空间，所以运用没有快速排序广泛。它和插入排序相比，它的最坏运行情况是$O(nlogn)$，插入排序的最坏运行情况为$O(n*n)$，但插入排序中的常数因子使得在$n$比较小时，运行要更快一点。</p>
+<p>​    <strong>冒泡排序</strong>：时间复杂度为：$O(n*n)$，原地排序，稳定排序。由于平常遇到的排序都很简单，并且大家可以对冒泡排序信手拈来，因此用的十分普遍。</p>
+<p>​    <strong>选择排序</strong>：时间复杂度为：$O(n*n)$，原地排序，稳定排序。实际上，选择排序和冒泡排序的思想上是一致的，只是在具体操作中使用了一点技巧，避免了数据的多次交换，因此运行时间比冒泡排序快一点。</p>
+<p>​    <strong>堆排序</strong>：时间复杂度：$O(nlogn)$，是原地排序。它是将插入排序和合并排序的优点集于一身。像插入排序一样是原地排序，像合并排序一样运行时间为$O(nlogn)$。虽然堆排序是一个漂亮的算法，但是实际中，快速排序的一个好的实现往往要优于堆排序。但是堆有个很常见的应用：作为高效的优先级队列。</p>
+<p>​    <strong>快速排序</strong>：时间复杂度：$O(nlogn)$，不稳定排序，原地排序。最坏的运行时间为$O(n*n)$，它的运行时间与划分的对称性有关。加入随机化后，在平均情况下，划分就能比较均匀，从而就能获得较好性能。</p>
+<p>​    <strong>由定理可知，比较排序时间复杂度最好为$O(nlogn)$</strong>，在上述的比较排序算法中，时间复杂度为$O(nlogn)$较好的算法有：合并排序、堆排序、快速排序。其中快速排序运用最广泛，因为合并排序不是原地排序，需占用较多空间，堆排序的数据交换比较多。</p>
+<p>​    <strong>计数排序</strong>：$O(n)$，稳定排序、不是原地排序。其思想比较独特，运用条件是数组的元素的值域在某一个范围内，并且由于不是原地排序，需要占用额外的内存，所以运用不是很广。</p>
+<p>​    <strong>基数排序</strong>：$O(n)$，稳定排序、不是原地排序。基数排序就是不断地调用计数排序。其思想比较新颖，在进行比较两个数的大小是反其道而行之，先从个位数开始比较。相比于从高位开始比较，它避免了记录中间过程的值。</p>
+<p>​    <strong>桶排序</strong>：$O(n)$，稳定排序、不是原地排序。也是基于分而治之的思想，先将序列进行分类，然后分别处理，最后再合并。与合并算法不同的是，合并的时候不需要进行比较。</p>
+<p>​    上述的非比较排序中，其时间复杂度都是线性的，由于是非比较的排序，所以比较排序算法的下界$O(nlogn)$就不适用了。他们都只有在一些特定的条件下使用，因此运用不是很广泛，但是这些思想却是值得我们学习的。</p>
+<p><strong>下面附上上述各个排序算法的详细介绍及C程序实现的链接，欢迎各位拍砖</strong>！</p>
+<p>  比较排序：  <a href="http://blog.csdn.net/tengweitw/article/details/9006943" target="_blank" rel="noopener">插入排序</a>  <a href="http://blog.csdn.net/tengweitw/article/details/9056485" target="_blank" rel="noopener">合并排序</a>  <a href="http://blog.csdn.net/tengweitw/article/details/9152899" target="_blank" rel="noopener">堆排序</a> <a href="http://blog.csdn.net/tengweitw/article/details/9707525" target="_blank" rel="noopener">冒泡排序</a> <a href="http://blog.csdn.net/tengweitw/article/details/9707801" target="_blank" rel="noopener">选择排序</a> <a href="http://blog.csdn.net/tengweitw/article/details/9627659" target="_blank" rel="noopener">快速排序</a></p>
+<p>非比较排序：  <a href="http://blog.csdn.net/tengweitw/article/details/9629567" target="_blank" rel="noopener">计数排序</a>  <a href="http://blog.csdn.net/tengweitw/article/details/9670303" target="_blank" rel="noopener">基数排序</a>  <a href="http://blog.csdn.net/tengweitw/article/details/9713333" target="_blank" rel="noopener">桶排序</a></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2013/08/02/[20130802b]/" title="【算法导论】排序算法总结">http://tengweitw.com/2013/08/02/[20130802b]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Algorithm-Design/" rel="tag"><i class="fa fa-tag"></i> Algorithm Design</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2013/08/02/%5B20130802%5D/" rel="prev" title="【算法导论】桶排序">
+      <i class="fa fa-chevron-left"></i> 【算法导论】桶排序
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2013/08/06/%5B20130806%5D/" rel="next" title="【算法导论】二叉树的建立">
+      【算法导论】二叉树的建立 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

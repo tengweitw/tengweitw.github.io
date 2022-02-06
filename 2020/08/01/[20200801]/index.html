@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="疫情在家期间，也在新电脑上准备用vim写科研论文。但是之前配置好的.vimrc文件中的配置在实验室的电脑上，我自己又懒得再配置一遍，于是作罢，选择了sublime来进行科研写作，顺便写了一篇《使用Sublime Text3撰写科研论文》。现在已经在实验室了，于是乎我将我的vim配置文件介绍介绍，放在网上，以防万一。同时，也给有需要的人借鉴参考。虽然去年在文章《使用Vim撰写科研论文》介绍了如何利用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Vim】Vim常用配置&lt;一&gt;">
+<meta property="og:url" content="http://tengweitw.com/2020/08/01/[20200801]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="疫情在家期间，也在新电脑上准备用vim写科研论文。但是之前配置好的.vimrc文件中的配置在实验室的电脑上，我自己又懒得再配置一遍，于是作罢，选择了sublime来进行科研写作，顺便写了一篇《使用Sublime Text3撰写科研论文》。现在已经在实验室了，于是乎我将我的vim配置文件介绍介绍，放在网上，以防万一。同时，也给有需要的人借鉴参考。虽然去年在文章《使用Vim撰写科研论文》介绍了如何利用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig002.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig003.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig004.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig005.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig006.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig007.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig008.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig009.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig010.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig011.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig012.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig013.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig014.jpg">
+<meta property="article:published_time" content="2020-08-01T02:22:39.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.789Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Algorithm Design">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig001.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2020/08/01/[20200801]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【Vim】Vim常用配置<一> | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/08/01/%5B20200801%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【Vim】Vim常用配置<一>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-01 10:22:39" itemprop="dateCreated datePublished" datetime="2020-08-01T10:22:39+08:00">2020-08-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>10k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>14 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>疫情在家期间，也在新电脑上准备用vim写科研论文。但是之前配置好的.vimrc文件中的配置在实验室的电脑上，我自己又懒得再配置一遍，于是作罢，选择了sublime来进行科研写作，顺便写了一篇《使用Sublime Text3撰写科研论文》。现在已经在实验室了，于是乎我将我的vim配置文件介绍介绍，放在网上，以防万一。同时，也给有需要的人借鉴参考。虽然去年在文章《使用Vim撰写科研论文》介绍了如何利用vim编写论文，只是介绍了与LaTex相关的插件。这里，我们将介绍一般性的编辑工作所需要的配置。</p>
+<hr>
+<a id="more"></a>
+<h2 id="状态栏设置"><a href="#状态栏设置" class="headerlink" title="状态栏设置"></a>状态栏设置</h2><p>安装插件代码如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Plugin 'vim-airline/vim-airline'</span><br><span class="line">Plugin 'vim-airline/vim-airline-themes'</span><br></pre></td></tr></table></figure>
+<p>然后，我们可以在主题中选择颜色样式，主题列表见<a href="https://github.com/vim-airline/vim-airline-themes/tree/master/autoload/airline/themes" target="_blank" rel="noopener">链接</a>。可使用如下命令指定主题：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let g:airline_theme="solarized"</span><br></pre></td></tr></table></figure>
+<p>呈现效果如图1:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig001.jpg" width="600" height="80" title="图1" alt="图1" ></p>
+<p>关于状态栏每个区域的含义可以见<a href="https://github.com/vim-airline/vim-airline" target="_blank" rel="noopener">vim-airline</a>的描述文件，这里不再赘述。</p>
+<hr>
+<h2 id="文件搜索"><a href="#文件搜索" class="headerlink" title="文件搜索"></a>文件搜索</h2><p>安装插件代码如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Bundle 'kien/ctrlp.vim'</span><br></pre></td></tr></table></figure>
+<p>常用设置代码如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">"-------Shortcuts for the plugin ctrlp</span><br><span class="line">let g:ctrlp_map = '&lt;c-p&gt;'</span><br><span class="line">let g:ctrlp_cmd = 'CtrlP'</span><br><span class="line">let g:ctrlp_by_filename=1</span><br><span class="line">"set the types of files that can be ignored</span><br><span class="line">let g:ctrlp_custom_ignore = &#123;</span><br><span class="line">    \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',</span><br><span class="line">    \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc)$',</span><br><span class="line">    \ &#125;</span><br></pre></td></tr></table></figure>
+<p>这样我们可以通过<code>Ctrl+p</code>打开文件搜索，这时，我们可以通过<code>Ctrl+f</code>或者<code>Ctrl+b</code>在不同模式（mru, files, buffers）中选择，然后输入要搜索的文件名，如下图2：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig002.jpg" width="600" height="280" title="图2" alt="图2" ></p>
+<p>在搜索结果中，我们可以使用<code>Ctrl+j,k</code>来上下选择我们想要的文件，最后<code>enter</code>就可以打开该文件了。更多操作可见该项目的<a href="https://github.com/kien/ctrlp.vim" target="_blank" rel="noopener">说明文档</a>。</p>
+<hr>
+<h2 id="界面颜色设置"><a href="#界面颜色设置" class="headerlink" title="界面颜色设置"></a>界面颜色设置</h2><p>安装插件代码如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Plugin 'altercation/vim-colors-solarized'</span><br></pre></td></tr></table></figure>
+<p>设置代码如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">set t_Co=256</span><br><span class="line">set background=dark</span><br><span class="line">colorscheme solarized</span><br></pre></td></tr></table></figure>
+<p>这里我们设置为深色模式，比较契合MacOS的深色模式，如上图2所示。注意本文中的所有设置是针对MacVIM的，对于在终端使用vim(而不是gvim)打开的vim编辑器，会出现雾面现象，主要是颜色的支持问题，如下图所示：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig003.jpg" width="600" height="380" title="图3" alt="图3" ></p>
+<p>还有，我们可以使用如下命令来设置界面的透明化程度：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set transparency=2</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="树形目录插件"><a href="#树形目录插件" class="headerlink" title="树形目录插件"></a>树形目录插件</h2><p>安装插件代码如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Plugin 'scrooloose/nerdtree'</span><br></pre></td></tr></table></figure>
+<p>设置代码如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">"-------Settings for NERDTree--------</span><br><span class="line">autocmd StdinReadPre * let s:std_in=1</span><br><span class="line">autocmd VimEnter * if argc() == 0 &amp;&amp; !exists("s:std_in") | NERDTree | endif</span><br><span class="line">autocmd vimenter * NERDTree</span><br><span class="line">"Close vim when the NERDTree is the only window</span><br><span class="line">autocmd bufenter * if (winnr("$") == 1 &amp;&amp; exists("b:NERDTree") &amp;&amp; b:NERDTree.isTabTree()) | q | endif</span><br><span class="line">let NERDTreeIgnore=['\.pyc','\~$','\.swp']</span><br><span class="line">let g:NERDTreeShowLineNumbers=1</span><br></pre></td></tr></table></figure>
+<p>经过上述设置，每次打开一个新文件时，左侧都会有目录，效果如下图(目录中的图标和颜色设置会在下一小节中介绍)：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig004.jpg" width="600" height="380" title="图4" alt="图4" ></p>
+<p>但是，左侧的目录并不会随着打开的文件所在目录而更新。为此，我们可以添加如下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">"To update the NERDTree when change the Tab by gt</span><br><span class="line">nnoremap gt gt:NERDTreeFind&lt;CR&gt;&lt;C-w&gt;l</span><br></pre></td></tr></table></figure>
+<p>这样我们可以通过<code>gt</code>来切换tab，同时更新左侧的目录。关于NERDTree的更多操作，可以直接在目录窗口，输入<code>?</code>来查看说明。</p>
+<hr>
+<h2 id="文件类型高亮"><a href="#文件类型高亮" class="headerlink" title="文件类型高亮"></a>文件类型高亮</h2><p>对于我们日常工作科研来说，常遇到的就是这几类文件：<code>.tex</code>， <code>.pdf</code>， <code>.c</code>， <code>.py</code>等等文件。为了在NERDTree目录中高亮显示，我们需要安装如下插件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Plugin 'ryanoasis/vim-devicons'</span><br><span class="line">Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'</span><br></pre></td></tr></table></figure>
+<p>其中，<code>vim-devicons</code>是给不同文件类型显示不同图标；<code>vim-nerdtree-syntax-highlight</code>是让不同类型文件显示不同颜色。</p>
+<p>其常用设置如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">" NERDTress File highlighting</span><br><span class="line">"Set the vim-devicons</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">"Can be enabled or disabled</span><br><span class="line">"vim-nerdtree-syntax-highlight settings</span><br><span class="line">""""""""""""""""""""""""""""""</span><br><span class="line">let g:WebDevIconsDisableDefaultFolderSymbolColorFromNERDTreeDir = 1</span><br><span class="line">let g:WebDevIconsDisableDefaultFileSymbolColorFromNERDTreeFile = 1</span><br><span class="line">" not to show brackets around flags</span><br><span class="line">let g:webdevicons_conceal_nerdtree_brackets = 1</span><br><span class="line">" enable folder/directory glyph flag (disabled by default with 0)</span><br><span class="line">let g:WebDevIconsUnicodeDecorateFolderNodes = 1</span><br><span class="line">" enable open and close folder/directory glyph flags (disabled by default with 0)</span><br><span class="line">let g:DevIconsEnableFoldersOpenClose = 1</span><br><span class="line"></span><br><span class="line">" use double-width(1) or single-width(0) glyphs</span><br><span class="line">" only manipulates padding, has no effect on terminal or set(guifont) font</span><br><span class="line">let g:WebDevIconsUnicodeGlyphDoubleWidth = 0</span><br><span class="line">" Force extra padding in NERDTree so that the filetype icons line up vertically</span><br><span class="line">let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1</span><br><span class="line"></span><br><span class="line">"Highlight full name (not only icons). You need to add this if you don't have vim-devicons and want highlight.</span><br><span class="line">let g:NERDTreeFileExtensionHighlightFullName = 1</span><br><span class="line">let g:NERDTreeExactMatchHighlightFullName = 1</span><br><span class="line">let g:NERDTreePatternMatchHighlightFullName = 1</span><br><span class="line"></span><br><span class="line">"Highlight full name (not only icons). You need to add this if you don't have vim-devicons and want highlight.</span><br><span class="line">let g:NERDTreeHighlightFolders = 1</span><br><span class="line"></span><br><span class="line">"highlights the folder name</span><br><span class="line">let g:NERDTreeHighlightFoldersFullName = 1</span><br><span class="line"></span><br><span class="line">"you can add these colors to your .vimrc to help customizing</span><br><span class="line">let s:brown = "905532"</span><br><span class="line">let s:aqua =  "3AFFDB"</span><br><span class="line">let s:blue = "689FB6"</span><br><span class="line">let s:darkBlue = "44788E"</span><br><span class="line">let s:purple = "834F79"</span><br><span class="line">let s:lightPurple = "834F79"</span><br><span class="line">let s:red = "AE403F"</span><br><span class="line">let s:beige = "F5C06F"</span><br><span class="line">let s:yellow = "F09F17"</span><br><span class="line">let s:orange = "D4843E"</span><br><span class="line">let s:darkOrange = "F16529"</span><br><span class="line">let s:pink = "CB6F6F"</span><br><span class="line">let s:salmon = "EE6E73"</span><br><span class="line">let s:green = "8FAA54"</span><br><span class="line">let s:Turquoise = "40E0D0"</span><br><span class="line">let s:lightGreen = "31B53E"</span><br><span class="line">let s:white = "FFFFFF"</span><br><span class="line">let s:rspec_red = "FE405F"</span><br><span class="line">let s:git_orange = "F54D27"</span><br><span class="line">let s:gray = "808A87"</span><br><span class="line"></span><br><span class="line">let g:NERDTreeExtensionHighlightColor = &#123;&#125; " this line is needed to avoid error</span><br><span class="line">let g:NERDTreeExtensionHighlightColor['py'] = s:orange " sets the color of py files to blue</span><br><span class="line">let g:NERDTreeExtensionHighlightColor['tex'] = s:yellow " sets the color of tex files to blue</span><br><span class="line">let g:NERDTreeExtensionHighlightColor['c'] = s:green " sets the color of c files to blue</span><br><span class="line">let g:NERDTreeExtensionHighlightColor['pdf'] = s:beige " sets the color of pdf files to blue</span><br><span class="line">let g:NERDTreeExtensionHighlightColor['c++'] = s:green " sets the color of c++ files to blue</span><br></pre></td></tr></table></figure>
+<p>上述设置都是参考官方主页<a href="https://github.com/tiagofumo/vim-nerdtree-syntax-highlight" target="_blank" rel="noopener">https://github.com/tiagofumo/vim-nerdtree-syntax-highlight</a> 和 <a href="https://github.com/ryanoasis/vim-devicons" target="_blank" rel="noopener">https://github.com/ryanoasis/vim-devicons</a> 。其效果如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig005.jpg" width="600" height="380" title="图5" alt="图5" ></p>
+<p>安装上述两个包时，需要安装<a href="https://github.com/ryanoasis/nerd-fonts" target="_blank" rel="noopener">nerd-fonts</a>这个字体库。在MacOS中可以使用方法4（Homebrew Fonts）安装，即在终端输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">brew tap homebrew/cask-fonts</span><br><span class="line"></span><br><span class="line">brew cask install font-hack-nerd-font</span><br><span class="line">brew cask install font-droid-sans-mono-nerd-font</span><br><span class="line">brew cask install font-droid-sans-mono-for-powerline</span><br></pre></td></tr></table></figure>
+<p>使用上述第一条命令时，要经过漫长的等待过程，并且经常会出现如下错误：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">error: RPC failed; curl 56 LibreSSL SSL_read: SSL_ERROR_SYSCALL, errno 54</span><br><span class="line">fatal: The remote end hung up unexpectedly</span><br><span class="line">fatal: early EOF</span><br><span class="line">fatal: index-pack failed</span><br></pre></td></tr></table></figure>
+<p>这时可以采用如下链接：<a href="https://www.jianshu.com/p/24c7430fa124" target="_blank" rel="noopener">https://www.jianshu.com/p/24c7430fa124</a> 解决。接下来的三条命令是具体字体的安装，所有的字体可见链接：<a href="https://github.com/Homebrew/homebrew-cask-fonts/tree/master/Casks" target="_blank" rel="noopener">https://github.com/Homebrew/homebrew-cask-fonts/tree/master/Casks</a> 。完成上述命令后，我们需要在MacVim中的.vimrc文件中添加配置命令来防止目录的图标乱码不显示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set encoding=UTF-8</span><br><span class="line">set guifont=DroidSansMono_Nerd_Font:h16</span><br></pre></td></tr></table></figure>
+<p>效果如上图5所示。我们发现，图5中的图标会出现显示不完全的情况，这是一个Open issue （未完全解决）：<a href="https://github.com/ryanoasis/vim-devicons/issues/133，一个可能的方式是在`.vimrc`文件中添加如下命令：" target="_blank" rel="noopener">https://github.com/ryanoasis/vim-devicons/issues/133，一个可能的方式是在`.vimrc`文件中添加如下命令：</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">augroup custom_nerdtree_options</span><br><span class="line">    autocmd!</span><br><span class="line">    autocmd FileType,WinEnter * :call &lt;SID&gt;SetNerdTreeOptions()</span><br><span class="line">augroup END</span><br><span class="line"></span><br><span class="line">function! s:SetNerdTreeOptions() abort</span><br><span class="line">    if &amp;l:filetype ==# 'nerdtree'</span><br><span class="line">        let g:default_opts = &#123;</span><br><span class="line">                    \   'ambiwidth': &amp;ambiwidth,</span><br><span class="line">                    \   'listchars': &amp;listchars,</span><br><span class="line">                    \   'list'     : &amp;l:list,</span><br><span class="line">                    \ &#125;</span><br><span class="line">        setlocal ambiwidth=double listchars=space:. nolist</span><br><span class="line">    else</span><br><span class="line">        if exists('g:default_opts')</span><br><span class="line">            let [&amp;ambiwidth, &amp;listchars, &amp;l:list] = [</span><br><span class="line">                        \   g:default_opts.ambiwidth,</span><br><span class="line">                        \   g:default_opts.listchars,</span><br><span class="line">                        \   g:default_opts.list</span><br><span class="line">                        \ ]</span><br><span class="line">            unlet g:default_opts</span><br><span class="line">        endif</span><br><span class="line">    endif</span><br><span class="line">endfunction</span><br></pre></td></tr></table></figure>
+<p>这样，图标就能完全显示了：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig006.jpg" width="600" height="380" title="图6" alt="图6" ></p>
+<p>这样做其实还有一个bug：当在一个macvim窗口用多个tab打开多个文件时，图标又会显示不完全，但是此时当焦点在目录时，图标会完全显示。</p>
+<hr>
+<h2 id="成对插入符号"><a href="#成对插入符号" class="headerlink" title="成对插入符号"></a>成对插入符号</h2><p>安装插件如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Plugin 'tpope/vim-surround'</span><br></pre></td></tr></table></figure>
+<p>常用设置代码如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">"-------Shortcuts for the plugin tpope/vim-surround</span><br><span class="line">nmap &lt;leader&gt;) ysiw)</span><br><span class="line">nmap &lt;leader&gt;&#125; ysiw&#125;</span><br><span class="line">nmap &lt;leader&gt;" ysiw"</span><br></pre></td></tr></table></figure>
+<p>关于快捷键的详细设置，我们可以参考其<a href="https://github.com/tpope/vim-surround" target="_blank" rel="noopener">主页</a>，或则直接使用命令 <code>:help surround</code>在Vim中查看。我们发现很多命令都需要按多个键，比如上面的用括号包围一个单词，命令为<code>ysiw)</code>。在我的日常使用场景（写文章），最常用的就是中括号和大括号。为方便起见，我就用上述的快捷键映射就可以只需要输入<code>,)</code>即可，这里的逗号是我定义的<code>&lt;leader&gt;</code>。</p>
+<hr>
+<h2 id="构建C-C-项目"><a href="#构建C-C-项目" class="headerlink" title="构建C/C++项目"></a>构建C/C++项目</h2><p>安装插件如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Plugin 'skywind3000/asyncrun.vim' "for running C</span><br></pre></td></tr></table></figure>
+<p>快捷键设置如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">"-------settings for the plugin asyncrun</span><br><span class="line">"open quickfix windown, the height is 6</span><br><span class="line">let g:asyncrun_open =6</span><br><span class="line">"The bell rings when the task is finished</span><br><span class="line">let g:asyncrun_bell =1</span><br><span class="line">let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml'] </span><br><span class="line">"call for the quickfix window</span><br><span class="line">autocmd FileType c,cpp nnoremap &lt;leader&gt;c :call asyncrun#quickfix_toggle(6)&lt;cr&gt;</span><br><span class="line">"Shortcuts for compiling and run the c file</span><br><span class="line">autocmd FileType c,cpp nnoremap &lt;silent&gt; &lt;leader&gt;b :AsyncRun -cwd=&lt;root&gt; make &lt;cr&gt;</span><br><span class="line">autocmd FileType c,cpp nnoremap &lt;silent&gt; &lt;leader&gt;r :AsyncRun -cwd=&lt;root&gt; -raw make run &lt;cr&gt;</span><br></pre></td></tr></table></figure>
+<p>这样我们就可以使用<code>&lt;leader&gt;b</code>和<code>&lt;leader&gt;r</code>来分别编译和运行C/C++项目了。关于这个插件更详细的介绍说明，可以参考<a href="https://github.com/skywind3000/asyncrun.vim" target="_blank" rel="noopener">主页</a>或者该作者的<a href="http://www.skywind.me/blog/archives/2084" target="_blank" rel="noopener">博客</a>。</p>
+<p>需要注意的是，如果只有单个文件，上面这些设置已经足够了。但是，一般来说，一个项目会包含多个源文件，这时我们就得自己编写makefile文件来关联多个源文件。下面以一个简单的例子来说明：有三个文件，分别为<code>hello.h</code>，<code>hello.c</code>, <code>test.c</code>（主文件）。其内容分别为：</p>
+<ul>
+<li><p>hello.h</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>hello.c</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"hello.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="built_in">printf</span>(<span class="string">"Hello World From hello.c!\n"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>test.c</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"hello.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> abstact=<span class="number">1</span>;</span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">"Hello World From test.c!\n"</span>);</span><br><span class="line"> hello();</span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这里我们直接编译会报错如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig007.jpg" width="600" height="380" title="图7" alt="图7" ></p>
+<p>这就是提醒我们需要编写makefile文件，具体如何编写makefile文件，请自行网上搜索。下面给出了对于这个例子的makefile文件：</p>
+<ul>
+<li><p>makefile</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">objects=test.o hello.o</span><br><span class="line">cc=g++</span><br><span class="line"></span><br><span class="line">test:$(objects)</span><br><span class="line">	cc -o test $(objects)</span><br><span class="line"></span><br><span class="line">test.o:test.c  </span><br><span class="line">hello.o:hello.h</span><br><span class="line"></span><br><span class="line">run: test</span><br><span class="line">	./test</span><br><span class="line">.PHONY:clean</span><br><span class="line">clean:</span><br><span class="line">	rm test $(objects)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这样我们就有四个文件：<code>hello.h</code>，<code>hello.c</code>, <code>test.c</code> 和 <code>makefile</code>。这时，我们按下<code>&lt;leader&gt;b</code>编译项目可得：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig008.jpg" width="600" height="380" title="图8" alt="图8" ></p>
+<p>最后按键<code>&lt;leader&gt;r</code>运行该项目可得：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig009.jpg" width="600" height="380" title="图9" alt="图9" ></p>
+<p>从上面可以看出，使用Vim来开发大型项目（源文件很多）是不太方便，使用集成开发环境VS或者VS code是一个相对更好的选择。Vim更适合来编写单个文件，比如我经常来写论文的.tex文件。当然，在写论文时，我们也可以将不同部分（比如 abstract, introduction, system model等等）分成不同的.tex文件，然后在主文件中使用<code>\input</code>命令直接调用即可，这里就没有这里的C/C++项目复杂，不要自己编写makefile。另外需要注意的是，我也是设置<code>&lt;leader&gt;b</code>编译.tex文件。在编译C项目后，在同一vim窗口不同tab再编译.tex文件会产生错误。这里我们可以用一个新的vim窗口打开.tex文件编译即可。</p>
+<hr>
+<h2 id="目录导航"><a href="#目录导航" class="headerlink" title="目录导航"></a>目录导航</h2><p>在写较长的文章或则程序时，我们可以借助这里的目录导航快速跳转到想到的地方去。安装该插件的代码如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Plugin 'majutsushi/tagbar'</span><br></pre></td></tr></table></figure>
+<p>其常用设置如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">"-------Configurations for the plugin ctags</span><br><span class="line">let g:tagbar_ctags_bin='/usr/local/bin/ctags'</span><br><span class="line">let g:tagbar_width=30</span><br><span class="line">let g:tagbar_right=1</span><br><span class="line">"AutoOpen tagbar for c/c++ files</span><br><span class="line">autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc call tagbar#autoopen()</span><br><span class="line">"Open or close tagbar</span><br><span class="line">map &lt;leader&gt;tb :TagbarToggle&lt;CR&gt;</span><br></pre></td></tr></table></figure>
+<p>这样，我们可以通过<code>&lt;leader&gt;tb</code>打开和关闭目录侧边栏。</p>
+<p>如下图10所示，在c文件中，右侧显示的每个函数名：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig010.jpg" width="600" height="300" title="图10" alt="图10" ></p>
+<p>如下图11所示，在.tex文件中，右侧显示的是每个part和label：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig011.jpg" width="600" height="300" title="图11" alt="图11" ></p>
+<p>左侧显示的是vimtex插件自带的目录，其快捷键我定义为<code>&lt;leader&gt;t</code>。可见，ctags所显示的目录个人觉得更加具有条理性。</p>
+<hr>
+<h2 id="注释与反注释"><a href="#注释与反注释" class="headerlink" title="注释与反注释"></a>注释与反注释</h2><p>插件安装代码如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Plugin 'scrooloose/nerdcommenter'</span><br></pre></td></tr></table></figure>
+<p>配置代码如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">" Add a space before comments</span><br><span class="line">let g:NERDSpaceDelims=1</span><br></pre></td></tr></table></figure>
+<p>这样们可以通过<code>&lt;leader&gt;cc</code>来进行注释或者批量注释，通过<code>&lt;leader&gt;cu</code>进行反注释，相比于VS的<code>Ctrl + k + c</code>和<code>Ctrl + k + u</code>的注释方便多了。注释时，会在注释符和代码前加个空格，更多的个性化设置请见其<a href="https://github.com/preservim/nerdcommenter" target="_blank" rel="noopener">主页</a>。</p>
+<hr>
+<h2 id="对齐线"><a href="#对齐线" class="headerlink" title="对齐线"></a>对齐线</h2><p>插件安装代码如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Plugin 'Yggdroot/indentLine'</span><br></pre></td></tr></table></figure>
+<p>配置代码如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"-------Settings for the plugin indentline</span><br><span class="line">let g:indentLine_char='|'</span><br><span class="line">let g:indentLine_enabled=1</span><br></pre></td></tr></table></figure>
+<p>这个对齐线对于python编程应该比较友好，毕竟python语法对于缩进敏感，其效果图如图12：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig012.jpg" width="600" height="300" title="图12" alt="图12" ></p>
+<p>更多的样式设置请参考其<a href="https://github.com/Yggdroot/indentLine" target="_blank" rel="noopener">主页</a>。</p>
+<hr>
+<h2 id="代码隐藏"><a href="#代码隐藏" class="headerlink" title="代码隐藏"></a>代码隐藏</h2><p>插件安装代码如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Plugin 'KeitaNakamura/tex-conceal.vim'</span><br></pre></td></tr></table></figure>
+<p>配置代码如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set conceallevel=2</span><br><span class="line">let g:tex_conceal='abdmg'</span><br></pre></td></tr></table></figure>
+<p>这样一些数学的LaTeX代码就显示为数学符号，即所见即所得。如下图13所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig013.jpg" width="600" height="300" title="图13" alt="图13" ></p>
+<hr>
+<h2 id="Python环境配置"><a href="#Python环境配置" class="headerlink" title="Python环境配置"></a>Python环境配置</h2><p>插件安装代码如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Plugin 'vim-scripts/indentpython.vim'</span><br></pre></td></tr></table></figure>
+<p>配置代码如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">"-------Configurations for Python</span><br><span class="line">set encoding=utf-8</span><br><span class="line">au BufNewFile,BufRead *.py set tabstop=4 |set softtabstop=4|set shiftwidth=4|set textwidth=79|set expandtab|set autoindent|set fileformat=unix</span><br><span class="line">set clipboard=unnamed</span><br><span class="line">let python_highlight_all=1</span><br><span class="line"></span><br><span class="line">function CheckPythonSyntax() </span><br><span class="line">    let mp = &amp;makeprg </span><br><span class="line">    let ef = &amp;errorformat </span><br><span class="line">    let exeFile = expand("%:t") </span><br><span class="line">    setlocal makeprg=python3\ -u  </span><br><span class="line">    set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m </span><br><span class="line">    silent make %</span><br><span class="line">    copen </span><br><span class="line">   let &amp;makeprg     = mp  </span><br><span class="line">    let &amp;errorformat = ef  </span><br><span class="line">endfunction</span><br><span class="line">au filetype python map &lt;leader&gt;b  :w &lt;cr&gt; :call CheckPythonSyntax() &lt;cr&gt; :cw&lt;cr&gt;</span><br></pre></td></tr></table></figure>
+<p>这样我们只需要通过命令<code>&lt;leader&gt;b</code>来编译运行.py文件了，如图14:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200801/20200801_fig014.jpg" width="600" height="380" title="图14" alt="图14" ></p>
+<p>这里有个缺点就是，输出是使用quickfit window (使用<code>:copen</code>打开该窗口)，无法交互式输入。所以我还是推荐使用pycharm来作为python的开发环境吧。</p>
+<hr>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2020/08/01/[20200801]/" title="【Vim】Vim常用配置&lt;一&gt;">http://tengweitw.com/2020/08/01/[20200801]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Algorithm-Design/" rel="tag"><i class="fa fa-tag"></i> Algorithm Design</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/30/%5B20200730%5D/" rel="prev" title="写博客的一些规范">
+      <i class="fa fa-chevron-left"></i> 写博客的一些规范
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/05/%5B20200805%5D/" rel="next" title="【Vim】Vim常用配置<二>">
+      【Vim】Vim常用配置<二> <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#状态栏设置"><span class="nav-number">1.</span> <span class="nav-text">状态栏设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件搜索"><span class="nav-number">2.</span> <span class="nav-text">文件搜索</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#界面颜色设置"><span class="nav-number">3.</span> <span class="nav-text">界面颜色设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#树形目录插件"><span class="nav-number">4.</span> <span class="nav-text">树形目录插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件类型高亮"><span class="nav-number">5.</span> <span class="nav-text">文件类型高亮</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#成对插入符号"><span class="nav-number">6.</span> <span class="nav-text">成对插入符号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建C-C-项目"><span class="nav-number">7.</span> <span class="nav-text">构建C&#x2F;C++项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目录导航"><span class="nav-number">8.</span> <span class="nav-text">目录导航</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注释与反注释"><span class="nav-number">9.</span> <span class="nav-text">注释与反注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对齐线"><span class="nav-number">10.</span> <span class="nav-text">对齐线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码隐藏"><span class="nav-number">11.</span> <span class="nav-text">代码隐藏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python环境配置"><span class="nav-number">12.</span> <span class="nav-text">Python环境配置</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

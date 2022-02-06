@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="神经网络是由具有适应性的简单单元组成的广泛并行互连的网络，它的组织能够模拟生物神经系统对真实世界物体所作出的交互反应。    —Kohonen, 1988   一层神经网络：感知机与逻辑回归M-P神经元模型1943年，McCulloch和Pitts提出了沿用至今的M-P神经元。在这个模型中，神经元接收来自其他$M$个神经元传递过来的输入信号$x^{(j)},j&#x3D;1,2,\cdots,M$， 这些">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【图解例说机器学习】神经网络 (Neural Networks)">
+<meta property="og:url" content="http://tengweitw.com/2020/06/09/[20200609]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="神经网络是由具有适应性的简单单元组成的广泛并行互连的网络，它的组织能够模拟生物神经系统对真实世界物体所作出的交互反应。    —Kohonen, 1988   一层神经网络：感知机与逻辑回归M-P神经元模型1943年，McCulloch和Pitts提出了沿用至今的M-P神经元。在这个模型中，神经元接收来自其他$M$个神经元传递过来的输入信号$x^{(j)},j&#x3D;1,2,\cdots,M$， 这些">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200609/Neural_Networks_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200609/Neural_Networks_fig002.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200609/Neural_Networks_fig003.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200609/Neural_Networks_fig004.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200609/Neural_Networks_fig005.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200609/Neural_Networks_fig006.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200609/Neural_Networks_fig007.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200609/Neural_Networks_fig008.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200609/Neural_Networks_fig009.jpg">
+<meta property="article:published_time" content="2020-06-09T09:17:04.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.788Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Machine Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200609/Neural_Networks_fig001.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2020/06/09/[20200609]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【图解例说机器学习】神经网络 (Neural Networks) | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/06/09/%5B20200609%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【图解例说机器学习】神经网络 (Neural Networks)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-09 17:17:04" itemprop="dateCreated datePublished" datetime="2020-06-09T17:17:04+08:00">2020-06-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>神经网络是由具有适应性的简单单元组成的广泛并行互连的网络，它的组织能够模拟生物神经系统对真实世界物体所作出的交互反应。    —Kohonen, 1988</p>
+</blockquote>
+<hr>
+<h2 id="一层神经网络：感知机与逻辑回归"><a href="#一层神经网络：感知机与逻辑回归" class="headerlink" title="一层神经网络：感知机与逻辑回归"></a>一层神经网络：感知机与逻辑回归</h2><h4 id="M-P神经元模型"><a href="#M-P神经元模型" class="headerlink" title="M-P神经元模型"></a>M-P神经元模型</h4><p>1943年，McCulloch和Pitts提出了沿用至今的M-P神经元。在这个模型中，神经元接收来自其他$M$个神经元传递过来的<strong>输入信号</strong>$x^{(j)},j=1,2,\cdots,M$， 这些输入信号通过带<strong>权重</strong>$\omega_j$的连接进行传递，神经元接收到总输入值与神经元的阈值进行比较，然后通过<strong>激活函数</strong>处理以产生神经元的输出。</p>
+<a id="more"></a>
+<p>根据上述M-P神经元模型的定义，我们可以通过图1形象地表示该模型：</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200609/Neural_Networks_fig001.jpg"  ></center>  <center>图1 </center></td>
+    </tr>
+</table>
+
+<p>M-P神经元的数学表达式也可以表示如下：</p>
+<script type="math/tex; mode=display">
+y=f(\sum\limits_{j=1}^{M}\omega_jx^{(j)}+\omega_0)\tag{1}</script><p>注意：这里我们假设$x^{(0)}=1, \mathrm w={\omega_1,\omega_2,\cdots,\omega_M}, \bar{\mathrm w}={\omega_0,\mathrm w}$。那么公式(1)也可以写成向量的形式:</p>
+<script type="math/tex; mode=display">
+y=f(\sum\limits_{j=0}^{M}\omega_jx^{(j)})=f(\bar{\mathrm w}^{\mathrm T}\mathrm x)\tag{2}</script><hr>
+<h4 id="感知机与逻辑回归"><a href="#感知机与逻辑回归" class="headerlink" title="感知机与逻辑回归"></a>感知机与逻辑回归</h4><p>前面系列文章中介绍的<a href="https://blog.csdn.net/tengweitw/article/details/105936164" target="_blank" rel="noopener">感知机</a>和<a href="https://blog.csdn.net/tengweitw/article/details/105509575" target="_blank" rel="noopener">逻辑回归</a>就是M-P神经元模型的两个具体实例。这两者的区别在于：</p>
+<ul>
+<li><p>激活函数：感知机使用的是阶跃函数，逻辑回归使用的Sigmoid函数，如图2所示：</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200609/Neural_Networks_fig002.jpg"  >图2</center></td>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200609/Neural_Networks_fig003.jpg"  >图3</center></td>
+    </tr>
+</table>
+
+<p>同时，最近比较流行的激活函数还有$tanh$ 和 $Relu$ 函数，如图3所示。</p>
+</li>
+<li><p>损失函数：感知机使用的是错误分类点到分类超平面距离最小化，逻辑回归使用的交叉熵最小化</p>
+</li>
+</ul>
+<p>感知机和逻辑回归是一个最简单的一层神经网络,只有一个神经元(M-P神经元)，可以看成是所有神经网络的基础。注意：这里对于神经网络的层数有不同的定义，主要区别在于是否将输入层看作一层神经网络。这里我们不把输入层看成一层神经网络，只将具有功能神经元(有激活函数)的输出层看成一层神经网络，因此感知机和逻辑回归是一层神经网络，而不是二层神经网络。</p>
+<p>前面文章我们已经介绍过，标准的感知机和逻辑回归模型只能解决线性可分的问题，这是因为它们都只有一个M-P神经元，模型较为简单。为了解决线性不可分问题，我们需要考虑更为复杂的模型，比如考虑使用多层神经网络。下面我们来举例说明通过增加神经网络层数来解决线性不可分的问题(例如：如前面文章<a href="https://blog.csdn.net/tengweitw/article/details/106088030" target="_blank" rel="noopener">SVM</a>中提到的异或问题)。</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200609/Neural_Networks_fig004.jpg"  >图4</center></td>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200609/Neural_Networks_fig005.jpg"  >图5</center></td>
+    </tr>
+</table>
+
+<p>图4是一个感知机的图解模型，其激活函数为图2所示的符号函数$sgn$。我们知道，感知机只能处理线性可分的情况，比如常见的与、或、非计算。具体实现如下所示：</p>
+<ul>
+<li>与计算 ($x^{(1)} \land x^{(2)}$)：令$\omega_1=\omega_2=1,\omega_0=-2$，我们有$y=sgn(x^{(1)}+x^{(2)}-2)$。此时，只有当$x^{(1)}=x^{(2)}=1$时，$y=1$</li>
+<li>或计算 ($x^{(1)} \lor x^{(2)}$)：令$\omega_1=\omega_2=1,\omega_0=-0.5$，我们有$y=sgn(x^{(1)}+x^{(2)}-0.5)$。此时，当$x^{(1)}=1$或者 $x^{(2)}=1$时，$y=1$</li>
+<li>非计算 ($\lnot x^{(1)}$)：令$\omega_1=-0.6$, $\omega_2=0,\omega_0=0.5$，我们有$y=sgn(-0.6x^{(1)}+0.5)$。此时，当$x^{(1)}=0$时，$y=1$; 当$x^{(1)}=1$时，$y=0$</li>
+</ul>
+<p>当我们需要处理线性不可分的情况时(如异或问题)，我们可以考虑在图4的基础上加入一层神经元，如图5所示。在图5中，我们令$\omega<em>{01}^{(1)}=\omega</em>{02}^{(1)}=\omega<em>2^{(2)}=-0.5$，$\omega</em>{11}^{(1)}=\omega<em>{22}^{(1)}=\omega_1^{(2)}=\omega_2^{(2)}=1$，$\omega</em>{12}^{(1)}=\omega_{21}^{(1)}=-1$, 这时候我们有</p>
+<script type="math/tex; mode=display">
+y=sgn[sgn(x^{(1)}-x^{(2)}-0.5)+sgn(x^{(2)}-x^{(1)}-0.5)-0.5]\tag{3}</script><p>由公式(3)可以看出，当$x^{(1)}=x^{(2)}$时，$y=0$; 当$x^{(1)}\neq x^{(2)}$时，$y=1$。我们可以根据公式(3)，画出其分类区域，如下图6所示：</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200609/Neural_Networks_fig006.jpg"  >图6</center></td>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200609/Neural_Networks_fig007.jpg"  >图7</center></td>
+    </tr>
+</table>
+
+<p>在图6中，位于两条绿色直线之间所有区域 (例如：绿色区域) 都被归于同一类。我们发现通过添加一层神经元，我们就可以处理线性不可分的情况。实际上，这一层神经元的功能就是将输入的特征空间$x^{(1)},x^{(2)}$映射到了新的特征空间$z^{(1)},z^{(2)}$，而新的特征空间线性可分，如图7所示。其中这4个样例点映射到新的特征空间，其映射关系为 $\mathrm x<em>1\rightarrow\mathrm z_1, \mathrm x_2\rightarrow\mathrm z_2, \mathrm x</em>{3,4}\rightarrow\mathrm z_{3,4} (0,0)$。可见，在该新的特征空间，样例点线性可分。</p>
+<h2 id="两层神经网络—BP-神经网络"><a href="#两层神经网络—BP-神经网络" class="headerlink" title="两层神经网络—BP 神经网络"></a>两层神经网络—BP 神经网络</h2><p>实际上，理论证明，两层神经网络可以拟合任何复杂形式的函数表达上。为此，本文主要介绍经典的两层前馈神经网络 (相邻层神经元全连接，神经元之间不存在同层连接，也不存在夸层连接)，如图8所示。</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200609/Neural_Networks_fig008.jpg"  ></center>  <center>图8 </center></td>
+    </tr>
+</table>
+在图8中，经典的神经网络由输入层、隐藏层、输出层组成，其中隐藏层和输出层的每一个神经元都是我们前面介绍的M-P神经元。我们发现，神经网络由多层多个神经元构成，其学习算法肯定比感知机和逻辑回归复杂。下面我们介绍神经网络中最常用的BP (BackPropagation) 算法。
+
+
+#### 信号前向传播
+
+在介绍BP算法时，我们需要了解神经网络的结构所决定的输入与输出间的关系表达式，即所谓的输入信号如何向前传播的输出端的。这里我们用图9可以完全形象地描述这一信息流的传播过程：
+
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200609/Neural_Networks_fig009.jpg"  ></center>  <center>图9 </center></td>
+    </tr>
+</table>
+
+<p>在图9中，我们假设输入层、隐藏层、输出层的神经元个数分别为$I,J,K$，激活函数$\sigma$选择为Sigmoid函数。$\alpha^{(j)},\beta^{(k)}$分别为隐藏层和输出层的第$j,k$个神经元的输入；$z^{(j)},\hat y^{(k)}$分别为隐藏层和输出层的第$j,k$个神经元的输出。注意：这里我们有$x^{(0)}=z^{(0)}=1$是为了让求和的下标从0开始，此时对应的权重就是其他文章所说的阈值。图9的右侧给出了所有可能的输入输出的关系表达式。</p>
+<h4 id="误差反向传播"><a href="#误差反向传播" class="headerlink" title="误差反向传播"></a>误差反向传播</h4><p>BP算法的核心就是误差反向传播。这里我们定义一个输入样例$\mathrm x$对应的误差为:</p>
+<script type="math/tex; mode=display">
+E=\frac{1}{2}\sum\limits_{k=1}^{K}(\hat y^{(k)}-y^{(k)})^2\tag{4}</script><p>公式(4)中$y^{(k)}$为样例$\mathrm x$的实际输出$y$的第$k$个输出。注意：这里的误差是一个样例的误差，而不是所有训练样例的误差。</p>
+<p>BP算法的目的是优化权重$\omega<em>{ij}^{(1)},\omega</em>{jk}^{(2)}$来最小化误差$E$。为此，BP算法采用了和梯度下降法一样的思想，以误差对权重的负梯度方向来不断更新权重，降低误差$E$。为此，我们需要计算输出层和隐藏层的$\frac{\partial E}{\partial\omega<em>{ij}^{(1)}}$和$\frac{\partial E}{\partial\omega</em>{jk}^{(2)}}$。</p>
+<h6 id="输出层梯度"><a href="#输出层梯度" class="headerlink" title="输出层梯度"></a>输出层梯度</h6><p>利用链式法则，我们有：</p>
+<script type="math/tex; mode=display">
+\frac{\partial E}{\partial\omega_{jk}^{(2)}}=\frac{\partial E}{\partial \hat y^{(k)}}\frac{\partial\hat y^{(k)}}{\partial\beta^{(k)}}\frac{\partial\beta^{(k)}}{\partial \omega_{jk}^{(2)}}\tag{4}</script><p>对于公式(4)中等式右边的每一项，我们有：</p>
+<script type="math/tex; mode=display">
+\frac{\partial E}{\partial\hat y^{(k)}}=\frac{\partial \frac{1}{2}\sum\limits_{k=1}^{K}(\hat y^{(k)}-y^{(k)})^2}{\partial\hat y^{(k)}}=\hat y^{(k)}-y^{(k)}\tag{5}</script><script type="math/tex; mode=display">
+\frac{\partial\hat y^{(k)}}{\partial\beta^{(k)}}=\frac{\partial sigmoid(\beta^{(k)})}{\partial\beta^{(k)}}=\hat y^{(k)}(1-\hat y^{(k)})\tag{6}</script><script type="math/tex; mode=display">
+\frac{\partial\beta^{(k)}}{\partial\omega_{jk}^{(2)}}=\frac{\partial\sum\limits_{j=0}^{J}\omega_{jk}^{(2)}z^{(j)}}{\partial\omega_{jk}^{(2)}}=z^{(j)}\tag{7}</script><p>在公式(6)中，第二个等式成立是因为对于sigmoid函数，例如$y=f(x)$，其导数为$y^\prime=y(1-y)$。综合(5)-(7)，公式(4)可以写为：</p>
+<script type="math/tex; mode=display">
+\frac{\partial E}{\partial\omega_{jk}^{(2)}}=\hat y^{(k)}(1-\hat y^{(k)})(\hat y^{(k)}-y^{(k)})z^{(j)}=g^{(k)}z^{(j)}\tag{8}</script><p>在公式(8)中，为了简便起见，我们令</p>
+<script type="math/tex; mode=display">
+g^{(k)}=\hat y^{(k)}(1-\hat y^{(k)})(\hat y^{(k)}-y^{(k)})\tag{9}</script><hr>
+<h6 id="隐藏层梯度"><a href="#隐藏层梯度" class="headerlink" title="隐藏层梯度"></a>隐藏层梯度</h6><p>与上面计算过程类似，下面我们计算$\frac{\partial E}{\partial\omega_{ij}^{(1)}}$。同样地，利用链式法则，我们有：</p>
+<script type="math/tex; mode=display">
+\frac{\partial E}{\partial\omega_{ij}^{(1)}}=\frac{\partial E}{\partial z^{(j)}}\frac{\partial z^{(j)}}{\partial\alpha^{(j)}}\frac{\partial\alpha^{(j)}}{\partial\omega_{ij}^{(1)}}\tag{10}</script><p>对于公式(10)中等式右边的每一项，我们有：</p>
+<script type="math/tex; mode=display">
+\frac{\partial E}{\partial z^{(j)}}=\sum\limits_{k=0}^{K}\frac{\partial E}{\partial\beta^{(k)}}\frac{\partial\beta^{(k)}}{\partial z^{(j)}}=\sum\limits_{k=0}^{K}\frac{\partial E}{\partial\hat y^{(k)}}\frac{\partial\hat y^{(k)}}{\partial\beta^{(k)}}\frac{\partial\beta^{(k)}}{\partial z^{(j)}}=\sum\limits_{k=0}^{K}g^{(k)}\omega_{jk}^{(2)}\tag{11}</script><script type="math/tex; mode=display">
+\frac{\partial z^{(j)}}{\partial\alpha^{(j)}}=\frac{\partial Sigmoid(\alpha^{(j)})}{\partial\alpha^{(j)}}=z^{(j)}(1-z^{(j)})\tag{12}</script><script type="math/tex; mode=display">
+\frac{\partial\alpha^{(j)}}{\partial\omega_{ij}^{(1)}}=\frac{\partial\sum\limits_{i=1}^{I}\omega_{ij}^{(1)}x^{(i)}}{\partial\omega_{ij}^{(1)}}=x^{(i)}\tag{13}</script><p>综合(11)-(13)，公式(10)可以写成：</p>
+<script type="math/tex; mode=display">
+\frac{\partial E}{\partial\omega_{ij}^{(1)}}=x^{(i)}z^{(j)}(1-z^{(j)})\sum\limits_{k=0}^{K}g^{(k)}\omega_{jk}^{(2)}\tag{14}</script><hr>
+<h6 id="梯度迭代法则"><a href="#梯度迭代法则" class="headerlink" title="梯度迭代法则"></a>梯度迭代法则</h6><p>求得输出层和隐藏层的梯度(8)和(14)后，我们就可以利用最常见的负梯度迭代法来更新权重：</p>
+<script type="math/tex; mode=display">
+\omega_{ij}^{(1)}=\omega_{ij}^{(1)}-\eta\frac{\partial E}{\partial\omega_{ij}^{(1)}}\tag{15}</script><script type="math/tex; mode=display">
+\omega_{jk}^{(2)}=\omega_{ij}^{(2)}-\eta\frac{\partial E}{\partial\omega_{jk}^{(2)}}\tag{16}</script><hr>
+<p>至此，标准的BP算法就已经介绍完成了：不断地根据(15)-(16)更新权值，直到不再改变。注意：我们前面已经提到，这里的误差$E$是对于单个训练样例的，即每来一次新的样例，我们就得更新权值。当然，我们可以一次性考虑所有的训练样例，即此时的误差函数为所有训练样例的误差加和，这时的算法称为累积BP算法。</p>
+<h2 id="多层神经网络—深度学习"><a href="#多层神经网络—深度学习" class="headerlink" title="多层神经网络—深度学习"></a>多层神经网络—深度学习</h2><p>从理论上来说，神经网络的神经元越多，层数越多，模型的复杂度越高，能完成更加复杂的学习任务。但是一般情况下，模型的复杂度高意味着训练效率低，容易出现过拟合。随着计算能力的提高，以深度学习为代表的复杂神经网络开始变得越来越流行。深度学习模型就是一个深层的神经网络。关于深度学习，会在后续系列文章中介绍，这里不再展开。</p>
+<hr>
+<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2020/06/09/[20200609]/" title="【图解例说机器学习】神经网络 (Neural Networks)">http://tengweitw.com/2020/06/09/[20200609]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"><i class="fa fa-tag"></i> Machine Learning</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/31/%5B20200531%5D/" rel="prev" title="【图解例说机器学习】参数估计 (MLE and MAP)">
+      <i class="fa fa-chevron-left"></i> 【图解例说机器学习】参数估计 (MLE and MAP)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/10/%5B20200610%5D/" rel="next" title="【漫漫科研路\Python&Tikz】画神经网络相关图">
+      【漫漫科研路\Python&Tikz】画神经网络相关图 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一层神经网络：感知机与逻辑回归"><span class="nav-number">1.</span> <span class="nav-text">一层神经网络：感知机与逻辑回归</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#M-P神经元模型"><span class="nav-number">1.0.1.</span> <span class="nav-text">M-P神经元模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#感知机与逻辑回归"><span class="nav-number">1.0.2.</span> <span class="nav-text">感知机与逻辑回归</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两层神经网络—BP-神经网络"><span class="nav-number">2.</span> <span class="nav-text">两层神经网络—BP 神经网络</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#误差反向传播"><span class="nav-number">2.0.1.</span> <span class="nav-text">误差反向传播</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#输出层梯度"><span class="nav-number">2.0.1.0.1.</span> <span class="nav-text">输出层梯度</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#隐藏层梯度"><span class="nav-number">2.0.1.0.2.</span> <span class="nav-text">隐藏层梯度</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#梯度迭代法则"><span class="nav-number">2.0.1.0.3.</span> <span class="nav-text">梯度迭代法则</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多层神经网络—深度学习"><span class="nav-number">3.</span> <span class="nav-text">多层神经网络—深度学习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#具体实现"><span class="nav-number">4.</span> <span class="nav-text">具体实现</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

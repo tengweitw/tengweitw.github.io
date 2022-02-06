@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="牛顿法使用条件：目标函数具有二阶导数，且海塞矩阵正定。 优缺点： 收敛速度快、计算量大、很依赖初始点的选择。 算法的基本步骤： 已知目标函数$f(x)$，梯度$g(x)$, Hessan矩阵$G(x)$, 给定误差限$\epsilon$:  步骤1：选定初始点$x_0$，计算$f_0&#x3D;f(x_0), k&#x3D;0$; 步骤2：计算$g_k&#x3D;g(x_k)$，如果$\Vert g_k\Vert\le\eps">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【工程优化】最优化算法--牛顿法、阻尼牛顿法及单纯形法">
+<meta property="og:url" content="http://tengweitw.com/2015/02/09/[20150209]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="牛顿法使用条件：目标函数具有二阶导数，且海塞矩阵正定。 优缺点： 收敛速度快、计算量大、很依赖初始点的选择。 算法的基本步骤： 已知目标函数$f(x)$，梯度$g(x)$, Hessan矩阵$G(x)$, 给定误差限$\epsilon$:  步骤1：选定初始点$x_0$，计算$f_0&#x3D;f(x_0), k&#x3D;0$; 步骤2：计算$g_k&#x3D;g(x_k)$，如果$\Vert g_k\Vert\le\eps">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150209/20150209_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150209/20150209_fig002.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150209/20150209_fig003.jpg">
+<meta property="article:published_time" content="2015-02-09T03:53:03.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.781Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Math">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150209/20150209_fig001.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2015/02/09/[20150209]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【工程优化】最优化算法--牛顿法、阻尼牛顿法及单纯形法 | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/02/09/%5B20150209%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【工程优化】最优化算法--牛顿法、阻尼牛顿法及单纯形法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-02-09 11:53:03" itemprop="dateCreated datePublished" datetime="2015-02-09T11:53:03+08:00">2015-02-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="牛顿法"><a href="#牛顿法" class="headerlink" title="牛顿法"></a>牛顿法</h2><p><strong>使用条件</strong>：目标函数具有二阶导数，且海塞矩阵正定。</p>
+<p><strong>优缺点</strong>： 收敛速度快、计算量大、很依赖初始点的选择。</p>
+<p><strong>算法的基本步骤：</strong></p>
+<p>已知目标函数$f(x)$，梯度$g(x)$, Hessan矩阵$G(x)$, 给定误差限$\epsilon$:</p>
+<ul>
+<li>步骤1：选定初始点$x_0$，计算$f_0=f(x_0), k=0$;</li>
+<li>步骤2：计算$g_k=g(x_k)$，如果$\Vert g_k\Vert\le\epsilon$, 算法停止, $x^\star=x_k$，否则转到步骤3：</li>
+<li>步骤3：计算$G_k=G(x_k)$, 由方程$G_kd^k=-g_k$, 解得$d^k$;</li>
+<li>步骤4：令$x_{k+1}=x_k+d^{k}, k=k+1$, 转到步骤2</li>
+</ul>
+<p><strong>算法流程图</strong>：</p>
+<p>​     <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150209/20150209_fig001.jpg" width="450" height="200" title="图1" alt="图1" ></p>
+<a id="more"></a>
+<hr>
+<h2 id="阻尼牛顿法"><a href="#阻尼牛顿法" class="headerlink" title="阻尼牛顿法"></a>阻尼牛顿法</h2><p>与牛顿法基本相同，<strong>只是加入了一维精确搜索</strong>。在牛顿迭代中，取$d^{(k)}=-[\nabla^2f(x^{(k)}) ]^{-1}\nabla f(x^{(k)}) $ , 加入精确一维搜索：$\min f(x^{(k)}+\lambda_kd^{(k)})$, 求得$\lambda_k$, 然后更新：$x^{(k+1)}=x^{(k)}+\lambda_kd^{(k)}$.</p>
+<p><strong>优缺点</strong>：改善了局部收敛性。</p>
+<p><strong>我们假设要求$f=(x-1)\cdot(x-1)+y\cdot y$的最小值，具体算法实现如下，只需要运行NTTest.m文件，其它函数文件放在同一目录下即可：</strong></p>
+<p><strong>1、脚本文件NTTest.m</strong></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">clear all</span><br><span class="line">clc</span><br><span class="line"> </span><br><span class="line">syms x y</span><br><span class="line">f=(x<span class="number">-1</span>)*(x<span class="number">-1</span>)+y*y;</span><br><span class="line">var=[x y];</span><br><span class="line">x0=[<span class="number">1</span> <span class="number">1</span>];<span class="built_in">eps</span>=<span class="number">0.000001</span>;</span><br><span class="line"> </span><br><span class="line"><span class="built_in">disp</span>(<span class="string">'牛顿法:'</span>)</span><br><span class="line">minNT(f,x0,var,<span class="built_in">eps</span>)</span><br><span class="line"> </span><br><span class="line"><span class="built_in">disp</span>(<span class="string">'阻尼牛顿法:'</span>)</span><br><span class="line">minMNT(f,x0,var,<span class="built_in">eps</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>2、minNT.m</strong></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">function</span> <span class="params">[x,minf]</span>=<span class="title">minNT</span><span class="params">(f,x0,var,eps)</span></span></span><br><span class="line"><span class="comment">%目标函数：f</span></span><br><span class="line"><span class="comment">%初始点：x0</span></span><br><span class="line"><span class="comment">%自变量向量：var</span></span><br><span class="line"><span class="comment">%精度：eps</span></span><br><span class="line"><span class="comment">%目标函数取最小值时的自变量值：x;</span></span><br><span class="line"><span class="comment">%目标函数的最小值：minf</span></span><br><span class="line"> </span><br><span class="line">format long;</span><br><span class="line"><span class="keyword">if</span> nargin==<span class="number">3</span></span><br><span class="line">    <span class="built_in">eps</span>=<span class="number">1.0e-6</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">tol=<span class="number">1</span>;</span><br><span class="line">syms L</span><br><span class="line"><span class="comment">% x0=transpose(x0);</span></span><br><span class="line"><span class="keyword">while</span> tol&gt;<span class="built_in">eps</span> <span class="comment">%不满足精度要求          </span></span><br><span class="line">    gradf=jacobian(f,var);      <span class="comment">%梯度方向</span></span><br><span class="line">    jacf=jacobian(gradf,var);   <span class="comment">%雅克比矩阵</span></span><br><span class="line">    v=Funval(gradf,var,x0);<span class="comment">%梯度的数值解</span></span><br><span class="line">    tol=norm(v);<span class="comment">%计算梯度（即一阶导）的大小</span></span><br><span class="line">    pv=Funval(jacf,var,x0);<span class="comment">%二阶导的数值解</span></span><br><span class="line">    p=-inv(pv)*transpose(v);    <span class="comment">%搜索方向</span></span><br><span class="line">    x1=x0+p';<span class="comment">%进行迭代</span></span><br><span class="line">    x0=x1;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"> </span><br><span class="line">x=x1;</span><br><span class="line">minf=Funval(f,var,x);</span><br><span class="line">format short;</span><br></pre></td></tr></table></figure>
+<p><strong>3、minMNT.m</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">function [x,minf]&#x3D;minMNT(f,x0,var,eps)</span><br><span class="line">%目标函数：f</span><br><span class="line">%初始点：x0</span><br><span class="line">%自变量向量：var</span><br><span class="line">%精度：eps</span><br><span class="line">%目标函数取最小值时的自变量值：x;</span><br><span class="line">%目标函数的最小值：minf</span><br><span class="line"> </span><br><span class="line">format long;</span><br><span class="line">if nargin&#x3D;&#x3D;3</span><br><span class="line">    eps&#x3D;1.0e-6;</span><br><span class="line">end</span><br><span class="line">tol&#x3D;1;</span><br><span class="line">syms L</span><br><span class="line">% x0&#x3D;transpose(x0);</span><br><span class="line">while tol&gt;eps %不满足精度要求          </span><br><span class="line">    gradf&#x3D;jacobian(f,var);      %梯度方向</span><br><span class="line">    jacf&#x3D;jacobian(gradf,var);   %雅克比矩阵</span><br><span class="line">    v&#x3D;Funval(gradf,var,x0);%梯度的数值解</span><br><span class="line">    tol&#x3D;norm(v);%计算梯度（即一阶导）的大小</span><br><span class="line">    pv&#x3D;Funval(jacf,var,x0);%二阶导的数值解</span><br><span class="line">    p&#x3D;-inv(pv)*transpose(v);    %搜索方向</span><br><span class="line">    %%%%寻找最佳步长%%%</span><br><span class="line">    y&#x3D;x0+L*p&#39;;</span><br><span class="line">    yf&#x3D;Funval(f,var,y);</span><br><span class="line">    [a,b]&#x3D;minJT(yf,0,0.1);</span><br><span class="line">    xm&#x3D;minHJ(yf,a,b);           %黄金分割法进行一维搜索最佳步长</span><br><span class="line">    x1&#x3D;x0+xm*p&#39;;%进行迭代</span><br><span class="line">    x0&#x3D;x1;</span><br><span class="line"> </span><br><span class="line">end</span><br><span class="line"> </span><br><span class="line">x&#x3D;double(x1);</span><br><span class="line">minf&#x3D;double(Funval(f,var,x));</span><br><span class="line">format short;</span><br></pre></td></tr></table></figure>
+<p><strong>4、minHJ.m</strong></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[x,minf]</span>=<span class="title">minHJ</span><span class="params">(f,a,b,eps)</span></span></span><br><span class="line"><span class="comment">%目标函数：f</span></span><br><span class="line"><span class="comment">%极值区间左端点：a</span></span><br><span class="line"><span class="comment">%极值区间右端点：b</span></span><br><span class="line"><span class="comment">%精度：eps</span></span><br><span class="line"><span class="comment">%目标函数取最小值时自变量的值：x</span></span><br><span class="line"><span class="comment">%目标函数所取的最小值：minf</span></span><br><span class="line"> </span><br><span class="line">format long;</span><br><span class="line"><span class="keyword">if</span> nargin==<span class="number">3</span></span><br><span class="line">    <span class="built_in">eps</span>=<span class="number">1.0e-6</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"> </span><br><span class="line">l=a+<span class="number">0.382</span>*(b-a);            <span class="comment">%试探点</span></span><br><span class="line">u=a+<span class="number">0.618</span>*(b-a);            <span class="comment">%试探点</span></span><br><span class="line">k=<span class="number">1</span>;</span><br><span class="line">tol=b-a;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">while</span> tol&gt;<span class="built_in">eps</span>&amp;&amp;k&lt;<span class="number">100000</span></span><br><span class="line">    fl=subs(f,findsym(f),l);        <span class="comment">%试探点函数值</span></span><br><span class="line">    fu=subs(f,findsym(f),u);        <span class="comment">%试探点函数值</span></span><br><span class="line">    <span class="keyword">if</span> fl&gt;fu</span><br><span class="line">        a=<span class="number">1</span>;                        <span class="comment">%改变区间左端点</span></span><br><span class="line">        l=u;</span><br><span class="line">        u=a+<span class="number">0.618</span>*(b-a);            <span class="comment">%缩短搜索区间</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        b=u;                        <span class="comment">%改变区间右端点</span></span><br><span class="line">        u=l;</span><br><span class="line">        l=a+<span class="number">0.382</span>*(b-a);             <span class="comment">%缩短搜索区间</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    k=k+<span class="number">1</span>;</span><br><span class="line">    tol=<span class="built_in">abs</span>(b-a);</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">if</span> k==<span class="number">100000</span></span><br><span class="line">    <span class="built_in">disp</span>(<span class="string">'找不到最小值！'</span>);</span><br><span class="line">    x=NaN;</span><br><span class="line">    minf=NaN;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">x=(a+b)/<span class="number">2</span>;</span><br><span class="line">minf=subs(f,findsym(f),x);</span><br><span class="line">format short;</span><br></pre></td></tr></table></figure>
+<p><strong>5、minJT.m</strong></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[minx,maxx]</span>=<span class="title">minJT</span><span class="params">(f,x0,h0,eps)</span></span></span><br><span class="line"><span class="comment">%目标函数：f</span></span><br><span class="line"><span class="comment">%初始点：x0</span></span><br><span class="line"><span class="comment">%初始步长：h0</span></span><br><span class="line"><span class="comment">%精度：eps</span></span><br><span class="line"><span class="comment">%目标函数取包含极值的区间左端点：minx</span></span><br><span class="line"><span class="comment">%目标函数取包含极值的区间右端点：maxx</span></span><br><span class="line"> </span><br><span class="line">format long</span><br><span class="line"><span class="keyword">if</span> nargin==<span class="number">3</span></span><br><span class="line">    <span class="built_in">eps</span>=<span class="number">1.0e-6</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"> </span><br><span class="line">x1=x0;</span><br><span class="line">k=<span class="number">0</span>;</span><br><span class="line">h=h0;</span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span></span><br><span class="line">    x4=x1+h;        <span class="comment">%试探步</span></span><br><span class="line">    k=k+<span class="number">1</span>;</span><br><span class="line">    f4=subs(f,findsym(f),x4);</span><br><span class="line">    f1=subs(f,findsym(f),x1);</span><br><span class="line">    <span class="keyword">if</span> f4&lt;f1</span><br><span class="line">        x2=x1;</span><br><span class="line">        x1=x4;</span><br><span class="line">        f2=f1;</span><br><span class="line">        f1=f4;</span><br><span class="line">        h=<span class="number">2</span>*h;      <span class="comment">%加大步长</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">if</span> k==<span class="number">1</span></span><br><span class="line">            h=-h;   <span class="comment">%方向搜索</span></span><br><span class="line">            x2=x4;</span><br><span class="line">            f2=f4;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            x3=x2;</span><br><span class="line">            x2=x1;</span><br><span class="line">            x1=x4;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"> </span><br><span class="line">minx=<span class="built_in">min</span>(x1,x3);</span><br><span class="line">maxx=x1+x3-minx;</span><br><span class="line">format short;</span><br></pre></td></tr></table></figure>
+<p><strong>6、Funval.m</strong></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fv</span>=<span class="title">Funval</span><span class="params">(f,varvec,varval)</span></span></span><br><span class="line">var=findsym(f);</span><br><span class="line">varc=findsym(varvec);</span><br><span class="line">s1=<span class="built_in">length</span>(var);</span><br><span class="line">s2=<span class="built_in">length</span>(varc);</span><br><span class="line">m=<span class="built_in">floor</span>((s1<span class="number">-1</span>)/<span class="number">3</span>+<span class="number">1</span>);</span><br><span class="line">varv=<span class="built_in">zeros</span>(<span class="number">1</span>,m);</span><br><span class="line"><span class="keyword">if</span> s1~=s2</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">0</span>:((s1<span class="number">-1</span>)/<span class="number">3</span>)</span><br><span class="line">        k=findstr(varc,var(<span class="number">3</span>*<span class="built_in">i</span>+<span class="number">1</span>));</span><br><span class="line">        index=(k<span class="number">-1</span>)/<span class="number">3</span>;</span><br><span class="line">        varv(<span class="built_in">i</span>+<span class="number">1</span>)=varval(index+<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    fv=subs(f,var,varv);</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    fv=subs(f,varvec,varval);</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><strong>运行结果如下图：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150209/20150209_fig002.jpg" width="350" height="300" title="图2" alt="图2" ></p>
+<hr>
+<h2 id="单纯形法"><a href="#单纯形法" class="headerlink" title="单纯形法"></a>单纯形法</h2><p>单纯形法的理论还有点复杂，而本文主要针对算法的基本实现，因此，理论部分就此略过，详情可以参考网上的相关资料。<strong>下面给出具体的实现：</strong></p>
+<p><strong>我们以具体实例来说明：</strong></p>
+<p>假定线性规划问题如下：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\min &\quad f=x_1-2x_2+x_3\\
+s.t. &\quad x_1+x_2-2x_3+x_4=12\\
+&\quad 2x_1-x_2+4x_3\le 8\\
+&\quad -x_1+2x_2-4x_3\le 4\\
+&\quad x_1, x_2, x_3, x_4\ge 0\\
+\end{aligned}</script><p>化为标准型可得：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\min &\quad f=x_1-2x_2+x_3\\
+s.t. &\quad x_1+x_2-2x_3+x_4=12\\
+&\quad 2x_1-x_2+4x_3+x_5= 8\\
+&\quad -x_1+2x_2-4x_3+x_6= 4\\
+&\quad x_1, x_2, x_3, x_4, x_5, x_6\ge 0\\
+\end{aligned}</script><p><strong>具体的Matlab实现如下：</strong></p>
+<p><strong>1、脚本文件：</strong></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">clear all</span><br><span class="line">clc</span><br><span class="line"><span class="comment">% A=[2 2 1 0 0 0</span></span><br><span class="line"><span class="comment">%    1 2 0 1 0 0</span></span><br><span class="line"><span class="comment">%    4 0 0 0 1 0</span></span><br><span class="line"><span class="comment">%    0 4 0 0 0 1];</span></span><br><span class="line"><span class="comment">% c=[-2 -3 0 0 0 0];</span></span><br><span class="line"><span class="comment">% b=[12 8 16 12]';</span></span><br><span class="line"><span class="comment">% baseVector=[3 4 5 6];</span></span><br><span class="line"> </span><br><span class="line">A=[<span class="number">1</span> <span class="number">1</span> <span class="number">-2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line">   <span class="number">2</span> <span class="number">-1</span> <span class="number">4</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span></span><br><span class="line">   <span class="number">-1</span> <span class="number">2</span> <span class="number">-4</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span>];</span><br><span class="line">c=[<span class="number">1</span> <span class="number">-2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>];</span><br><span class="line">b=[<span class="number">12</span> <span class="number">8</span> <span class="number">4</span>]';</span><br><span class="line">baseVector=[<span class="number">4</span> <span class="number">5</span> <span class="number">6</span>];</span><br><span class="line"> </span><br><span class="line">[x y]=ModifSimpleMthd(A,c,b,baseVector)</span><br></pre></td></tr></table></figure>
+<p><strong>2、ModifSimpleMthd.m文件</strong></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[x,minf]</span>=<span class="title">ModifSimpleMthd</span><span class="params">(A,c,b,baseVector)</span></span></span><br><span class="line"><span class="comment">%约束矩阵：A</span></span><br><span class="line"><span class="comment">%目标函数系数向量：c</span></span><br><span class="line"><span class="comment">%约束右端向量：b</span></span><br><span class="line"><span class="comment">%初始基向量：baseVector</span></span><br><span class="line"><span class="comment">%目标函数取最小值时的自变量值：x</span></span><br><span class="line"><span class="comment">%目标函数的最小值：minf</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">sz=<span class="built_in">size</span>(A);</span><br><span class="line">nVia=sz(<span class="number">2</span>);</span><br><span class="line">n=sz(<span class="number">1</span>);</span><br><span class="line">xx=<span class="number">1</span>:nVia;</span><br><span class="line">nobase=<span class="built_in">zeros</span>(<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line">m=<span class="number">1</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> c&gt;=<span class="number">0</span></span><br><span class="line">    vr=<span class="built_in">find</span>(c~=<span class="number">0</span>,<span class="number">1</span>,<span class="string">'last'</span>);</span><br><span class="line">    rgv=inv(A(:,(nVia-n+<span class="number">1</span>):nVia))*b;</span><br><span class="line">    <span class="keyword">if</span> rgv&gt;=<span class="number">0</span></span><br><span class="line">        x=<span class="built_in">zeros</span>(<span class="number">1</span>,vr);</span><br><span class="line">        minf=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">disp</span>(<span class="string">'不存在最优解'</span>);</span><br><span class="line">        x=NaN;</span><br><span class="line">        minf=NaN;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:nVia            <span class="comment">%获取非基变量下标</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">isempty</span>(<span class="built_in">find</span>(baseVector==xx(<span class="built_in">i</span>),<span class="number">1</span>)))</span><br><span class="line">        nobase(m)=<span class="built_in">i</span>;</span><br><span class="line">        m=m+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        ;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"> </span><br><span class="line">bCon=<span class="number">1</span>;</span><br><span class="line">M=<span class="number">0</span>;</span><br><span class="line">B=A(:,baseVector);</span><br><span class="line">invB=inv(B);</span><br><span class="line"> </span><br><span class="line"><span class="keyword">while</span> bCon</span><br><span class="line">    nB=A(:,nobase);         <span class="comment">%非基变量矩阵</span></span><br><span class="line">    ncb=c(nobase);          <span class="comment">%非基变量系数</span></span><br><span class="line">    B=A(:,baseVector);      <span class="comment">%基变量矩阵</span></span><br><span class="line">    cb=c(baseVector);       <span class="comment">%基变量系数</span></span><br><span class="line">    xb=invB*b;</span><br><span class="line">    f=cb*xb;</span><br><span class="line">    w=cb*invB;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:<span class="built_in">length</span>(nobase)  <span class="comment">%判别</span></span><br><span class="line">        sigma(<span class="built_in">i</span>)=w*nB(:,<span class="built_in">i</span>)-ncb(<span class="built_in">i</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    [maxs,ind]=<span class="built_in">max</span>(sigma);  <span class="comment">%ind为进基变量下标</span></span><br><span class="line">    <span class="keyword">if</span> maxs&lt;=<span class="number">0</span>              <span class="comment">%最大值小于零，输出解最优</span></span><br><span class="line">        minf=cb*xb;</span><br><span class="line">        vr=<span class="built_in">find</span>(c~=<span class="number">0</span>,<span class="number">1</span>,<span class="string">'last'</span>);</span><br><span class="line">        <span class="keyword">for</span> l=<span class="number">1</span>:vr</span><br><span class="line">            ele=<span class="built_in">find</span>(baseVector==l,<span class="number">1</span>);</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">isempty</span>(ele))</span><br><span class="line">                x(l)=<span class="number">0</span>;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                x(l)=xb(ele);</span><br><span class="line">            <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        bCon=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        y=inv(B)*A(:,nobase(ind));</span><br><span class="line">        <span class="keyword">if</span> y&lt;=<span class="number">0</span>             <span class="comment">%不存在最优解</span></span><br><span class="line">            <span class="built_in">disp</span>(<span class="string">'不存在最优解！'</span>);</span><br><span class="line">            x=NaN;</span><br><span class="line">            minf=NaN;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            minb=<span class="built_in">inf</span>;</span><br><span class="line">            chagB=<span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> <span class="built_in">j</span>=<span class="number">1</span>:<span class="built_in">length</span>(y)</span><br><span class="line">                <span class="keyword">if</span> y(<span class="built_in">j</span>)&gt;<span class="number">0</span></span><br><span class="line">                    bz=xb(<span class="built_in">j</span>)/y(<span class="built_in">j</span>);</span><br><span class="line">                    <span class="keyword">if</span> bz&lt;minb</span><br><span class="line">                        minb=bz;</span><br><span class="line">                        chagB=<span class="built_in">j</span>;</span><br><span class="line">                    <span class="keyword">end</span></span><br><span class="line">                <span class="keyword">end</span></span><br><span class="line">            <span class="keyword">end</span>                     <span class="comment">%chagB为基变量下标</span></span><br><span class="line">            tmp=baseVector(chagB);  <span class="comment">%更新基矩阵和非基矩阵</span></span><br><span class="line">            baseVector(chagB)=nobase(ind);</span><br><span class="line">            nobase(ind)=tmp;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span> <span class="built_in">j</span>=<span class="number">1</span>:chagB<span class="number">-1</span>         <span class="comment">%基变量矩阵的逆矩阵变换</span></span><br><span class="line">                <span class="keyword">if</span> y(<span class="built_in">j</span>)~=<span class="number">0</span></span><br><span class="line">                    invB(<span class="built_in">j</span>,:)=invB(<span class="built_in">j</span>,:)-invB(chagB,:)*y(<span class="built_in">j</span>)/y(chagB);</span><br><span class="line">                <span class="keyword">end</span></span><br><span class="line">            <span class="keyword">end</span></span><br><span class="line">            <span class="keyword">for</span> <span class="built_in">j</span>=chagB+<span class="number">1</span>:<span class="built_in">length</span>(y)</span><br><span class="line">                <span class="keyword">if</span> y(<span class="built_in">j</span>)~=<span class="number">0</span></span><br><span class="line">                    invB(<span class="built_in">j</span>,:)=invB(<span class="built_in">j</span>,:)-invB(chagB,:)*y(<span class="built_in">j</span>)/y(chagB);</span><br><span class="line">                <span class="keyword">end</span></span><br><span class="line">            <span class="keyword">end</span></span><br><span class="line">            invB(chagB,:)=invB(chagB,:)/y(chagB);</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    M=M+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span>(M==<span class="number">1000000</span>)               <span class="comment">%迭代步数限制</span></span><br><span class="line">        <span class="built_in">disp</span>(<span class="string">'找不到最优解！'</span>);</span><br><span class="line">        x=NaN;</span><br><span class="line">        minf=NaN;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p> <strong>运行结果如下图：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150209/20150209_fig003.jpg" width="450" height="300" title="图3" alt="图3" ></p>
+<p><strong>关于最优化的更多算法实现，请访问</strong><a href="http://download.csdn.net/detail/tengweitw/8434549，里面有每个算法的索引说明，当然也包括上述算法。" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8434549，里面有每个算法的索引说明，当然也包括上述算法。</a></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2015/02/09/[20150209]/" title="【工程优化】最优化算法--牛顿法、阻尼牛顿法及单纯形法">http://tengweitw.com/2015/02/09/[20150209]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Math/" rel="tag"><i class="fa fa-tag"></i> Math</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/02/04/%5B20150204%5D/" rel="prev" title="【工程优化】一维搜索方法">
+      <i class="fa fa-chevron-left"></i> 【工程优化】一维搜索方法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/02/11/%5B20150211%5D/" rel="next" title="【算法导论】矩阵乘法">
+      【算法导论】矩阵乘法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#牛顿法"><span class="nav-number">1.</span> <span class="nav-text">牛顿法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阻尼牛顿法"><span class="nav-number">2.</span> <span class="nav-text">阻尼牛顿法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单纯形法"><span class="nav-number">3.</span> <span class="nav-text">单纯形法</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

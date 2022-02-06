@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="最大流问题就是在容量容许的条件下，从源点到汇点所能通过的最大流量。 流网络 ​    网络流G&#x3D;(v, E)是一个有向图，其中每条边(u, v)均有一个非负的容量值，记为c(u, v) ≧ 0。如果(u, v) ∉ E则可以规定c(u, v) &#x3D; 0。网络流中有两个特殊的顶点，即源点s和汇点t。  与网络流相关的一个概念是流。设G是一个流网络，其容量为c。设s为网络的源点，t为汇点，那么G的流是一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【算法导论】最大流算法">
+<meta property="og:url" content="http://tengweitw.com/2014/01/02/[20140102]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="最大流问题就是在容量容许的条件下，从源点到汇点所能通过的最大流量。 流网络 ​    网络流G&#x3D;(v, E)是一个有向图，其中每条边(u, v)均有一个非负的容量值，记为c(u, v) ≧ 0。如果(u, v) ∉ E则可以规定c(u, v) &#x3D; 0。网络流中有两个特殊的顶点，即源点s和汇点t。  与网络流相关的一个概念是流。设G是一个流网络，其容量为c。设s为网络的源点，t为汇点，那么G的流是一">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140102/20140102_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140102/20140102_fig002.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140102/20140102_fig003.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140102/20140102_fig004.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140102/20140102_fig005.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140102/20140102_fig006.jpg">
+<meta property="article:published_time" content="2014-01-02T13:23:56.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.773Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Algorithm Design">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140102/20140102_fig001.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2014/01/02/[20140102]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【算法导论】最大流算法 | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/01/02/%5B20140102%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【算法导论】最大流算法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-01-02 21:23:56" itemprop="dateCreated datePublished" datetime="2014-01-02T21:23:56+08:00">2014-01-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><strong>最大流问题就是在容量容许的条件下，从源点到汇点所能通过的最大流量。</strong></p>
+<p><strong>流网络</strong></p>
+<p>​    网络流G=(v, E)是一个有向图，其中每条边(u, v)均有一个非负的容量值，记为c(u, v) ≧ 0。如果(u, v) ∉ E则可以规定c(u, v) = 0。网络流中有两个特殊的顶点，即源点s和汇点t。</p>
+<p> 与网络流相关的一个概念是流。设G是一个流网络，其容量为c。设s为网络的源点，t为汇点，那么G的流是一个函数f：V×V →R，满足一下性质：</p>
+<ul>
+<li><strong>容量限制</strong>：对所有顶点对u，v∈V，满足f(u, v) ≦ c(u, v)；</li>
+<li><strong>反对称性</strong>：对所有顶点对u，v∈V，满足f(u, v) = - f(v, u);</li>
+<li><strong>流守恒性</strong>：对所有顶点对u∈V-{s, t}，满足Σv∈Vf(u,v)=0。</li>
+</ul>
+<p>本文开始讨论解决最大流问题的Ford-Fulkerson方法，该方法也称作“扩充路径方法”，该方法是大量算法的基础，有多种实现方法。</p>
+<a id="more"></a>
+<p><strong>Ford-Fulkerson算法是一种迭代算法</strong>，首先对图中所有顶点对的流大小清零，此时的网络流大小也为0。在每次迭代中，通过寻找一条“增广路径”(augument path)来增加流的值。增广路径可以看作是源点s到汇点t的一条路径，并且沿着这条路径可以增加更多的流。迭代直至无法再找到增广路径位置，此时必然从源点到汇点的所有路径中都至少有一条边的满边（即边的流的大小等于边的容量大小）。</p>
+<hr>
+<p><strong>基本思想</strong></p>
+<p>给定一个流网络G和一个流，流的残留网Gf拥有与原网相同的顶点。原流网络中每条边将对应残留网中一条或者两条边，对于原流网络中的任意边(u, v)，流量为f(u, v)，容量为c(u, v)：</p>
+<ul>
+<li>如果f(u, v) &gt; 0，则在残留网中包含一条容量为f(u, v)的边(v, u);</li>
+<li>如果f(u, v) &lt; c(u, v)，则在残留网中包含一条容量为c(u, v) - f(u, v)的边(u, v)。</li>
+</ul>
+<hr>
+<p>残留网允许我们使用任何广义图搜索算法来找一条增广路径，因为残留网中从源点s到汇点t的路径都直接对应着一条增广路径。在关于基本思想的解读方面，算法导论的理论讲解令我一知半解，后来在网上找到了下面的图解过程，个人觉得十分清晰易懂，<strong>因此借鉴如下</strong>：</p>
+<p>以图为例，具体分析增广路径及其相应残留网，如图1-4。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140102/20140102_fig001.jpg" width="500" height="300" title="图1" alt="图1" ></p>
+<p>图1为原始图流网络，每条边上的流都为0。因为f(u, v) = 0 &lt; c(u, v)，则在残留网中包含容量为c(u, v)的边(u, v)，所以此时残留图中顶点与原始流网络相同，边也与原始流网络相同，并且边的容量与原始流网络相同。</p>
+<p>在残留网中可以找到一条增广路径<v0, v1, v3, v5>，每条边的流为2，此原始流网络和残留网中相应的边会有所变化，如下图2。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140102/20140102_fig002.jpg" width="500" height="300" title="图2" alt="图2" ></p>
+<p>图2在图1操作之后，路径<v0, v1, v3, v5>上有了大小为2的流，此时需要对残留图中相应的边做调整：</p>
+<ul>
+<li>f(0, 1) &gt; 0，在残留图中有容量为2的边(1, 0)；</li>
+<li>c(1, 3) &gt; f(1, 3) &gt; 0，在残留图中有容量为1的边(1, 3)和容量为2的边(3, 1)；</li>
+<li>f(3, 5) &gt; 0，在残留图中有容量为2的边(5, 3).</li>
+</ul>
+<p>在残留网中可以找到一条增广路径<v0, v2, v4, v5>，每条边的流为1，此原始流网络和残留网会有所变化，如下图3。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140102/20140102_fig003.jpg" width="500" height="300" title="图3" alt="图3" ></p>
+<p>图3在图2操作之后，路径<v0, v2, v4, v5>上有了大小为1的流，此时需要对残留图中相应的边做调整：</p>
+<ul>
+<li>​    c(0, 2) &gt; f(0, 2) &gt; 0，在残留图中有容量为2的边(0, 2)和容量为1的边(2, 0)；</li>
+<li>​    f(2, 4) &gt; 0，在残留图中有容量为1的边(4, 2)；</li>
+<li>c(4, 5) &gt; f(4, 5) &gt; 0，在残留图中有容量为2的边(4, 5)和容量为1的边(5, 4).</li>
+</ul>
+<p>进一步在残留网中可以找到一条增广路径<v0, v2, v3, v1, v4, v5>，每条边的流为1，此原始流网络和残留网会有所变化，如下图4。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140102/20140102_fig004.jpg" width="500" height="300" title="图4" alt="图4" ></p>
+<p>图4在图3操作之后，路径<v0, v2, v3, v1, v4, v5>上有了大小为1的流，此时需要对残留图中相应的边做调整：</p>
+<ul>
+<li>​    c(0, 2) &gt; f(0, 2) &gt; 0，在残留图中有容量为1的边(0, 2)和容量为2的边(2, 0)；</li>
+<li>​    f(2, 3) &gt; 0，在残留图中有容量为1的边(3, 2)；</li>
+<li>​    c(3, 1) &gt; f(3, 1) &gt; 0，在残留图中有容量为1的边(3, 1)和容量为2的边(1, 3)；</li>
+<li>​    f(1, 4) &gt; 0，在残留图中有容量为1的边(4, 1)；</li>
+<li>​    c(4, 5) &gt; f(4, 5) &gt; 0，在残留图中有容量为1的边(4, 5)和容量为2的边(5, 4)；</li>
+</ul>
+<p>此时残留图中无法再找到顶点0到顶点5的路径，则迭代结束，我们认为图4中即为寻找到的最大流（该结论可以由最大流最小割定理证明）。</p>
+<p><strong>最大流最小割定理：</strong>一个网中所有流中的最大值等于所有割中的最小容量。并且可以证明一下三个条件等价：</p>
+<ul>
+<li>f是流网络G的一个最大流；</li>
+<li>残留网Gf不包含增广路径；</li>
+<li>G的某个割(S, T)，满足f(S, T) = c(S, T).</li>
+</ul>
+<hr>
+<p><strong>寻找增广路径方法的影响</strong></p>
+<p>增广路径事实上是残留网中从源点s到汇点t的路径，可以利用图算法中的任意一种被算法来获取这条路径，例如BFS，DFS等。其中基于BFS的算法通常称为Edmonds-Karp算法，该算法是“最短”扩充路径，这里的“最短”由路径上的边的数量来度量，而不是流量或者容量。</p>
+<p>这里所选的路径寻找方法会直接影响算法的运行时间，例如，对下图(a)采用DFS的方法搜索残留网中的增广路径。图(b)中是第一次搜索得到的增广路径为<s, v1, v2, t>，路径的流大小为1；图(c)和(d)中搜索得到的增广路径的流大小也是1。可以发现，在这个例子中，采用DFS算法将需要2000000次搜索才能得到最大流。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140102/20140102_fig005.jpg" width="500" height="400" title="图5" alt="图5" ></p>
+<p>如果换一种方法对残留网中的进行遍历将会很快求得流网络的最大流。如下图，第一次在顶点1搜索下一条边时，不是选择边(1, 2)而是选择容量更大的边(1, t)；第二次在顶点2处搜索下一条边时，选择边(2, t)。这样只要两次遍历即可求解最大流。可见，在残留网中搜索增广路径的算法直接影响Ford-Fulkerson方法实现的效率。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140102/20140102_fig006.jpg" width="500" height="150" title="图6" alt="图6" ></p>
+<p><strong>下面我采用BFS算法来寻找增广路径，具体的程序实现如下：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 6 <span class="comment">//顶点数 </span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/********************************************************\</span></span><br><span class="line"><span class="comment">函数功能：从残留网络中找到从源点s到汇点t的增广路径</span></span><br><span class="line"><span class="comment">输入：残留网络矩阵、记录前一顶点的矩阵</span></span><br><span class="line"><span class="comment">输出：0表示未找到路径，1表示找到了路径</span></span><br><span class="line"><span class="comment">\********************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">search</span><span class="params">(<span class="keyword">int</span> dist1[N][N],<span class="keyword">int</span> vertex[N])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> <span class="built_in">queue</span>[<span class="number">20</span>]=&#123;<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>&#125;;<span class="comment">//初始化，-1作为标记</span></span><br><span class="line">	<span class="keyword">int</span> flag[N]=&#123;<span class="number">0</span>&#125;;<span class="comment">//标记顶点是否被访问过</span></span><br><span class="line">	<span class="keyword">int</span> front=<span class="number">0</span>;<span class="comment">//队列头指针</span></span><br><span class="line">	<span class="keyword">int</span> rear=<span class="number">0</span>;<span class="comment">//队列尾指针</span></span><br><span class="line">	<span class="keyword">int</span> temp=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	<span class="built_in">queue</span>[rear]=<span class="number">0</span>;<span class="comment">//将源点入队列</span></span><br><span class="line">	flag[<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">	rear++;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">while</span>(<span class="built_in">queue</span>[front]!=<span class="number">-1</span>)<span class="comment">//队列不为空</span></span><br><span class="line">	&#123;</span><br><span class="line">		temp=<span class="built_in">queue</span>[front];<span class="comment">//取队头元素</span></span><br><span class="line">	    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;N;i++)</span><br><span class="line">			<span class="keyword">if</span>(dist1[temp][i]!=<span class="number">0</span>&amp;&amp;flag[i]==<span class="number">0</span>)<span class="comment">//广度搜索法</span></span><br><span class="line">			&#123;</span><br><span class="line">				<span class="built_in">queue</span>[rear++]=i;<span class="comment">//入队</span></span><br><span class="line">				flag[i]=<span class="number">1</span>;</span><br><span class="line">				vertex[i]=temp;<span class="comment">//标记当前节点的上一个节点</span></span><br><span class="line">			&#125;</span><br><span class="line">		front++;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(front==N)</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">queue</span>[rear<span class="number">-1</span>]!=<span class="number">5</span>)<span class="comment">//没有找到路径到汇点</span></span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**************************************************************************\</span></span><br><span class="line"><span class="comment">函数功能：修改残余网络矩阵和原始流网络矩阵</span></span><br><span class="line"><span class="comment">输入：原始流网络矩阵、残留网络矩阵、记录前一顶点的矩阵、源点和汇点，最大流值</span></span><br><span class="line"><span class="comment">输出：0表示未找到路径，1表示找到了路径</span></span><br><span class="line"><span class="comment">\***************************************************************************/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">modify</span><span class="params">(<span class="keyword">int</span> dist[N][N],<span class="keyword">int</span> dist1[N][N],<span class="keyword">int</span> vertex[N],<span class="keyword">int</span> s,<span class="keyword">int</span> t,<span class="keyword">int</span> flow)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i,j;</span><br><span class="line">	<span class="keyword">int</span> min=<span class="number">10000</span>;<span class="comment">//记录找到的路径所能通过的最大流</span></span><br><span class="line"></span><br><span class="line">	i=vertex[t];</span><br><span class="line">	j=t;</span><br><span class="line">	<span class="keyword">while</span>(j!=s)<span class="comment">//寻找路径所含边的最大流量值中的最小值</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(dist1[i][j]&lt;min)</span><br><span class="line">			min=dist1[i][j];	</span><br><span class="line">		j=i;  </span><br><span class="line">		i=vertex[i];</span><br><span class="line">	&#125;</span><br><span class="line">	i=vertex[t];</span><br><span class="line">	j=t;</span><br><span class="line">	flow=flow+min;<span class="comment">//记录最大流量</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span>(j!=s)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(dist1[i][j]&gt;<span class="number">0</span>)<span class="comment">//更改残余图</span></span><br><span class="line">			dist1[j][i]=dist1[i][j];</span><br><span class="line">		dist1[i][j]=dist1[i][j]-min;</span><br><span class="line">		dist[i][j]=dist[i][j]+min-dist[j][i];<span class="comment">//更改原始流网路</span></span><br><span class="line">		<span class="keyword">if</span>(dist[i][j]&lt;<span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			dist[j][i]=-dist[i][j];</span><br><span class="line">			dist[i][j]=<span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		j=i;</span><br><span class="line">		i=vertex[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"原始流网络矩阵：\n"</span>);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;N;j++)</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"%d "</span>,dist[i][j]);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"残留网络矩阵：\n"</span>);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;N;j++)</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"%d "</span>,dist1[i][j]);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> flow;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FordFulkerson</span><span class="params">(<span class="keyword">int</span> dist[N][N],<span class="keyword">int</span> dist1[N][N])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">int</span> vertex[N]=&#123;<span class="number">0</span>&#125;;<span class="comment">//初始化</span></span><br><span class="line">	<span class="keyword">int</span> flow=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span>(search(dist1,vertex)==<span class="number">1</span>)<span class="comment">//当能找到增广路径时</span></span><br><span class="line">	&#123;    </span><br><span class="line">		flow=modify(dist,dist1,vertex,<span class="number">0</span>,<span class="number">5</span>,flow);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"最大流为%d \n"</span>,flow);</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> dist1[N][N]=&#123;&#123;<span class="number">0</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;,<span class="comment">//初始的残留网络即为原始网络</span></span><br><span class="line">					&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">0</span>&#125;,</span><br><span class="line">					&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>&#125;,</span><br><span class="line">					&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">2</span>&#125;,</span><br><span class="line">					&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">3</span>&#125;,</span><br><span class="line">					&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;&#125;;</span><br><span class="line">	<span class="keyword">int</span> dist[N][N]=&#123;<span class="number">0</span>&#125;;<span class="comment">//初始的流网络为0</span></span><br><span class="line"></span><br><span class="line">	FordFulkerson(dist,dist1);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>显示结果如下：</strong></p>
+<p>原始流网络矩阵：<br>0 2 0 0 0 0<br>0 0 0 2 0 0<br>0 0 0 0 0 0<br>0 0 0 0 0 2<br>0 0 0 0 0 0<br>0 0 0 0 0 0<br>残留网络矩阵：<br>0 0 3 0 0 0<br>2 0 0 1 1 0<br>0 0 0 1 1 0<br>0 3 0 0 0 0<br>0 0 0 0 0 3<br>0 0 0 2 0 0</p>
+<p>原始流网络矩阵：<br>0 2 1 0 0 0<br>0 0 0 2 0 0<br>0 0 0 0 1 0<br>0 0 0 0 0 2<br>0 0 0 0 0 1<br>0 0 0 0 0 0<br>残留网络矩阵：<br>0 0 2 0 0 0<br>2 0 0 1 1 0<br>3 0 0 1 0 0<br>0 3 0 0 0 0<br>0 0 1 0 0 2<br>0 0 0 2 3 0</p>
+<p>原始流网络矩阵：<br>0 2 2 0 0 0<br>0 0 0 1 1 0<br>0 0 0 1 1 0<br>0 0 0 0 0 2<br>0 0 0 0 0 2<br>0 0 0 0 0 0<br>残留网络矩阵：<br>0 0 1 0 0 0<br>2 0 0 3 0 0<br>2 0 0 0 0 0<br>0 2 1 0 0 0<br>0 1 1 0 0 1<br>0 0 0 2 2 0</p>
+<p>最大流为4<br>请按任意键继续. . .</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2014/01/02/[20140102]/" title="【算法导论】最大流算法">http://tengweitw.com/2014/01/02/[20140102]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Algorithm-Design/" rel="tag"><i class="fa fa-tag"></i> Algorithm Design</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2013/12/30/%5B20131230%5D/" rel="prev" title="【算法导论】幻方算法">
+      <i class="fa fa-chevron-left"></i> 【算法导论】幻方算法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2014/01/04/%5B20140104%5D/" rel="next" title="【算法导论】最大二分匹配">
+      【算法导论】最大二分匹配 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

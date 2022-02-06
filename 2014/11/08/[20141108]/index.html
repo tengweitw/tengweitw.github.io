@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="​    上一篇文章讲述了$Ax&#x3D;0$的解和矩阵$A$的零空间，这里我们讨论$Ax&#x3D;b$的解以及矩阵$A$的列空间。 ​    $Ax&#x3D;0$是肯定有解的，因为总存在$x$为全零向量，使得方程组成立。而$Ax&#x3D;b$是不一定有解的，我们需要高斯消元来确定。我们还是利用上一篇讲述了$Ax&#x3D;0$的解的矩阵$A$来举例说明：  x_1+2x_2+2x_3+2x_4&#x3D;b_1\\ 2x_1+4x_2+6x_3+">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【线性代数】线性方程组的求解">
+<meta property="og:url" content="http://tengweitw.com/2014/11/08/[20141108]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="​    上一篇文章讲述了$Ax&#x3D;0$的解和矩阵$A$的零空间，这里我们讨论$Ax&#x3D;b$的解以及矩阵$A$的列空间。 ​    $Ax&#x3D;0$是肯定有解的，因为总存在$x$为全零向量，使得方程组成立。而$Ax&#x3D;b$是不一定有解的，我们需要高斯消元来确定。我们还是利用上一篇讲述了$Ax&#x3D;0$的解的矩阵$A$来举例说明：  x_1+2x_2+2x_3+2x_4&#x3D;b_1\\ 2x_1+4x_2+6x_3+">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2014-11-08T07:16:22.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.780Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Linear Algebra">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://tengweitw.com/2014/11/08/[20141108]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【线性代数】线性方程组的求解 | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/11/08/%5B20141108%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【线性代数】线性方程组的求解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-11-08 15:16:22" itemprop="dateCreated datePublished" datetime="2014-11-08T15:16:22+08:00">2014-11-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>​    <a href="http://blog.csdn.net/tengweitw/article/details/40039373" target="_blank" rel="noopener">上一篇文章</a>讲述了$Ax=0$的解和矩阵$A$的零空间，<strong>这里我们讨论$Ax=b$的解以及矩阵$A$的列空间。</strong></p>
+<p>​    $Ax=0$是肯定有解的，因为总存在$x$为全零向量，使得方程组成立。而$Ax=b$是不一定有解的，我们需要高斯消元来确定。我们还是利用上一篇讲述了$Ax=0$的解的矩阵$A$来举例说明：</p>
+<script type="math/tex; mode=display">
+x_1+2x_2+2x_3+2x_4=b_1\\
+2x_1+4x_2+6x_3+8x_4=b_2\\
+3x_1+6x_2+8x_3+10x_4=b_3</script><a id="more"></a>
+<p>我们可以得到上述方程组的增广矩阵(<strong>等式右侧不是全零向量，消元时值会改变，所以需要用增广矩阵</strong>)如下：</p>
+<script type="math/tex; mode=display">
+\left[\begin{array}{ccccc}1&2&2&2&b_1\\2&4&6&8&b_2\\3&6&8&10&b_3\end{array}\right]</script><p>然后我们进行高斯消元可以得到：</p>
+<script type="math/tex; mode=display">
+\left[\begin{array}{ccccc}1&2&2&2&b_1\\0&0&2&4&b_2-2b_1\\0&0&0&0&b_3-b_2-b_1\end{array}\right]</script><p>从上面的矩阵可以看出，<strong>等式成立必须有</strong>：</p>
+<script type="math/tex; mode=display">
+b_3-b_2-b_1=0</script><p>我们假设一个满足上面条件的b向量，例如：$b=[1, 5, 1+5]$;并且令两个自由变量$x_2=0, x_4=0$，则我们将消元后的矩阵写成方程组的形式如下：</p>
+<script type="math/tex; mode=display">
+x_1+2x_3=1\rightarrow x_1=-2\\
+2x_3=3\rightarrow x_3=3/2</script><p><strong>得到的解为：</strong></p>
+<script type="math/tex; mode=display">
+x_c=\left[\begin{array}{c}-2\\0\\3/2\\0\end{array}\right]</script><p>$x_c$是这个方程组的一个特解，因为当$x_2, x_4$取不同的值时，会得到不同的特解。那么我们如何得到方程的同解呢？即怎样用一般形式来表示所有的特解？</p>
+<p><strong>求解$Ax=b$的过程：</strong></p>
+<p>1、求解特解$x_c$</p>
+<p>2、求解$Ax=0$的解$x_n$</p>
+<p>$Ax=b$的解就是特解$x_c+x_n$，证明如下：</p>
+<script type="math/tex; mode=display">
+Ax_p=b, Ax_n=0\rightarrow A(x_p+x_n)=b</script><p>$x_c$我们上面已经得到，$x_n$在<a href="http://blog.csdn.net/tengweitw/article/details/40039373" target="_blank" rel="noopener">上一篇文章</a>中得到，则<strong>通解可以表示为：</strong></p>
+<script type="math/tex; mode=display">
+x_c=x_p+x_n=\left[\begin{array}{c}-2\\0\\3/2\\0\end{array}\right]
++c_1\left[\begin{array}{c}-2\\1\\0\\0\end{array}\right]
++c_2\left[\begin{array}{c}2\\0\\-2\\1\end{array}\right]</script><p>至此，我们就得到了$Ax=b$的解。</p>
+<p>通过上面的分析求解，我们知道当$b$满足下式时，方程组有解：</p>
+<p>$b_3-b_2-b_1=0$</p>
+<p><strong>实际上，方程有解的条件是向量$b$属于矩阵$A$的列空间，即向量$b$可以表示为矩阵$A$的各列的线性组合。</strong>例如上面的例子：</p>
+<script type="math/tex; mode=display">
+b=\left[\begin{array}{c}1\\5\\6\end{array}\right]
+=-2\left[\begin{array}{c}1\\2\\3\end{array}\right]
++0\left[\begin{array}{c}2\\3\\6\end{array}\right]
++\frac{3}{2}\left[\begin{array}{c}2\\6\\8\end{array}\right]
++0\left[\begin{array}{c}2\\8\\10\end{array}\right]</script><p>方程的解就是矩阵$A$中各列前面的系数。</p>
+<hr>
+<p><strong>下面推广到更一般的情况，我们以矩阵$A$的不同情况来看解的结构(假设矩阵$A$为$m\times n$的矩阵,秩为$r$)：</strong></p>
+<p><strong><em>1、$r=n&lt; m$，即列满秩(所有列都有主元)</em></strong></p>
+<p>   由于所有列都有主元，则自由变量的个数为$0$，矩阵$A$的零空间中只有零向量。$Ax=b$的解的个数为$0$个或者$1$个.</p>
+<p>   举例说明：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\underbrace{\left[\begin{array}{cc}1&3\\2&1\\5&1\\6&1\end{array}\right]}_{A}
+{\longrightarrow}\underbrace{\left[\begin{array}{cc}1&0\\0&1\\0&0\\0&0\end{array}\right]}_{R}
+{\longrightarrow}\left[\begin{array}{c}I_{2\times 2}\\0_{2\times 2}\end{array}\right]
+\end{aligned}</script><p> 当$b=[4, 3, 6, 7]$时，$Ax=b$的唯一解为$x=[1, 1]$。</p>
+<p><strong><em>2、$r=m&lt;n$，即行满秩(所有行都有主元)</em></strong></p>
+<p>   由于所有行都有主元，消元后不会出现全为$0$的行，则$Ax=b$有无穷多解。且自由变量的个数为$n-r$，矩阵$A$的零空间中不只有零向量。</p>
+<p>   例如：</p>
+<script type="math/tex; mode=display">
+A=\left[\begin{array}{cccc}1&2&5&6\\3&1&1&1\end{array}\right]\rightarrow
+R=\left[\begin{array}{cccc}1&0&-0.6&-0.8\\0&1&2.8&3.4\end{array}\right]\rightarrow
+R=[I\quad F]</script><p><strong><em>3、$r=m=n$，即列、行都满秩(矩阵可逆)</em></strong></p>
+<p>   由于列、行都满秩，则具有列满秩，行满秩的一些性质：零空间只有零向量，方程总有解且解唯一。</p>
+<script type="math/tex; mode=display">
+A=\left[\begin{array}{cccc}1&2\\3&1\end{array}\right]\rightarrow
+R=I_{2\times 2}</script><p><strong><em>4、$r&lt;m, r&lt;n$，非满秩矩阵</em></strong></p>
+<script type="math/tex; mode=display">
+A\rightarrow R=\left[\begin{array}{cccc}I&F\\0&0\end{array}\right]</script><p>$Ax=b$有无穷多解或则没有解。</p>
+<hr>
+<p><strong>从上面的四种情况的讨论，我们可以总结如下：</strong></p>
+<p>如果想看一个线性方程组的解的情况，我们可以通过高斯消元法得到矩阵$A$的最简形式$R$，$R$的可能情况如下：</p>
+<script type="math/tex; mode=display">
+\left[\begin{array}{c}I\\0\end{array}\right],
+\left[\begin{array}{cc}I&F\end{array}\right],
+\left[\begin{array}{c}I\end{array}\right],
+\left[\begin{array}{cc}I&F\\0&0\end{array}\right].</script><p>这四种情况分别对应的解的情况为：</p>
+<ol>
+<li>唯一解或无解</li>
+<li>无穷多解</li>
+<li>唯一解</li>
+<li>无解或无穷多解</li>
+</ol>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2014/11/08/[20141108]/" title="【线性代数】线性方程组的求解">http://tengweitw.com/2014/11/08/[20141108]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Linear-Algebra/" rel="tag"><i class="fa fa-tag"></i> Linear Algebra</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2014/10/26/%5B20141026%5D/" rel="prev" title="【算法导论】多项式求和">
+      <i class="fa fa-chevron-left"></i> 【算法导论】多项式求和
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2014/11/09/%5B20141109%5D/" rel="next" title="【线性代数】线性相关性、基和维数">
+      【线性代数】线性相关性、基和维数 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

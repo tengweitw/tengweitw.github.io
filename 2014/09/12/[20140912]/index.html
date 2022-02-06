@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="一、高斯消元法 能使用消元法的情况：每次消元过程中，对角线元素始终不能为0，即矩阵可逆   我们一般利用高斯消元法进行矩阵的消元。下面我们通过举例说明：  \begin{aligned} x+2y+z&#x3D;2\\ 3x+8y+z&#x3D;12\\ 0x+4y+z&#x3D;2 \end{aligned} 如果按照我们初中所学的解法，一般是先用第三个方程将$z$用$y$表示，然后代入到第二个方程就可以用$x$来表示$y$">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【线性代数】矩阵消元-高斯消元法">
+<meta property="og:url" content="http://tengweitw.com/2014/09/12/[20140912]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="一、高斯消元法 能使用消元法的情况：每次消元过程中，对角线元素始终不能为0，即矩阵可逆   我们一般利用高斯消元法进行矩阵的消元。下面我们通过举例说明：  \begin{aligned} x+2y+z&#x3D;2\\ 3x+8y+z&#x3D;12\\ 0x+4y+z&#x3D;2 \end{aligned} 如果按照我们初中所学的解法，一般是先用第三个方程将$z$用$y$表示，然后代入到第二个方程就可以用$x$来表示$y$">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2014-09-12T07:33:00.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.779Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Linear Algebra">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://tengweitw.com/2014/09/12/[20140912]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【线性代数】矩阵消元-高斯消元法 | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/09/12/%5B20140912%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【线性代数】矩阵消元-高斯消元法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-09-12 15:33:00" itemprop="dateCreated datePublished" datetime="2014-09-12T15:33:00+08:00">2014-09-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、高斯消元法"><a href="#一、高斯消元法" class="headerlink" title="一、高斯消元法"></a>一、高斯消元法</h2><p> <strong>能使用消元法的情况：每次消元过程中，对角线元素始终不能为0，即矩阵可逆</strong></p>
+<p>  我们一般利用<strong>高斯消元法</strong>进行矩阵的消元。下面我们通过举例说明：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+x+2y+z=2\\
+3x+8y+z=12\\
+0x+4y+z=2
+\end{aligned}</script><p> 如果按照我们初中所学的解法，一般是先用第三个方程将$z$用$y$表示，然后代入到第二个方程就可以用$x$来表示$y$和$z$，最后代入第一个方程就可以求得$x,y,z$。这个算法的核心就是消元！<strong>下面我们看看矩阵形式的消元法。</strong></p>
+<p>​    首先将上面的三元一次方程组表示为矩阵形式为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\left[\begin{array}{ccc}1&2&1\\3&8&1\\0&4&1\end{array}\right]\left[\begin{array}{c}x\\y\\z\end{array}\right]=\left[\begin{array}{c}2\\12\\2\end{array}\right]
+\end{aligned}</script><p>为了方便，我们将等式右边的向量放到左边，构成增广矩阵（可以百度看看什么是增广矩阵）。<strong>下面是消元的具体步骤：</strong></p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\underbrace{\left[\begin{array}{cccc}1&2&1&2\\3&8&1&12\\0&4&1&2\end{array}\right]}_{A}
+\stackrel{E_{21}}{\longrightarrow}\underbrace{\left[\begin{array}{cccc}1&2&1&2\\0&2&-2&6\\0&4&1&2\end{array}\right]}_{B}
+\stackrel{E_{32}}{\longrightarrow}\underbrace{\left[\begin{array}{cccc}1&2&1&2\\0&2&-2&6\\0&0&5&-10\end{array}\right]}_{C}
+\end{aligned}</script><p>其中，上图中的第一个矩阵就是所说的增广矩阵，我们记作$A$，经过步骤$E<em>{21}$得到的矩阵为$B$，经过步骤$E</em>{32}$得到的矩阵为$C$。</p>
+<p>​    步骤$E<em>{21}$的目的是$A</em>{21}=0$，这里是指用第二行减去第一行的三倍</p>
+<p>​    步骤$E<em>{32}$的目的是使$A</em>{32}=0$，这里是指用第三行减去第二行的两倍</p>
+<p><strong>注：</strong>高斯消元的<strong>目的</strong>是使原矩阵(<strong>不要考虑最后一列，这一列是等式右边的，matlab是分别对左右两边进行消元的，我这里写在一起是为了方便</strong>)对角线下面的元素为0，变成上三角矩阵，<strong>在上面例子中本应该在步骤$E<em>{21}$和步骤$E</em>{32}$中还有步骤$E<em>{31}$,使得$A</em>{31}=0$。但是原矩阵的$A_{31}=0$，所以没有必要进行操作</strong>。尽管这一步骤没有必要，但matlab会进行操作（没有人机智）。</p>
+<p>​    通过消元得到的结果矩阵$C$（上图中的第三个矩阵），我们可以写出其方程组的形式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+x+2y+z&=2\\
+0x+2y-2z&=6\\
+0x+0y+5z&=-10
+\end{aligned}</script><p>上面方程组可以直接看出，$z=-2$,然后代入第二个方程得到$y=1$,再代入第一个方程得到$x=2$。</p>
+<p>​    在上面的消元过程中，原始矩阵$A$经过步骤$E<em>{21}$得到矩阵$B$，矩阵$B$经过步骤$E</em>{32}$得到矩阵$C$，<strong>我们用矩阵来表示步骤$E<em>{21}$，步骤$E</em>{32}$</strong>，则可以得到：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\underbrace{\left[\begin{array}{ccc}1&0&0\\-3&1&0\\0&0&1\end{array}\right]}_{E_{21}}
+\underbrace{\left[\begin{array}{cccc}1&2&1&2\\3&8&1&12\\0&4&1&2\end{array}\right]}_{A}
+=\underbrace{\left[\begin{array}{cccc}1&2&1&2\\0&2&-2&6\\0&4&1&2\end{array}\right]}_{B}
+\end{aligned}</script><script type="math/tex; mode=display">
+\begin{aligned}
+\underbrace{\left[\begin{array}{ccc}1&0&0\\0&1&0\\0&-2&1\end{array}\right]}_{E_{32}}
+\underbrace{\left[\begin{array}{cccc}1&2&1&2\\0&2&-2&6\\0&4&1&2\end{array}\right]}_{B}
+=\underbrace{\left[\begin{array}{cccc}1&2&1&2\\0&2&-2&6\\0&0&5&-10\end{array}\right]}_{C}
+\end{aligned}</script><p>把这两步综合起来得到：</p>
+<script type="math/tex; mode=display">
+E_{32}(E_{21}A)=C\rightarrow EA=C</script><script type="math/tex; mode=display">
+E=E_{32}E_{21}=\underbrace{\left[\begin{array}{ccc}1&0&0\\0&1&0\\0&-2&1\end{array}\right]}_{E_{32}}\underbrace{\left[\begin{array}{ccc}1&0&0\\-3&1&0\\0&0&1\end{array}\right]}_{E_{21}}=
+\left[\begin{array}{ccc}1&0&0\\-3&1&0\\6&-2&1\end{array}\right]</script><p>总结，<strong>我们令方程组左边的矩阵为$D$，用初等矩阵$E$来表示消元操作，用上三角矩阵$U$表示消元得到的结果</strong>，则以上式为例：</p>
+<script type="math/tex; mode=display">
+D=\left[\begin{array}{ccc}1&2&1\\3&8&1\\0&4&1\end{array}\right],
+E=\left[\begin{array}{ccc}1&0&0\\-3&1&0\\6&-2&1\end{array}\right]</script><script type="math/tex; mode=display">
+U=ED=\left[\begin{array}{ccc}1&2&1\\0&2&-2\\0&0&5\end{array}\right]</script><hr>
+<h2 id="置换矩阵"><a href="#置换矩阵" class="headerlink" title="置换矩阵"></a>置换矩阵</h2><p>   <strong>1、行交换：左乘</strong></p>
+<script type="math/tex; mode=display">
+\left[\begin{array}{cc}0&1\\1&0\end{array}\right]\left[\begin{array}{cc}a&b\\c&d\end{array}\right]=\left[\begin{array}{cc}c&d\\a&b\end{array}\right]</script><p>   <strong>2、列交换：右乘</strong></p>
+<script type="math/tex; mode=display">
+\left[\begin{array}{cc}a&b\\c&d\end{array}\right]
+\left[\begin{array}{cc}0&1\\1&0\end{array}\right]
+=\left[\begin{array}{cc}b&a\\d&c\end{array}\right]</script><link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2014/09/12/[20140912]/" title="【线性代数】矩阵消元-高斯消元法">http://tengweitw.com/2014/09/12/[20140912]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Linear-Algebra/" rel="tag"><i class="fa fa-tag"></i> Linear Algebra</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2014/09/10/%5B20140910%5D/" rel="prev" title="【线性代数】方程组的几何解释">
+      <i class="fa fa-chevron-left"></i> 【线性代数】方程组的几何解释
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2014/09/17/%5B20140917%5D/" rel="next" title="【线性代数】矩阵的乘法与求逆">
+      【线性代数】矩阵的乘法与求逆 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、高斯消元法"><span class="nav-number">1.</span> <span class="nav-text">一、高斯消元法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#置换矩阵"><span class="nav-number">2.</span> <span class="nav-text">置换矩阵</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

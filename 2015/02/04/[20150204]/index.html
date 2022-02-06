@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="一维搜索方法的分类如下：  这篇文章主要讲解黄金分割法、二分法、牛顿法这三种一维搜索方法。黄金分割法只用到原函数，二分法用到函数的一阶导，牛顿法用到函数的二阶导。由于本文主要对研一上学期的课程中的部分算法进行程序实现，理论部分大多参考上课的课件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【工程优化】一维搜索方法">
+<meta property="og:url" content="http://tengweitw.com/2015/02/04/[20150204]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="一维搜索方法的分类如下：  这篇文章主要讲解黄金分割法、二分法、牛顿法这三种一维搜索方法。黄金分割法只用到原函数，二分法用到函数的一阶导，牛顿法用到函数的二阶导。由于本文主要对研一上学期的课程中的部分算法进行程序实现，理论部分大多参考上课的课件。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig002.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig003.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig004.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig005.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig006.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig007.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig008.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig009.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig010.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig011.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig012.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig013.jpg">
+<meta property="article:published_time" content="2015-02-04T09:14:04.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.781Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Math">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig001.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2015/02/04/[20150204]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【工程优化】一维搜索方法 | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/02/04/%5B20150204%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【工程优化】一维搜索方法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-02-04 17:14:04" itemprop="dateCreated datePublished" datetime="2015-02-04T17:14:04+08:00">2015-02-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><strong>一维搜索方法的分类如下：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig001.jpg" width="400" height="450" title="图1" alt="图1" ></p>
+<p>这篇文章主要讲解<strong>黄金分割法、二分法、牛顿法</strong>这三种一维搜索方法。黄金分割法只用到原函数，二分法用到函数的一阶导，牛顿法用到函数的二阶导。由于本文主要对研一上学期的课程中的部分算法进行程序实现，<strong>理论部分大多参考上课的课件</strong>。</p>
+<a id="more"></a>
+<hr>
+<h2 id="黄金分割法"><a href="#黄金分割法" class="headerlink" title="黄金分割法"></a>黄金分割法</h2><p><strong>基本概念：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig002.jpg" width="500" height="350" title="图2" alt="图2" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig003.jpg" width="500" height="350" title="图3" alt="图3" ></p>
+<p><strong>算法思想：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig004.jpg" width="800" height="250" title="图4" alt="图4" ></p>
+<p><strong>算法流程图及优缺点如下：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig005.jpg" width="800" height="250" title="图5" alt="图5" ></p>
+<hr>
+<h2 id="二分法"><a href="#二分法" class="headerlink" title="二分法"></a>二分法</h2><p> <strong>基本思想：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig006.jpg" width="500" height="350" title="图6" alt="图6" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig007.jpg" width="500" height="350" title="图7" alt="图7" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig008.jpg" width="500" height="350" title="图8" alt="图8" ></p>
+<h2 id="牛顿法"><a href="#牛顿法" class="headerlink" title="牛顿法"></a>牛顿法</h2><p><strong>基本思想：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig009.jpg" width="500" height="350" title="图9" alt="图9" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig010.jpg" width="500" height="350" title="图10" alt="图10" ></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig011.jpg" width="500" height="350" title="图11" alt="图11" ></p>
+<p><strong>算法流程图：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig012.jpg" width="500" height="350" title="图12" alt="图12" ></p>
+<h2 id="具体实现："><a href="#具体实现：" class="headerlink" title="具体实现："></a>具体实现：</h2><p>下面我们通过程序具体实现，<strong>在程序中，我们设置原函数都是$f(x)=\sin(x)/x$，搜索区间都是$[0,1]$，牛顿法中假设初始值设为1,具体程序如下所示</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="comment">/********************函数的定义、一阶导、二阶导的模块 BEGIN*************************/</span></span><br><span class="line"><span class="comment">/*****************************\</span></span><br><span class="line"><span class="comment">输入：x为自变量</span></span><br><span class="line"><span class="comment">输出：x自变量对应的函数值</span></span><br><span class="line"><span class="comment">\*****************************/</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Function</span><span class="params">(<span class="keyword">double</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (x<span class="number">-0.5</span>)*(x<span class="number">-0.5</span>);<span class="comment">//这里填写函数式f(x),根据自己的函数修改</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*****************************\</span></span><br><span class="line"><span class="comment">输入：x为自变量</span></span><br><span class="line"><span class="comment">输出：x自变量对应的一阶导数值</span></span><br><span class="line"><span class="comment">\*****************************/</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Derivative</span><span class="params">(<span class="keyword">double</span> x)</span><span class="comment">//求函数的一阶导数</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> eps=<span class="number">0.0000001</span>;<span class="comment">//精度控制</span></span><br><span class="line">    <span class="keyword">double</span> dx=<span class="number">0.5</span>;<span class="comment">//设置初始的间隔，太大需要迭代多次，太小缺乏精度</span></span><br><span class="line">    <span class="keyword">double</span> dy=Function(x+dx)-Function(x);<span class="comment">//函数值的增量</span></span><br><span class="line">    <span class="keyword">double</span> dd1=dy/dx;<span class="comment">//导数</span></span><br><span class="line">    <span class="keyword">double</span> dd2=<span class="number">0</span>;<span class="comment">//dx变化时的导数</span></span><br><span class="line">    dx=dx/<span class="number">2</span>;<span class="comment">//不断地减少x的增量</span></span><br><span class="line">    dy=Function(x)-Function(x+dx);</span><br><span class="line">    dd2=dy/dx;<span class="comment">//计算新的导数值</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">abs</span>(dd1-dd2)&gt;eps)<span class="comment">//当相邻两次的导数值小于精度时终止迭代，得到导数</span></span><br><span class="line">    &#123;</span><br><span class="line">        dd1=dd2;</span><br><span class="line">        dx=dx/<span class="number">2.0</span>;</span><br><span class="line">        dy=Function(x+dx)-Function(x);</span><br><span class="line">        dd2=dy/dx;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dd2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//求函数的2阶导数,与求一阶导数的原理一样，只需要把求函数值的函数Function换成求一阶导数的函数Derivative</span></span><br><span class="line"><span class="comment">/*****************************\</span></span><br><span class="line"><span class="comment">输入：x为自变量</span></span><br><span class="line"><span class="comment">输出：x自变量对应的二阶导数值</span></span><br><span class="line"><span class="comment">\*****************************/</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Derivative2</span><span class="params">(<span class="keyword">double</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> eps=<span class="number">0.00000001</span>;</span><br><span class="line">    <span class="keyword">double</span> dx=<span class="number">0.5</span>;</span><br><span class="line">    <span class="keyword">double</span> dy=Derivative(x+dx)-Derivative(x);</span><br><span class="line">    <span class="keyword">double</span> dd1=dy/dx;</span><br><span class="line">    <span class="keyword">double</span> dd2=<span class="number">0</span>;</span><br><span class="line">    dx=dx/<span class="number">2</span>;</span><br><span class="line">    dy=Derivative(x)-Derivative(x+dx);</span><br><span class="line">    dd2=dy/dx;</span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">abs</span>(dd1-dd2)&gt;eps)</span><br><span class="line">    &#123;</span><br><span class="line">        dd1=dd2;</span><br><span class="line">        dx=dx/<span class="number">2.0</span>;</span><br><span class="line">        dy=Derivative(x+dx)-Derivative(x);</span><br><span class="line">        dd2=dy/dx;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dd2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/********************函数的定义、一阶导、二阶导的模块  END*************************/</span></span><br><span class="line"><span class="comment">/******************************************\</span></span><br><span class="line"><span class="comment">输入：a，b为区间的上下限，n为最大的迭代次数</span></span><br><span class="line"><span class="comment">输出：打印函数最小值及对应的自变量x</span></span><br><span class="line"><span class="comment">\******************************************/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GoldenSection</span><span class="params">(<span class="keyword">double</span> a,<span class="keyword">double</span> b,<span class="keyword">int</span> n)</span><span class="comment">//黄金分割法</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> l=a+<span class="number">0.382</span>*(b-a);</span><br><span class="line">    <span class="keyword">double</span> h=a+<span class="number">0.618</span>*(b-a);</span><br><span class="line">    <span class="keyword">double</span> region=b-a;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">double</span> fl;</span><br><span class="line">    <span class="keyword">double</span> fh;</span><br><span class="line">    <span class="keyword">int</span> num=<span class="number">1</span>;<span class="comment">//迭代次数</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(region&gt;<span class="number">0.0000000001</span>&amp;&amp;num&lt;n)</span><br><span class="line">    &#123;</span><br><span class="line">        fl=Function(l);</span><br><span class="line">        fh=Function(h);</span><br><span class="line">        <span class="keyword">if</span>(fl&gt;fh)</span><br><span class="line">        &#123;</span><br><span class="line">            a=l;</span><br><span class="line">            l=h;</span><br><span class="line">            h=a+<span class="number">0.618</span>*(b-a);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            b=h;</span><br><span class="line">            h=l;</span><br><span class="line">            l=a+<span class="number">0.382</span>*(b-a);</span><br><span class="line">        &#125;</span><br><span class="line">        num++;</span><br><span class="line">        region=<span class="built_in">abs</span>(b-a);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(num==n)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"找不到最小值"</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"黄金分割法:x=%f时，最小值f(x)=%f"</span>,(a+b)/<span class="number">2</span>,Function((a+b)/<span class="number">2</span>));</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/******************************************\</span></span><br><span class="line"><span class="comment">输入：a，b为区间的上下限</span></span><br><span class="line"><span class="comment">输出：打印函数最小值及对应的自变量x</span></span><br><span class="line"><span class="comment">\******************************************/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Dichotomy</span><span class="params">(<span class="keyword">double</span> a,<span class="keyword">double</span> b)</span><span class="comment">//二分法</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> eps=<span class="number">0.0000001</span>;</span><br><span class="line">    <span class="keyword">double</span> x=(a+b)/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">double</span> region=b-a;</span><br><span class="line">    <span class="keyword">double</span> fxDerivative= Derivative(x);</span><br><span class="line">    <span class="keyword">while</span>(region&gt;<span class="number">0.0000001</span>&amp;&amp;<span class="built_in">abs</span>(fxDerivative)&gt;eps)</span><br><span class="line">    &#123;</span><br><span class="line">        fxDerivative= Derivative(x);</span><br><span class="line">        <span class="keyword">if</span>(fxDerivative&gt;eps)</span><br><span class="line">            b=x;</span><br><span class="line">        <span class="keyword">if</span>(fxDerivative&lt;-eps)</span><br><span class="line">            a=x;</span><br><span class="line">        x=(a+b)/<span class="number">2</span>;</span><br><span class="line">        region=<span class="built_in">abs</span>(b-a);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n\n二分法：x=%f时，f(x)=%f\n"</span>,x,Function(x));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/******************************************\</span></span><br><span class="line"><span class="comment">输入：a，b为区间的上下限，x1是初始值</span></span><br><span class="line"><span class="comment">输出：打印函数最小值及对应的自变量x</span></span><br><span class="line"><span class="comment">\******************************************/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Newton</span><span class="params">(<span class="keyword">double</span> a,<span class="keyword">double</span> b,<span class="keyword">double</span> x1)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> eps=<span class="number">0.0000001</span>;</span><br><span class="line">    <span class="keyword">double</span> x=x1;</span><br><span class="line">    <span class="keyword">double</span> d1=Derivative(x1);<span class="comment">//一阶导</span></span><br><span class="line">    <span class="keyword">double</span> d2;<span class="comment">//二阶导</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">abs</span>(d1)&gt;eps)</span><br><span class="line">    &#123;</span><br><span class="line">        d2=Derivative2(x);</span><br><span class="line">        <span class="keyword">if</span>(d2&lt;<span class="number">0</span>)</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"二阶导小于0，无法求解"</span>);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            x=x-d1/d2;<span class="comment">//x迭代公式</span></span><br><span class="line">            d1=Derivative(x);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n牛顿法：x=%f时，f(x)=%f\n\n"</span>,x,Function(x));</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    GoldenSection(<span class="number">0</span>,<span class="number">1</span>,<span class="number">100000</span>);<span class="comment">//黄金分割法</span></span><br><span class="line">    </span><br><span class="line">    Dichotomy(<span class="number">0</span>,<span class="number">1</span>);<span class="comment">//二分法</span></span><br><span class="line">    Newton(<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>);<span class="comment">//牛顿法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>运行结果如下图：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20150204/20150204_fig013.jpg" width="600" height="450" title="图13" alt="图13" ></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2015/02/04/[20150204]/" title="【工程优化】一维搜索方法">http://tengweitw.com/2015/02/04/[20150204]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Math/" rel="tag"><i class="fa fa-tag"></i> Math</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/02/02/%5B20150202%5D/" rel="prev" title="【数值分析】复化积分公式">
+      <i class="fa fa-chevron-left"></i> 【数值分析】复化积分公式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/02/09/%5B20150209%5D/" rel="next" title="【工程优化】最优化算法--牛顿法、阻尼牛顿法及单纯形法">
+      【工程优化】最优化算法--牛顿法、阻尼牛顿法及单纯形法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#黄金分割法"><span class="nav-number">1.</span> <span class="nav-text">黄金分割法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二分法"><span class="nav-number">2.</span> <span class="nav-text">二分法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#牛顿法"><span class="nav-number">3.</span> <span class="nav-text">牛顿法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#具体实现："><span class="nav-number">4.</span> <span class="nav-text">具体实现：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="今天偶尔想到了过河问题。记得读小学六年级的时候第一次接触到这个问题—六个老虎过河问题(百度上有详细介绍，本文解决的是一个简单的问题，下一篇文章中将讨论该问题)，当时都是从逻辑思维的方法得到正确的解决方法。本文介绍了普遍适用该类问题的方法以及该方法的改进方法，下一篇文章将介绍问题的变型及解法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【算法编程】过河问题">
+<meta property="og:url" content="http://tengweitw.com/2014/05/08/[20140508]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="今天偶尔想到了过河问题。记得读小学六年级的时候第一次接触到这个问题—六个老虎过河问题(百度上有详细介绍，本文解决的是一个简单的问题，下一篇文章中将讨论该问题)，当时都是从逻辑思维的方法得到正确的解决方法。本文介绍了普遍适用该类问题的方法以及该方法的改进方法，下一篇文章将介绍问题的变型及解法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140508/20140508_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140508/20140508_fig002.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140508/20140508_fig003.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140508/20140508_fig004.jpg">
+<meta property="article:published_time" content="2014-05-08T04:31:36.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.776Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Algorithm Coding">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140508/20140508_fig001.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2014/05/08/[20140508]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【算法编程】过河问题 | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/05/08/%5B20140508%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【算法编程】过河问题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-05-08 12:31:36" itemprop="dateCreated datePublished" datetime="2014-05-08T12:31:36+08:00">2014-05-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>  今天偶尔想到了<strong>过河问题</strong>。记得读小学六年级的时候第一次接触到这个问题—六个老虎过河问题(百度上有详细介绍，本文解决的是一个简单的问题，下一篇文章中将讨论该问题)，当时都是从逻辑思维的方法得到正确的解决方法。<strong>本文介绍了普遍适用该类问题的方法以及该方法的改进方法，下一篇文章将介绍问题的变型及解法。</strong></p>
+<a id="more"></a>
+<p><strong>向量法（</strong>人、狗、鸡、米过河问题）</p>
+<p>  <strong>问题描述</strong>：某人带狗、鸡、米用船来过河，只有人会划船(好像是废话，后面问题我们还会假设动物也会划船),另外至多还能载一物，当人不在时，狗要吃鸡(有人可能会质疑：狗吃鸡？，但是我看到的是狗和猫都吃小鸡)，鸡吃米。问人、狗、鸡、米怎么过河？</p>
+<p>  我们用一个向量来表示人、狗、鸡、米所处的状态，例如：(1 1 1 1)表示人、狗、鸡、米都在左岸，则对应的(0 0 0 0)表示人、狗、鸡、米都在右岸。这些向量我们称为状态向量，但是由于问题的条件限制，有些状态是允许的，而有些状态是不允许的，例如(0 1 1 1)表示人不在左岸，显然是不允许的。<strong>我们可以穷举出所有允许的状态：</strong></p>
+<p>​    (1 1 1 1)    (0 0 0 0)  </p>
+<p>​    (1 1 1 0)    (0 0 0 1)</p>
+<p>​    (1 1 0 1)    (0 0 1 0)</p>
+<p>​    (1 0 1 1)    (0 1 0 0)</p>
+<p>​    (1 0 1 0)    (0 1 0 1)</p>
+<p><strong>从上面的允许状态中，我们可以发现规律如下：</strong></p>
+<p>  当人在时（也就是第一位为1时），不能有相邻的0，例如(1 1 0 0)是不允许的</p>
+<p>  当人不在时(也就是第一个为0时)，不能有相邻的1 ，例如(0 1 1 0)是不允许的</p>
+<p>  我们将船的一次运载也用向量表示，例如(1 1 0 0)表示人和狗在船上。由于只有人会划船，则允许的<strong>运算向量</strong>为：</p>
+<p>​    (1 1 0 0)    (1 0 1 0)    (1 0 0 1)    (1 0 0 0)</p>
+<p><strong>因此我们可以将一次过河过程看成是一个状态向量与一个运算向量的异或运算（模2加运算：1+1=0 1+0=1 0+0=0）</strong>。根据上述的向量法的描述，我们可以<strong>将问题简化成</strong>：将状态(1 1 1 1)经过奇数次与运算向量运算，变成状态为(0 0 0 0)的状态转移过程。<strong>下面是过河的图解过程</strong>：</p>
+<p>​     开始状态               船上状态                    结果状态</p>
+<p> 1    (1 1 1 1)  ———&gt;  (1 0 1 0)   ———&gt;   (0 1 0 1)</p>
+<p> 2    (0 1 0 1)  ———&gt;  (1 0 0 0)   ———&gt;   (1 1 0 1)</p>
+<p> 3    (1 1 0 1)  ———&gt;  (1 0 0 1)   ———&gt;   (0 1 0 0)</p>
+<p> 4     (0 1 0 0)  ———&gt;  (1 0 1 0)   ———&gt;   (1 1 1 0)</p>
+<p> 5    (1 1 1 0)  ———&gt;  (1 1 0 0)   ———&gt;   (0 0 1 0)</p>
+<p> 6     (0 0 1 0)  ———&gt;  (1 0 0 0)   ———&gt;   (1 0 1 0)</p>
+<p> 7    (1 0 1 0)  ———&gt;  (1 0 1 0)   ———&gt;   (0 0 0 0) </p>
+<p><strong>奇数次</strong>：去河对岸</p>
+<p><strong>偶数次</strong>：回河这边</p>
+<p><strong>注意事项：</strong></p>
+<p>  在第3次过河时，开始状态为(1 1 0 1)，如果船上状态为(1 1 0 0),则结果状态为(0 0 0 1)，然后经过船上状态(1 0 0 1),结果状态为(1 0 0 0),然后经过船上状态(1 0 0 0)，就可以完成任务(总共5次过河)。<strong>但是这里存在问题</strong>：当开始状态为(0 0 0 1)，船上状态不可能为(1 0 0 1)。因为开始状态(0 0 0 1)表示只有米在左岸，船上状态(1 0 0 1)表示人和米在船上，这是不可能的！因此船上状态的选择是有限制的。奇数时，开始状态为1的位置，船上对应位置才可以为1；偶数时，开始状态为0的位置，船上对应的位置才可以为0.<strong>通俗的说</strong>：奇数时，是将有的东西运到河对岸，偶数时，是将河对岸的东西(河这边没有)运到河这边。这些数学的表述可能太麻烦，<strong>我举例说明</strong>：奇数时，当河这边只有人、狗、米，我们可以从选择人、狗上船或则人、米上船，而不能选择人、鸡上船（鸡在对岸）;当偶数次数时，河这边是狗、河对岸则是人、鸡、米，我们可以人、鸡或则人、米回到河这边，而不能选择人、狗过河。</p>
+<p><strong>算法实现：</strong></p>
+<p>  上面的实现可用matlab或则c来实现。若用matlab来实现，则那些状态向量以及状态间的异或运算比较容易表示；若用c来实现，则用时较短。两者的难点在于注意事项中的船上变量的选取问题。因此这种方法不适合用计算机实现，在状态变量较少的情况下，我们可以直接用手工进行运算的方法来得到结果(大家可以试试)。</p>
+<p><strong>改进型算法</strong>—-图论法</p>
+<p>  <strong>算法思路</strong>：将10个状态向量用10个点表示，将这10个状态向量分别与可行的运算向量进行运算，如果结果向量仍为允许的状态向量，则两者间连一条线，从而构成了一个图的问题。我们的目标是找到一条可以从状态(1 1 1 1)到状态(0 0 0 0)的通路。<strong>下面是我运算得到的图:</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140508/20140508_fig001.jpg" width="500" height="350" title="图1" alt="图1" ></p>
+<p><strong>注意：图中的标号用于表示对应的状态</strong></p>
+<p><strong>具体算法实现如下：</strong></p>
+<p><strong>1、Dijkstra算法</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> M 20<span class="comment">//边数</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 10<span class="comment">//顶点数</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX 10000</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Dijkstra</span><span class="params">(<span class="keyword">int</span> v, <span class="keyword">int</span> dist[][N],<span class="keyword">int</span> D[N],<span class="keyword">int</span> p[N],<span class="keyword">int</span> s[N])</span> </span>;</span><br><span class="line"><span class="keyword">int</span> flag[N]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> flag1=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> flag2=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> startvex;</span><br><span class="line">    <span class="keyword">int</span> endvex;</span><br><span class="line">    <span class="keyword">int</span> length;</span><br><span class="line">&#125;edge;<span class="comment">//边的结构体</span></span><br><span class="line">edge T[M];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> dist[N][N]=&#123;&#123;<span class="number">0</span>,MAX,MAX,MAX,MAX,<span class="number">1</span>,MAX,MAX,MAX,MAX&#125;,<span class="comment">//图的邻接矩阵</span></span><br><span class="line">                    &#123;MAX,<span class="number">0</span>,MAX,MAX,MAX,MAX,<span class="number">1</span>,<span class="number">1</span>,MAX,MAX&#125;,</span><br><span class="line">                    &#123;MAX,MAX,<span class="number">0</span>,MAX,MAX,<span class="number">1</span>,<span class="number">1</span>,MAX,<span class="number">1</span>,MAX&#125;,</span><br><span class="line">                    &#123;MAX,MAX,MAX,<span class="number">0</span>,MAX,MAX,MAX,<span class="number">1</span>,<span class="number">1</span>,MAX&#125;,</span><br><span class="line">                    &#123;MAX,MAX,MAX,MAX,<span class="number">0</span>,MAX,MAX,<span class="number">1</span>,MAX,<span class="number">1</span>&#125;,</span><br><span class="line">                    &#123;<span class="number">1</span>,MAX,<span class="number">1</span>,MAX,MAX,<span class="number">0</span>,MAX,MAX,MAX,MAX&#125;,</span><br><span class="line">                    &#123;MAX,<span class="number">1</span>,<span class="number">1</span>,MAX,MAX,MAX,<span class="number">0</span>,MAX,MAX,MAX&#125;,</span><br><span class="line">                    &#123;MAX,<span class="number">1</span>,MAX,<span class="number">1</span>,<span class="number">1</span>,MAX,MAX,<span class="number">0</span>,MAX,MAX&#125;,</span><br><span class="line">                    &#123;MAX,MAX,<span class="number">1</span>,<span class="number">1</span>,MAX,MAX,MAX,MAX,<span class="number">0</span>,MAX&#125;,</span><br><span class="line">                    &#123;MAX,MAX,MAX,MAX,<span class="number">1</span>,MAX,MAX,MAX,MAX,<span class="number">0</span>&#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">int</span> D[N]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> p[N]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> s[N]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> num=<span class="number">0</span>;</span><br><span class="line">    Dijkstra(<span class="number">0</span>,dist,D, p,s) ;<span class="comment">//0表示从状态(1111)开始</span></span><br><span class="line">&#125;</span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">Dijkstra</span><span class="params">(<span class="keyword">int</span> v, <span class="keyword">int</span> dist[][N],<span class="keyword">int</span> D[N],<span class="keyword">int</span> p[N],<span class="keyword">int</span> s[N])</span> </span></span><br><span class="line"><span class="function"> </span>&#123;     <span class="keyword">int</span> i, j, k, v1, min, max=<span class="number">10000</span>, pre;     <span class="comment">/* Max中的值用以表示dist矩阵中的值*/</span></span><br><span class="line">    v1=v; </span><br><span class="line">    <span class="keyword">for</span>( i=<span class="number">0</span>; i&lt;N; i++)              <span class="comment">/* 各数组进行初始化*/</span></span><br><span class="line">    &#123;    D[i]=dist[v1][i]; </span><br><span class="line">        <span class="keyword">if</span>( D[i] != MAX )  p[i]= v1+<span class="number">1</span>; </span><br><span class="line">        <span class="keyword">else</span> p[i]=<span class="number">0</span>; </span><br><span class="line">        s[i]=<span class="number">0</span>; </span><br><span class="line">    &#125;</span><br><span class="line">    s[v1]=<span class="number">1</span>;                          <span class="comment">/* 将源点送U */</span></span><br><span class="line">      <span class="keyword">for</span>( i=<span class="number">0</span>; i&lt;N<span class="number">-1</span>; i++)      <span class="comment">/* 求源点到其余顶点的最短距离*/</span></span><br><span class="line">    &#123;    min=<span class="number">10001</span>;    <span class="comment">/* min&gt;max, 以保证值为的顶点也能加入U */</span></span><br><span class="line">        <span class="keyword">for</span>( j=<span class="number">0</span>; j&lt;N<span class="number">-1</span>; j++)</span><br><span class="line">              <span class="keyword">if</span> ( ( !s[j] )&amp;&amp;(D[j]&lt;min) ) <span class="comment">/* 找出到源点具有最短距离的边*/</span></span><br><span class="line">                  &#123;min=D[j]; </span><br><span class="line">                        k=j; </span><br><span class="line">                     &#125;</span><br><span class="line">                s[k]=<span class="number">1</span>;  <span class="comment">/* 将找到的顶点k送入U */</span>    </span><br><span class="line">    <span class="keyword">for</span>(j=<span class="number">0</span>; j&lt;N; j++)</span><br><span class="line">     <span class="keyword">if</span> ( (!s[j])&amp;&amp;(D[j]&gt;D[k]+dist[k][j]) ) <span class="comment">/* 调整V－U中各顶点的距离值*/</span></span><br><span class="line">        &#123;D[j]=D[k]+dist[k][j]; </span><br><span class="line">        p[j]=k+<span class="number">1</span>;                      <span class="comment">/* k是j的前趋*/</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;                               <span class="comment">/*  所有顶点已扩充到U中*/</span></span><br><span class="line">            <span class="keyword">for</span>( i=<span class="number">0</span>; i&lt;N; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">" %d : %d "</span>, D[i], i);</span><br><span class="line">                pre=p[i]; </span><br><span class="line">            <span class="keyword">while</span> ((pre!=<span class="number">0</span>)&amp;&amp;(pre!=v+<span class="number">1</span>))</span><br><span class="line">            &#123;    <span class="built_in">printf</span> (<span class="string">"&lt;- %d "</span>, pre<span class="number">-1</span>); </span><br><span class="line">                pre=p[pre<span class="number">-1</span>]; </span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"&lt;-%d \n"</span>, v); </span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>结果显示如下：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140508/20140508_fig002.jpg" width="500" height="350" title="图2" alt="图2" ></p>
+<p>从上图的第七行可知，从标号为1的状态到标号为10的状态所要经过的过程为(数组下标是从0开始的)：</p>
+<p>  <strong>1—-6—-3—-7—-2—-8—-5—-10</strong></p>
+<p><strong>2、通过每对顶点之间的最短路径算法实现：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 10 <span class="comment">//顶点个数</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX 10000</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Floyd</span><span class="params">(<span class="keyword">int</span> dist[N][N],<span class="keyword">int</span> A[N][N],<span class="keyword">int</span> path[N][N])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;N;j++)</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;N;k++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">/*if(A[i][j]&gt;(A[i][k]+dist[k][j]))//方法一：计算每一次矩阵</span></span><br><span class="line"><span class="comment">                &#123;</span></span><br><span class="line"><span class="comment">                    A[i][j]=(A[i][k]+dist[k][j]);</span></span><br><span class="line"><span class="comment">                    path[i][j]=path[k][j];</span></span><br><span class="line"><span class="comment">                &#125;*/</span></span><br><span class="line">                <span class="keyword">if</span>(A[i][j]&gt;(A[i][k]+A[k][j]))<span class="comment">//方法二:计算的幂次矩阵</span></span><br><span class="line">                &#123;</span><br><span class="line">                    A[i][j]=(A[i][k]+A[k][j]);</span><br><span class="line">                    path[i][j]=path[k][j];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> dist[N][N]=&#123;&#123;<span class="number">0</span>,MAX,MAX,MAX,MAX,<span class="number">1</span>,MAX,MAX,MAX,MAX&#125;,<span class="comment">//图的邻接矩阵</span></span><br><span class="line">                    &#123;MAX,<span class="number">0</span>,MAX,MAX,MAX,MAX,<span class="number">1</span>,<span class="number">1</span>,MAX,MAX&#125;,</span><br><span class="line">                    &#123;MAX,MAX,<span class="number">0</span>,MAX,MAX,<span class="number">1</span>,<span class="number">1</span>,MAX,<span class="number">1</span>,MAX&#125;,</span><br><span class="line">                    &#123;MAX,MAX,MAX,<span class="number">0</span>,MAX,MAX,MAX,<span class="number">1</span>,<span class="number">1</span>,MAX&#125;,</span><br><span class="line">                    &#123;MAX,MAX,MAX,MAX,<span class="number">0</span>,MAX,MAX,<span class="number">1</span>,MAX,<span class="number">1</span>&#125;,</span><br><span class="line">                    &#123;<span class="number">1</span>,MAX,<span class="number">1</span>,MAX,MAX,<span class="number">0</span>,MAX,MAX,MAX,MAX&#125;,</span><br><span class="line">                    &#123;MAX,<span class="number">1</span>,<span class="number">1</span>,MAX,MAX,MAX,<span class="number">0</span>,MAX,MAX,MAX&#125;,</span><br><span class="line">                    &#123;MAX,<span class="number">1</span>,MAX,<span class="number">1</span>,<span class="number">1</span>,MAX,MAX,<span class="number">0</span>,MAX,MAX&#125;,</span><br><span class="line">                    &#123;MAX,MAX,<span class="number">1</span>,<span class="number">1</span>,MAX,MAX,MAX,MAX,<span class="number">0</span>,MAX&#125;,</span><br><span class="line">                    &#123;MAX,MAX,MAX,MAX,<span class="number">1</span>,MAX,MAX,MAX,MAX,<span class="number">0</span>&#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">int</span> A[N][N];</span><br><span class="line">    <span class="keyword">int</span> path[N][N]=&#123;<span class="number">0</span>&#125;;<span class="comment">//给出两顶点间的路径</span></span><br><span class="line">    <span class="keyword">int</span> pre=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;N;j++)</span><br><span class="line">        &#123;</span><br><span class="line">            A[i][j]=dist[i][j];</span><br><span class="line">            <span class="keyword">if</span>(dist[i][j]!=MAX)</span><br><span class="line">                path[i][j]=i+<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                path[i][j]=<span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;<span class="number">7</span>;k++)<span class="comment">//若用方法一，需循环N-3次，若用方法二，需要循环lg(N-1)次</span></span><br><span class="line">        Floyd(dist,A,path);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"每对顶点间的最短路径矩阵为：\n"</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;N;j++)</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"%d "</span>,A[i][j]);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n每对顶点的具体最短路径为：\n"</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;N;j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"%d: %d "</span>,A[i][j],j+<span class="number">1</span>);</span><br><span class="line">        pre=path[i][j];</span><br><span class="line">        <span class="keyword">while</span>((pre!=<span class="number">0</span>)&amp;&amp;(pre!=i+<span class="number">1</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"&lt;- %d "</span>,pre);</span><br><span class="line">            pre=path[i][pre<span class="number">-1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">" &lt;- %d\n"</span>,i+<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果显示如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140508/20140508_fig003.jpg" width="500" height="350" title="图3" alt="图3" ></p>
+<p>从上图的最短路径矩阵的第一行第10列可知，从状态1到状态10需要7步，从具体最短路径的第10行可知，所要经过的过程为：</p>
+<p>  <strong>1—-6—-3—-7—-2—-8—-5—-10</strong></p>
+<p><strong>两种方法求得的结果相同，我们可以用图形象的表示如下：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140508/20140508_fig004.jpg" width="500" height="350" title="图4" alt="图4" ></p>
+<p><strong>通过对比可以发现，图论法实质是在向量法的基础上进行改进的算法，无论是在手动计算还是计算机实现上都比向量法更好。</strong></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2014/05/08/[20140508]/" title="【算法编程】过河问题">http://tengweitw.com/2014/05/08/[20140508]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Algorithm-Coding/" rel="tag"><i class="fa fa-tag"></i> Algorithm Coding</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2014/05/07/%5B20140507%5D/" rel="prev" title="【算法思想】循环移动一个数组">
+      <i class="fa fa-chevron-left"></i> 【算法思想】循环移动一个数组
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2014/05/14/%5B20140514%5D/" rel="next" title="【算法思想】过河问题(续)">
+      【算法思想】过河问题(续) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

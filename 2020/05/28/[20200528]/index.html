@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="朴素贝叶斯分类法是基于贝叶斯定理与特征条件独立假设的分类方法。其主要思想为：对于给定的训练数据集 $\mathcal D$ ，首先基于特征条件独立假设学习输入 $\mathrm x$ 与输出 $y$ 的联合概率分布 $P(\mathrm x, y)$ ; 然后通过先验概率 $P(y)$ ，利用贝叶斯定理求出后验概率 $P(y\mid\mathrm x)$ 最大对应的输出 $y$ 。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【图解例说机器学习】朴素贝叶斯 (Naive Bayes)">
+<meta property="og:url" content="http://tengweitw.com/2020/05/28/[20200528]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="朴素贝叶斯分类法是基于贝叶斯定理与特征条件独立假设的分类方法。其主要思想为：对于给定的训练数据集 $\mathcal D$ ，首先基于特征条件独立假设学习输入 $\mathrm x$ 与输出 $y$ 的联合概率分布 $P(\mathrm x, y)$ ; 然后通过先验概率 $P(y)$ ，利用贝叶斯定理求出后验概率 $P(y\mid\mathrm x)$ 最大对应的输出 $y$ 。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200528/Naive_Bayes_fig003.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200528/Naive_Bayes_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200528/Naive_Bayes_fig002.jpg">
+<meta property="article:published_time" content="2020-05-28T12:32:19.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.788Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Machine Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200528/Naive_Bayes_fig003.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2020/05/28/[20200528]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【图解例说机器学习】朴素贝叶斯 (Naive Bayes) | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/05/28/%5B20200528%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【图解例说机器学习】朴素贝叶斯 (Naive Bayes)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-28 20:32:19" itemprop="dateCreated datePublished" datetime="2020-05-28T20:32:19+08:00">2020-05-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>17k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>24 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>朴素贝叶斯分类法是基于<strong>贝叶斯定理</strong>与<strong>特征条件独立假设</strong>的分类方法。其<strong>主要思想</strong>为：对于给定的训练数据集 $\mathcal D$ ，首先基于特征条件独立假设学习输入 $\mathrm x$ 与输出 $y$ 的联合概率分布 $P(\mathrm x, y)$ ; 然后通过先验概率 $P(y)$ ，利用贝叶斯定理求出后验概率 $P(y\mid\mathrm x)$ 最大对应的输出 $y$ 。</p>
+<hr>
+<a id="more"></a>
+<h2 id="一个例子"><a href="#一个例子" class="headerlink" title="一个例子"></a>一个例子</h2><p>由于朴素贝叶斯分类比较简单，这里直接先给出一个例子来演示如何进行分类。相信大多数有概率论基础的同学都能依据这个例子来实现一个朴素贝叶斯分类器。而对于其理论部感兴趣的同学，可以阅读本文后续理论部分。</p>
+<p>如下表所示，我们假设有 $15$个训练样例 $\mathrm x_i, i=1,2,\cdots,15$，$2$个特征 $x^{(1)},x^{(2)}$，每个特征分别有 $3$个取值 $x^{(1)}\in{1,2,3}$ ， $x^{(2)}\in{\mathrm{S,M,L}}$，两个类别 $y\in{-1,1}$。对于一个新的样例 $\mathrm x={2,\mathrm S}$，我们需要确定其分类。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">$\mathrm x_1$</th>
+<th style="text-align:center">$\mathrm x_2$</th>
+<th style="text-align:center">$\mathrm x_3$</th>
+<th style="text-align:center">$\mathrm x_4$</th>
+<th style="text-align:center">$\mathrm x_5$</th>
+<th style="text-align:center">$\mathrm x_6$</th>
+<th style="text-align:center">$\mathrm x_7$</th>
+<th style="text-align:center">$\mathrm x_8$</th>
+<th style="text-align:center">$\mathrm x_9$</th>
+<th style="text-align:center">$\mathrm x_{10}$</th>
+<th style="text-align:center">$\mathrm x_{11}$</th>
+<th style="text-align:center">$\mathrm x_{12}$</th>
+<th style="text-align:center">$\mathrm x_{13}$</th>
+<th style="text-align:center">$\mathrm x_{14}$</th>
+<th style="text-align:center">$\mathrm x_{15}$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$x^{(1)}$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$2$</td>
+<td style="text-align:center">$2$</td>
+<td style="text-align:center">$2$</td>
+<td style="text-align:center">$2$</td>
+<td style="text-align:center">$2$</td>
+<td style="text-align:center">$3$</td>
+<td style="text-align:center">$3$</td>
+<td style="text-align:center">$3$</td>
+<td style="text-align:center">$3$</td>
+<td style="text-align:center">$3$</td>
+</tr>
+<tr>
+<td style="text-align:center">$x^{(2)}$</td>
+<td style="text-align:center">$\mathrm S$</td>
+<td style="text-align:center">$\mathrm M$</td>
+<td style="text-align:center">$\mathrm M$</td>
+<td style="text-align:center">$\mathrm S$</td>
+<td style="text-align:center">$\mathrm S$</td>
+<td style="text-align:center">$\mathrm S$</td>
+<td style="text-align:center">$\mathrm M$</td>
+<td style="text-align:center">$\mathrm M$</td>
+<td style="text-align:center">$\mathrm L$</td>
+<td style="text-align:center">$\mathrm L$</td>
+<td style="text-align:center">$\mathrm L$</td>
+<td style="text-align:center">$\mathrm M$</td>
+<td style="text-align:center">$\mathrm M$</td>
+<td style="text-align:center">$\mathrm L$</td>
+<td style="text-align:center">$\mathrm L$</td>
+</tr>
+<tr>
+<td style="text-align:center">$y$</td>
+<td style="text-align:center">$-1$</td>
+<td style="text-align:center">$-1$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$-1$</td>
+<td style="text-align:center">$-1$</td>
+<td style="text-align:center">$-1$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$-1$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>根据上表，我们很容易求出各种概率：</p>
+<script type="math/tex; mode=display">
+P(y=1)=\frac{9}{15}, P(y=-1)=\frac{6}{15}\tag{1}</script><script type="math/tex; mode=display">
+P(x^{(1)}=1\mid y=1)=\frac{2}{9},P(x^{(1)}=2\mid y=1)=\frac{3}{9},P(x^{(1)}=3\mid y=1)=\frac{4}{9}\tag{2}</script><script type="math/tex; mode=display">
+P(x^{(2)}=\mathrm S\mid y=1)=\frac{1}{9},P(x^{(2)}=\mathrm M\mid y=1)=\frac{4}{9},P(x^{(2)}=\mathrm L\mid y=1)=\frac{4}{9}\tag{3}</script><script type="math/tex; mode=display">
+P(x^{(1)}=1\mid y=-1)=\frac{3}{6},P(x^{(1)}=2\mid y=-1)=\frac{2}{6},P(x^{(1)}=3\mid y=-1)=\frac{1}{6}\tag{4}</script><script type="math/tex; mode=display">
+P(x^{(2)}=\mathrm S\mid y=-1)=\frac{3}{6},P(x^{(2)}=\mathrm M\mid y=-1)=\frac{2}{6},P(x^{(2)}=\mathrm L\mid y=-1)=\frac{1}{6}\tag{5}</script><p>对于新的样例$\mathrm x={2,\mathrm S}$ ，我们有</p>
+<script type="math/tex; mode=display">
+P(y=1)P(x^{(1)}=2\mid y=1)P(x^{(2)}=\mathrm S\mid y=1)=\frac{9}{15}\times\frac{3}{9}\times\frac{1}{9}=\frac{1}{45}\tag{6}</script><script type="math/tex; mode=display">
+P(y=-1)P(x^{(1)}=2\mid y=-1)P(x^{(2)}=\mathrm S\mid y=-1)=\frac{6}{15}\times\frac{2}{6}\times\frac{3}{6}=\frac{1}{15}\tag{7}</script><p>比较公式(6)和(7)，我们判断新的样例$\mathrm x={2,\mathrm S}$的输出类别为$y=-1$ 。</p>
+<hr>
+<h2 id="朴素贝叶斯分类模型"><a href="#朴素贝叶斯分类模型" class="headerlink" title="朴素贝叶斯分类模型"></a>朴素贝叶斯分类模型</h2><h4 id="生成模型与判别模型"><a href="#生成模型与判别模型" class="headerlink" title="生成模型与判别模型"></a>生成模型与判别模型</h4><p>与前面文章介绍过的判别模型 (KNN， 线性回归，逻辑斯特回归，决策树，感知机，SVM) 不同， 朴素贝叶斯分类模型属于生成模型。在这些监督学习(训练样例同时有输入 $\mathrm x$ 和输出 $y$)中，目标都是学习一个模型，应用这一个模型，对给定的输入预测相应的输出。这个模型的一般形式为决策函数：</p>
+<script type="math/tex; mode=display">
+y=f(\mathrm x)\tag{8}</script><p>或者，从概率的角度上(8)可以写成条件概率：</p>
+<script type="math/tex; mode=display">
+P(y\mid\mathrm x)\tag{9}</script><p>根据求解(9)的方式，我们可以将模型分为判别模型(discriminative model)和生成模型(generation model)：</p>
+<ul>
+<li><p>判别模型：直接学习$P(y\mid\mathrm x)$。例如，在线性回归中，直接将模型设为$y=f(\mathrm x)=P(y\mid\mathrm x)=\omega_0+\mathrm w^{\mathrm T}\mathrm x$。然后通过正规方程或梯度下降求解最优的参数$\bar{\mathrm w}={\omega_0,\mathrm w}$。判别方式是直接学习条件概率$P(y\mid\mathrm x)$，因此学习的准确率更高。</p>
+</li>
+<li><p>生成模型：间接学习$P(y\mid\mathrm x)$。通过贝叶斯定理：</p>
+<script type="math/tex; mode=display">
+P(y\mid\mathrm x)=\frac{P(\mathrm x,y)}{P(\mathrm x)}\tag{10}</script><p>间接求解我们的目标$P(y\mid\mathrm x)$。生产模型需要估计其联合概率分布$P(\mathrm x,y)$，其学习收敛速度较快，但样本数量增加时，学习的模型可以更快地收敛到真实模型。当存在隐变量时，仍然可以用生成模型，此时判别模型不再适用，具体可以参考隐马尔科夫模型。</p>
+</li>
+</ul>
+<hr>
+<h2 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h2><p>当给定模型(8)或(9)时，我们的目标是通过损失函数最小来求解模型(8)，(9)中的优化参数。例如在线性回归中，模型为$\hat y=\omega<em>0+\mathrm w^{\mathrm T}\mathrm x$，我们通过损失函数$\sum\nolimits</em>{i}(\hat y_i-y_i)^2$来寻求最优的参数 $\bar{\mathrm w}={\omega_0,\mathrm w}$。对于朴素贝叶斯来说，我们首先定义对于一个样本$\mathrm x$ 被判别为类别$k\in\mathcal K$ 时的损失函数为：</p>
+<script type="math/tex; mode=display">
+E(\hat y=k\mid\mathrm x)=\sum\limits_{k^\prime\in\mathcal K}\gamma_{kk^\prime}P(y=k^\prime\mid\mathrm x)\tag{11}</script><p>这里 $\gamma_{kk^\prime}$表示的是真实类别为$y=k^\prime$的样例点$\mathrm x$被分类为$\hat y=k$时所产生的损失，一般来说，我们有:</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\gamma_{kk^\prime}=\begin{cases}
+1,\quad k\neq k^\prime\\
+0, \quad k=k^\prime
+\end{cases}
+\end{aligned}\tag{12}</script><p>那么对于整个训练数据集，我们可以定义损失函数为:</p>
+<script type="math/tex; mode=display">
+E(\mathcal D)=\mathbb E_{\mathrm x}[E(\hat y\mid\mathrm x)]\tag{13}</script><p>为了最小化损失函数(13)，我们直观地可以使得对于每一个样例，使其损失函数(11)最小，这样就产生了贝叶斯判定准则：</p>
+<script type="math/tex; mode=display">
+k^\star=argmin_{k\in\mathcal K}\quad E(\hat y=k\mid\mathrm x)=argmin_{k\in\mathcal K}\quad P(\hat y=k\mid\mathrm x)\tag{14}</script><p>求解(14)的难度在于计算 $P(y\mid\mathrm x)$。在朴素贝叶斯中，我们一般通过贝叶斯定理求解：</p>
+<script type="math/tex; mode=display">
+P(y\mid\mathrm x)=\frac{P(\mathrm x,y)}{P(\mathrm x)}=\frac{P(\mathrm x\mid y)P(y)}{P(\mathrm x)}\tag{15}</script><p>对于分类问题来说，我们的目的是求解得到输出$y$。为此，对于$y$来说，我们可以定义$P(y)$为 $y$的先验概率，$P(y\mid\mathrm x)$为已知$\mathrm x$的情况下$y$的后验概率，$P(\mathrm x,y)$为联合概率分布，$P(\mathrm x\mid y)$ 为条件概率。对于一个给定的样例$\mathrm x$，概率$P(\mathrm x)$不变，为此判定准则(14)可以变为：</p>
+<script type="math/tex; mode=display">
+k^\star=argmin_{k\in\mathcal K}\quad P(\mathrm x\mid y=k)P(y=k)\tag{16}</script><p>为此，我们的目的变为如何根据训练数据集$\mathcal D$来计算$P(\mathrm x\mid y=k)$ 和 $P(y=k)$。下面我们介绍如何通过极大似然估计和贝叶斯估计来计算公式(16)。</p>
+<hr>
+<h2 id="参数估计：MLE-和-MAP"><a href="#参数估计：MLE-和-MAP" class="headerlink" title="参数估计：MLE 和 MAP"></a>参数估计：MLE 和 MAP</h2><h4 id="极大似然估计-MLE"><a href="#极大似然估计-MLE" class="headerlink" title="极大似然估计 (MLE)"></a>极大似然估计 (MLE)</h4><p>在朴素贝叶斯分类中，学习后验概率$P(y\mid\mathrm x)$意味着估计先验概率$P(y)$ 和 条件概率 $P(\mathrm x\mid y)$。利用极大似然估计法，先验概率$P(y)$可以计算如下：</p>
+<script type="math/tex; mode=display">
+P(y=k)=\frac{\lvert\mathcal D_k\rvert}{\lvert\mathcal D\rvert}\tag{17}</script><p>其中，$\mathcal D_k$ 为训练数据集中所有类别为$k$的样例集合。同样地，条件概率$P(\mathrm x\mid y)$ 可以展开如下：</p>
+<script type="math/tex; mode=display">
+P(\mathrm x\mid y=k)=P(x^{(1)},x^{(2)},\cdots,x^{(M)}\mid y=k)\tag{18}</script><p>由于在朴素贝叶斯中，各个特征条件独立，公式(18)可以转化为：</p>
+<script type="math/tex; mode=display">
+P(\mathrm x\mid y=k)=P(x^{(1)},x^{(2)},\cdots,x^{(M)}\mid y=k)=\prod\limits_{j=1}^{M}P(x^{(j)}\mid y=k)\tag{19}</script><p>我们假定在$\mathcal D_k$中，第$j$个特征取值为$x^{(j)}$的样例集合为$\mathcal D_k^{(j)}$，那么由极大似然估计可得$P(x^{(j)}\mid y=k)$：</p>
+<script type="math/tex; mode=display">
+P(x^{(j)}\mid y)=\frac{\lvert D_k^{(j)}\rvert}{\lvert\mathcal D_k\rvert}\tag{20}</script><p>将公式(20)带入公式(19)得：</p>
+<script type="math/tex; mode=display">
+P(\mathrm x\mid y=k)=\prod\limits_{j=1}^{M}P(x^{(j)}\mid y=k)=\prod\limits_{j=1}^{M}\frac{\lvert D_k^{(j)}\rvert}{\lvert\mathcal D_k\rvert}\tag{21}</script><hr>
+<p>至此，最基本的朴素贝叶斯分类方法已经介绍完毕。总结：首先根据训练数据集$\mathcal D$计算公式(17)和(21)，然后根据得到的$P(y),P(\mathrm x\mid y)$得到$P(y\mid\mathcal x)$，最后根据(14)进行分类。回到本文最前面的例子：其中公式(1)计算先验概率$P(y)$，公式(2)-(5)计算条件概率$P(\mathrm x\mid y)$，得到(6)-(7)中的后验概率$P(y\mid\mathcal x)$, 最后比较后验概率$P(y=1\mid\mathrm x)$与$P(y=-1\mid\mathrm x)$，样例$\mathrm x$被判别后验概率最大所对应的$y$，即$y=-1$。</p>
+<hr>
+<h4 id="最大后验概率估计-MAP"><a href="#最大后验概率估计-MAP" class="headerlink" title="最大后验概率估计 (MAP)"></a>最大后验概率估计 (MAP)</h4><p>上述极大似然估计可能会对训练集中未出现的特征出现估计的概率值为0的情况，即条件概率$P(\mathrm x\mid y)=0$。为解决这一问题，我们可以使用贝叶斯估计。那么，先验概率$P(y)$可以表示为</p>
+<script type="math/tex; mode=display">
+P(y=k)=\frac{\lvert\mathcal D_k\rvert+\alpha}{\lvert\mathcal D\rvert+\alpha K}\tag{22}</script><p>其中$K$为输出$y$可能的取值个数，$\alpha$为一个常数，当$\alpha=0 $时，即为前面所说的极大似然估计；当$\alpha=1$时，这时称为拉普拉斯平滑。同样地，条件概率的贝叶斯估计为：</p>
+<script type="math/tex; mode=display">
+P(x^{(j)}\mid y=k)=\frac{\lvert D_k^{(j)}\rvert+\alpha}{\lvert\mathcal D_k\rvert+\alpha K_j}\tag{23}</script><p>其中$K_j$为第$j$个特征属性可能的取值个数，根据公式(22)和(23)，我们很容易将公式(1)-(7)改写为：</p>
+<script type="math/tex; mode=display">
+P(y=1)=\frac{10}{17}, P(y=-1)=\frac{7}{17}\tag{$1^\prime$}</script><script type="math/tex; mode=display">
+P(x^{(1)}=1\mid y=1)=\frac{3}{12},P(x^{(1)}=2\mid y=1)=\frac{4}{12},P(x^{(1)}=3\mid y=1)=\frac{5}{12}\tag{$2^\prime$}</script><script type="math/tex; mode=display">
+P(x^{(2)}=\mathrm S\mid y=1)=\frac{2}{12},P(x^{(2)}=\mathrm M\mid y=1)=\frac{5}{12},P(x^{(2)}=\mathrm L\mid y=1)=\frac{5}{12}\tag{$3^\prime$}</script><script type="math/tex; mode=display">
+P(x^{(1)}=1\mid y=-1)=\frac{4}{9},P(x^{(1)}=2\mid y=-1)=\frac{3}{9},P(x^{(1)}=3\mid y=-1)=\frac{2}{9}\tag{$4^\prime$}</script><script type="math/tex; mode=display">
+P(x^{(2)}=\mathrm S\mid y=-1)=\frac{4}{9},P(x^{(2)}=\mathrm M\mid y=-1)=\frac{3}{9},P(x^{(2)}=\mathrm L\mid y=-1)=\frac{2}{9}\tag{$5^\prime$}</script><p>对于新的样例$\mathrm x={2,\mathrm S}$ ，我们有</p>
+<script type="math/tex; mode=display">
+P(y=1)P(x^{(1)}=2\mid y=1)P(x^{(2)}=\mathrm S\mid y=1)=\frac{10}{17}\times\frac{4}{12}\times\frac{1}{12}=\frac{5}{153}=0.032\tag{$6^\prime$}</script><script type="math/tex; mode=display">
+P(y=-1)P(x^{(1)}=2\mid y=-1)P(x^{(2)}=\mathrm S\mid y=-1)=\frac{7}{17}\times\frac{3}{9}\times\frac{4}{9}=\frac{28}{459}=0.061\tag{$7^\prime$}</script><p>比较公式($6^\prime$)和($7^\prime$)，我们判断新的样例$\mathrm x={2,\mathrm S}$的输出类别为$y=-1$ 。</p>
+<hr>
+<h2 id="连续特征的朴素贝叶斯分类"><a href="#连续特征的朴素贝叶斯分类" class="headerlink" title="连续特征的朴素贝叶斯分类"></a>连续特征的朴素贝叶斯分类</h2><p>在前面的例子中，我们都假设特征取值是离散的，这样我们可以直接通过公式(20)和(23)直接计算条件概率。但是，在实际生活中，很多特征属性的取值是连续的。这时，一般有两种方法：1）最简单直观地就是将连续数据离散化；2）假定该连续特征变量服从一种概率分布(正态分布，二项分布等)，根据训练数据集计算该特征的概率密度函数。对于第一种方法，比较简单，不在赘述。下面主要介绍第二种方法：</p>
+<p>对于连续特征$x^{(j)}$，我们假定其服从正态分布，即$P(x^{(j)}\mid y=k)\sim\mathcal N(\mu<em>{kj},\sigma</em>{kj})$ 。对于正态分布，其极大似然估计为：</p>
+<script type="math/tex; mode=display">
+\mu_{kj}=\frac{1}{\lvert\mathcal D_{k}\rvert}\sum\limits_{i\in\mathcal D_{k}}{x_{i}^{(j)}}\tag{24}</script><script type="math/tex; mode=display">
+\sigma_{kj}^2=\frac{1}{\lvert\mathcal D_{k}\rvert}\sum\limits_{i\in\mathcal D_{k}}{(x_{i}^{(j)}-\mu_{kj})^2}\tag{25}</script><p>根据公式(24)和(25)，就可以用正态分布函数的概率密度表达式来计算条件概率：</p>
+<script type="math/tex; mode=display">
+P(x^{(j)}\mid y=k)=\frac{1}{\sqrt{2\pi}\sigma_{kj}}\exp(-\frac{(x^{(j)}-\mu_{kj})^2}{2\sigma_{kj}^2})\tag{26}</script><p>将公式(26)替换前面公式(20)或(23)，就可以利用上述方式得到贝叶斯分类器了。注意：这里我们假定其服从正态分布，当然也可以假定其服从其他分布。这里概率分布的选取对最后的分类效果影响较大。</p>
+<hr>
+<h4 id="连续朴素贝叶斯分类实例"><a href="#连续朴素贝叶斯分类实例" class="headerlink" title="连续朴素贝叶斯分类实例"></a>连续朴素贝叶斯分类实例</h4><p>我们这里使用iris数据集(sklearn库中自带)，这里面有150个训练样例，4个feature, 总共分3类。我们只考虑了前2个feature，这么做是为了在下面二维图中展示分类结果。在这150个样例中，我们取出第25,75,125个样例作为测试样例(其label分别为0,1,2)，其他147个作为训练样例。下图为测试结果：</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200528/Naive_Bayes_fig003.jpg"  ></center>  <center>图1 </center></td>
+    </tr>
+</table>
+
+<p>图1给出了这3三个测试样例的预测结果，其输出的后验概率矩阵就是这3个测试样例属于类别 $0,1,2$ 的后验概率。由于，贝叶斯判别准则为判别为后验概率最大的类，于是可得这3个样例分别判别为类别$0, 2, 2$。图2更加直观地显示了图1的判别结果。其中，填充颜色为我们样例点真正的类别，其中那3个点的轮廓颜色表示的是我们判别的结果，当两种颜色相同时，样例点被正确判别。由图2可知，属于蓝色的那个样例点被错误分类为绿色类别。</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200528/Naive_Bayes_fig001.jpg"  ></center>  <center>图2 </center></td>
+    </tr>
+</table>
+
+<p>更进一步，我们可以利用上面得到的朴素贝叶斯分类器对所有的可能的样例点 (即，图3中的每一个坐标点)进行分类，由此我们可以得到分类超平面(二维空间中为线条)如下：</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200528/Naive_Bayes_fig002.jpg"  ></center>  <center>图3 </center></td>
+    </tr>
+</table>
+
+
+<hr>
+<h2 id="附录："><a href="#附录：" class="headerlink" title="附录："></a>附录：</h2><p>所有图片的python源代码如下：</p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        图1-2的python源代码：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- encoding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">@File    : Naive_Bayes_fig001.py</span></span><br><span class="line"><span class="string">@Time    : 2020/5/28 11:50</span></span><br><span class="line"><span class="string">@Author  : tengweitw</span></span><br><span class="line"><span class="string">@Email   : tengweitw@foxmail.com</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the format of labels</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LabelFormat</span><span class="params">(plt)</span>:</span></span><br><span class="line">    ax = plt.gca()</span><br><span class="line">    plt.tick_params(labelsize=<span class="number">14</span>)</span><br><span class="line">    labels = ax.get_xticklabels() + ax.get_yticklabels()</span><br><span class="line">    [label.set_fontname(<span class="string">'Times New Roman'</span>) <span class="keyword">for</span> label <span class="keyword">in</span> labels]</span><br><span class="line">    font = &#123;<span class="string">'family'</span>: <span class="string">'Times New Roman'</span>,</span><br><span class="line">            <span class="string">'weight'</span>: <span class="string">'normal'</span>,</span><br><span class="line">            <span class="string">'size'</span>: <span class="number">16</span>,</span><br><span class="line">            &#125;</span><br><span class="line">    <span class="keyword">return</span> font</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot the training points:</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">PlotTrainPoint</span><span class="params">(train_data, train_target)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(train_target)):</span><br><span class="line">        <span class="keyword">if</span> train_target[i] == <span class="number">0</span>:</span><br><span class="line">            plt.plot(train_data[i][<span class="number">0</span>], train_data[i][<span class="number">1</span>], <span class="string">'rs'</span>, markersize=<span class="number">6</span>, markerfacecolor=<span class="string">"r"</span>)</span><br><span class="line">        <span class="keyword">elif</span> train_target[i] == <span class="number">1</span>:</span><br><span class="line">            plt.plot(train_data[i][<span class="number">0</span>], train_data[i][<span class="number">1</span>], <span class="string">'bo'</span>, markersize=<span class="number">6</span>, markerfacecolor=<span class="string">"b"</span>)</span><br><span class="line">        <span class="keyword">elif</span> train_target[i] == <span class="number">2</span>:</span><br><span class="line">            plt.plot(train_data[i][<span class="number">0</span>], train_data[i][<span class="number">1</span>], <span class="string">'gd'</span>, markersize=<span class="number">6</span>, markerfacecolor=<span class="string">"g"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot the testing points and prediction results</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">PlotTestPoint</span><span class="params">(test_data, test_target, y_predict_test)</span>:</span></span><br><span class="line">    <span class="comment"># Plot the testing points</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(test_target)):</span><br><span class="line">        <span class="keyword">if</span> test_target[i] == <span class="number">0</span>:</span><br><span class="line">            plt.plot(test_data[i][<span class="number">0</span>], test_data[i][<span class="number">1</span>], <span class="string">'rs'</span>, markersize=<span class="number">6</span>)</span><br><span class="line">        <span class="keyword">elif</span> test_target[i] == <span class="number">1</span>:</span><br><span class="line">            plt.plot(test_data[i][<span class="number">0</span>], test_data[i][<span class="number">1</span>], <span class="string">'bo'</span>, markersize=<span class="number">6</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            plt.plot(test_data[i][<span class="number">0</span>], test_data[i][<span class="number">1</span>], <span class="string">'gs'</span>, markersize=<span class="number">6</span>)</span><br><span class="line">    <span class="comment"># Plot the prediction results</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(y_predict_test)):</span><br><span class="line">        <span class="keyword">if</span> y_predict_test[i] == <span class="number">0</span>:</span><br><span class="line">            plt.plot(test_data[i][<span class="number">0</span>], test_data[i][<span class="number">1</span>], <span class="string">'rs'</span>, markerfacecolor=<span class="string">'none'</span>, markersize=<span class="number">10</span>)</span><br><span class="line">        <span class="keyword">elif</span> y_predict_test[i] == <span class="number">1</span>:</span><br><span class="line">            plt.plot(test_data[i][<span class="number">0</span>], test_data[i][<span class="number">1</span>], <span class="string">'bs'</span>, markersize=<span class="number">10</span>, markerfacecolor=<span class="string">"none"</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            plt.plot(test_data[i][<span class="number">0</span>], test_data[i][<span class="number">1</span>], <span class="string">'gs'</span>, markersize=<span class="number">10</span>, markerfacecolor=<span class="string">"none"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Compute the conditional probability P(x|y) for the test point x</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Calculate_P_x_y</span><span class="params">(Mean_x, Std_x_square, test_point, M, K)</span>:</span></span><br><span class="line">    P_x_y = np.zeros((M, K))</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, M):</span><br><span class="line">        <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>, K):</span><br><span class="line">            P_x_y[j][k] = <span class="number">1</span> / np.sqrt(<span class="number">2</span> * np.pi * Std_x_square[k][j]) * np.exp(</span><br><span class="line">                -np.square(test_point[j] - Mean_x[k][j]) / <span class="number">2</span> / Std_x_square[k][j])</span><br><span class="line">    <span class="keyword">return</span> P_x_y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Naive_Bayes_classfier</span><span class="params">(train_data, train_target, test_data, test_target)</span>:</span></span><br><span class="line">    M = np.size(train_data, <span class="number">1</span>)  <span class="comment"># Dimension of features: 2</span></span><br><span class="line">    N = np.size(train_data, <span class="number">0</span>)  <span class="comment"># Number of instances</span></span><br><span class="line">    K = np.size(np.unique(train_target))  <span class="comment"># Number of classes</span></span><br><span class="line"></span><br><span class="line">    cnt = np.zeros((K, M))</span><br><span class="line">    cnt_y = np.zeros((K, <span class="number">1</span>))</span><br><span class="line">    sum_x = np.zeros((K, M))</span><br><span class="line">    x = np.array((K, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>, K):  <span class="comment"># for each class</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, M):  <span class="comment"># for each feature</span></span><br><span class="line">            cnt_y[k] = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, N):  <span class="comment"># for each instance</span></span><br><span class="line">                <span class="keyword">if</span> train_target[i] == k:</span><br><span class="line">                    cnt_y[k] += <span class="number">1</span></span><br><span class="line">                    cnt[k][j] += <span class="number">1</span>  <span class="comment"># The number of feature j in class i</span></span><br><span class="line">                    sum_x[k][j] += train_data[i][j]  <span class="comment"># The sum of x_&#123;kj&#125;</span></span><br><span class="line">    <span class="comment"># Compute the mean of x^j in the training points classified as class k</span></span><br><span class="line">    Mean_x = np.zeros((K, M))</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>, K):  <span class="comment"># for each class</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, M):  <span class="comment"># for each feature</span></span><br><span class="line">            Mean_x[k][j] = sum_x[k][j] / cnt[k][j]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Compute the variances of x^j in the training points classified as class k</span></span><br><span class="line">    Std_x_square = np.zeros((K, M))</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>, K):  <span class="comment"># for each class</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, M):  <span class="comment"># for each feature</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, N):  <span class="comment"># for each instance</span></span><br><span class="line">                <span class="keyword">if</span> train_target[i] == k:</span><br><span class="line">                    Std_x_square[k][j] += np.square(Mean_x[k][j] - train_data[i][j]) / cnt[k][j]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Compute the prior probability P(y)</span></span><br><span class="line">    P_y = np.zeros((K, <span class="number">1</span>))</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>, K):</span><br><span class="line">        P_y[k] = cnt_y[k] / sum(cnt_y)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># ------Prediction---------#</span></span><br><span class="line"></span><br><span class="line">    L = len(test_target)  <span class="comment"># number of test_points</span></span><br><span class="line"></span><br><span class="line">    P_y_x = np.ones((K, L)) <span class="comment"># The posteriori probability</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> l <span class="keyword">in</span> range(L):</span><br><span class="line">        temp = Calculate_P_x_y(Mean_x, Std_x_square, test_data[l], M, K)</span><br><span class="line">        <span class="keyword">for</span> k <span class="keyword">in</span> range(K):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(M):</span><br><span class="line">                P_y_x[k][l] = P_y_x[k][l] * temp[j][k]</span><br><span class="line">            P_y_x[k][l] = P_y_x[k][l] * P_y[k]</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"\n The posterior prob. for the instances are:"</span>)</span><br><span class="line">    print(P_y_x)</span><br><span class="line">    y_predict_test = np.argmax(P_y_x, axis=<span class="number">0</span>)  <span class="comment"># find the max according to the column</span></span><br><span class="line">    print(<span class="string">"The instances are classified as"</span>)</span><br><span class="line">    print(y_predict_test)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> y_predict_test</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># import dataset of iris</span></span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line"></span><br><span class="line"><span class="comment"># The first two-dim feature for simplicity</span></span><br><span class="line">data = iris.data[:, :<span class="number">2</span>]</span><br><span class="line"><span class="comment"># The labels</span></span><br><span class="line">label = iris.target</span><br><span class="line"></span><br><span class="line"><span class="comment"># Choose the 25,75,125th instance as testing points</span></span><br><span class="line">test_data = [data[<span class="number">25</span>, :], data[<span class="number">75</span>, :], data[<span class="number">125</span>, :]]</span><br><span class="line">test_target = label[[<span class="number">25</span>, <span class="number">75</span>, <span class="number">125</span>]]</span><br><span class="line"></span><br><span class="line">print(<span class="string">'The testing instances are:'</span>)</span><br><span class="line">print(test_data)</span><br><span class="line">print(<span class="string">"The true classes for each instance are:"</span>)</span><br><span class="line">print(test_target)</span><br><span class="line"></span><br><span class="line">data = np.delete(data, [<span class="number">25</span>, <span class="number">75</span>, <span class="number">125</span>], axis=<span class="number">0</span>)</span><br><span class="line">label = np.delete(label, [<span class="number">25</span>, <span class="number">75</span>, <span class="number">125</span>], axis=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">train_data = data</span><br><span class="line">train_target = label</span><br><span class="line"></span><br><span class="line">y_predict_test = Naive_Bayes_classfier(train_data, train_target, test_data, test_target)</span><br><span class="line"></span><br><span class="line">plt.figure()</span><br><span class="line">PlotTrainPoint(train_data, train_target)</span><br><span class="line">PlotTestPoint(test_data, test_target, y_predict_test)</span><br><span class="line">font = LabelFormat(plt)</span><br><span class="line">plt.xlabel(<span class="string">'$x^&#123;(1)&#125;$'</span>, font)</span><br><span class="line">plt.ylabel(<span class="string">'$x^&#123;(2)&#125;$'</span>, font)</span><br><span class="line">plt.xlim(<span class="number">4</span>,<span class="number">8</span>)</span><br><span class="line">plt.ylim(<span class="number">1.8</span>,<span class="number">4.5</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+
+    </div>
+</div>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        图3的python源代码：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- encoding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">@File    : Naive_Bayes_fig002.py</span></span><br><span class="line"><span class="string">@Time    : 2020/5/28 17:18</span></span><br><span class="line"><span class="string">@Author  : tengweitw</span></span><br><span class="line"><span class="string">@Email   : tengweitw@foxmail.com</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> matplotlib.colors <span class="keyword">import</span> ListedColormap</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the format of labels</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LabelFormat</span><span class="params">(plt)</span>:</span></span><br><span class="line">    ax = plt.gca()</span><br><span class="line">    plt.tick_params(labelsize=<span class="number">14</span>)</span><br><span class="line">    labels = ax.get_xticklabels() + ax.get_yticklabels()</span><br><span class="line">    [label.set_fontname(<span class="string">'Times New Roman'</span>) <span class="keyword">for</span> label <span class="keyword">in</span> labels]</span><br><span class="line">    font = &#123;<span class="string">'family'</span>: <span class="string">'Times New Roman'</span>,</span><br><span class="line">            <span class="string">'weight'</span>: <span class="string">'normal'</span>,</span><br><span class="line">            <span class="string">'size'</span>: <span class="number">16</span>,</span><br><span class="line">            &#125;</span><br><span class="line">    <span class="keyword">return</span> font</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot the training points:</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">PlotTrainPoint</span><span class="params">(train_data, train_target)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(train_target)):</span><br><span class="line">        <span class="keyword">if</span> train_target[i] == <span class="number">0</span>:</span><br><span class="line">            plt.plot(train_data[i][<span class="number">0</span>], train_data[i][<span class="number">1</span>], <span class="string">'rs'</span>, markersize=<span class="number">6</span>, markerfacecolor=<span class="string">"r"</span>)</span><br><span class="line">        <span class="keyword">elif</span> train_target[i] == <span class="number">1</span>:</span><br><span class="line">            plt.plot(train_data[i][<span class="number">0</span>], train_data[i][<span class="number">1</span>], <span class="string">'bo'</span>, markersize=<span class="number">6</span>, markerfacecolor=<span class="string">"b"</span>)</span><br><span class="line">        <span class="keyword">elif</span> train_target[i] == <span class="number">2</span>:</span><br><span class="line">            plt.plot(train_data[i][<span class="number">0</span>], train_data[i][<span class="number">1</span>], <span class="string">'gd'</span>, markersize=<span class="number">6</span>, markerfacecolor=<span class="string">"g"</span>)</span><br><span class="line"></span><br><span class="line">cmap_light = ListedColormap([<span class="string">'tomato'</span>, <span class="string">'limegreen'</span>, <span class="string">'cornflowerblue'</span>])</span><br><span class="line"><span class="comment"># Plot the contour of classes</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">PlotTestPoint</span><span class="params">(test_data, test_target, y_predict_test)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(y_predict_test)):</span><br><span class="line">        <span class="keyword">if</span> y_predict_test[i] == <span class="number">0</span>:</span><br><span class="line">            plt.plot(test_data[i][<span class="number">0</span>], test_data[i][<span class="number">1</span>], color=<span class="string">'cornflowerblue'</span>,marker=<span class="string">"s"</span>, markersize=<span class="number">6</span>)</span><br><span class="line">        <span class="keyword">elif</span> y_predict_test[i] == <span class="number">1</span>:</span><br><span class="line">            plt.plot(test_data[i][<span class="number">0</span>], test_data[i][<span class="number">1</span>], color=<span class="string">'limegreen'</span>, marker=<span class="string">"s"</span>,markersize=<span class="number">6</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            plt.plot(test_data[i][<span class="number">0</span>], test_data[i][<span class="number">1</span>], color=<span class="string">'tomato'</span>,marker=<span class="string">"s"</span>, markersize=<span class="number">6</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Compute the conditional probability P(x|y) for the test point x</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Calculate_P_x_y</span><span class="params">(Mean_x, Std_x_square, test_point, M, K)</span>:</span></span><br><span class="line">    P_x_y = np.zeros((M, K))</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, M):</span><br><span class="line">        <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>, K):</span><br><span class="line">            P_x_y[j][k] = <span class="number">1</span> / np.sqrt(<span class="number">2</span> * np.pi * Std_x_square[k][j]) * np.exp(</span><br><span class="line">                -np.square(test_point[j] - Mean_x[k][j]) / <span class="number">2</span> / Std_x_square[k][j])</span><br><span class="line">    <span class="keyword">return</span> P_x_y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Naive_Bayes_classfier</span><span class="params">(train_data, train_target, test_data, test_target)</span>:</span></span><br><span class="line">    M = np.size(train_data, <span class="number">1</span>)  <span class="comment"># Dimension of features: 2</span></span><br><span class="line">    N = np.size(train_data, <span class="number">0</span>)  <span class="comment"># Number of instances</span></span><br><span class="line">    K = np.size(np.unique(train_target))  <span class="comment"># Number of classes</span></span><br><span class="line"></span><br><span class="line">    cnt = np.zeros((K, M))</span><br><span class="line">    cnt_y = np.zeros((K, <span class="number">1</span>))</span><br><span class="line">    sum_x = np.zeros((K, M))</span><br><span class="line">    x = np.array((K, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>, K):  <span class="comment"># for each class</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, M):  <span class="comment"># for each feature</span></span><br><span class="line">            cnt_y[k] = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, N):  <span class="comment"># for each instance</span></span><br><span class="line">                <span class="keyword">if</span> train_target[i] == k:</span><br><span class="line">                    cnt_y[k] += <span class="number">1</span></span><br><span class="line">                    cnt[k][j] += <span class="number">1</span>  <span class="comment"># The number of feature j in class i</span></span><br><span class="line">                    sum_x[k][j] += train_data[i][j]  <span class="comment"># The sum of x_&#123;kj&#125;</span></span><br><span class="line">    <span class="comment"># Compute the mean of x^j in the training points classified as class k</span></span><br><span class="line">    Mean_x = np.zeros((K, M))</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>, K):  <span class="comment"># for each class</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, M):  <span class="comment"># for each feature</span></span><br><span class="line">            Mean_x[k][j] = sum_x[k][j] / cnt[k][j]</span><br><span class="line">    <span class="comment"># Compute the variances of x^j in the training points classified as class k</span></span><br><span class="line">    Std_x_square = np.zeros((K, M))</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>, K):  <span class="comment"># for each class</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, M):  <span class="comment"># for each feature</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, N):  <span class="comment"># for each instance</span></span><br><span class="line">                <span class="keyword">if</span> train_target[i] == k:</span><br><span class="line">                    Std_x_square[k][j] += np.square(Mean_x[k][j] - train_data[i][j]) / cnt[k][j]</span><br><span class="line">    <span class="comment"># Compute the prior probability P(y)</span></span><br><span class="line">    P_y = np.zeros((K, <span class="number">1</span>))</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>, K):</span><br><span class="line">        P_y[k] = cnt_y[k] / sum(cnt_y)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># ------Prediction---------#</span></span><br><span class="line"></span><br><span class="line">    L = len(test_target)  <span class="comment"># number of test_points</span></span><br><span class="line">    P_y_x = np.ones((K, L)) <span class="comment"># The posteriori probability</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> l <span class="keyword">in</span> range(L):</span><br><span class="line">        temp = Calculate_P_x_y(Mean_x, Std_x_square, test_data[l], M, K)</span><br><span class="line">        <span class="keyword">for</span> k <span class="keyword">in</span> range(K):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(M):</span><br><span class="line">                P_y_x[k][l] = P_y_x[k][l] * temp[j][k]</span><br><span class="line">            P_y_x[k][l] = P_y_x[k][l] * P_y[k]</span><br><span class="line">    print(<span class="string">"\n The posterior prob. for the instances are:"</span>)</span><br><span class="line">    print(P_y_x)</span><br><span class="line">    y_predict_test = np.argmax(P_y_x, axis=<span class="number">0</span>)  <span class="comment"># find the max according to the column</span></span><br><span class="line">    print(<span class="string">"The instances are classified as"</span>)</span><br><span class="line">    print(y_predict_test)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> y_predict_test</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># import dataset of iris</span></span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line"></span><br><span class="line"><span class="comment"># The first two-dim feature for simplicity</span></span><br><span class="line">data = iris.data[:, :<span class="number">2</span>]</span><br><span class="line"><span class="comment"># The labels</span></span><br><span class="line">label = iris.target</span><br><span class="line"></span><br><span class="line"><span class="comment"># Delete the three instances to keep the same with fig 1-2</span></span><br><span class="line"><span class="comment"># You can also remove the following two sentences</span></span><br><span class="line">data = np.delete(data, [<span class="number">25</span>, <span class="number">75</span>, <span class="number">125</span>], axis=<span class="number">0</span>)</span><br><span class="line">label = np.delete(label, [<span class="number">25</span>, <span class="number">75</span>, <span class="number">125</span>], axis=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">train_data = data</span><br><span class="line">train_target = label</span><br><span class="line"></span><br><span class="line"><span class="comment"># Here use all the points in the considered area as testing points</span></span><br><span class="line">test_data1=[]</span><br><span class="line">test_target1=[]</span><br><span class="line">x=np.linspace(<span class="number">4</span>,<span class="number">8</span>,<span class="number">100</span>)</span><br><span class="line">y=np.linspace(<span class="number">1.8</span>,<span class="number">4.5</span>,<span class="number">100</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> x:</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> y:</span><br><span class="line">        test_data1.append([i,j])</span><br><span class="line">        test_target1.append([<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">y_predict_test = Naive_Bayes_classfier(train_data, train_target, test_data1, test_target1)</span><br><span class="line"></span><br><span class="line">plt.figure()</span><br><span class="line"></span><br><span class="line">PlotTestPoint(test_data1, test_target1, y_predict_test)</span><br><span class="line">PlotTrainPoint(train_data, train_target)</span><br><span class="line">font = LabelFormat(plt)</span><br><span class="line">plt.xlabel(<span class="string">'$x^&#123;(1)&#125;$'</span>, font)</span><br><span class="line">plt.ylabel(<span class="string">'$x^&#123;(2)&#125;$'</span>, font)</span><br><span class="line">plt.xlim(<span class="number">4</span>,<span class="number">8</span>)</span><br><span class="line">plt.ylim(<span class="number">1.8</span>,<span class="number">4.5</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+    </div>
+</div>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2020/05/28/[20200528]/" title="【图解例说机器学习】朴素贝叶斯 (Naive Bayes)">http://tengweitw.com/2020/05/28/[20200528]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"><i class="fa fa-tag"></i> Machine Learning</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/12/%5B20200512%5D/" rel="prev" title="【图解例说机器学习】支持向量机 (SVM)">
+      <i class="fa fa-chevron-left"></i> 【图解例说机器学习】支持向量机 (SVM)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/31/%5B20200531%5D/" rel="next" title="【图解例说机器学习】参数估计 (MLE and MAP)">
+      【图解例说机器学习】参数估计 (MLE and MAP) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一个例子"><span class="nav-number">1.</span> <span class="nav-text">一个例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#朴素贝叶斯分类模型"><span class="nav-number">2.</span> <span class="nav-text">朴素贝叶斯分类模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#生成模型与判别模型"><span class="nav-number">2.0.1.</span> <span class="nav-text">生成模型与判别模型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#损失函数"><span class="nav-number">3.</span> <span class="nav-text">损失函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数估计：MLE-和-MAP"><span class="nav-number">4.</span> <span class="nav-text">参数估计：MLE 和 MAP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#极大似然估计-MLE"><span class="nav-number">4.0.1.</span> <span class="nav-text">极大似然估计 (MLE)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最大后验概率估计-MAP"><span class="nav-number">4.0.2.</span> <span class="nav-text">最大后验概率估计 (MAP)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连续特征的朴素贝叶斯分类"><span class="nav-number">5.</span> <span class="nav-text">连续特征的朴素贝叶斯分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#连续朴素贝叶斯分类实例"><span class="nav-number">5.0.1.</span> <span class="nav-text">连续朴素贝叶斯分类实例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录："><span class="nav-number">6.</span> <span class="nav-text">附录：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

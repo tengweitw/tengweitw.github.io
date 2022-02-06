@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="青峰碧陋室" type="application/atom+xml">
+  <meta name="baidu-site-verification" content="wqhixSGF0v">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://tengweitw.com').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: './public/search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="前一篇文章【图解例说机器学习】神经网络中，由于篇幅有限，我们只介绍了其理论部分。作为补充，本文主要介绍文中所有图像的绘制(使用Tikz或者Python)。对于神经网络中的框架图 (例如神经元，神经网络结构)，我们采用Tikz绘制；对于坐标系的函数图像，我们采用Python绘制。注意：Tikz源代码需要在LaTeX中运行，其配置环境可以参考我之前的文章【漫漫科研路\LaTeX】使用Sublime T">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【漫漫科研路\Python&amp;Tikz】画神经网络相关图">
+<meta property="og:url" content="http://tengweitw.com/2020/06/10/[20200610]/index.html">
+<meta property="og:site_name" content="青峰碧陋室">
+<meta property="og:description" content="前一篇文章【图解例说机器学习】神经网络中，由于篇幅有限，我们只介绍了其理论部分。作为补充，本文主要介绍文中所有图像的绘制(使用Tikz或者Python)。对于神经网络中的框架图 (例如神经元，神经网络结构)，我们采用Tikz绘制；对于坐标系的函数图像，我们采用Python绘制。注意：Tikz源代码需要在LaTeX中运行，其配置环境可以参考我之前的文章【漫漫科研路\LaTeX】使用Sublime T">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig004.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig005.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig009.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig008.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig002.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig003.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig006.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig007.jpg">
+<meta property="article:published_time" content="2020-06-10T01:07:17.000Z">
+<meta property="article:modified_time" content="2022-02-06T13:21:23.788Z">
+<meta property="article:author" content="tengweitw">
+<meta property="article:tag" content="Machine Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig001.jpg">
+
+<link rel="canonical" href="http://tengweitw.com/2020/06/10/[20200610]/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>【漫漫科研路\Python&Tikz】画神经网络相关图 | 青峰碧陋室</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青峰碧陋室</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/06/10/%5B20200610%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="策马前途须努力，莫学龙钟虚叹息。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【漫漫科研路\Python&Tikz】画神经网络相关图
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-10 09:07:17" itemprop="dateCreated datePublished" datetime="2020-06-10T09:07:17+08:00">2020-06-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>29k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>41 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>前一篇文章【<a href="https://blog.csdn.net/tengweitw/article/details/106646865" target="_blank" rel="noopener">图解例说机器学习】神经网络</a>中，由于篇幅有限，我们只介绍了其理论部分。作为补充，本文主要介绍文中所有图像的绘制(使用Tikz或者Python)。对于神经网络中的框架图 (例如神经元，神经网络结构)，我们采用Tikz绘制；对于坐标系的函数图像，我们采用Python绘制。注意：Tikz源代码需要在LaTeX中运行，其配置环境可以参考我之前的文章<a href="https://blog.csdn.net/tengweitw/article/details/104954220" target="_blank" rel="noopener">【漫漫科研路\LaTeX】使用Sublime Text3撰写科研论文</a>(Windows系统下)或者<a href="https://blog.csdn.net/tengweitw/article/details/103759321" target="_blank" rel="noopener">【漫漫科研路\LaTeX】使用Vim撰写科研论文</a>(MacOS系统下)。</p>
+<hr>
+<a id="more"></a>
+<h2 id="Tikz-pgfplots-绘制神经网络"><a href="#Tikz-pgfplots-绘制神经网络" class="headerlink" title="Tikz/pgfplots 绘制神经网络"></a>Tikz/pgfplots 绘制神经网络</h2><p>图1,2是M-P神经元</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig001.jpg"  >图1</center></td>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig004.jpg"  >图2</center></td>
+    </tr>
+</table>
+
+
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        图1的tikz源代码：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">\documentclass&#123;article&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\usepackage&#123;amsmath&#125;</span><br><span class="line">\usepackage&#123;tikz&#125;</span><br><span class="line">\usetikzlibrary&#123;shapes, calc, shapes, arrows&#125;</span><br><span class="line"></span><br><span class="line">\begin&#123;document&#125;</span><br><span class="line"></span><br><span class="line">\tikzstyle&#123;inputNode&#125;&#x3D;[draw,circle,minimum size&#x3D;25pt,inner sep&#x3D;0pt]</span><br><span class="line">\tikzstyle&#123;stateTransition&#125;&#x3D;[-&gt;, thick]</span><br><span class="line">\begin&#123;tikzpicture&#125;</span><br><span class="line">    \node[draw,circle,minimum size&#x3D;35pt,inner sep&#x3D;0pt] (x) at (0,0) &#123;$\Sigma$ $f$&#125;;</span><br><span class="line"></span><br><span class="line">    \node[inputNode] (x0) at (-3, 2.25) &#123;\color&#123;red&#125;$x^&#123;(0)&#125;$&#125;;</span><br><span class="line">    \node[inputNode] (x1) at (-3, 1.25) &#123;\color&#123;red&#125;$x^&#123;(1)&#125;$&#125;;</span><br><span class="line">    \node[inputNode] (xj) at (-3, -0.5) &#123;\color&#123;red&#125;$x^&#123;(j)&#125;$&#125;;</span><br><span class="line">    \node[inputNode] (xm) at (-3, -2.25) &#123;\color&#123;red&#125;$x^&#123;(M)&#125;$&#125;;</span><br><span class="line"></span><br><span class="line">    \draw[stateTransition] (x0) to[out&#x3D;0,in&#x3D;120] node [midway, sloped, above&#x3D;-2] &#123;\color&#123;green!40!black&#125;$\omega_0$&#125; (x);</span><br><span class="line">    \draw[stateTransition] (x1) to[out&#x3D;0,in&#x3D;150] node [midway, sloped, above&#x3D;-2] &#123;\color&#123;green!40!black&#125;$\omega_1$&#125; (x);</span><br><span class="line">    \draw[stateTransition] (xj) to[out&#x3D;0,in&#x3D;210] node [midway, sloped, above&#x3D;-2] &#123;\color&#123;green!40!black&#125;$\omega_j$&#125; (x);</span><br><span class="line">    \draw[stateTransition] (xm) to[out&#x3D;0,in&#x3D;240] node [midway, sloped, above&#x3D;-2] &#123;\color&#123;green!40!black&#125;$\omega_M$&#125; (x);</span><br><span class="line">    \color&#123;blue&#125;</span><br><span class="line">    \draw[stateTransition] (x) -- (2,0) node [midway,above&#x3D;-0.1cm] &#123;y&#125;;</span><br><span class="line">    \draw[dashed] (0,-0.5) -- (0,0.5);</span><br><span class="line">    \node (dots) at (-3, -1.25) &#123;$\vdots$&#125;;</span><br><span class="line">    \node (dots) at (-3, 0.5) &#123;$\vdots$&#125;;</span><br><span class="line">\end&#123;tikzpicture&#125;</span><br><span class="line"></span><br><span class="line">\end&#123;document&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+</div>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        图2的tikz源代码:
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">\documentclass[crop, tikz]&#123;standalone&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\usepackage&#123;amsmath&#125;</span><br><span class="line">\usepackage&#123;tikz&#125;</span><br><span class="line">\usetikzlibrary&#123;shapes, calc, shapes, arrows&#125;</span><br><span class="line"></span><br><span class="line">\begin&#123;document&#125;</span><br><span class="line"></span><br><span class="line">\tikzstyle&#123;inputNode&#125;&#x3D;[draw,circle,minimum size&#x3D;25pt,inner sep&#x3D;0pt]</span><br><span class="line">\tikzstyle&#123;stateTransition&#125;&#x3D;[-&gt;, thick]</span><br><span class="line">\begin&#123;tikzpicture&#125;</span><br><span class="line">    \node[draw,circle,minimum size&#x3D;35pt,inner sep&#x3D;0pt] (x) at (0,0) &#123;$\Sigma$ $\hspace&#123;1.5mm&#125;sgn$&#125;;</span><br><span class="line"></span><br><span class="line">    \node[inputNode] (x0) at (-3, 1.25) &#123;\color&#123;red&#125;$x^&#123;(0)&#125;$&#125;;</span><br><span class="line">    \node[inputNode] (x1) at (-3, 0) &#123;\color&#123;red&#125;$x^&#123;(1)&#125;$&#125;;</span><br><span class="line">    \node[inputNode] (x2) at (-3, -1.25) &#123;\color&#123;red&#125;$x^&#123;(2)&#125;$&#125;;</span><br><span class="line"></span><br><span class="line">    \draw[stateTransition] (x0) to node [midway, sloped, above&#x3D;-2] &#123;\color&#123;green!40!black&#125;$\omega_0$&#125; (x);</span><br><span class="line">    \draw[stateTransition] (x1) to node [midway, sloped, above&#x3D;-2] &#123;\color&#123;green!40!black&#125;$\omega_1$&#125; (x);</span><br><span class="line">    \draw[stateTransition] (x2) to node [midway, sloped, above&#x3D;-2] &#123;\color&#123;green!40!black&#125;$\omega_2$&#125; (x);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    \color&#123;blue&#125;</span><br><span class="line">    \draw[stateTransition] (x) -- (4,0) node [midway,above&#x3D;-0.1cm] &#123;$y&#x3D;\color&#123;black&#125;sgn\left(\sum\limits_&#123;j&#x3D;0&#125;^&#123;2&#125;\color&#123;green!40!black&#125;\omega_j\color&#123;red&#125;x^&#123;(j)&#125;\color&#123;black&#125;\right)$&#125;;</span><br><span class="line">    \draw[dashed] (0,-0.5) -- (0,0.5);</span><br><span class="line"></span><br><span class="line">\end&#123;tikzpicture&#125;</span><br><span class="line"></span><br><span class="line">\end&#123;document&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+</div>
+<p>图3和图4是常见的神经网络结构图：</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig005.jpg"  >图3</center></td>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig009.jpg"  >图4</center></td>
+    </tr>
+</table>
+
+
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        图3的Tikz源代码为：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">\documentclass[crop, tikz]&#123;standalone&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\usepackage&#123;amsmath&#125;</span><br><span class="line">\usepackage&#123;tikz&#125;</span><br><span class="line">\usetikzlibrary&#123;shapes, calc, shapes, arrows&#125;</span><br><span class="line"></span><br><span class="line">\begin&#123;document&#125;</span><br><span class="line"></span><br><span class="line">\tikzstyle&#123;inputNode&#125;&#x3D;[draw,circle,minimum size&#x3D;25pt,inner sep&#x3D;0pt]</span><br><span class="line">\tikzstyle&#123;stateTransition&#125;&#x3D;[-&gt;, thick]</span><br><span class="line">\begin&#123;tikzpicture&#125;</span><br><span class="line">    \node[draw,circle,minimum size&#x3D;25pt,inner sep&#x3D;0pt,blue] (x) at (3,0) &#123;$y$&#125;;</span><br><span class="line"></span><br><span class="line">    \node[inputNode] (x0) at (-3, 2.25) &#123;\color&#123;red&#125;$x^&#123;(0)&#125;$&#125;;</span><br><span class="line">    \node[inputNode] (x1) at (-3, 0) &#123;\color&#123;red&#125;$x^&#123;(1)&#125;$&#125;;</span><br><span class="line">    \node[inputNode] (x2) at (-3, -2.25) &#123;\color&#123;red&#125;$x^&#123;(2)&#125;$&#125;;</span><br><span class="line"></span><br><span class="line">    \node[inputNode] (z0) at (0, 2.25) &#123;\color&#123;green&#125;$z^&#123;(0)&#125;$&#125;;</span><br><span class="line">    \node[inputNode] (z1) at (0, 0) &#123;\color&#123;green&#125;$z^&#123;(1)&#125;$&#125;;</span><br><span class="line">    \node[inputNode] (z2) at (0, -2.25) &#123;\color&#123;green&#125;$z^&#123;(2)&#125;$&#125;;</span><br><span class="line"></span><br><span class="line">    \draw[stateTransition] (x0) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-25] &#123;\color&#123;green!40!black&#125;$\omega_&#123;01&#125;^&#123;(1)&#125;$&#125; (z1);</span><br><span class="line">    \draw[stateTransition] (x1) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;\color&#123;green!40!black&#125;$\omega_&#123;11&#125;^&#123;(1)&#125;$&#125; (z1);</span><br><span class="line">    \draw[stateTransition] (x2) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;\color&#123;green!40!black&#125;$\omega_&#123;21&#125;^&#123;(1)&#125;$&#125; (z1);</span><br><span class="line"></span><br><span class="line">    \draw[stateTransition] (x0) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-35] &#123;\color&#123;green!40!black&#125;$\omega_&#123;02&#125;^&#123;(1)&#125;$&#125; (z2);</span><br><span class="line">    \draw[stateTransition] (x1) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-25] &#123;\color&#123;green!40!black&#125;$\omega_&#123;12&#125;^&#123;(1)&#125;$&#125; (z2);</span><br><span class="line">    \draw[stateTransition] (x2) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;\color&#123;green!40!black&#125;$\omega_&#123;22&#125;^&#123;(1)&#125;$&#125; (z2);</span><br><span class="line"></span><br><span class="line">    \draw[stateTransition] (z0) to node [midway, sloped, above&#x3D;-2] &#123;\color&#123;green!60!black&#125;$\omega_&#123;0&#125;^&#123;(2)&#125;$&#125; (x);</span><br><span class="line">    \draw[stateTransition] (z1) to node [midway, sloped, above&#x3D;-2] &#123;\color&#123;green!60!black&#125;$\omega_&#123;1&#125;^&#123;(2)&#125;$&#125; (x);</span><br><span class="line">    \draw[stateTransition] (z2) to node [midway, sloped, above&#x3D;-2] &#123;\color&#123;green!60!black&#125;$\omega_&#123;2&#125;^&#123;(2)&#125;$&#125; (x);</span><br><span class="line"></span><br><span class="line">    \color&#123;blue&#125;</span><br><span class="line">    \draw[stateTransition] (x) -- (8,0) node [midway,above&#x3D;1cm] &#123;$\color&#123;green&#125;z^&#123;(j)&#125;\color&#123;black&#125;&#x3D;\color&#123;black&#125;sgn\left(\sum\limits_&#123;i&#x3D;0&#125;^&#123;2&#125;\color&#123;green!40!black&#125;\omega_&#123;ij&#125;^&#123;(1)&#125;\color&#123;red&#125;x^&#123;(i)&#125;\color&#123;black&#125;\right)$&#125;;</span><br><span class="line">        \draw[stateTransition] (x) -- (8,0) node [midway,above&#x3D;0.5cm] &#123;$\color&#123;red&#125;x^&#123;(0)&#125;\color&#123;black&#125;&#x3D;\color&#123;green&#125;z^&#123;(0)&#125;&#x3D;1$&#125;;</span><br><span class="line">    \draw[stateTransition] (x) -- (8,0) node [midway,below&#x3D;1cm] &#123;$\color&#123;blue&#125;y\color&#123;black&#125;&#x3D;\color&#123;black&#125;sgn\left(\sum\limits_&#123;j&#x3D;0&#125;^&#123;2&#125;\color&#123;green!60!black&#125;\omega_&#123;i&#125;^&#123;(2)&#125;\color&#123;green&#125;z^&#123;(j)&#125;\color&#123;black&#125;\right)$&#125;;</span><br><span class="line"></span><br><span class="line">\end&#123;tikzpicture&#125;</span><br><span class="line"></span><br><span class="line">\end&#123;document&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+</div>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        图4的Tikz源代码为：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line">\documentclass[crop, tikz]&#123;standalone&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\usepackage&#123;amsmath&#125;</span><br><span class="line">\usepackage&#123;tikz&#125;</span><br><span class="line">\usetikzlibrary&#123;shapes, calc, shapes, arrows&#125;</span><br><span class="line"></span><br><span class="line">\begin&#123;document&#125;</span><br><span class="line"></span><br><span class="line">\tikzstyle&#123;inputNode&#125;&#x3D;[draw,circle,minimum size&#x3D;25pt,inner sep&#x3D;0pt]</span><br><span class="line">\tikzstyle&#123;inputNode1&#125;&#x3D;[draw,circle,minimum size&#x3D;35pt,inner sep&#x3D;0pt]</span><br><span class="line">\tikzstyle&#123;stateTransition&#125;&#x3D;[-&gt;, thick]</span><br><span class="line">\begin&#123;tikzpicture&#125;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    \node[inputNode] (x0) at (-3, 3.4) &#123;\color&#123;red&#125;$x^&#123;(0)&#125;$&#125;;</span><br><span class="line">    \node[inputNode] (x1) at (-3, 1.75) &#123;\color&#123;red&#125;$x^&#123;(1)&#125;$&#125;;</span><br><span class="line">    \node (dots) at (-3, 0.75) &#123;$\vdots$&#125;;</span><br><span class="line">    \node[inputNode] (xi) at (-3, -0.75) &#123;\color&#123;red&#125;$x^&#123;(i)&#125;$&#125;;</span><br><span class="line">    \node (dots) at (-3, -1.75) &#123;$\vdots$&#125;;</span><br><span class="line">    \node[inputNode] (xI) at (-3, -3.4) &#123;\color&#123;red&#125;$x^&#123;(I)&#125;$&#125;;</span><br><span class="line">    </span><br><span class="line">    \node[inputNode1] (z0) at (0, 3.4) &#123;\color&#123;green&#125;$z^&#123;(0)&#125;$&#125;;</span><br><span class="line">    \node[inputNode1] (z1) at (0, 1.75) &#123;\color&#123;green&#125;$\alpha^&#123;(1)&#125; z^&#123;(1)&#125;$&#125;;</span><br><span class="line">    \draw[dashed] (0,1.75-0.5) -- (0,1.75+0.5);</span><br><span class="line">    \node (dots) at (0, 0.75) &#123;$\vdots$&#125;;</span><br><span class="line">    \node[inputNode1] (zj) at (0, -0.75) &#123;\color&#123;green&#125;$\alpha^&#123;(j)&#125; z^&#123;(j)&#125;$&#125;;</span><br><span class="line">    \draw[dashed] (0,-0.75-0.5) -- (0,-0.75+0.5);</span><br><span class="line">    \node (dots) at (0, -1.75) &#123;$\vdots$&#125;;</span><br><span class="line">    \node[inputNode1] (zJ) at (0, -3.4) &#123;\color&#123;green&#125;$\alpha^&#123;(J)&#125; z^&#123;(J)&#125;$&#125;;</span><br><span class="line">    \draw[dashed] (0,-3.2-0.5) -- (0,-3.2+0.5);</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    \node[inputNode1] (y1) at (3, 1.75) &#123;\color&#123;blue&#125;$\beta^&#123;(1)&#125; \hat y^&#123;(1)&#125;$&#125;;</span><br><span class="line">    \draw[dashed] (3,1.75-0.5) -- (3,1.75+0.5);</span><br><span class="line">    \node (dots) at (3, 0.75) &#123;$\vdots$&#125;;</span><br><span class="line">    \node[inputNode1] (yk) at (3, -0.75) &#123;\color&#123;blue&#125;$\beta^&#123;(k)&#125; \hat y^&#123;(k)&#125;$&#125;;</span><br><span class="line">    \draw[dashed] (3,-0.75-0.5) -- (3,-0.75+0.5);</span><br><span class="line">    \node (dots) at (3, -1.75) &#123;$\vdots$&#125;;</span><br><span class="line">    \node[inputNode1] (yK) at (3, -3.4) &#123;\color&#123;blue&#125;$\beta^&#123;(K)&#125; \hat y^&#123;(K)&#125;$&#125;;</span><br><span class="line">    \draw[dashed] (3,-3.4-0.5) -- (3,-3.4+0.5);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (x0) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-25] &#123;&#125; (z1);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (x1) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;&#125; (z1);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (xi) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;&#125; (z1);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (xI) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;&#125; (z1);</span><br><span class="line"></span><br><span class="line">    \draw[stateTransition] (x0) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-35] &#123;\color&#123;red!60!green&#125;$\omega_&#123;0j&#125;^&#123;(1)&#125;$&#125; (zj);</span><br><span class="line">    \draw[stateTransition] (x1) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-25] &#123;\color&#123;red!60!green&#125;$\omega_&#123;1j&#125;^&#123;(1)&#125;$&#125; (zj);</span><br><span class="line">    \draw[stateTransition] (xi) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;\color&#123;red!60!green&#125;$\omega_&#123;ij&#125;^&#123;(1)&#125;$&#125; (zj);</span><br><span class="line">    \draw[stateTransition] (xI) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;\color&#123;red!60!green&#125;$\omega_&#123;Ij&#125;^&#123;(1)&#125;$&#125; (zj);</span><br><span class="line"></span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (x0) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-35] &#123;&#125; (zJ);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (x1) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-25] &#123;&#125; (zJ);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (xi) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;&#125; (zJ);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (xI) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;&#125; (zJ);</span><br><span class="line"></span><br><span class="line">%-----------%</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (z0) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-25] &#123;&#125; (y1);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (z1) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;&#125; (y1);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (zj) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;&#125; (y1);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (zJ) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;&#125; (y1);</span><br><span class="line"></span><br><span class="line">    \draw[stateTransition] (z0) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-35] &#123;\color&#123;green!60!blue&#125;$\omega_&#123;0k&#125;^&#123;(2)&#125;$&#125; (yk);</span><br><span class="line">    \draw[stateTransition] (z1) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-25] &#123;\color&#123;green!60!blue&#125;$\omega_&#123;1k&#125;^&#123;(2)&#125;$&#125; (yk);</span><br><span class="line">    \draw[stateTransition] (zj) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;\color&#123;green!60!blue&#125;$\omega_&#123;jk&#125;^&#123;(2)&#125;$&#125; (yk);</span><br><span class="line">    \draw[stateTransition] (zJ) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;\color&#123;green!60!blue&#125;$\omega_&#123;Jk&#125;^&#123;(2)&#125;$&#125; (yk);</span><br><span class="line"></span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (z0) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-35] &#123;&#125; (yK);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (z1) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-25] &#123;&#125; (yK);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (zj) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;&#125; (yK);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (zJ) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;&#125; (yK);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    \color&#123;blue&#125;</span><br><span class="line">    \draw[stateTransition] (yk) node [midway,above&#x3D;2cm,xshift&#x3D;6cm] &#123;$\color&#123;green&#125;\alpha^&#123;(j)&#125;\color&#123;black&#125;&#x3D;\color&#123;black&#125;\sum\limits_&#123;i&#x3D;0&#125;^&#123;I&#125;\color&#123;red!60!green&#125;\omega_&#123;ij&#125;^&#123;(1)&#125;\color&#123;red&#125;x^&#123;(i)&#125;\color&#123;black&#125;$&#125;;</span><br><span class="line">        \draw[stateTransition] (yk) node [midway,above&#x3D;1cm,xshift&#x3D;6cm] &#123;$\color&#123;green&#125;z^&#123;(j)&#125;\color&#123;black&#125;&#x3D;\color&#123;black&#125;\sigma\left(\color&#123;green&#125;\alpha^&#123;(j)&#125;\color&#123;black&#125;\right)$&#125;;</span><br><span class="line"></span><br><span class="line">        \draw[stateTransition] (yk) node [midway,above&#x3D;0cm,xshift&#x3D;6cm] &#123;$\color&#123;red&#125;x^&#123;(0)&#125;\color&#123;black&#125;&#x3D;\color&#123;green&#125;z^&#123;(0)&#125;\color&#123;black&#125;&#x3D;1$&#125;;</span><br><span class="line"></span><br><span class="line">    \draw[stateTransition] (yk)  node [midway,below&#x3D;0.25cm,xshift&#x3D;6cm] &#123;$\color&#123;blue&#125;\beta^&#123;(k)&#125;\color&#123;black&#125;&#x3D;\sum\limits_&#123;j&#x3D;0&#125;^&#123;J&#125;\color&#123;green!60!blue&#125;\omega_&#123;jk&#125;^&#123;(2)&#125;\color&#123;green&#125;z^&#123;(j)&#125;\color&#123;black&#125;$&#125;;</span><br><span class="line"></span><br><span class="line">        \draw[stateTransition] (yk)  node [midway,below&#x3D;1.35cm,xshift&#x3D;6cm] &#123;$\color&#123;blue&#125;\hat y^&#123;(k)&#125;\color&#123;black&#125;&#x3D;\color&#123;black&#125;\sigma\left(\color&#123;blue&#125;\beta^&#123;(k)&#125;\color&#123;black&#125;\right)$&#125;;</span><br><span class="line"></span><br><span class="line">\end&#123;tikzpicture&#125;</span><br><span class="line"></span><br><span class="line">\end&#123;document&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+</div>
+<p>图5为多层神经网络与M-P神经元的关系图：</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig008.jpg"  ></center>  <center>图5 </center></td>
+    </tr>
+</table>
+
+
+
+
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        图5对应的Tikz源代码为：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line">\documentclass[crop, tikz]&#123;standalone&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\usepackage&#123;amsmath&#125;</span><br><span class="line">\usepackage&#123;tikz&#125;</span><br><span class="line">\usetikzlibrary&#123;shapes, calc, shapes, arrows&#125;</span><br><span class="line"></span><br><span class="line">\begin&#123;document&#125;</span><br><span class="line"></span><br><span class="line">\tikzstyle&#123;inputNode&#125;&#x3D;[draw,circle,minimum size&#x3D;25pt,inner sep&#x3D;0pt]</span><br><span class="line">\tikzstyle&#123;inputNode1&#125;&#x3D;[draw,circle,minimum size&#x3D;35pt,inner sep&#x3D;0pt]</span><br><span class="line">\tikzstyle&#123;stateTransition&#125;&#x3D;[-&gt;, thick]</span><br><span class="line">\begin&#123;tikzpicture&#125;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    \node[inputNode] (x0) at (-3, 3.4) &#123;\color&#123;red&#125;$x^&#123;(0)&#125;$&#125;;</span><br><span class="line">    \node[inputNode] (x1) at (-3, 1.75) &#123;\color&#123;red&#125;$x^&#123;(1)&#125;$&#125;;</span><br><span class="line">    \node (dots) at (-3, 0.75) &#123;$\vdots$&#125;;</span><br><span class="line">    \node[inputNode] (xi) at (-3, -0.75) &#123;\color&#123;red&#125;$x^&#123;(i)&#125;$&#125;;</span><br><span class="line">    \node (dots) at (-3, -1.75) &#123;$\vdots$&#125;;</span><br><span class="line">    \node[inputNode] (xI) at (-3, -3.4) &#123;\color&#123;red&#125;$x^&#123;(I)&#125;$&#125;;</span><br><span class="line">    </span><br><span class="line">    \node[inputNode1] (z0) at (0, 3.4) &#123;\color&#123;green&#125;$z^&#123;(0)&#125;$&#125;;</span><br><span class="line">    \node[inputNode1] (z1) at (0, 1.75) &#123;\color&#123;green&#125;$\alpha^&#123;(1)&#125; z^&#123;(1)&#125;$&#125;;</span><br><span class="line">    \draw[dashed] (0,1.75-0.5) -- (0,1.75+0.5);</span><br><span class="line">    \node (dots) at (0, 0.75) &#123;$\vdots$&#125;;</span><br><span class="line">    \node[inputNode1] (zj) at (0, -0.75) &#123;\color&#123;green&#125;$\alpha^&#123;(j)&#125; z^&#123;(j)&#125;$&#125;;</span><br><span class="line">    \draw[dashed] (0,-0.75-0.5) -- (0,-0.75+0.5);</span><br><span class="line">    \node (dots) at (0, -1.75) &#123;$\vdots$&#125;;</span><br><span class="line">    \node[inputNode1] (zJ) at (0, -3.4) &#123;\color&#123;green&#125;$\alpha^&#123;(J)&#125; z^&#123;(J)&#125;$&#125;;</span><br><span class="line">    \draw[dashed] (0,-3.2-0.5) -- (0,-3.2+0.5);</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    \node[inputNode1] (y1) at (3, 1.75) &#123;\color&#123;blue&#125;$\beta^&#123;(1)&#125; \hat y^&#123;(1)&#125;$&#125;;</span><br><span class="line">    \draw[dashed] (3,1.75-0.5) -- (3,1.75+0.5);</span><br><span class="line">    \node (dots) at (3, 0.75) &#123;$\vdots$&#125;;</span><br><span class="line">    \node[inputNode1] (yk) at (3, -0.75) &#123;\color&#123;blue&#125;$\beta^&#123;(k)&#125; \hat y^&#123;(k)&#125;$&#125;;</span><br><span class="line">    \draw[dashed] (3,-0.75-0.5) -- (3,-0.75+0.5);</span><br><span class="line">    \node (dots) at (3, -1.75) &#123;$\vdots$&#125;;</span><br><span class="line">    \node[inputNode1] (yK) at (3, -3.4) &#123;\color&#123;blue&#125;$\beta^&#123;(K)&#125; \hat y^&#123;(K)&#125;$&#125;;</span><br><span class="line">    \draw[dashed] (3,-3.4-0.5) -- (3,-3.4+0.5);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (x0) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-25] &#123;&#125; (z1);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (x1) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;&#125; (z1);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (xi) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;&#125; (z1);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (xI) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;&#125; (z1);</span><br><span class="line"></span><br><span class="line">    \draw[stateTransition] (x0) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-35] &#123;\color&#123;red!60!green&#125;$\omega_&#123;0j&#125;^&#123;(1)&#125;$&#125; (zj);</span><br><span class="line">    \draw[stateTransition] (x1) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-25] &#123;\color&#123;red!60!green&#125;$\omega_&#123;1j&#125;^&#123;(1)&#125;$&#125; (zj);</span><br><span class="line">    \draw[stateTransition] (xi) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;\color&#123;red!60!green&#125;$\omega_&#123;ij&#125;^&#123;(1)&#125;$&#125; (zj);</span><br><span class="line">    \draw[stateTransition] (xI) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;\color&#123;red!60!green&#125;$\omega_&#123;Ij&#125;^&#123;(1)&#125;$&#125; (zj);</span><br><span class="line"></span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (x0) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-35] &#123;&#125; (zJ);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (x1) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-25] &#123;&#125; (zJ);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (xi) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;&#125; (zJ);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (xI) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;&#125; (zJ);</span><br><span class="line"></span><br><span class="line">%-----------%</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (z0) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-25] &#123;&#125; (y1);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (z1) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;&#125; (y1);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (zj) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;&#125; (y1);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (zJ) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;&#125; (y1);</span><br><span class="line"></span><br><span class="line">    \draw[stateTransition] (z0) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-35] &#123;\color&#123;green!60!blue&#125;$\omega_&#123;0k&#125;^&#123;(2)&#125;$&#125; (yk);</span><br><span class="line">    \draw[stateTransition] (z1) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-25] &#123;\color&#123;green!60!blue&#125;$\omega_&#123;1k&#125;^&#123;(2)&#125;$&#125; (yk);</span><br><span class="line">    \draw[stateTransition] (zj) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;\color&#123;green!60!blue&#125;$\omega_&#123;jk&#125;^&#123;(2)&#125;$&#125; (yk);</span><br><span class="line">    \draw[stateTransition] (zJ) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;\color&#123;green!60!blue&#125;$\omega_&#123;Jk&#125;^&#123;(2)&#125;$&#125; (yk);</span><br><span class="line"></span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (z0) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-35] &#123;&#125; (yK);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (z1) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-25] &#123;&#125; (yK);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (zj) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;&#125; (yK);</span><br><span class="line">    \draw[stateTransition,opacity&#x3D;0.2] (zJ) to node [midway, sloped, above&#x3D;-2,xshift&#x3D;-15] &#123;&#125; (yK);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    \color&#123;blue&#125;</span><br><span class="line">    \draw[stateTransition] (yk) node [midway,above&#x3D;2cm,xshift&#x3D;6cm] &#123;$\color&#123;green&#125;\alpha^&#123;(j)&#125;\color&#123;black&#125;&#x3D;\color&#123;black&#125;\sum\limits_&#123;i&#x3D;0&#125;^&#123;I&#125;\color&#123;red!60!green&#125;\omega_&#123;ij&#125;^&#123;(1)&#125;\color&#123;red&#125;x^&#123;(i)&#125;\color&#123;black&#125;$&#125;;</span><br><span class="line">        \draw[stateTransition] (yk) node [midway,above&#x3D;1cm,xshift&#x3D;6cm] &#123;$\color&#123;green&#125;z^&#123;(j)&#125;\color&#123;black&#125;&#x3D;\color&#123;black&#125;\sigma\left(\color&#123;green&#125;\alpha^&#123;(j)&#125;\color&#123;black&#125;\right)$&#125;;</span><br><span class="line"></span><br><span class="line">        \draw[stateTransition] (yk) node [midway,above&#x3D;0cm,xshift&#x3D;6cm] &#123;$\color&#123;red&#125;x^&#123;(0)&#125;\color&#123;black&#125;&#x3D;\color&#123;green&#125;z^&#123;(0)&#125;\color&#123;black&#125;&#x3D;1$&#125;;</span><br><span class="line"></span><br><span class="line">    \draw[stateTransition] (yk)  node [midway,below&#x3D;0.25cm,xshift&#x3D;6cm] &#123;$\color&#123;blue&#125;\beta^&#123;(k)&#125;\color&#123;black&#125;&#x3D;\sum\limits_&#123;j&#x3D;0&#125;^&#123;J&#125;\color&#123;green!60!blue&#125;\omega_&#123;jk&#125;^&#123;(2)&#125;\color&#123;green&#125;z^&#123;(j)&#125;\color&#123;black&#125;$&#125;;</span><br><span class="line"></span><br><span class="line">        \draw[stateTransition] (yk)  node [midway,below&#x3D;1.35cm,xshift&#x3D;6cm] &#123;$\color&#123;blue&#125;\hat y^&#123;(k)&#125;\color&#123;black&#125;&#x3D;\color&#123;black&#125;\sigma\left(\color&#123;blue&#125;\beta^&#123;(k)&#125;\color&#123;black&#125;\right)$&#125;;</span><br><span class="line"></span><br><span class="line">\end&#123;tikzpicture&#125;</span><br><span class="line"></span><br><span class="line">\end&#123;document&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+</div>
+<hr>
+<h2 id="Python绘制函数图像"><a href="#Python绘制函数图像" class="headerlink" title="Python绘制函数图像"></a>Python绘制函数图像</h2><p>Python作图主要使用matplotlib，作图其实比较简单。这里主要是介绍如何作带箭头的坐标系。具体如下：</p>
+<p>图6-7是机器学习中常用的激活函数：</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig002.jpg"  >图6</center></td>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig003.jpg"  >图7</center></td>
+    </tr>
+</table>
+
+
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        图6所对应的Python源代码：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- encoding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">@File    : Neural_Networks_001.py</span></span><br><span class="line"><span class="string">@Time    : 2020/6/8 15:06</span></span><br><span class="line"><span class="string">@Author  : tengweitw</span></span><br><span class="line"><span class="string">@Email   : tengweitw@foxmail.com</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> mpl_toolkits.axisartist <span class="keyword">as</span> axisartist</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="comment"># Set the format of labels</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LabelFormat</span><span class="params">(plt)</span>:</span></span><br><span class="line">    ax = plt.gca()</span><br><span class="line">    plt.tick_params(labelsize=<span class="number">14</span>)</span><br><span class="line">    labels = ax.get_xticklabels() + ax.get_yticklabels()</span><br><span class="line">    [label.set_fontname(<span class="string">'Times New Roman'</span>) <span class="keyword">for</span> label <span class="keyword">in</span> labels]</span><br><span class="line">    font = &#123;<span class="string">'family'</span>: <span class="string">'Times New Roman'</span>,</span><br><span class="line">            <span class="string">'weight'</span>: <span class="string">'normal'</span>,</span><br><span class="line">            <span class="string">'size'</span>: <span class="number">16</span>,</span><br><span class="line">            &#125;</span><br><span class="line">    <span class="keyword">return</span> font</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#Set the figure window square</span></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">6</span>, <span class="number">6</span>))</span><br><span class="line"></span><br><span class="line">ax = axisartist.Subplot(fig, <span class="number">111</span>)</span><br><span class="line"></span><br><span class="line">fig.add_axes(ax)</span><br><span class="line"></span><br><span class="line">ax.axis[:].set_visible(<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">font = LabelFormat(plt)</span><br><span class="line"></span><br><span class="line">ax.axis[<span class="string">"x"</span>] = ax.new_floating_axis(<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#Set properties of X axis and add arrow</span></span><br><span class="line">ax.axis[<span class="string">"x"</span>].major_ticklabels.set_fontsize(<span class="number">14</span>)</span><br><span class="line">ax.axis[<span class="string">"x"</span>].major_ticklabels.set_fontname(<span class="string">'Times New Roman'</span>)</span><br><span class="line">ax.axis[<span class="string">"x"</span>].set_axisline_style(<span class="string">"-&gt;"</span>, size = <span class="number">1.0</span>)</span><br><span class="line">ax.axis[<span class="string">"x"</span>].label.set_fontsize(<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#Set properties of Y axis and add arrow</span></span><br><span class="line">ax.axis[<span class="string">"y"</span>] = ax.new_floating_axis(<span class="number">1</span>,<span class="number">0</span>)</span><br><span class="line">ax.axis[<span class="string">"y"</span>].major_ticklabels.set_fontsize(<span class="number">14</span>)</span><br><span class="line">ax.axis[<span class="string">"y"</span>].major_ticklabels.set_fontname(<span class="string">'Times New Roman'</span>)</span><br><span class="line">ax.axis[<span class="string">"y"</span>].set_axisline_style(<span class="string">"-&gt;"</span>, size = <span class="number">1.0</span>)</span><br><span class="line">ax.axis[<span class="string">"y"</span>].label.set_fontsize(<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#Set the ticks' locations</span></span><br><span class="line">ax.axis[<span class="string">"x"</span>].set_axis_direction(<span class="string">"bottom"</span>)</span><br><span class="line">ax.axis[<span class="string">"y"</span>].set_axis_direction(<span class="string">"left"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#Create Datas</span></span><br><span class="line">x=np.linspace(<span class="number">-10</span>,<span class="number">10</span>,<span class="number">1000</span>)</span><br><span class="line">y_sigmoid=<span class="number">1</span>/(<span class="number">1</span>+np.exp(-x))</span><br><span class="line">y_sgn=np.zeros((len(x),<span class="number">1</span>))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(x)):</span><br><span class="line">    <span class="keyword">if</span> x[i]&gt;=<span class="number">0</span>:</span><br><span class="line">        y_sgn[i]=<span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        y_sgn[i]=<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot figures</span></span><br><span class="line">plt.plot(x,y_sigmoid,linewidth=<span class="number">3</span>)</span><br><span class="line">plt.plot(x,y_sgn,linewidth=<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">plt.xlim(<span class="number">-10</span>,<span class="number">10</span>)</span><br><span class="line">plt.ylim(<span class="number">-0.2</span>,<span class="number">1.3</span>)</span><br><span class="line"></span><br><span class="line">plt.legend([<span class="string">r"Sigmoid(x)=$\frac&#123;1&#125;&#123;1+\exp(-x)&#125;$"</span>, <span class="string">r"$Sgn(x)=0,x&lt;0; Sgn(x)=1, otherwise$"</span>],loc=<span class="string">"upper left"</span>)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+    </div>
+</div>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        图7对应的Python源代码：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- encoding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">@File    : Neural_Networks_002.py</span></span><br><span class="line"><span class="string">@Time    : 2020/6/8 19:29</span></span><br><span class="line"><span class="string">@Author  : tengweitw</span></span><br><span class="line"><span class="string">@Email   : tengweitw@foxmail.com</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> mpl_toolkits.axisartist <span class="keyword">as</span> axisartist</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="comment"># Set the format of labels</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LabelFormat</span><span class="params">(plt)</span>:</span></span><br><span class="line">    ax = plt.gca()</span><br><span class="line">    plt.tick_params(labelsize=<span class="number">14</span>)</span><br><span class="line">    labels = ax.get_xticklabels() + ax.get_yticklabels()</span><br><span class="line">    [label.set_fontname(<span class="string">'Times New Roman'</span>) <span class="keyword">for</span> label <span class="keyword">in</span> labels]</span><br><span class="line">    font = &#123;<span class="string">'family'</span>: <span class="string">'Times New Roman'</span>,</span><br><span class="line">            <span class="string">'weight'</span>: <span class="string">'normal'</span>,</span><br><span class="line">            <span class="string">'size'</span>: <span class="number">16</span>,</span><br><span class="line">            &#125;</span><br><span class="line">    <span class="keyword">return</span> font</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#Set the figure window square</span></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">6</span>, <span class="number">6</span>))</span><br><span class="line"></span><br><span class="line">ax = axisartist.Subplot(fig, <span class="number">111</span>)</span><br><span class="line"></span><br><span class="line">fig.add_axes(ax)</span><br><span class="line"></span><br><span class="line">ax.axis[:].set_visible(<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">font = LabelFormat(plt)</span><br><span class="line"></span><br><span class="line">ax.axis[<span class="string">"x"</span>] = ax.new_floating_axis(<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#Set properties of X axis and add arrow</span></span><br><span class="line">ax.axis[<span class="string">"x"</span>].major_ticklabels.set_fontsize(<span class="number">14</span>)</span><br><span class="line">ax.axis[<span class="string">"x"</span>].major_ticklabels.set_fontname(<span class="string">'Times New Roman'</span>)</span><br><span class="line">ax.axis[<span class="string">"x"</span>].set_axisline_style(<span class="string">"-&gt;"</span>, size = <span class="number">1.0</span>)</span><br><span class="line">ax.axis[<span class="string">"x"</span>].label.set_fontsize(<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#Set properties of Y axis and add arrow</span></span><br><span class="line">ax.axis[<span class="string">"y"</span>] = ax.new_floating_axis(<span class="number">1</span>,<span class="number">0</span>)</span><br><span class="line">ax.axis[<span class="string">"y"</span>].major_ticklabels.set_fontsize(<span class="number">14</span>)</span><br><span class="line">ax.axis[<span class="string">"y"</span>].major_ticklabels.set_fontname(<span class="string">'Times New Roman'</span>)</span><br><span class="line">ax.axis[<span class="string">"y"</span>].set_axisline_style(<span class="string">"-&gt;"</span>, size = <span class="number">1.0</span>)</span><br><span class="line">ax.axis[<span class="string">"y"</span>].label.set_fontsize(<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#Set the ticks' locations</span></span><br><span class="line">ax.axis[<span class="string">"x"</span>].set_axis_direction(<span class="string">"bottom"</span>)</span><br><span class="line">ax.axis[<span class="string">"y"</span>].set_axis_direction(<span class="string">"left"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#Create Datas</span></span><br><span class="line">x=np.linspace(<span class="number">-10</span>,<span class="number">10</span>,<span class="number">1000</span>)</span><br><span class="line">y_tanh=(np.exp(x)-np.exp(-x))/(np.exp(x)+np.exp(-x))</span><br><span class="line">y_relu=np.zeros((len(x),<span class="number">1</span>))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(x)):</span><br><span class="line">    <span class="keyword">if</span> x[i]&gt;=<span class="number">0</span>:</span><br><span class="line">        y_relu[i]=x[i]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        y_relu[i]=<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot figures</span></span><br><span class="line">plt.plot(x,y_tanh,linewidth=<span class="number">3</span>)</span><br><span class="line">plt.plot(x,y_relu,linewidth=<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">plt.xlim(<span class="number">-10</span>,<span class="number">10</span>)</span><br><span class="line">plt.ylim(<span class="number">-1.3</span>,<span class="number">1.3</span>)</span><br><span class="line"></span><br><span class="line">plt.legend([<span class="string">r"Tanh(x)=$\frac&#123;\exp(x)-\exp(-x)&#125;&#123;\exp(x)+\exp(-x)&#125;$"</span>, <span class="string">r"$Relu(x)=\max\&#123;0,x\&#125;$"</span>],loc=<span class="string">"upper left"</span>)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+    </div>
+</div>
+<p>图8-9是异或问题的二分类：</p>
+<table>
+    <tr>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig006.jpg"  >图8</center></td>
+        <td ><center><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200610/Neural_Networks_fig007.jpg"  >图9</center></td>
+    </tr>
+</table>
+
+
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        图8对应的Python源代码：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- encoding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">@File    : Neural_Networks_003.py</span></span><br><span class="line"><span class="string">@Time    : 2020/6/8 19:44</span></span><br><span class="line"><span class="string">@Author  : tengweitw</span></span><br><span class="line"><span class="string">@Email   : tengweitw@foxmail.com</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> mpl_toolkits.axisartist <span class="keyword">as</span> axisartist</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="comment"># Set the format of labels</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LabelFormat</span><span class="params">(plt)</span>:</span></span><br><span class="line">    ax = plt.gca()</span><br><span class="line">    plt.tick_params(labelsize=<span class="number">14</span>)</span><br><span class="line">    labels = ax.get_xticklabels() + ax.get_yticklabels()</span><br><span class="line">    [label.set_fontname(<span class="string">'Times New Roman'</span>) <span class="keyword">for</span> label <span class="keyword">in</span> labels]</span><br><span class="line">    font = &#123;<span class="string">'family'</span>: <span class="string">'Times New Roman'</span>,</span><br><span class="line">            <span class="string">'weight'</span>: <span class="string">'normal'</span>,</span><br><span class="line">            <span class="string">'size'</span>: <span class="number">16</span>,</span><br><span class="line">            &#125;</span><br><span class="line">    <span class="keyword">return</span> font</span><br><span class="line"></span><br><span class="line"><span class="comment">#Set the figure window square</span></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">6</span>, <span class="number">6</span>))</span><br><span class="line"></span><br><span class="line">ax = axisartist.Subplot(fig, <span class="number">111</span>)</span><br><span class="line"></span><br><span class="line">fig.add_axes(ax)</span><br><span class="line"></span><br><span class="line">ax.axis[:].set_visible(<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">font = LabelFormat(plt)</span><br><span class="line"></span><br><span class="line">ax.axis[<span class="string">"x"</span>] = ax.new_floating_axis(<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#Set properties of X axis and add arrow</span></span><br><span class="line">ax.axis[<span class="string">"x"</span>].major_ticklabels.set_fontsize(<span class="number">14</span>)</span><br><span class="line">ax.axis[<span class="string">"x"</span>].major_ticklabels.set_fontname(<span class="string">'Times New Roman'</span>)</span><br><span class="line">ax.axis[<span class="string">"x"</span>].set_axisline_style(<span class="string">"-&gt;"</span>, size = <span class="number">1.0</span>)</span><br><span class="line"><span class="comment"># ax.axis["x"].label.set_text('$x^&#123;(1)&#125;$')</span></span><br><span class="line">ax.axis[<span class="string">"x"</span>].label.set_fontsize(<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#Set properties of Y axis and add arrow</span></span><br><span class="line">ax.axis[<span class="string">"y"</span>] = ax.new_floating_axis(<span class="number">1</span>,<span class="number">0</span>)</span><br><span class="line">ax.axis[<span class="string">"y"</span>].major_ticklabels.set_fontsize(<span class="number">14</span>)</span><br><span class="line">ax.axis[<span class="string">"y"</span>].major_ticklabels.set_fontname(<span class="string">'Times New Roman'</span>)</span><br><span class="line">ax.axis[<span class="string">"y"</span>].set_axisline_style(<span class="string">"-&gt;"</span>, size = <span class="number">1.0</span>)</span><br><span class="line"><span class="comment"># ax.axis["y"].label.set_text('$x^&#123;(2)&#125;$')</span></span><br><span class="line">ax.axis[<span class="string">"y"</span>].label.set_fontsize(<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#Set the ticks' locations</span></span><br><span class="line">ax.axis[<span class="string">"x"</span>].set_axis_direction(<span class="string">"bottom"</span>)</span><br><span class="line">ax.axis[<span class="string">"y"</span>].set_axis_direction(<span class="string">"left"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#Create Data</span></span><br><span class="line">x1=<span class="number">0</span></span><br><span class="line">y1=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">x2=<span class="number">1</span></span><br><span class="line">y2=<span class="number">0</span></span><br><span class="line"></span><br><span class="line">x3=<span class="number">0</span></span><br><span class="line">y3=<span class="number">0</span></span><br><span class="line"></span><br><span class="line">x4=<span class="number">1</span></span><br><span class="line">y4=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">x11=np.linspace(<span class="number">-0.2</span>,<span class="number">0.7</span>,<span class="number">100</span>)</span><br><span class="line">y11=<span class="number">0.5</span>-x11</span><br><span class="line"></span><br><span class="line">x22=np.linspace(<span class="number">-0.2</span>,<span class="number">1.7</span>,<span class="number">100</span>)</span><br><span class="line">y22=<span class="number">1.5</span>-x22</span><br><span class="line"></span><br><span class="line">x33=np.linspace(<span class="number">-0.2</span>,<span class="number">1.7</span>,<span class="number">100</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(x22)):</span><br><span class="line">    y33=np.linspace(<span class="number">0.5</span>-x33[i],<span class="number">1.5</span>-x33[i],<span class="number">100</span>)</span><br><span class="line">    y33[y33&lt;=<span class="number">-0.2</span>]=np.inf</span><br><span class="line">    plt.plot(x33[i]*np.ones((len(y33),<span class="number">1</span>)),y33,<span class="string">'g+'</span>,alpha=<span class="number">0.2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot figures</span></span><br><span class="line">plt.plot(x1,y1,<span class="string">'rs'</span>)</span><br><span class="line">plt.text(x1+<span class="number">0.05</span>,y1+<span class="number">0.1</span>,<span class="string">r'$\mathrm&#123;x&#125;_1$'</span>,fontsize=<span class="number">20</span>)</span><br><span class="line">plt.plot(x2,y2,<span class="string">'rs'</span>)</span><br><span class="line">plt.text(x2+<span class="number">0.05</span>,y2+<span class="number">0.1</span>,<span class="string">r'$\mathrm&#123;x&#125;_2$'</span>,fontsize=<span class="number">20</span>)</span><br><span class="line">plt.plot(x3,y3,<span class="string">'bo'</span>)</span><br><span class="line">plt.text(x3+<span class="number">0.05</span>,y3+<span class="number">0.1</span>,<span class="string">r'$\mathrm&#123;x&#125;_3$'</span>,fontsize=<span class="number">20</span>)</span><br><span class="line">plt.plot(x4,y4,<span class="string">'bo'</span>)</span><br><span class="line">plt.text(x4+<span class="number">0.05</span>,y4+<span class="number">0.1</span>,<span class="string">r'$\mathrm&#123;x&#125;_4$'</span>,fontsize=<span class="number">20</span>)</span><br><span class="line"></span><br><span class="line">plt.plot(x11,y11,<span class="string">'g'</span>)</span><br><span class="line">plt.plot(x22,y22,<span class="string">'g'</span>)</span><br><span class="line"></span><br><span class="line">plt.text(<span class="number">-0.2</span>,<span class="number">1.8</span>,<span class="string">r'$x^&#123;(2)&#125;$'</span>,fontsize=<span class="number">16</span>,rotation=<span class="number">90</span>,color=<span class="string">'k'</span>)</span><br><span class="line">plt.text(<span class="number">1.8</span>,<span class="number">-0.2</span>,<span class="string">r'$x^&#123;(1)&#125;$'</span>,fontsize=<span class="number">16</span>,rotation=<span class="number">0</span>,color=<span class="string">'k'</span>)</span><br><span class="line">plt.xlim(<span class="number">-0.5</span>,<span class="number">2</span>)</span><br><span class="line">plt.ylim(<span class="number">-0.5</span>,<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+    </div>
+</div>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        图9对应的Python源代码：
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- encoding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">@File    : Neural_Networks_004.py</span></span><br><span class="line"><span class="string">@Time    : 2020/6/8 20:11</span></span><br><span class="line"><span class="string">@Author  : tengweitw</span></span><br><span class="line"><span class="string">@Email   : tengweitw@foxmail.com</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> mpl_toolkits.axisartist <span class="keyword">as</span> axisartist</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the format of labels</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LabelFormat</span><span class="params">(plt)</span>:</span></span><br><span class="line">    ax = plt.gca()</span><br><span class="line">    plt.tick_params(labelsize=<span class="number">14</span>)</span><br><span class="line">    labels = ax.get_xticklabels() + ax.get_yticklabels()</span><br><span class="line">    [label.set_fontname(<span class="string">'Times New Roman'</span>) <span class="keyword">for</span> label <span class="keyword">in</span> labels]</span><br><span class="line">    font = &#123;<span class="string">'family'</span>: <span class="string">'Times New Roman'</span>,</span><br><span class="line">            <span class="string">'weight'</span>: <span class="string">'normal'</span>,</span><br><span class="line">            <span class="string">'size'</span>: <span class="number">16</span>,</span><br><span class="line">            &#125;</span><br><span class="line">    <span class="keyword">return</span> font</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the figure window square</span></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">6</span>, <span class="number">6</span>))</span><br><span class="line"></span><br><span class="line">ax = axisartist.Subplot(fig, <span class="number">111</span>)</span><br><span class="line"></span><br><span class="line">fig.add_axes(ax)</span><br><span class="line"></span><br><span class="line">ax.axis[:].set_visible(<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">font = LabelFormat(plt)</span><br><span class="line"></span><br><span class="line">ax.axis[<span class="string">"x"</span>] = ax.new_floating_axis(<span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set properties of X axis and add arrow</span></span><br><span class="line">ax.axis[<span class="string">"x"</span>].major_ticklabels.set_fontsize(<span class="number">14</span>)</span><br><span class="line">ax.axis[<span class="string">"x"</span>].major_ticklabels.set_fontname(<span class="string">'Times New Roman'</span>)</span><br><span class="line">ax.axis[<span class="string">"x"</span>].set_axisline_style(<span class="string">"-&gt;"</span>, size=<span class="number">1.0</span>)</span><br><span class="line"><span class="comment"># ax.axis["x"].label.set_text('$x^&#123;(1)&#125;$')</span></span><br><span class="line">ax.axis[<span class="string">"x"</span>].label.set_fontsize(<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set properties of Y axis and add arrow</span></span><br><span class="line">ax.axis[<span class="string">"y"</span>] = ax.new_floating_axis(<span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line">ax.axis[<span class="string">"y"</span>].major_ticklabels.set_fontsize(<span class="number">14</span>)</span><br><span class="line">ax.axis[<span class="string">"y"</span>].major_ticklabels.set_fontname(<span class="string">'Times New Roman'</span>)</span><br><span class="line">ax.axis[<span class="string">"y"</span>].set_axisline_style(<span class="string">"-&gt;"</span>, size=<span class="number">1.0</span>)</span><br><span class="line"><span class="comment"># ax.axis["y"].label.set_text('$x^&#123;(2)&#125;$')</span></span><br><span class="line">ax.axis[<span class="string">"y"</span>].label.set_fontsize(<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the ticks' locations</span></span><br><span class="line">ax.axis[<span class="string">"x"</span>].set_axis_direction(<span class="string">"bottom"</span>)</span><br><span class="line">ax.axis[<span class="string">"y"</span>].set_axis_direction(<span class="string">"left"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create Data</span></span><br><span class="line">x1 = <span class="number">0</span></span><br><span class="line">y1 = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">x2 = <span class="number">1</span></span><br><span class="line">y2 = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">x3 = <span class="number">0</span></span><br><span class="line">y3 = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">x4 = <span class="number">1</span></span><br><span class="line">y4 = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">x11 = np.linspace(<span class="number">-0.2</span>, <span class="number">0.7</span>, <span class="number">100</span>)</span><br><span class="line">y11 = <span class="number">0.5</span> - x11</span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot figures</span></span><br><span class="line">plt.plot(x1, y1, <span class="string">'rs'</span>)</span><br><span class="line">plt.text(x1 + <span class="number">0.02</span>, y1 + <span class="number">0.05</span>, <span class="string">r'$\mathrm&#123;z&#125;_1$'</span>, fontsize=<span class="number">20</span>)</span><br><span class="line">plt.plot(x2, y2, <span class="string">'rs'</span>)</span><br><span class="line">plt.text(x2 + <span class="number">0.0</span>, y2 + <span class="number">0.05</span>, <span class="string">r'$\mathrm&#123;z&#125;_2$'</span>, fontsize=<span class="number">20</span>)</span><br><span class="line">plt.plot(x3, y3, <span class="string">'bo'</span>)</span><br><span class="line">plt.text(x3 + <span class="number">0.05</span>, y3 + <span class="number">0.1</span>, <span class="string">r'$\mathrm&#123;z&#125;_3,\mathrm&#123;z&#125;_4$'</span>, fontsize=<span class="number">20</span>)</span><br><span class="line"></span><br><span class="line">plt.plot(x11, y11, <span class="string">'g'</span>)</span><br><span class="line"></span><br><span class="line">plt.text(<span class="number">-0.2</span>, <span class="number">1.1</span>, <span class="string">r'$z^&#123;(2)&#125;$'</span>, fontsize=<span class="number">16</span>, rotation=<span class="number">90</span>, color=<span class="string">'k'</span>)</span><br><span class="line">plt.text(<span class="number">1.1</span>, <span class="number">-0.2</span>, <span class="string">r'$z^&#123;(1)&#125;$'</span>, fontsize=<span class="number">16</span>, rotation=<span class="number">0</span>, color=<span class="string">'k'</span>)</span><br><span class="line">plt.xlim(<span class="number">-0.2</span>, <span class="number">1.25</span>)</span><br><span class="line">plt.ylim(<span class="number">-0.2</span>, <span class="number">1.25</span>)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+
+    </div>
+</div>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="tengweitw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="tengweitw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>tengweitw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://tengweitw.com/2020/06/10/[20200610]/" title="【漫漫科研路\Python&amp;Tikz】画神经网络相关图">http://tengweitw.com/2020/06/10/[20200610]/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"><i class="fa fa-tag"></i> Machine Learning</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/09/%5B20200609%5D/" rel="prev" title="【图解例说机器学习】神经网络 (Neural Networks)">
+      <i class="fa fa-chevron-left"></i> 【图解例说机器学习】神经网络 (Neural Networks)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/11/%5B20200611%5D/" rel="next" title="【漫漫科研路\Python】画支持向量机相关图">
+      【漫漫科研路\Python】画支持向量机相关图 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Tikz-pgfplots-绘制神经网络"><span class="nav-number">1.</span> <span class="nav-text">Tikz&#x2F;pgfplots 绘制神经网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python绘制函数图像"><span class="nav-number">2.</span> <span class="nav-text">Python绘制函数图像</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="tengweitw"
+      src="/images/WeiTeng.jpg">
+  <p class="site-author-name" itemprop="name">tengweitw</p>
+  <div class="site-description" itemprop="description">策马前途须努力，莫学龙钟虚叹息。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tengweitw@gmail.com" title="E-Mail → mailto:tengweitw@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5bcc8onhhan&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tengweitw</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">721k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">17:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme: 'forest',
+      logLevel: 3,
+      flowchart: { curve: 'linear' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>
