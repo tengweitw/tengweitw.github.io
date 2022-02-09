@@ -207,6 +207,851 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/04/14/%5B20200414%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/04/14/%5B20200414%5D/" class="post-title-link" itemprop="url">【图解例说机器学习】逻辑回归(Logistic Regression)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-14 12:54:52" itemprop="dateCreated datePublished" datetime="2020-04-14T12:54:52+08:00">2020-04-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-28 10:55:48" itemprop="dateModified" datetime="2020-09-28T10:55:48+08:00">2020-09-28</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在我们日常生活中，我们经常会遇到使用到预测的事例，而预测的值一般可以是连续的，或离散的。比如，在天气预报中，预测明天的最高温，最低温(连续)，亦或是明天是否下雨(离散)。在机器学习中，预测连续性变量的模型称为回归(Regression)模型，比如标准的线性回归，多项式回归；预测离散型变量的模型称为分类(Classification)模型，比如这里要介绍的逻辑回归和以后要提到的支持向量机(SVM)等。</p>
+<hr>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/04/14/%5B20200414%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/04/06/%5B20200406%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/04/06/%5B20200406%5D/" class="post-title-link" itemprop="url">【图解例说机器学习】线性回归</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-06 20:46:01" itemprop="dateCreated datePublished" datetime="2020-04-06T20:46:01+08:00">2020-04-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-27 15:43:30" itemprop="dateModified" datetime="2020-09-27T15:43:30+08:00">2020-09-27</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>22k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>31 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>线性回归之于机器学习，正如Hello World之于编程语言，也如MINST之于深度学习。</p>
+</blockquote>
+<p>首先，我们先定义一些即将用到的数学符号：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Notations</th>
+<th style="text-align:left">Meaning</th>
+<th style="text-align:center">Notations</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$M$</td>
+<td style="text-align:left">Number of parameters $\mathrm w$</td>
+<td style="text-align:center">$N$</td>
+<td>Number of instances</td>
+</tr>
+<tr>
+<td style="text-align:center">$\mathrm X={\mathrm x_1,\mathrm x_2,\cdots,\mathrm x_N}^{\mathrm T}$</td>
+<td style="text-align:left">$N\times M$ matrix for training</td>
+<td style="text-align:center">$D$</td>
+<td>Number of features</td>
+</tr>
+<tr>
+<td style="text-align:center">$\mathrm y={y_1,y_2,\cdots,y_N}^\mathrm{T}$</td>
+<td style="text-align:left">Set of  targets</td>
+<td style="text-align:center">$y_i$</td>
+<td>Target of instance $i$</td>
+</tr>
+<tr>
+<td style="text-align:center">$\mathrm{x}_i={x_i^{(1)},x_i^{(2)},\cdots,x_i^{(D)}}^\mathrm{T}$</td>
+<td style="text-align:left">Set of features  for instance $i$</td>
+<td style="text-align:center">$x_i^{(j)}$</td>
+<td>Feature $j$ for instance $i$</td>
+</tr>
+<tr>
+<td style="text-align:center">$\mathrm w={\omega_1,\omega_2,\cdots,\omega_M}^\mathrm{T}$</td>
+<td style="text-align:left">Weights of input $\mathrm x$</td>
+<td style="text-align:center">$\omega_i$</td>
+<td>Weight of  feature $i$</td>
+</tr>
+<tr>
+<td style="text-align:center">$\phi={\phi_1,\phi_2,\cdots,\phi_M}^\mathrm{T}$</td>
+<td style="text-align:left">Set of functions</td>
+<td style="text-align:center">$\phi_i(\mathrm x)$</td>
+<td>Function of features</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/04/06/%5B20200406%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/03/18/%5B20200318%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/18/%5B20200318%5D/" class="post-title-link" itemprop="url">【漫漫科研路\LaTeX】使用Sublime Text3撰写科研论文</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-18 21:34:42" itemprop="dateCreated datePublished" datetime="2020-03-18T21:34:42+08:00">2020-03-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-24 15:37:34" itemprop="dateModified" datetime="2020-09-24T15:37:34+08:00">2020-09-24</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在之前的一篇文章《<a href="https://blog.csdn.net/tengweitw/article/details/103759321" target="_blank" rel="noopener">使用Vim撰写科研论文</a>》中，我提到了曾经在Windows系统中使用Sublime+TexLive+SumatraPDF的组合来进行科研工作。现在介绍如何使用sublime来编辑LaTeX论文，真是恰逢其时。由于疫情原因在家隔离(家在湖北)，只能使用我淘汰已久，赋闲在家的windows笔记本来进行科研工作。为此，在配置编辑环境的同时，我顺便来介绍其流程。毕竟，使用IDE来编写科研论文的人占绝大多数，使用Vim编写LaTeX的可能是凤毛麟角。因此，使用Sublime编写LaTeX可以看成两者的一个折中选择。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/03/18/%5B20200318%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/01/12/%5B20200122%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/12/%5B20200122%5D/" class="post-title-link" itemprop="url">【图解例说机器学习】K最近邻 (KNN)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-12 22:12:55" itemprop="dateCreated datePublished" datetime="2020-01-12T22:12:55+08:00">2020-01-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-24 08:59:44" itemprop="dateModified" datetime="2020-09-24T08:59:44+08:00">2020-09-24</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>9.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>13 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="kNN-k-nearest-neighbor-的定义"><a href="#kNN-k-nearest-neighbor-的定义" class="headerlink" title="kNN (k-nearest neighbor)的定义"></a>kNN (k-nearest neighbor)的定义</h2><blockquote>
+<p>针对一个测试实例，在给定训练集中，基于<strong>某种距离度量</strong>找到与之<strong>最近的k个实例点</strong>，然后基于这k个最邻近实例点的信息，以<strong>某种决策规则</strong>来对该测试实例进行分类或回归。</p>
+</blockquote>
+<p>由定义可知，$kNN$模型包含三个基本要素：距离度量、k值选择以及决策规则。再详细描述这三要素之前，我们先用一个样图来简单描述$kNN$分类模型的效果。</p>
+<p>我们以二维平面为例，假设输入的训练集格式为$(x_1,x_2,l)$，其中$x_1, x_2$为横纵坐标，$l$为标签。这里我们考虑$k=1,3$的情况，决策规则为多数投票规则，即测试实例与k个实例中的多数属于同一类。图$1,2$分别是$k=1,3$时，二维特征空间划分图。</p>
+<p>​    <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20200122/20200122_fig001.jpg" width="600" height="450" title="图1" alt="图1" ></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/12/%5B20200122%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/01/05/%5B20200105%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/05/%5B20200105%5D/" class="post-title-link" itemprop="url">【漫漫科研路\pgfplots】画双Y坐标图</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-05 22:08:21" itemprop="dateCreated datePublished" datetime="2020-01-05T22:08:21+08:00">2020-01-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-23 22:15:14" itemprop="dateModified" datetime="2020-09-23T22:15:14+08:00">2020-09-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在科研论文写作中，经常会遇到画描述tradeoff的仿真图。比如在5G相关的研究中，经常会出现能效与时延的tradeoff。本文主要介绍如何在论文仿真部分，根据仿真结果（存储于.dat文件中）绘制双Y坐标的曲线。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/05/%5B20200105%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2019/12/29/%5B20191229%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/29/%5B20191229%5D/" class="post-title-link" itemprop="url">【漫漫科研路\LaTeX】使用Vim撰写科研论文</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-29 23:15:42" itemprop="dateCreated datePublished" datetime="2019-12-29T23:15:42+08:00">2019-12-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-23 20:19:00" itemprop="dateModified" datetime="2020-09-23T20:19:00+08:00">2020-09-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>工欲善其事，必先利其器。</p>
+</blockquote>
+<p>本文介绍如何使用Vim作为编辑器进行科研工作。一般来说，在学术界，使用Vim来写论文的人应该很少。即使是在工程界，大部分也都是使用的是各种IDE，使用Vim来编写代码的也属少数。大多数科研工作者一般都是使用<a href="http://www.winedt.com/" target="_blank" rel="noopener">WinEdt</a>，<a href="https://www.lyx.org/" target="_blank" rel="noopener">Lyx</a>，<a href="http://texstudio.sourceforge.net/" target="_blank" rel="noopener">TeXstudio</a>等集成IDE，其中Lyx所见即所得的效果比较好。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/12/29/%5B20191229%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2019/12/22/%5B20191222%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/22/%5B20191222%5D/" class="post-title-link" itemprop="url">【漫漫科研路\pgfplots】克服绘制色温图时，数据量大出现的内存限制</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-22 21:27:50" itemprop="dateCreated datePublished" datetime="2019-12-22T21:27:50+08:00">2019-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-23 17:48:28" itemprop="dateModified" datetime="2020-09-23T17:48:28+08:00">2020-09-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在科研论文写作中，经常会遇到画色温图，3D图。此时一般输入的数据量比较大，导致在Latex中使用Tikz画图时出现内存不足的情况。常常报错如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">! TeX capacity exceeded, sorry [main memory size&#x3D;5000000].</span><br></pre></td></tr></table></figure>
+<p>参考pgfplots手册中的第六章，我们有以下解决方案：</p>
+<ul>
+<li>使用LuaTex进行编译<br>有些版本不含LuaTex</li>
+<li>对输入数据采样降低数据量<br>不是从本质上解决问题，降低了精度</li>
+<li>使用其它软件画图，e.g., MATLAB</li>
+<li>增大LaTex的编译内存</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/12/22/%5B20191222%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2019/12/15/%5B20191215%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/15/%5B20191215%5D/" class="post-title-link" itemprop="url">【漫漫科研路\pgfplots】画局部放大图</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-15 23:43:06" itemprop="dateCreated datePublished" datetime="2019-12-15T23:43:06+08:00">2019-12-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-23 09:10:00" itemprop="dateModified" datetime="2020-09-23T09:10:00+08:00">2020-09-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在科研论文写作中，我们经常需要放大局部图片来显示细节，即绘制图中图。在Matlab中可以使用magnify或则axes函数，网上有很多例子，这里不再赘述。本文主要讲解如何使用tikz/pgfplots来画局部放大图中图。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/12/15/%5B20191215%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2019/12/08/%5B20191208%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/08/%5B20191208%5D/" class="post-title-link" itemprop="url">【漫漫科研路】科研环境软硬件</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-08 21:52:24" itemprop="dateCreated datePublished" datetime="2019-12-08T21:52:24+08:00">2019-12-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-23 09:11:44" itemprop="dateModified" datetime="2020-09-23T09:11:44+08:00">2020-09-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本文旨在向大家推荐个人在科研过程中觉得还不错的硬件和软件。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/12/08/%5B20191208%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2019/12/01/%5B20191201%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -238,7 +1083,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+                <time title="修改时间：2020-09-22 15:01:16" itemprop="dateModified" datetime="2020-09-22T15:01:16+08:00">2020-09-22</time>
               </span>
 
           <br>
@@ -289,809 +1134,11 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2019/11/24/%5B20191124%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/11/24/%5B20191124%5D/" class="post-title-link" itemprop="url">【漫漫科研路\C&C++】Win10 + VS2017 + CUDA10.1 + CPLEX12.9 配置</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-11-24 17:48:08" itemprop="dateCreated datePublished" datetime="2019-11-24T17:48:08+08:00">2019-11-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.4k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="Win10下搭建VS2017-CUDA10-1-CPLEX12-9开发环境"><a href="#Win10下搭建VS2017-CUDA10-1-CPLEX12-9开发环境" class="headerlink" title="Win10下搭建VS2017+CUDA10.1+CPLEX12.9开发环境"></a>Win10下搭建VS2017+CUDA10.1+CPLEX12.9开发环境</h2><p>想来已经有三、四年没有用过C/C++了，一直都是使用MATLAB进行算法的实现。相比于C/C++, MATLAB更加适合快速地实现算法，可视化仿真结果。但最近想学习并行计算（尽管MATLAB也可以实现并行化），并且实验室的服务器又装有RTX2080Ti的显卡，因此考虑使用CUDA平台实现GPU并行编程。另一方面，我需要使用IBM的CPLEX工具来验证算法的结果，于是乎就有了这篇文章。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/11/24/%5B20191124%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2017/12/17/%5B20171217%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/12/17/%5B20171217%5D/" class="post-title-link" itemprop="url">【漫漫科研路\pgfplots】最小跳数最大权重算法</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-12-17 16:38:56" itemprop="dateCreated datePublished" datetime="2017-12-17T16:38:56+08:00">2017-12-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.9k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>上周，实验室国际友人让我帮忙实现满足条件的最小跳数最大权重的算法。他的具体问题如下：<br>给定一个权重图（如下图所示），给出节点之间最小跳数最大权重矩阵，其中任意两点之间跳数小于等于$3$，否则权重为inf。<br>    <img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20171217/20171217_fig001.jpg" width="400" height="300" title="图1" alt="图1" ></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/12/17/%5B20171217%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2017/12/10/%5B20171210%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/12/10/%5B20171210%5D/" class="post-title-link" itemprop="url">【漫漫科研路\pgfplots】子图的多种画法</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-12-10 17:11:44" itemprop="dateCreated datePublished" datetime="2017-12-10T17:11:44+08:00">2017-12-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>8.3k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>12 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在科研论文写作中，有时候为了横向、纵向对比或者节省空间，我们需要画子图，在MATLAB中可以通过subplot命令来实现。在Latex中有以下几种方法进行子图的绘制：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/12/10/%5B20171210%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2017/12/02/%5B20171202%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/12/02/%5B20171202%5D/" class="post-title-link" itemprop="url">【漫漫科研路\pgfplots】多个子图共用一个图例</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-12-02 18:15:38" itemprop="dateCreated datePublished" datetime="2017-12-02T18:15:38+08:00">2017-12-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.8k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>十月底，投完会议之后，便对科研写作方面遇到的问题进行了探索。问题主要有：</p>
-<hr>
-<p><em>问题：</em></p>
-<ol>
-<li>文献管理问题：在写论文的过程中，经常要引用他人文献，这时需要费时去寻找。另一方面，有时想要查看曾经读到的某篇文章提到的方法， 也需要去耗时去寻找。</li>
-<li>画图问题：怎样画出好看的图？</li>
-</ol>
-<p><em>解决方案：</em></p>
-<ul>
-<li>针对问题1： 使用JabRef</li>
-<li>针对问题2：使用Pgfplots</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/12/02/%5B20171202%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2017/11/19/%5B20171119%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/11/19/%5B20171119%5D/" class="post-title-link" itemprop="url">【漫漫科研路】序言</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-11-19 21:33:33" itemprop="dateCreated datePublished" datetime="2017-11-19T21:33:33+08:00">2017-11-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>829</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>时间回溯到2015年中秋和国庆期间，那时还在为实验室十二五项目验收而通宵了一晚上。第二天上午结束验收，标志着我硕士生阶段就告一段落。 下午睡了几个小时便赶着火车去青海湖与小伙伴汇合。游玩归来，便开始了我的博士生阶段。 当时还思考了很多，还写了一篇对应的博文《<a href="http://blog.csdn.net/tengweitw/article/details/48953621" target="_blank" rel="noopener">遇见</a>》。从此我便放弃了技术性博文的书写，至今已两年矣。</p>
-<h2 id=""><a href="#" class="headerlink" title=""></a>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/11/19/%5B20171119%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2017/01/14/%5B20170114%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/01/14/%5B20170114%5D/" class="post-title-link" itemprop="url">【妄言之言】我的2016--困境与选择</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-01-14 20:45:25" itemprop="dateCreated datePublished" datetime="2017-01-14T20:45:25+08:00">2017-01-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>离元旦也已有两星期,忘却的救主快要降临了罢,我正有写一点东西的必要了。</p>
-</blockquote>
-<p>首先，我要进行自我批评，这一年未写过一篇技术性文章，已经远离编程了。当初选择读博，就料想会这样，着急着是否能够顺利毕业，无暇顾及技术方面的东西。回顾当初写的一百多篇文章，已经生疏了，但总有一天我会回来的，笔耕不辍。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/01/14/%5B20170114%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2016/09/14/%5B20160914%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/09/14/%5B20160914%5D/" class="post-title-link" itemprop="url">【妄言之言】西南游记</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-09-14 21:30:52" itemprop="dateCreated datePublished" datetime="2016-09-14T21:30:52+08:00">2016-09-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>663</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>少不入川，老不出蜀</p>
-</blockquote>
-<p>三年前，去了趟甘肃：兰州—嘉峪关—敦煌，第一次看到了黄河，见识了天下第一关，体会了“大漠孤烟直、黄河落日圆”的意境。一年前，也是在国庆，环游了青海湖，感受了青藏高原的气候，享受着青海湖粗犷的美，自然的美，质朴的美。我曾经有一个梦想，游遍祖国的名山大川，感受自然界的美。如今梦想只实现了一点点，向着梦想前进，于是乎，便有了今年暑假的重庆、成都之旅。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/09/14/%5B20160914%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/11/08/%5B20151108%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2015/11/08/%5B20151108%5D/" class="post-title-link" itemprop="url">【概率统计】连续分布的产生</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2015-11-08 10:42:06" itemprop="dateCreated datePublished" datetime="2015-11-08T10:42:06+08:00">2015-11-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>7.2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>10 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>由于篇幅有限，前一篇文章《<a href="http://blog.csdn.net/tengweitw/article/details/45584597" target="_blank" rel="noopener">离散分布的产生</a>》中只讲述了用均匀分布产生离散分布的方法，<strong>那么本文接着讲如何利用均匀分布产生连续分布的方法。</strong></p>
-<p>连续分布主要有以下几种：<strong>均匀分布 伽马分布 正态分布 贝塔分布 柯西分布 对数正态分布 双指数分布</strong>。</p>
-<p>产生各种连续分布的方法有很多，我把它分为两类：<strong>通用方法、特殊方法</strong>。特殊方法就是根据各个连续分布的特性而特有的方法。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2015/11/08/%5B20151108%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/10/07/%5B20151007%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2015/10/07/%5B20151007%5D/" class="post-title-link" itemprop="url">【妄言之言】遇见</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2015-10-07 23:32:32" itemprop="dateCreated datePublished" datetime="2015-10-07T23:32:32+08:00">2015-10-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.4k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>东方欲晓，莫道君行早</p>
-</blockquote>
-<p>上学期期末的时候，小马哥就问我为什么没写个年中（终）总结。是的，我最近几年都养成了写一些总结性的话语，半年一次或一年一次。不过由于项目忙，暑假都没放，let alone有空闲写点东西。十一又和同学去青海湖玩了一圈，现在终于有时间静下心来写写了。</p>
-<p>22岁的我，作了一个比较2的决定，决定读22年书（希望不要延期，阿弥陀佛）。哎，已经延期了。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2015/10/07/%5B20151007%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1137,14 +1184,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-count">186</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1193,12 +1240,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">721k</span>
+    <span title="站点总字数">735k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">17:10</span>
+    <span title="站点阅读时长">17:31</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
   </div>

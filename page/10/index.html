@@ -207,6 +207,822 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/08/25/%5B20140825%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/08/25/%5B20140825%5D/" class="post-title-link" itemprop="url">【Qt编程】基于Qt的词典开发系列--无边框窗口的拖动</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-08-25 10:47:45" itemprop="dateCreated datePublished" datetime="2014-08-25T10:47:45+08:00">2014-08-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-24 11:21:42" itemprop="dateModified" datetime="2020-08-24T11:21:42+08:00">2020-08-24</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>​    在上一篇文章中，我们讲述了如何进行无边框窗口的缩放与拖动，<strong>而在一些情况下，我们的窗口只需要进行拖动也不需要改变其大小</strong>，比如：QQ的登录窗口。本来在上一篇文章中已经讲述了如何进行窗口的拖动，但是却与窗口的缩放相关的程序放在一起，<strong>下面专门单独分离出来。</strong></p>
+<p>​    窗口的拖放只涉及到鼠标事件：按下操作、释放操作和移动操作，因此只需要重写这三个函数。由于程序比较简单，并且注释也比较详细，就不作过多介绍。新建一个基类为QWidget的Qt Gui应用程序，<strong>只需修改widget.h和widget.cpp文件如下</strong>：</p>
+<p><strong>1、widget.h文件</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> WIDGET_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WIDGET_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QWidget&gt;//注意我使用的是Qt5，Qt4与Qt5的区别可以参考http://qt-project.org/wiki/Transition_from_Qt_4.x_to_Qt5</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;QMouseEvent&gt;</span></span></span><br><span class="line"><span class="keyword">namespace</span> Ui &#123;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span>;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span> :</span> <span class="keyword">public</span> QWidget</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Widget</span><span class="params">(QWidget *parent = <span class="number">0</span>)</span></span>;</span><br><span class="line">    ~Widget();</span><br><span class="line"></span><br><span class="line">    QPoint move_point; <span class="comment">//移动的距离</span></span><br><span class="line">    <span class="keyword">bool</span> mouse_press; <span class="comment">//鼠标按下</span></span><br><span class="line">    <span class="comment">//鼠标按下事件</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">mousePressEvent</span><span class="params">(QMouseEvent *event)</span></span>;</span><br><span class="line">   <span class="comment">//鼠标释放事件</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">mouseReleaseEvent</span><span class="params">(QMouseEvent *event)</span></span>;</span><br><span class="line">   <span class="comment">//鼠标移动事件</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">mouseMoveEvent</span><span class="params">(QMouseEvent *event)</span></span>;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Ui::Widget *ui;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// WIDGET_H</span></span></span><br></pre></td></tr></table></figure>
+<p><strong>2、widget.cpp文件</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"widget.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"ui_widget.h"</span></span></span><br><span class="line"></span><br><span class="line">Widget::Widget(QWidget *parent) :</span><br><span class="line">    QWidget(parent),</span><br><span class="line">    ui(<span class="keyword">new</span> Ui::Widget)</span><br><span class="line">&#123;</span><br><span class="line">    ui-&gt;setupUi(<span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">this</span>-&gt;setMouseTracking(<span class="literal">false</span>);</span><br><span class="line">     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);<span class="comment">//设置主窗口无边框</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Widget::~Widget()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">delete</span> ui;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Widget::mousePressEvent(QMouseEvent *event)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(event-&gt;button() == Qt::LeftButton)</span><br><span class="line">     &#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;setMouseTracking(<span class="literal">true</span>);</span><br><span class="line">          mouse_press = <span class="literal">true</span>;</span><br><span class="line">          <span class="comment">//鼠标相对于窗体的位置（或者使用event-&gt;globalPos() - this-&gt;pos()）</span></span><br><span class="line">          move_point = event-&gt;pos();;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Widget::mouseReleaseEvent(QMouseEvent *event)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//设置鼠标为未被按下</span></span><br><span class="line">        mouse_press = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Widget::mouseMoveEvent(QMouseEvent *event)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//若鼠标左键被按下</span></span><br><span class="line">  <span class="comment">//  qDebug()&lt;&lt;"mouse_press="&lt;&lt;event-&gt;globalPos();</span></span><br><span class="line">        <span class="keyword">if</span>(mouse_press)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//鼠标相对于屏幕的位置</span></span><br><span class="line">            QPoint move_pos = event-&gt;globalPos();</span><br><span class="line"></span><br><span class="line">           <span class="comment">//移动主窗体位置</span></span><br><span class="line">           <span class="keyword">this</span>-&gt;move(move_pos - move_point);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>基于Qt的词典开发系列</strong></p>
+<ol>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/44757875" target="_blank" rel="noopener">词典框架设计及成品展示</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45014771" target="_blank" rel="noopener">本地词典的设计</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45099867" target="_blank" rel="noopener">开始菜单的设计</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38758051" target="_blank" rel="noopener">无边框窗口的缩放与拖动</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38817595" target="_blank" rel="noopener">无边框窗口的拖动</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45223931" target="_blank" rel="noopener">界面美化设计</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45484803" target="_blank" rel="noopener">调用网络API</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45932429" target="_blank" rel="noopener">用户登录及API调用的实现</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/45932429" target="_blank" rel="noopener">JSON数据解析</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/23294533" target="_blank" rel="noopener">国际音标的显示</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38237203" target="_blank" rel="noopener">系统托盘的显示</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38306803" target="_blank" rel="noopener">调用讲述人</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38555787" target="_blank" rel="noopener">音频播放</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38689745" target="_blank" rel="noopener">自动补全功能</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/38734201" target="_blank" rel="noopener">HTML特殊字符及正则表达式</a></li>
+<li><a href="http://blog.csdn.net/tengweitw/article/details/46563781" target="_blank" rel="noopener">后序</a></li>
+</ol>
+<p><strong>作品下载地址（发布版）</strong>：<a href="http://download.csdn.net/detail/tengweitw/8548767" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8548767</a></p>
+<p><strong>作品下载地址（绿色版）</strong>：<a href="http://download.csdn.net/detail/tengweitw/8830495" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8830495</a></p>
+<p><strong>源码下载地址</strong>：<a href="http://download.csdn.net/detail/tengweitw/8830503" target="_blank" rel="noopener">http://download.csdn.net/detail/tengweitw/8830503</a></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/08/22/%5B20140822%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/08/22/%5B20140822%5D/" class="post-title-link" itemprop="url">【Qt编程】基于Qt的词典开发系列--无边框窗口的缩放与拖动</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-08-22 16:06:05" itemprop="dateCreated datePublished" datetime="2014-08-22T16:06:05+08:00">2014-08-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-24 09:01:56" itemprop="dateModified" datetime="2020-08-24T09:01:56+08:00">2020-08-24</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>​    在现在，绝大多数软件都向着简洁，时尚发展。就拿有道的单词本和我做的单词本来说，绝大多数用户肯定喜欢我所做的单词本(就单单界面，关于颜色搭配和布局问题，大家就不要在意了)。</p>
+<p>有道的单词本：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140822/20140822_fig001.jpg" width="500" height="350" title="图1" alt="图1" ></p>
+<p>我所做的单词本：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140822/20140822_fig002.jpg" width="500" height="350" title="图2" alt="图2" ></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2014/08/22/%5B20140822%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/08/21/%5B20140821%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/08/21/%5B20140821%5D/" class="post-title-link" itemprop="url">【Qt编程】基于Qt的词典开发系列html特殊字符及正则表达式</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-08-21 18:01:48" itemprop="dateCreated datePublished" datetime="2014-08-21T18:01:48+08:00">2014-08-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-23 15:38:56" itemprop="dateModified" datetime="2020-08-23T15:38:56+08:00">2020-08-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>1、html特殊字符的显示</strong></p>
+<p>   我们知道html语言和C语言一样也有一些特殊字符，它们是不能正常显示的，必须经过转义，在网上可以查到如何显示这些字符，如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140821/20140821_fig001.jpg" width="300" height="200" title="图1" alt="图1" ></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2014/08/21/%5B20140821%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/08/19/%5B20140819%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/08/19/%5B20140819%5D/" class="post-title-link" itemprop="url">【Qt编程】基于Qt的词典开发系列自动补全功能</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-08-19 22:48:29" itemprop="dateCreated datePublished" datetime="2014-08-19T22:48:29+08:00">2014-08-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-23 10:34:46" itemprop="dateModified" datetime="2020-08-23T10:34:46+08:00">2020-08-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>9 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近写了一个查单词的类似有道词典的软件，里面就有一个自动补全功能（即当你输入一个字母时，就会出现几个候选项）。这个自动补全功能十分常见，百度搜索关键词时就会出现。不过它们这些补全功能都是与你输入的进行首字匹配，有时也会不方便。例如，如果我输入一个“好”，如果是首字匹配的话会出现下图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140819/20140819_fig001.jpg" width="400" height="300" title="图1" alt="图1" ></p>
+<p>如果是句中匹配的话，则是这种情况：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140819/20140819_fig002.jpg" width="400" height="300" title="图2" alt="图2" ></p>
+<p>你可以根据自己的要求进行选择哪一种模式。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2014/08/19/%5B20140819%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/08/14/%5B20140814%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/08/14/%5B20140814%5D/" class="post-title-link" itemprop="url">【Qt编程】基于Qt的词典开发系列音频播放</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-08-14 11:07:31" itemprop="dateCreated datePublished" datetime="2014-08-14T11:07:31+08:00">2014-08-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-23 10:15:54" itemprop="dateModified" datetime="2020-08-23T10:15:54+08:00">2020-08-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在上一篇文章中，我是在Qt4平台上调用本地发音的，后来由于用到JSON解析，就将平台转到了Qt5，因为Qt5自带解析JSON的类。然后发现上一篇文章的方法无法运行，当然网上可以找到解决方法，我在这里直接调用Qt自带的类进行网络音频播放和本地播放。<strong>比较适用于单词的网上发音和无网情况下的本地发音，而不用将音频文件下载下来，占用太多内存。</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2014/08/14/%5B20140814%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/07/30/%5B20140730%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/07/30/%5B20140730%5D/" class="post-title-link" itemprop="url">【Qt编程】基于Qt的词典开发系列调用讲述人</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-07-30 21:00:53" itemprop="dateCreated datePublished" datetime="2014-07-30T21:00:53+08:00">2014-07-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-23 10:16:22" itemprop="dateModified" datetime="2020-08-23T10:16:22+08:00">2020-08-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>12 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>​    我们知道，win7系统自带有讲述人，即可以机器读出当前内容，具体可以将电脑锁定，然后点击左下角的按钮即可。之前在用Matlab写扫雷游戏的时候，也曾经调用过讲述人来进行游戏的语音提示。<strong>具体的Matlab脚本文件如下：</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sp=actxserver('SAPI.SpVoice');</span><br><span class="line">sp.Speak('你好，欢迎来到西安电子科技大学！Hello,Welcome to XD University!')</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2014/07/30/%5B20140730%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/07/28/%5B20140728%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/07/28/%5B20140728%5D/" class="post-title-link" itemprop="url">【Qt编程】基于Qt的词典开发系列系统托盘的显示</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-07-28 21:35:36" itemprop="dateCreated datePublished" datetime="2014-07-28T21:35:36+08:00">2014-07-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-22 15:16:56" itemprop="dateModified" datetime="2020-08-22T15:16:56+08:00">2020-08-22</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>  本文主要讨论Qt中的系统托盘的设置。系统托盘想必大家都不陌生，最常用的就是QQ。系统托盘以简单、小巧的形式能让人们较快的打开软件。废话不多说，下面开始具体介绍。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140728/20140728_fig001.jpg" width="300" height="40" title="图1" alt="图1" ></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2014/07/28/%5B20140728%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/06/28/%5B20140628%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/06/28/%5B20140628%5D/" class="post-title-link" itemprop="url">【LaTeX排版】LaTeX论文模版</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-06-28 17:58:20" itemprop="dateCreated datePublished" datetime="2014-06-28T17:58:20+08:00">2014-06-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-21 14:17:26" itemprop="dateModified" datetime="2020-08-21T14:17:26+08:00">2020-08-21</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本文是对前面LaTeX论文排版文章的总结。前面的几篇文章是分别从论文的几个方面来讲述LaTeX的排版问题，这里综合了前面的内容，<strong>给出了论文排版的模版。</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2014/06/28/%5B20140628%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/06/25/%5B20140625%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/06/25/%5B20140625%5D/" class="post-title-link" itemprop="url">【Matlab编程】Matlab让电脑失而复得</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-06-25 23:41:46" itemprop="dateCreated datePublished" datetime="2014-06-25T23:41:46+08:00">2014-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-21 14:11:38" itemprop="dateModified" datetime="2020-08-21T14:11:38+08:00">2020-08-21</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在学校经常有同学电脑失窃，大抵都是粗细大意。据说iPhone手机失窃后可以获取小偷的照片，从而将照片找到。现在用matlab写一个程序使得当小偷使用电脑上网时，电脑自动将电脑前面的人的照片发到你指定的邮箱。前提是你的电脑装有摄像头并且有网！先用下面代码测试你邮箱是否正确设置：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">clear</span><br><span class="line"> myaddress=<span class="string">'sender@qq.com'</span>;</span><br><span class="line"><span class="comment">%这里sender为你发邮箱的qq号，注意你的邮箱要已经提供SMTP服务，没有也没关系，qq邮箱会提醒设置设置的mypassword='password';%这里为你邮上面邮箱对应的密码（一般和QQ密码相同）</span></span><br><span class="line">to = <span class="string">'receiver@qq.com'</span>; <span class="comment">%这里为你要发送到的邮箱</span></span><br><span class="line">setpref(<span class="string">'Internet'</span>,<span class="string">'E_mail'</span>,myaddress);</span><br><span class="line">setpref(<span class="string">'Internet'</span>,<span class="string">'SMTP_Server'</span>,<span class="string">'smtp.qq.com'</span>);</span><br><span class="line">setpref(<span class="string">'Internet'</span>,<span class="string">'SMTP_Username'</span>,myaddress);</span><br><span class="line">setpref(<span class="string">'Internet'</span>,<span class="string">'SMTP_Password'</span>,mypassword);</span><br><span class="line">props = java.lang.System.getProperties;</span><br><span class="line">props.setProperty(<span class="string">'mail.smtp.auth'</span>,<span class="string">'true'</span>);</span><br><span class="line">subject =<span class="string">'电脑小偷'</span>;</span><br><span class="line"> </span><br><span class="line">obj = videoinput(<span class="string">'winvideo'</span>);</span><br><span class="line">h=preview(obj);</span><br><span class="line">set(gcf,<span class="string">'Visible'</span>,<span class="string">'off'</span>)</span><br><span class="line">set(h,<span class="string">'Visible'</span>,<span class="string">'on'</span>)</span><br><span class="line">start(obj);</span><br><span class="line">pause(<span class="number">10</span>);</span><br><span class="line">photo=getsnapshot(obj);</span><br><span class="line">imwrite(photo, <span class="string">'thief.jpg'</span>)</span><br><span class="line"> sendmail(to, subject,[],<span class="string">'thief.jpg'</span>);</span><br></pre></td></tr></table></figure>
+<p>在matlab中执行上述脚本文件，看是否发送邮件</p>
+<p>以下四步是进行电脑跟踪：程序代码如下：</p>
+<p><strong>第一步：</strong>设置自己的相片(注意所有操作都是在你matlab当前目录下)</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">obj = videoinput(<span class="string">'winvideo'</span>);</span><br><span class="line">h=preview(obj);</span><br><span class="line">set(gcf,<span class="string">'Visible'</span>,<span class="string">'off'</span>)</span><br><span class="line">set(h,<span class="string">'Visible'</span>,<span class="string">'on'</span>)</span><br><span class="line">start(obj);</span><br><span class="line">pause(<span class="number">10</span>) <span class="comment">% 如果你的电脑调用摄像头的时间非常短，可以不用这句</span></span><br><span class="line">photo=getsnapshot(obj);</span><br><span class="line">imwrite(photo, <span class="string">'yourpicture.jpg'</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>第二步：</strong>获取当前电脑前人的相片并与自己的图片进行比较，若相似度不高，则会发送当前电脑前人的相片到你指定的邮箱</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%文件名为sendemail.m</span></span><br><span class="line">clear</span><br><span class="line"> myaddress=<span class="string">'sender@qq.com'</span>;  </span><br><span class="line"><span class="comment">%这里sender为你发邮箱的qq号，注意你的邮箱要已经提供SMTP服务，没有也没关系，qq邮箱会提醒设置设置的mypassword='password';           %这里为你邮上面邮箱对应的密码（一般和QQ密码相同）</span></span><br><span class="line">to =  <span class="string">'receiver@qq.com'</span>;              <span class="comment">%这里为你要发送到的邮箱</span></span><br><span class="line">setpref(<span class="string">'Internet'</span>,<span class="string">'E_mail'</span>,myaddress);</span><br><span class="line">setpref(<span class="string">'Internet'</span>,<span class="string">'SMTP_Server'</span>,<span class="string">'smtp.qq.com'</span>);</span><br><span class="line">setpref(<span class="string">'Internet'</span>,<span class="string">'SMTP_Username'</span>,myaddress);</span><br><span class="line">setpref(<span class="string">'Internet'</span>,<span class="string">'SMTP_Password'</span>,mypassword);</span><br><span class="line">props = java.lang.System.getProperties;</span><br><span class="line">props.setProperty(<span class="string">'mail.smtp.auth'</span>,<span class="string">'true'</span>);</span><br><span class="line">subject =<span class="string">'电脑小偷'</span>;   <span class="comment">%邮件主题</span></span><br><span class="line"> </span><br><span class="line">obj = videoinput(<span class="string">'winvideo'</span>);</span><br><span class="line">h=preview(obj);</span><br><span class="line">set(gcf,<span class="string">'Visible'</span>,<span class="string">'off'</span>)</span><br><span class="line">set(h,<span class="string">'Visible'</span>,<span class="string">'on'</span>)</span><br><span class="line">start(obj);</span><br><span class="line">pause(<span class="number">10</span>) <span class="comment">% 如果你的电脑调用摄像头的时间非常短，可以不用这句</span></span><br><span class="line">photo=getsnapshot(obj);</span><br><span class="line">imwrite(photo, <span class="string">'thief.jpg'</span>)</span><br><span class="line">pause(<span class="number">10</span>)<span class="comment">%如果你的电脑调用摄像头的时间非常短，可以不用这三句</span></span><br><span class="line">photo=getsnapshot(obj);</span><br><span class="line">imwrite(photo, <span class="string">'thief.jpg'</span>)</span><br><span class="line"> a=imread(<span class="string">'yourpicture.jpg'</span>);<span class="comment">%这里的'yourpicture.jpg为你自己的照片</span></span><br><span class="line">a1=rgb2gray(a);</span><br><span class="line">aa=imread(<span class="string">'thief.jpg'</span>);</span><br><span class="line">aa1=rgb2gray(aa);</span><br><span class="line">corr= corr2(a1,aa1);</span><br><span class="line"><span class="keyword">if</span> corr&lt;<span class="number">0.85</span>   <span class="comment">%0.85可以自己设置0-1的范围，值越小表示两幅图很容易匹配，最好取值为0.8-0.9</span></span><br><span class="line">sendmail(to, subject,[],<span class="string">'thief.jpg'</span>);</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><strong>第二步：</strong>将step2中的程序编译生成exe文件 </p>
+<p>可以直接上网找到方法，我在这里示范一种，操作如下：首先去掉黑框: 在命令窗口输入：cd(prefdir) edit compopts.bat在打开的文件最后添加以下语句(前提是在下面图解的安装编译器选择的是vc编译器,若选择其它编译器，自己百度方法)：    set LINKFLAGS=%LINKFLAGS%/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup</p>
+<p>编译器的安装如下图： </p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140625/20140625_fig001.jpg" width="600" height="400" title="图1" alt="图1" ></p>
+<p> <code>mcc -m sendemail</code> (sendemail 为step2中的文件)这一命令可能会编译几分钟，请耐心等待,执行完后会生成sendemail.exe文件 </p>
+<p> <strong>第四步：</strong>创建任务计划     </p>
+<p>右击我的计算机，单击管理，在左边栏中选中“任务计划程序”。在右边栏中选中“创建任务“，弹出创建任务对话框，为任务填个名称，勾选下方隐藏，配置选为，windows7那一项，触发器选项卡中单击“新建”，选择“登录时”，“每天”，勾选延迟任务，设定延迟时间为3分钟，确定。“操作”选项卡，单击新建，选择“启动程序”，单击“浏览”，选择matlab目录下生成的exe文件，确定。“条件”选项卡中只需勾选“只有在以下网络连接可用时才启动”，然后在下拉列表中选择“任何连接”（这个设置很重要，只有在电脑联网的情况下才能发送邮件），确定。后面两个选项卡，自己看样子办。然后注销用户重新登录。在三分钟内连接上网络，三分钟后，程序会自动运行，整个过程结束。 </p>
+<p>程序说明：由于程序中有preview，导致拍摄图像时会显示出窗口，容易被小偷发现，如果你的摄像头启动十分快可以将Step2中的程序改为：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">clear</span><br><span class="line">myaddress=<span class="string">'sender@qq.com'</span>;</span><br><span class="line">mypassword=<span class="string">'password'</span>;</span><br><span class="line">to = <span class="string">'receiver@qq.com'</span>;setpref(<span class="string">'Internet'</span>,<span class="string">'E_mail'</span>,myaddress);</span><br><span class="line">setpref(<span class="string">'Internet'</span>,<span class="string">'SMTP_Server'</span>,<span class="string">'smtp.qq.com'</span>);</span><br><span class="line">setpref(<span class="string">'Internet'</span>,<span class="string">'SMTP_Username'</span>,myaddress);</span><br><span class="line">setpref(<span class="string">'Internet'</span>,<span class="string">'SMTP_Password'</span>,mypassword);</span><br><span class="line">props = java.lang.System.getProperties;</span><br><span class="line">props.setProperty(<span class="string">'mail.smtp.auth'</span>,<span class="string">'true'</span>);</span><br><span class="line">subject =<span class="string">'电脑小偷'</span>;</span><br><span class="line"> </span><br><span class="line">obj = videoinput(<span class="string">'winvideo'</span>);</span><br><span class="line"><span class="comment">%h=preview(obj);</span></span><br><span class="line">set(gcf,<span class="string">'Visible'</span>,<span class="string">'off'</span>)</span><br><span class="line"><span class="comment">%set(h,'Visible','on')start(obj);</span></span><br><span class="line">pause(<span class="number">2</span>);</span><br><span class="line">photo=getsnapshot(obj);</span><br><span class="line">imwrite(photo, <span class="string">'thief.jpg'</span>)</span><br><span class="line">a=imread(<span class="string">'yourpicture.jpg'</span>);</span><br><span class="line">a1=rgb2gray(a);</span><br><span class="line">aa=imread(<span class="string">'thief.jpg'</span>);</span><br><span class="line">aa1=rgb2gray(aa);</span><br><span class="line">corr= corr2(a1,aa1);</span><br><span class="line"><span class="keyword">if</span> corr&lt;<span class="number">0.85</span></span><br><span class="line">sendmail(to, subject,[],<span class="string">'thief.jpg'</span>);</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>上面程序的图像匹配不准确，希望在以后通过图像识别来精确地辨别电脑主人。在Step4中你也可以根据自己的需求改变任务创建计划，比如说，设置在每天的具体时间点启动任务，获取图像并发送。在这种情况下，就没有必要进行图像匹配了，就可以只使用本文最前面的一段程序就可以了。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/06/24/%5B20140624%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -238,7 +1054,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+                <time title="修改时间：2020-08-21 10:06:06" itemprop="dateModified" datetime="2020-08-21T10:06:06+08:00">2020-08-21</time>
               </span>
 
           <br>
@@ -289,852 +1105,11 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/06/21/%5B20140621%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/06/21/%5B20140621%5D/" class="post-title-link" itemprop="url">【Java编程】Java在dos窗口编译与执行的批处理</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-06-21 21:15:55" itemprop="dateCreated datePublished" datetime="2014-06-21T21:15:55+08:00">2014-06-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.4k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>​    最近在Java编程过程中，常用到dos窗口对程序进行编译与运行。但是不方便之处在于每次都要输入命令进入将要编译的程序的目录(其实也有简单的方法，在文章末尾给出)。于是编写了一个配置文件，可以一次修改，经常使用。（只需要在下面程序中将路径修改为你所经常存放程序的目录）。前提当然是你已正确配置环境变量。具体方法为：将下面的程序放在新建的文本文件中，并将后缀名改为.bat.然后双击该文件，按提示操作即可！</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2014/06/21/%5B20140621%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/06/19/%5B20140619%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/06/19/%5B20140619%5D/" class="post-title-link" itemprop="url">【LaTeX排版】LaTeX论文排版<四></a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-06-19 21:27:48" itemprop="dateCreated datePublished" datetime="2014-06-19T21:27:48+08:00">2014-06-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="表格的插入"><a href="#表格的插入" class="headerlink" title="表格的插入"></a>表格的插入</h2><p>  一般的表格插入的代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> \begin&#123;table&#125;[H]</span><br><span class="line">  \centering</span><br><span class="line">  \begin&#123;tabular&#125;&#123;|c|c|c|&#125;</span><br><span class="line">  \hline</span><br><span class="line">   感知方法&amp;优点&amp;缺点\\ \hline</span><br><span class="line">   单用户检测&amp;计算与执行简单&amp; \tabincell&#123;c&#125;&#123;隐藏终端问题\\多径与阴影效应&#125;\\ \hline</span><br><span class="line">   多用户合作检测&amp; \tabincell&#123;c&#125;&#123;精度高、感知时间短\\避免了阴影效应和隐藏终端问题&#125;&amp; \tabincell&#123;c&#125;&#123;复杂度高\\流量开销大、带宽需求高&#125;\\ \hline</span><br><span class="line">\end&#123;tabular&#125;</span><br><span class="line">   \caption&#123;单用户检测与多用户合作检测优缺点对比&#125;\label&#123;table21&#125;</span><br><span class="line">\end&#123;table&#125;</span><br><span class="line">%注意要在导言区加入\newcommand&#123;\tabincell&#125;[2]&#123;\begin&#123;tabular&#125;&#123;@&#123;&#125;#1@&#123;&#125;&#125;#2\end&#123;tabular&#125;&#125;来容许表格内可以换行</span><br></pre></td></tr></table></figure>
-<p><strong>结果显示如下：</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140619/20140619_fig001.jpg" width="500" height="200" title="图1" alt="图1" ></p>
-<p><strong>在表格前加入行序号</strong>，源代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">\newcounter&#123;Rownumber&#125; \newcommand&#123;\Rown&#125;&#123;\stepcounter&#123;Rownumber&#125;\theRownumber&#125;</span><br><span class="line">\begin&#123;tabular&#125;&#123;|c|c|c|&#125;\hline</span><br><span class="line">序号&amp;材料&amp;电阻温度系数\\ \hline</span><br><span class="line">\Rown&amp;银&amp;0.0038 \\ \hline</span><br><span class="line">\Rown&amp;铜&amp;0.0039 \\ \hline</span><br><span class="line">\Rown&amp;铝&amp;0.0039 \\ \hline</span><br><span class="line">\end&#123;tabular&#125;</span><br></pre></td></tr></table></figure>
-<p>显示结果如下：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140619/20140619_fig002.jpg" width="300" height="150" title="图2" alt="图2" ></p>
-<p><strong>将多行变为一行</strong>，源代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">\begin&#123;tabular&#125;&#123;|c|c|&#125;\hline</span><br><span class="line"></span><br><span class="line">\multirow&#123;4&#125;*&#123;宇宙中的力&#125;</span><br><span class="line"></span><br><span class="line">&amp;万有引力 \\ \cline&#123;2-2&#125;</span><br><span class="line"></span><br><span class="line">&amp;电磁力 \\ \cline&#123;2-2&#125;</span><br><span class="line"></span><br><span class="line">&amp;弱相互作用力 \\ \cline&#123;2-2&#125;</span><br><span class="line"></span><br><span class="line">&amp;强相互作用力 \\ \cline&#123;2-2&#125;</span><br><span class="line"></span><br><span class="line">\hline</span><br><span class="line"></span><br><span class="line">\end&#123;tabular&#125;</span><br></pre></td></tr></table></figure>
-<p>注意在导言区加入包<code>\usepackage{multirow}</code>, 效果如下图：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140619/20140619_fig003.jpg" width="300" height="150" title="图3" alt="图3" ></p>
-<hr>
-<h2 id="参考文献的使用"><a href="#参考文献的使用" class="headerlink" title="参考文献的使用"></a>参考文献的使用</h2><p>   参考文献可以写在一个子文件中，内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">\begin&#123;thebibliography&#125;&#123;99&#125;%这里的参数99可以自己随意设置，但需要大于文献个数</span><br><span class="line"></span><br><span class="line">    \bibitem&#123;1&#125;李建东，杨家玮, 个人通信. 北京：人民邮电出版社, 1998年.%注意在每两条文献中加入空行，以便索引时不会出错</span><br><span class="line"></span><br><span class="line">    \bibitem&#123;2&#125;郭梯云，杨家玮，李建东, 数字移动通信（修订本）. 北京：人民邮电出版社, 2001年.</span><br><span class="line"></span><br><span class="line">    \end&#123;thebibliography&#125;</span><br></pre></td></tr></table></figure>
-<p> 显示结果如下：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140619/20140619_fig004.jpg" width="500" height="200" title="图4" alt="图4" ></p>
-<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/06/16/%5B20140616%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/06/16/%5B20140616%5D/" class="post-title-link" itemprop="url">【Matlab编程】Matlab高效编程技巧</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-06-16 18:39:20" itemprop="dateCreated datePublished" datetime="2014-06-16T18:39:20+08:00">2014-06-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>634</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li><p>默认状态下，matlab显示精度是short型，而默认的计算精度是double型，并且显示精度与计算精度没有关系。</p>
-</li>
-<li><p>一只失明的猫的问题：注意方法！</p>
-</li>
-<li><p>给数组预分配空间是基本的高效编程准则之一。如果不预先分配内存具体的动态扩充数组内存的实现方式如下：<br><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140616/20140616_fig001.jpg" width="600" height="350" title="图1" alt="图1" ></p>
-<p>如果预分配空间，则只将新添加的值放入连续的内存中，而不会将整个数组重新分配空间。</p>
-</li>
-<li><p>matlab也可以使用window命令，只需要在系统命令前加！或者dos:例如<code>！shutdown -s</code> 会关闭电脑，这样可以想到，我们可以用matlab做一个简单的定时关机软件。</p>
-</li>
-<li><p>逻辑索引的速度大于数值索引：eg:<code>A=rand(1000); a1=A(find(A&gt;0.3)); a2=A(A&gt;0.3);</code> find函数返回的是数值索引。</p>
-</li>
-<li><p>使用循环时的两种高效方法：1.按列遍历；2.循环次数多的放在内层。</p>
-</li>
-<li><p>在目前的高版本中，循环已不是耗时的主要原因，而是函数调用。</p>
-</li>
-<li><p>edit 、type、open可以查看部分函数的源代码，内建函数不行。</p>
-</li>
-<li><p>匿名函数可以完全更好的替代incline函数。</p>
-</li>
-<li><p>build-in函数的开销最低。</p>
-</li>
-<li><p>更多的使用向量化函数。eg: accumarray、arrayfun 、bsxfun 、cellfun 、spfun 、structfun</p>
-</li>
-<li><p>符号计算虽说语法简单，但是由于精确性，在计算过程中会保留大量的中间结果，这样容易导致内存溢出。</p>
-</li>
-<li><p>matlab的界面元素都是由Java实现的，可以通过运行<code>matlab -nojvm</code>来启动matlab，从而减少内存消耗。</p>
-</li>
-</ul>
-<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/06/12/%5B20140612%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/06/12/%5B20140612%5D/" class="post-title-link" itemprop="url">【组合数学】36军官问题</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-06-12 17:25:21" itemprop="dateCreated datePublished" datetime="2014-06-12T17:25:21+08:00">2014-06-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.4k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h2><p>  据说普鲁士的腓特列大帝曾组成一支仪仗队，仪仗队共有$36$名军官，来自$6$支部队，每支部队中，上校、中校、少校、上尉、中尉、少尉各一名。他希望这$36$名军官排成$6\times 6$的方阵，方阵的每一行，每一列的$6$名军官来自不同的部队并且军衔各不相同。令他恼火的是，无论怎么绞尽脑汁也排不成。</p>
-<p>后来，他去求教瑞士著名的大数学家欧拉。欧拉发现这是一个不可能完成的任务。</p>
-<p>来自$n$个部队的$n$种军衔的$n\times n$名军官，如果能排成一个正方形，每一行，每一列的$n$名军官来自不同的部队并且军衔各不相同，那么就称这个方阵叫正交拉丁方阵。欧拉猜测在</p>
-<p>$n=2, 6, 10, 14, 18,\cdots$</p>
-<p>时，正交拉丁方阵不存在。然而到了上世纪$60$年代，人们用计算机造出了$n=10$的正交拉丁方阵，推翻了欧拉的猜测。现在已经知道，除了$n=2,6$以外，其余的正交拉丁方阵都存在，而且有多种构造的方法</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2014/06/12/%5B20140612%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/06/11/%5B20140611%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/06/11/%5B20140611%5D/" class="post-title-link" itemprop="url">【LaTeX排版】LaTeX论文排版<三></a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-06-11 20:26:33" itemprop="dateCreated datePublished" datetime="2014-06-11T20:26:33+08:00">2014-06-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>4.3k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>6 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><strong>A picture is worth a thousand words(一图胜千言)。图在论文中的重要性不言而喻，本文主要讲解图的制作与插入。</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2014/06/11/%5B20140611%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/06/10/%5B20140610%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/06/10/%5B20140610%5D/" class="post-title-link" itemprop="url">【LaTeX排版】LaTeX论文排版<二></a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-06-10 16:53:09" itemprop="dateCreated datePublished" datetime="2014-06-10T16:53:09+08:00">2014-06-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="目录的生成"><a href="#目录的生成" class="headerlink" title="目录的生成"></a>目录的生成</h2><p>  直接使用命令<code>\tableofcontents</code>即可。其默认格式如下：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20140610/20140610_fig001.jpg" width="500" height="200" title="图1" alt="图1" ></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2014/06/10/%5B20140610%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/06/09/%5B20140609%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/06/09/%5B20140609%5D/" class="post-title-link" itemprop="url">【LaTeX排版】LaTeX论文排版<一></a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-06-09 10:50:05" itemprop="dateCreated datePublished" datetime="2014-06-09T10:50:05+08:00">2014-06-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.8k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本文及接下来的几篇文章主要讲关于毕设论文的排版。</p>
-<h2 id="论文的整体构架"><a href="#论文的整体构架" class="headerlink" title="论文的整体构架"></a>论文的整体构架</h2><p>  <strong>学校规定论文字数不得少于15000：</strong>说明论文属于中篇论文。一般来说，中长篇论文采用book文类，短篇论文采用article文类。中篇论文的结构一般是以一章作为一个子文件，形式如下：</p>
-<p>主源文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">\documentclass[a4paper,12pt]&#123;book&#125;</span><br><span class="line">\usepackage&#123;ctexcap&#125;</span><br><span class="line"></span><br><span class="line">\begin&#123;document&#125;\songti\zihao&#123;-4&#125;%设置正文字体格式:宋体四号</span><br><span class="line"></span><br><span class="line">\include&#123;Abstract&#125;%摘要部分</span><br><span class="line">\tableofcontents%生成目录</span><br><span class="line"></span><br><span class="line">\include&#123;chapter1&#125;%第一章</span><br><span class="line">\include&#123;chapter2&#125;%第二章</span><br><span class="line">\include&#123;chapter3&#125;</span><br><span class="line">\include&#123;chapter4&#125;</span><br><span class="line">\include&#123;chapter5&#125;</span><br><span class="line">\include&#123;thanks&#125;  %致谢部分</span><br><span class="line">\include&#123;appendix&#125;%附录部分</span><br><span class="line"></span><br><span class="line">\include&#123;reference&#125;%参考文献部分</span><br><span class="line">\end&#123;document&#125;</span><br></pre></td></tr></table></figure>
-<p>每一个include都有一个对应的源文件,由于每一章都会显示这是第几章，而摘要部分、致谢部分、附录部分及参考文献部分不是章节，且不会自动归入目录中，所以<strong>这两者的格式有些不同</strong>：</p>
-<p>每一章的格式：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">\chapter&#123;绪论&#125;</span><br><span class="line">这里是章内容</span><br><span class="line"></span><br><span class="line">摘要部分、致谢部分、附录部分及参考文献部分的格式：</span><br><span class="line">\chapter*&#123;摘要&#125;</span><br><span class="line">这里是摘要内容</span><br></pre></td></tr></table></figure>
-<p>可以看出两者的区别在于是否加<em>。加</em>之后就不会将其显示为第几章，例如假设thanks.tex文件中写入<code>\chapter{致谢}</code>，那么就会显示“第六章 致谢”，这肯定不是我们所期望的。<strong>值得注意的是，各个子文件不要有导言的内容如导入各种包，也不要有<code>\begin{document}</code>和<code>\end{document}</code>，只需要写文章的内容即可</strong>。</p>
-<hr>
-<h2 id="论文用纸"><a href="#论文用纸" class="headerlink" title="论文用纸"></a>论文用纸</h2><p>  A4纸、页面设置：上3cm 下2cm  内侧3cm 外侧2cm 装订线1cm</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">\usepackage&#123;geometry&#125;</span><br><span class="line">\geometry&#123;left&#x3D;4cm,right&#x3D;2cm,top&#x3D;3cm,bottom&#x3D;2cm&#125;%内侧3cm+装订线1cm&#x3D;4cm</span><br></pre></td></tr></table></figure>
-<hr>
-<h2 id="论文字体"><a href="#论文字体" class="headerlink" title="论文字体"></a>论文字体</h2><p> 章的标题：黑体、三号</p>
-<p> 节的标题：宋体、四号</p>
-<p> 正文：    中文为宋体、英文为“Times News Roman” 小四 正文图表名为宋体、五号。</p>
-<p><strong>具体代码如下：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">\CTEXsetup[beforeskip&#x3D;&#123;0pt&#125;]&#123;chapter&#125;%这里设置的是章标题与上页边距的距离，默认时是比较大的，记得自己设置</span><br><span class="line">\CTEXsetup[nameformat&#x3D;&#123;\heiti\zihao&#123;3&#125;\centering&#125;]&#123;chapter&#125;%章标题格式</span><br><span class="line">\CTEXsetup[titleformat&#x3D;&#123;\heiti\zihao&#123;3&#125;\centering&#125;]&#123;chapter&#125;%章标题格式</span><br><span class="line">\CTEXsetup[format&#x3D;&#123;\songti\zihao&#123;4&#125;\centering&#125;]&#123;section&#125;% 节标题格式</span><br><span class="line">\CTEXsetup[format&#x3D;&#123;\songti\zihao&#123;-4&#125;&#125;]&#123;subsection&#125;%小节标题格式</span><br><span class="line">\CTEXsetup[format&#x3D;&#123;\songti\zihao&#123;-4&#125;&#125;]&#123;subsubsection&#125;%小节标题格式</span><br><span class="line"></span><br><span class="line">\usepackage&#123;mathptmx&#125; %设置英文默认为罗马体</span><br></pre></td></tr></table></figure>
-<hr>
-<h2 id="字号的大小与字体"><a href="#字号的大小与字体" class="headerlink" title="字号的大小与字体"></a>字号的大小与字体</h2><p>  字体   命令</p>
-<p>  宋体   <code>\songti</code></p>
-<p>  黑体   <code>\heiti</code></p>
-<p>  仿宋   <code>\fangsong</code></p>
-<p>  楷书   <code>\kaishu</code></p>
-<p>  幼圆   <code>\youyuan</code></p>
-<p>  隶书   <code>\lishu</code></p>
-<p>  尺寸  命令</p>
-<p>  初号  <code>\zihao{0}</code></p>
-<p>  小初  <code>\zihao{-0}</code></p>
-<p>  一号  <code>\zihao{1}</code></p>
-<p>  小一  <code>\zihao{-1}</code></p>
-<p>  六号  <code>\zihao{6}</code></p>
-<p>  小六  <code>\zihao{-6}</code></p>
-<hr>
-<h2 id="页眉页脚的设置"><a href="#页眉页脚的设置" class="headerlink" title="页眉页脚的设置"></a>页眉页脚的设置</h2><p>  <strong>页眉：宋体五号，居中排列。左面页眉为论文题目，右面页眉为章次和章标题。页眉底划线的宽度为0.75磅。页码：宋体小五，最外侧，不加任何修饰。</strong></p>
-<p>具体代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">\pagestyle&#123;myheadings&#125;</span><br><span class="line">\pagestyle&#123;fancy&#125;</span><br><span class="line">\fancyhead&#123;&#125;%清除页眉格式</span><br><span class="line">\fancyfoot&#123;&#125;%清除页脚格式</span><br><span class="line">\fancyhead[RO,LE]&#123;\songti\zihao&#123;-5&#125;\thepage&#125;%在奇数页右侧、偶数页左侧（也就是页面的外侧）设置页码 宋体小五。</span><br><span class="line">\fancyhead[CO]&#123;\songti\zihao&#123;5&#125;\leftmark&#125;%奇数页页眉中心设置章次和章标题</span><br><span class="line">\fancyhead[CE]&#123;\songti\zihao&#123;5&#125;复杂环境下多频段快速频谱感知技术&#125;%偶数页页眉中心设置论文的题目</span><br><span class="line">\renewcommand&#123;\headrulewidth&#125;&#123;0.75pt&#125; % 页眉与正文之间的水平线粗细</span><br><span class="line">% 设置章名和节名的显示方式</span><br><span class="line">\renewcommand&#123;\chaptermark&#125;[1]&#123;\markboth&#123;~第~\chinese&#123;chapter&#125;~章~~~#1~&#125;&#123;&#125;&#125;</span><br><span class="line">%%%%%%%%%%%</span><br><span class="line">\thispagestyle&#123;fancy&#125;%设置本页为指定的页眉页脚格式，默认情况下，每章的第一页都是没有页眉的，需要加上这一句。</span><br></pre></td></tr></table></figure>
-<p>至此，西电本科生毕业设计（论文）工作手册（2012版）第9页中第二项：毕业设计的编写格式的要求就满足了。</p>
-<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/06/04/%5B20140604%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/06/04/%5B20140604%5D/" class="post-title-link" itemprop="url">【LaTeX排版】LaTeX使用--入门基础<二></a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-06-04 11:01:53" itemprop="dateCreated datePublished" datetime="2014-06-04T11:01:53+08:00">2014-06-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.9k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><strong>1.在命令之后留一个空格有下列方式：</strong></p>
-<p>源文件如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">\documentclass[a4paper,12pt]&#123;book&#125;%采用book类型（中篇论文一般采用这种类型），A4纸，字体为12磅，默认为10磅</span><br><span class="line">\usepackage&#123;ctexcap&#125;%采用中文标题宏包（标题是中文的）</span><br><span class="line">%\usepackage&#123;ctex&#125;%采用中文字体宏包（标题是英文的）与ctexcap不能同时使用</span><br><span class="line"></span><br><span class="line">\begin&#123;document&#125;</span><br><span class="line">&#123;\LaTeX&#125; 是一个排版工具 %命令行后保留空格的三种方法</span><br><span class="line">\par                    %另起一段，首行会缩进</span><br><span class="line">\LaTeX&#123;&#125; 是一个排版工具</span><br><span class="line">\newline                %另起一行，首行不会缩进  </span><br><span class="line"> \LaTeX\ 是一个排版工具%空行也是另起一行 </span><br><span class="line"></span><br><span class="line">\today                  %显示日期</span><br><span class="line"></span><br><span class="line">\end&#123;document&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2014/06/04/%5B20140604%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/05/30/%5B20140530%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/05/30/%5B20140530%5D/" class="post-title-link" itemprop="url">【Matlab编程】matlab 画图</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-05-30 19:38:05" itemprop="dateCreated datePublished" datetime="2014-05-30T19:38:05+08:00">2014-05-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.8k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ol>
-<li><p>不用截图工具就可以将图保存成图像格式，并且没有背景颜色：<code>saveas(gcf ,’outputname’,’png/jpg’)</code>，第三项省略时默认为fig.m文件</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2014/05/30/%5B20140530%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1180,14 +1155,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-count">186</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1236,12 +1211,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">721k</span>
+    <span title="站点总字数">735k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">17:10</span>
+    <span title="站点阅读时长">17:31</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
   </div>

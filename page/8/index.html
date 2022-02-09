@@ -207,6 +207,826 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/01/22/%5B20150122%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/01/22/%5B20150122%5D/" class="post-title-link" itemprop="url">【数值分析】拉格朗日插值与牛顿插值</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-01-22 20:30:08" itemprop="dateCreated datePublished" datetime="2015-01-22T20:30:08+08:00">2015-01-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-02 15:48:06" itemprop="dateModified" datetime="2020-09-02T15:48:06+08:00">2020-09-02</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>​    在工程应用和科学研究中，经常要研究变量之间的关系$y=f(x)$。但对于函数$f(x)$，常常得不到一个具体的解析表达式，它可能是通过观测或实验得到的一组数据$(x,f(x))$，$x$为一向量;或则是解析表达式非常复杂，不便于计算和使用。因此我们需要寻找一个计算比较简单的函数$S(x)$近似代替$f(x)$，并使得$S(x)=f(x)$，<strong>这种方法就称为插值法</strong>。</p>
+<p><strong>常用的插值法有：</strong></p>
+<p>​    一维插值法：拉格朗日插值、牛顿插值、分段低次插值、埃尔米特插值、样条插值。</p>
+<p>​    二维插值法：双线性插值、双二次插值。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2015/01/22/%5B20150122%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/01/20/%5B20150120%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/01/20/%5B20150120%5D/" class="post-title-link" itemprop="url">【数值分析】误差的分析与减少及Matlab解线性方程的四种方法</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-01-20 20:19:00" itemprop="dateCreated datePublished" datetime="2015-01-20T20:19:00+08:00">2015-01-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-02 10:34:52" itemprop="dateModified" datetime="2020-09-02T10:34:52+08:00">2020-09-02</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="误差的来源"><a href="#误差的来源" class="headerlink" title="误差的来源"></a>误差的来源</h2><ul>
+<li>模型误差：数学模型与实际问题之间的误差</li>
+<li>观测误差：测量数据与实际数据的误差</li>
+<li>方法误差：数学模型的精确解与数值方法得到的数值解之间的误差：例如</li>
+<li>舍入误差：对数据进行四舍五入后产生的误差</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2015/01/20/%5B20150120%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2015/01/16/%5B20150116%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/01/16/%5B20150116%5D/" class="post-title-link" itemprop="url">【生活随笔】Introspection of my life in 2014</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-01-16 12:44:58" itemprop="dateCreated datePublished" datetime="2015-01-16T12:44:58+08:00">2015-01-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-01 22:04:58" itemprop="dateModified" datetime="2020-09-01T22:04:58+08:00">2020-09-01</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>2014年已过去两星期，有写年度总结的必要了。今天特意看了看去年1月5日写的2013年度总结，看看都有些什么变化。我发现每年作一次总结是很有必要的，无赖恰逢考试周，连元旦都不能好好过，更不用说写写文章了。</p>
+<p>这一年是转折的一年：从本科变成了研究生，从学长又退化成学弟了，从新校区来到了老校区，送走了四年的老同学，也引来了新同学。时间都去哪了呢？</p>
+<p>上半年,每天和鬼王、普哥去实验室学习点新技能，其实际目的是去实验室免费使用校园网，20G流量3人用其实很多了，奈何普哥每次都在线看新闻，每月底流量就不够了。每周还要抽出一天时间看个论文，用Matlab仿真，然后交个周报，晚上和学姐他们宿舍或普哥宿舍玩游戏。接着就是毕设，接着就是吃饭照毕业照，接着就是授位仪式，有幸能得到郑校长的亲自授位，接着就是各奔东西……。宿舍的小伙伴们去了天南地北，想想有机会写篇文章纪念纪念，记得舸哥临走前一晚还熬夜给我们宿舍每个人写了一份信，我至今仍好好保存着。</p>
+<p>暑假也是在学校，没有回家。七月底到八月初的时候，用了大概半个月的时间写了个查词典的软件。本来想加入背单词及代码优化的，导师便来召唤我去帮他做项目了。接着下学期基本上就是在上课和这个项目上弄着，没想到研究所课也这么多，每天晚上都有。这期间也看了看部分线性代数的公开课，也写了一个3D迷宫游戏，好吧，算不上游戏，想想我们本科时候教线代的老师就知道为什么要重看线代了。基本上每个月去趟新校区看看学姐（注：学姐，男，湖北洪湖人氏，不知始何名，勤奋好学，故谓之曰学姐云。反正学姐不上qq,哈哈）。双十一的时候，买了几本书，基本上也没咋看……。十二月下旬的时候，完成导师指定的任务后，就临时抱佛脚的开始了复习考试。</p>
+<h4 id="2014总评"><a href="#2014总评" class="headerlink" title="2014总评"></a>2014总评</h4><p>作家格拉德威尔指出：只要经过1万小时的锤炼，任何人都能从平凡变成超凡。我想，写过一万行代码也算得上编程入门了。2013年度总结中提到要学习一下界面编程，这一点应该来说是实现了。仔细算来，用qt写的程序也超过一万行了吧，也算是入门了吧；提及到要坚持锻炼，这一点没做到，只是在暑假的时候每天去跑步，之后就懒散了；提及到要多上自习，这一点也没有做到，基本上下课后就是去实验室帮导师干活；提及要继续写作，从上学期到目前为止，已经写了恰好九九八十一篇文章了，每个月都写，从未间断。总体评价，一半一半吧。</p>
+<h4 id="2015计划"><a href="#2015计划" class="headerlink" title="2015计划"></a>2015计划</h4><ul>
+<li>注重理论学习，高中物理老师说的好：最主要的思想！要厚积薄发！</li>
+<li>每天都去自习室里看点书，少看点电视，少玩游戏；  </li>
+<li>坚持跑步，为了那可能的车行；(西安周围50公里都基本骑过，最远从西安骑到延安—20200901)</li>
+<li>少干点编程的活，跟着导师学点International Research的能力；</li>
+<li>学好数学，这真的很重要！在这一年里，把具体数学看完，组合数学也要继续；</li>
+<li>完成基础的机器学习算法的理论学习，并且用代码实现十种左右的机器学习算法；(这么多年过去了，终于完成了! —20200901)</li>
+<li>重拾Matlab编程，学习Matlab在数学中的计算； </li>
+<li>花心思写一点高质量的文章，写了这么多感觉没有几篇是花了很大心思的，都是在一两个小时就完成的，以后注意点，文章在精而不在多；</li>
+<li>少抱怨导师叫你干活，虽然我时不时这么干，但我始终相信你所做的在目前看来没啥用处的事情，终会在某一天你会发现它的用处。就拿我来说，导师叫我暑假看看机器学习算法并仿真，结果在这学期的两个选修课的大作业基本上就已经完成了，而且在机器学习的考试中，还考了暑假导师叫我看的SVM。</li>
+</ul>
+<h4 id="短期安排"><a href="#短期安排" class="headerlink" title="短期安排"></a>短期安排</h4><p>  已经到1月16日，离回家恰好还有一个月左右的时间。这一阶段的短期目标：</p>
+<ul>
+<li>首先，完成The element of style的阅读，并用latex进行排版。也极力推荐大家去读读，特别是准备发表国际论文的同学。第一次接触，还是普哥导师要求他们看的，前几天上宽带无线的时候王玺君老师也提到了这本书。本来我从普哥实验室杂物堆里拿了一本看了一部分，记得封面还印着辟邪剑谱，后来又没看了；</li>
+<li>其次，是对数值分析和工程优化这两门课的部分算法用程序实现，毕竟学了要会用；</li>
+<li>最后，就是对已经写好的一些代码进行注释工作，太懒了，拖到现在。</li>
+</ul>
+<p>Last but not the least, 每个人都有各自的经历，每个人都是一本书，就看你愿不愿意记录下来。我想，许多年后，自己再来看看在哪一年都干了些啥，那将别是一番感悟。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/12/13/%5B20141213%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/12/13/%5B20141213%5D/" class="post-title-link" itemprop="url">【Qt编程】基于QWT的曲线绘制及图例显示操作</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-12-13 16:46:42" itemprop="dateCreated datePublished" datetime="2014-12-13T16:46:42+08:00">2014-12-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-01 15:17:06" itemprop="dateModified" datetime="2020-09-01T15:17:06+08:00">2020-09-01</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>   在<a href="http://blog.csdn.net/tengweitw/article/details/41776901" target="_blank" rel="noopener">《QWT在QtCreator中的安装与使用》</a>一文中，我们完成了QWT的安装，这篇文章我们讲讲基础曲线的绘制功能。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2014/12/13/%5B20141213%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/12/08/%5B20141208%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/12/08/%5B20141208%5D/" class="post-title-link" itemprop="url">【Qt编程】QWT在QtCreator中的安装与使用</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-12-08 16:36:58" itemprop="dateCreated datePublished" datetime="2014-12-08T16:36:58+08:00">2014-12-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-01 08:58:44" itemprop="dateModified" datetime="2020-09-01T08:58:44+08:00">2020-09-01</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>由于导师项目的需要，需要画图，二维+三维。三维图我用的是Qt+opengl，二维图我决定使用qwt工具库来加快我的项目进展，毕竟还有期末考试。关于Qt+opengl的使用有时间的话以后再介绍。</p>
+<p>首先我们说说QWT是什么？下面是百度百科的介绍：</p>
+<p>QWT，全称是Qt Widgets for Technical Applications，是一个基于LGPL版权协议的开源项目， 可生成各种统计图。它为具有技术专业背景的程序提供GUI组件和一组实用类，其目标是以基于2D方式的窗体部件来显示数据， 数据源以数值，<a href="http://baike.baidu.com/view/209670.htm" target="_blank" rel="noopener">数组</a>或一组浮点数等方式提供， 输出方式可以是Curves（曲线），Slider（滚动条），Dials（圆盘），Compasses（仪表盘）等等。该工具库基于Qt开发，所以也继承了Qt的跨平台特性。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2014/12/08/%5B20141208%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/12/06/%5B20141206%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/12/06/%5B20141206%5D/" class="post-title-link" itemprop="url">【线性代数】标准正交矩阵与Gram-Schmidt正交化</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-12-06 15:04:01" itemprop="dateCreated datePublished" datetime="2014-12-06T15:04:01+08:00">2014-12-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-31 14:51:50" itemprop="dateModified" datetime="2020-08-31T14:51:50+08:00">2020-08-31</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="标准正交矩阵"><a href="#标准正交矩阵" class="headerlink" title="标准正交矩阵"></a>标准正交矩阵</h2><p>  假设矩阵$Q$有列向量$q1, q2,\cdots, q_n$表示，且其列向量满足下式：</p>
+<script type="math/tex; mode=display">
+Q=\left[\begin{array}{cccc}q_1&q_2&\cdots&q_n\end{array}\right]\\
+\begin{aligned}
+q_i^Tq_j=\left\{  
+             \begin{array}{**lr**}  
+            0\quad i\neq j \\  
+            1\quad i=j   
+             \end{array}  
+\right. 
+\end{aligned}</script><p>则</p>
+<script type="math/tex; mode=display">
+Q^TQ=\left[\begin{array}{c}q_1\\q_2\\\vdots\\q_n\end{array}\right]
+\left[\begin{array}{cccc}q_1&q_2&\cdots&q_n\end{array}\right]=I_{n\times n}</script><p>若$Q$为方阵，由上面的式子则有</p>
+<script type="math/tex; mode=display">
+Q^TQ=I\rightarrow Q^T=Q^{-1}</script><p><strong>我们举例说明上述概念：</strong></p>
+<script type="math/tex; mode=display">
+Q=\left[\begin{array}{ccc}0&0&1\\1&0&0\\0&1&0\end{array}\right],
+Q^T=\left[\begin{array}{ccc}0&1&0\\0&0&1\\1&0&0\end{array}\right]\rightarrow
+QQ^T=\left[\begin{array}{ccc}1&0&0\\0&1&0\\0&0&1\end{array}\right]=I</script>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2014/12/06/%5B20141206%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/12/05/%5B20141205%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/12/05/%5B20141205%5D/" class="post-title-link" itemprop="url">【线性代数】最小二乘与投影矩阵</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-12-05 12:31:22" itemprop="dateCreated datePublished" datetime="2014-12-05T12:31:22+08:00">2014-12-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-31 09:40:38" itemprop="dateModified" datetime="2020-08-31T09:40:38+08:00">2020-08-31</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>​    前一篇文章<a href="http://blog.csdn.net/tengweitw/article/details/41174555" target="_blank" rel="noopener">《正交投影》</a>中我们讲述了正交投影，现在我们来从正交投影的角度来看看我们熟悉的最小二乘法。我记得最早知道最小二乘法是在大一上高数课的时候，我们首先回顾一下什么是最小二乘法。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2014/12/05/%5B20141205%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/11/16/%5B20141116b%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/11/16/%5B20141116b%5D/" class="post-title-link" itemprop="url">【线性代数】正交投影</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-11-16 18:07:28" itemprop="dateCreated datePublished" datetime="2014-11-16T18:07:28+08:00">2014-11-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-31 09:06:22" itemprop="dateModified" datetime="2020-08-31T09:06:22+08:00">2020-08-31</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>​    我们在初中就应该学过投影，那么什么是投影呢？形象点说，就是将你需要投影的东西上的每一点向你要投影的平面作垂线，垂线与平面的交点的集合就是你的投影。注意这里我们的投影是向量的投影，几何的投影(并不一定是垂直投影的)可见度娘百科。同样的，我们从简单的二维投影来开始讨论。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2014/11/16/%5B20141116b%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/11/16/%5B20141116%5D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WeiTeng.jpg">
+      <meta itemprop="name" content="tengweitw">
+      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青峰碧陋室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/11/16/%5B20141116%5D/" class="post-title-link" itemprop="url">【线性代数】正交向量与正交子空间</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-11-16 11:51:14" itemprop="dateCreated datePublished" datetime="2014-11-16T11:51:14+08:00">2014-11-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-30 17:19:16" itemprop="dateModified" datetime="2020-08-30T17:19:16+08:00">2020-08-30</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在前面文章<a href="http://blog.csdn.net/tengweitw/article/details/40950001" target="_blank" rel="noopener">《矩阵的四个基本子空间》</a>中提到：</p>
+<p>​    一个秩为$r$，$m\times n$的矩阵$A$中，其行空间和列空间的维数为$r$，零空间和左零空间的维数分别为$n-r$，$m-r$，并且有行空间与零空间正交，列空间与左零空间正交。</p>
+<p>​    “掌握上面的这个结论就掌握了线性代数的半壁江山！”，MIT教授如是说。那么什么是正交子空间呢？我们首先从我们熟悉的正交向量说起。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2014/11/16/%5B20141116%5D/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/11/13/%5B20141113%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -238,7 +1058,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
+                <time title="修改时间：2020-08-30 11:47:28" itemprop="dateModified" datetime="2020-08-30T11:47:28+08:00">2020-08-30</time>
               </span>
 
           <br>
@@ -289,1035 +1109,11 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/11/10/%5B20141110%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/11/10/%5B20141110%5D/" class="post-title-link" itemprop="url">【线性代数】矩阵的四个基本子空间</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-11-10 11:11:24" itemprop="dateCreated datePublished" datetime="2014-11-10T11:11:24+08:00">2014-11-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.7k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="零空间"><a href="#零空间" class="headerlink" title="零空间"></a>零空间</h4><p>矩阵$A$的零空间就$Ax=0$的解的集合。假设矩阵的秩为$r$，矩阵为$m\times n$的矩阵，则零空间的维数为$n-r$。因为秩为$r$，则自由变量的个数为$n-r$，有几个自由变量，零空间就可以表示层几个特解的线性组合，也即是零空间的维数为自由变量的个数。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2014/11/10/%5B20141110%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/11/09/%5B20141109%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/11/09/%5B20141109%5D/" class="post-title-link" itemprop="url">【线性代数】线性相关性、基和维数</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-11-09 14:29:25" itemprop="dateCreated datePublished" datetime="2014-11-09T14:29:25+08:00">2014-11-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>909</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="线性相关性"><a href="#线性相关性" class="headerlink" title="线性相关性"></a>线性相关性</h4><p>什么情况下，向量$x_1,x_2,\cdots,x_n$是线性无关的？</p>
-<p>答：当向量$x_1,x_2,\cdots,x_n$的线性组合(线性组合时系数不能全为$0$)不为零向量时，它们是线性无关的。即方程</p>
-<script type="math/tex; mode=display">
-[x_1,x_2,\cdots,x_n]x=0</script><p>不存在非零解。</p>
-<p>对于一个矩阵$A$来说，当$A$总各列向量是线性无关时，则$Ax=0$的解只有$0$向量，即矩阵$A$的零空间只有零向量。 如果各列向量是相关的，则矩阵$A$的零空间中还存在一些其他的向量。</p>
-<p>当矩阵$A$各列是线性无关的，则矩阵$A$各列都有主元，自由变量的个数为$0$。</p>
-<hr>
-<h4 id="空间的基"><a href="#空间的基" class="headerlink" title="空间的基"></a>空间的基</h4><p>我们知道，矩阵各列的线性组合生成矩阵的列向量。但是，矩阵的各列有可能不是线性相关的。我们关心的是这样的一组向量：既能生成空间，又是线性无关的。这样的向量我们称为空间的基。</p>
-<p>如果要确定一个空间，我们只需要知道该空间的基，就了解了该空间的所有信息。例如：在三维空间中，向量的一个基是：</p>
-<script type="math/tex; mode=display">
-\left[\begin{array}{c}1\\0\\0\end{array}\right],
-\left[\begin{array}{c}0\\1\\0\end{array}\right],
-\left[\begin{array}{c}0\\0\\1\end{array}\right].</script><p>当然，我们还可以写出其他的基，只需要满足基的两个性质：1、生成空间；2、线性无关。但是基中向量的个数是一样的。对于一个n阶的方阵A的各列想要成为$n$维空间的基的话，该方阵必须是可逆的。</p>
-<hr>
-<h4 id="空间的维数"><a href="#空间的维数" class="headerlink" title="空间的维数"></a>空间的维数</h4><p><em>维数的定义</em>：空间内任意基内向量个数称为空间的维数。</p>
-<p>空间内所有的基内向量个数是相同的，都指空间的维数。    </p>
-<p>下面我们来举例说明上述概念：假设矩阵为$A$:</p>
-<script type="math/tex; mode=display">
-A=\left[\begin{array}{cccc}1&2&3&1\\1&1&2&1\\1&2&3&1\end{array}\right]</script><p> 矩阵$A$的各列生成矩阵$A$的列空间。</p>
-<p> 矩阵$A$的各列不是$A$的列空间的基，因为它们线性相关，列空间的一个基是矩阵的第一、二列。</p>
-<p>我们可以通过消元知道，该矩阵的秩为$2$，该列空间的维数为$2$。即矩阵的秩是列空间的维数！</p>
-<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/11/08/%5B20141108%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/11/08/%5B20141108%5D/" class="post-title-link" itemprop="url">【线性代数】线性方程组的求解</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-11-08 15:16:22" itemprop="dateCreated datePublished" datetime="2014-11-08T15:16:22+08:00">2014-11-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.8k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>​    <a href="http://blog.csdn.net/tengweitw/article/details/40039373" target="_blank" rel="noopener">上一篇文章</a>讲述了$Ax=0$的解和矩阵$A$的零空间，<strong>这里我们讨论$Ax=b$的解以及矩阵$A$的列空间。</strong></p>
-<p>​    $Ax=0$是肯定有解的，因为总存在$x$为全零向量，使得方程组成立。而$Ax=b$是不一定有解的，我们需要高斯消元来确定。我们还是利用上一篇讲述了$Ax=0$的解的矩阵$A$来举例说明：</p>
-<script type="math/tex; mode=display">
-x_1+2x_2+2x_3+2x_4=b_1\\
-2x_1+4x_2+6x_3+8x_4=b_2\\
-3x_1+6x_2+8x_3+10x_4=b_3</script>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2014/11/08/%5B20141108%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/10/26/%5B20141026%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/10/26/%5B20141026%5D/" class="post-title-link" itemprop="url">【算法导论】多项式求和</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-10-26 15:18:31" itemprop="dateCreated datePublished" datetime="2014-10-26T15:18:31+08:00">2014-10-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.7k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>一般情况下，一元$n$次多项式可写成：</p>
-<script type="math/tex; mode=display">
-P_n(x)=p_1x^{e_1}+p_2x^{e_2}+\cdots+p_mx^{e_m}</script><p>其中，$p_i$是指数为$e_i$的项的非零系数，且满足</p>
-<script type="math/tex; mode=display">
-0\le e_1\le e_2\le\cdots\le e_m=n</script><p>因此，我们可以采用<strong>线性表（定义：线性表是由$n$个数据元素构成的有限序列，比如数组、向量、链表等等）</strong>来表示：</p>
-<script type="math/tex; mode=display">
-P=(p_0,p_1,\cdots,p_n)</script><p>其中，<strong>每一项的指数$i$可以用其系数$p_i$的序号表示。</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2014/10/26/%5B20141026%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/10/18/%5B20141018%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/10/18/%5B20141018%5D/" class="post-title-link" itemprop="url">【Qt编程】3D迷宫游戏</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-10-18 18:30:38" itemprop="dateCreated datePublished" datetime="2014-10-18T18:30:38+08:00">2014-10-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>9.2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>13 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>​    说起迷宫想必大家都很熟悉，个人感觉迷宫对人的方向感是很大的考验，至少我的方向感是不好的，尤其是在三维空间中。由于这段时间帮导师做项目用到了三维作图，便心血来潮想做个三维迷宫玩玩。要想画出三维的迷宫游戏，我们需要先从二维开始。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2014/10/18/%5B20141018%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/10/13/%5B20141013%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/10/13/%5B20141013%5D/" class="post-title-link" itemprop="url">【线性代数】矩阵的零空间</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-10-13 09:07:08" itemprop="dateCreated datePublished" datetime="2014-10-13T09:07:08+08:00">2014-10-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>矩阵A的零空间就$Ax=0$的解的集合。</p>
-<p><strong>零空间的求法：</strong>对矩阵$A$进行消元求得主变量和自由变量；给自由变量赋值得到特解；对特解进行线性组合得到零空间。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2014/10/13/%5B20141013%5D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/10/04/%5B20141004%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/10/04/%5B20141004%5D/" class="post-title-link" itemprop="url">【线性代数】向量空间</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-10-04 19:54:38" itemprop="dateCreated datePublished" datetime="2014-10-04T19:54:38+08:00">2014-10-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>866</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="对称矩阵"><a href="#对称矩阵" class="headerlink" title="对称矩阵"></a>对称矩阵</h2><p>假设有一矩阵$A$，其中$A<em>{ij}=A</em>{ji}$,则称这个矩阵为对称矩阵。</p>
-<p>对称矩阵有如下性质：</p>
-<script type="math/tex; mode=display">
-A^{T}=A^{-1}</script><script type="math/tex; mode=display">
-A=RR^{T}\leftarrow(R^TR)^T=R^T(R^T)^T=R^TR</script><p>也就是说：1、一个对称矩阵的转置和其逆是相等的；2、一个对称矩阵可以由一个矩阵和其转置矩阵相乘得到。</p>
-<hr>
-<h2 id="向量空间"><a href="#向量空间" class="headerlink" title="向量空间"></a>向量空间</h2><p>向量空间即空间中向量的四则运算得到的向量人在空间中。</p>
-<p>  1、二维情况下，其子空间有</p>
-<p>   a、零向量(0,0)</p>
-<p>   b、过零点的直线</p>
-<p>   c、$\mathbb R^2$整个空间</p>
-<p>  2、三维情况下，其子空间有</p>
-<p>   a、零向量(0,0,0)</p>
-<p>   b、过（0,0,0）的平面</p>
-<p>   c、过(0,0,0)的直线</p>
-<p>   d、$\mathbb R^3$整个空间</p>
-<hr>
-<h2 id="列空间"><a href="#列空间" class="headerlink" title="列空间"></a>列空间</h2><p>假设有一个矩阵$A$：</p>
-<script type="math/tex; mode=display">
-A=\left[\begin{array}{cc}1&3\\2&3\\4&1\end{array}\right]</script><p>则$A$的列空间为$A$中各列向量的线性组合。</p>
-<p><strong>问题一</strong>：对于任意的$b,Ax=b$是否有解？</p>
-<p>答：不一定，$3$个列向量的线性组合不能充满四维空间</p>
-<p><strong>问题二</strong>：对怎样的$b$，$Ax=b$有解？</p>
-<p>答：当$b$属于$A$中列向量的线性组合，即$b$属于$A$的列空间</p>
-<h2 id="零空间"><a href="#零空间" class="headerlink" title="零空间"></a>零空间</h2><p>假设有一个矩阵$A$：</p>
-<script type="math/tex; mode=display">
-A=\left[\begin{array}{ccc}1&1&2\\2&1&3\\3&1&4\\4&1&5\end{array}\right]</script><p>则$A$的零空间就是使得$Ax=0$的解的集合。由于$A$比较特殊（第一列+第二列=第三列），我们可以直接给出下式：</p>
-<script type="math/tex; mode=display">
-\left[\begin{array}{ccc}1&1&2\\2&1&3\\3&1&4\\4&1&5\end{array}\right]
-\left[\begin{array}{c}C\\C\\-C\end{array}\right]
-=\left[\begin{array}{c}0\\0\\0\\0\end{array}\right]</script><p>则零空间为：</p>
-<script type="math/tex; mode=display">
-X=C\left[\begin{array}{c}1\\1\\-1\end{array}\right]</script><link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/09/17/%5B20140917%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/09/17/%5B20140917%5D/" class="post-title-link" itemprop="url">【线性代数】矩阵的乘法与求逆</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-09-17 10:51:05" itemprop="dateCreated datePublished" datetime="2014-09-17T10:51:05+08:00">2014-09-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.1k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="矩阵乘法的几种种表示方法"><a href="#矩阵乘法的几种种表示方法" class="headerlink" title="矩阵乘法的几种种表示方法"></a>矩阵乘法的几种种表示方法</h2><p><strong>1、一般形式</strong></p>
-<script type="math/tex; mode=display">
-AB=C\\
-C_{ij}=\sum\limits_{k=1}^{K}a_{ik}b_{kj}</script><p><strong>2、矩阵与列向量相乘</strong></p>
-<script type="math/tex; mode=display">
-\left[ \begin{array}{cc}
-1 & 2 \\
-3 & 4 \\
-\end{array} 
-\right ]
-\left[ \begin{array}{cc}
-1 & 2 \\
-3 & 4 \\
-\end{array} 
-\right ]=
-\left[ \begin{array}{cc}
-7 & 10 \\
-15 & 22 \\
-\end{array} 
-\right ]</script><script type="math/tex; mode=display">
-\left[ \begin{array}{cc}
-1 & 2 \\
-3 & 4 \\
-\end{array} 
-\right ]
-\left[ \begin{array}{c}
-1  \\
-3  \\
-\end{array} 
-\right ]=
-\left[ \begin{array}{cc}
-7 \\
-15 \\
-\end{array} 
-\right ]</script><script type="math/tex; mode=display">
-\left[ \begin{array}{cc}
-1 & 2 \\
-3 & 4 \\
-\end{array} 
-\right ]
-\left[ \begin{array}{c}
-2  \\
-4  \\
-\end{array} 
-\right ]=
-\left[ \begin{array}{cc}
-10 \\
-22 \\
-\end{array} 
-\right ]</script><p><strong>3、矩阵与行向量相乘</strong></p>
-<script type="math/tex; mode=display">
-\left[ \begin{array}{cc}
-1 & 2 \\
-3 & 4 \\
-\end{array} 
-\right ]
-\left[ \begin{array}{cc}
-1 & 2 \\
-3 & 4 \\
-\end{array} 
-\right ]=
-\left[ \begin{array}{cc}
-7 & 10 \\
-15 & 22 \\
-\end{array} 
-\right ]</script><script type="math/tex; mode=display">
-\left[ \begin{array}{cc}
-1 & 2 \\
-\end{array} 
-\right ]
-\left[ \begin{array}{cc}
-1 & 2 \\
-3 & 4 \\
-\end{array} 
-\right ]=
-\left[ \begin{array}{cc}
-7 & 10 \\
-\end{array} 
-\right ]</script><script type="math/tex; mode=display">
-\left[ \begin{array}{cc}
-3 & 4 \\
-\end{array} 
-\right ]
-\left[ \begin{array}{cc}
-1 & 2 \\
-3 & 4 \\
-\end{array} 
-\right ]=
-\left[ \begin{array}{cc}
-15 & 22 \\
-\end{array} 
-\right ]</script><p><strong>4、矩阵分块相乘</strong></p>
-<script type="math/tex; mode=display">
-A_1=B_1=\left[ \begin{array}{cc}
-1 & 1 \\
-1 & 1 \\
-\end{array} 
-\right ],
-A_2=B_2=\left[ \begin{array}{cc}
-2 & 2 \\
-2 & 2 \\
-\end{array} 
-\right ]</script><script type="math/tex; mode=display">
-A_3=B_3=\left[ \begin{array}{cc}
-3 & 3 \\
-3 & 3 \\
-\end{array} 
-\right ],
-A_4=B_4=\left[ \begin{array}{cc}
-4 & 4 \\
-4 & 4 \\
-\end{array} 
-\right ]</script><script type="math/tex; mode=display">
-A=\left[ \begin{array}{cc}
-A_1 & A_2 \\
-A_3 & A_4 \\
-\end{array} 
-\right ],
-B=\left[ \begin{array}{cc}
-B_1 & B_2 \\
-B_3 & B_4 \\
-\end{array} 
-\right ]</script><script type="math/tex; mode=display">
-AB=\left[ \begin{array}{cc}
-A_1B_1+A_2B_3 & A_1B_2+A_2B_4 \\
-A_3B_1+A_4B_3 & A_3B_2+A_4B_4 \\
-\end{array} 
-\right ]</script><hr>
-<h2 id="矩阵的逆"><a href="#矩阵的逆" class="headerlink" title="矩阵的逆"></a>矩阵的逆</h2><p><strong>对于方阵，左逆=右逆</strong></p>
-<script type="math/tex; mode=display">
-A^{-1}A=I</script><p>原矩阵乘以其逆矩阵得到单位矩阵</p>
-<p>判断是否可逆的几种方法：</p>
-<ul>
-<li><p>行列式为$0$</p>
-</li>
-<li><p>单位矩阵的各列是矩阵各列的线性组合</p>
-</li>
-<li><p>下式成立时，矩阵$A$不可逆：</p>
-<script type="math/tex; mode=display">
-AX=0,</script><p>其中$X$不是零向量。</p>
-<p><strong>证明：</strong></p>
-<script type="math/tex; mode=display">
-A^{-1}AX=A^{-1}0</script><p>$X=0$与假设矛盾，说明$A$不可逆。</p>
-</li>
-</ul>
-<hr>
-<h2 id="矩阵求逆-高斯-若尔当消元法"><a href="#矩阵求逆-高斯-若尔当消元法" class="headerlink" title="矩阵求逆(高斯-若尔当消元法)"></a>矩阵求逆(高斯-若尔当消元法)</h2><p>假设矩阵为$A$:</p>
-<script type="math/tex; mode=display">
-A=\left[ \begin{array}{cc}
-1 & 3 \\
-2 & 7 \\
-\end{array} 
-\right ]</script><p><strong>消元过程如下</strong>：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\underbrace{\left[\begin{array}{cc|cc}1&3&1&0\\2&7&0&1\end{array}\right]}_{[A | I]}
-{\longrightarrow}\left[\begin{array}{cccc}1&3&1&0\\0&1&-2&1\end{array}\right]
-{\longrightarrow}\underbrace{\left[\begin{array}{cc|cc}1&0&7&-3\\0&1&-2&1\end{array}\right]}_{[I|A^{-1}]}
-\end{aligned}</script><p><strong>通过消元，我们将矩阵$A$变成了单位矩阵$I$，则与此同时，矩阵$I$变成了$A$的逆矩阵</strong>。<strong>证明</strong>如下：</p>
-<script type="math/tex; mode=display">
-E[A|I]=[EA|EI]=[I|E]=[I|A^{-1}]\\
-EA=I\rightarrow E=A^{-1}\\
-EI=E=A^{-1}</script><link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2014/09/12/%5B20140912%5D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/WeiTeng.jpg">
-      <meta itemprop="name" content="tengweitw">
-      <meta itemprop="description" content="与有肝胆人共事，从无字句处读书。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="青峰碧陋室">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/09/12/%5B20140912%5D/" class="post-title-link" itemprop="url">【线性代数】矩阵消元-高斯消元法</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-09-12 15:33:00" itemprop="dateCreated datePublished" datetime="2014-09-12T15:33:00+08:00">2014-09-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 21:21:23" itemprop="dateModified" datetime="2022-02-06T21:21:23+08:00">2022-02-06</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.9k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、高斯消元法"><a href="#一、高斯消元法" class="headerlink" title="一、高斯消元法"></a>一、高斯消元法</h2><p> <strong>能使用消元法的情况：每次消元过程中，对角线元素始终不能为0，即矩阵可逆</strong></p>
-<p>  我们一般利用<strong>高斯消元法</strong>进行矩阵的消元。下面我们通过举例说明：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-x+2y+z=2\\
-3x+8y+z=12\\
-0x+4y+z=2
-\end{aligned}</script><p> 如果按照我们初中所学的解法，一般是先用第三个方程将$z$用$y$表示，然后代入到第二个方程就可以用$x$来表示$y$和$z$，最后代入第一个方程就可以求得$x,y,z$。这个算法的核心就是消元！<strong>下面我们看看矩阵形式的消元法。</strong></p>
-<p>​    首先将上面的三元一次方程组表示为矩阵形式为：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\left[\begin{array}{ccc}1&2&1\\3&8&1\\0&4&1\end{array}\right]\left[\begin{array}{c}x\\y\\z\end{array}\right]=\left[\begin{array}{c}2\\12\\2\end{array}\right]
-\end{aligned}</script><p>为了方便，我们将等式右边的向量放到左边，构成增广矩阵（可以百度看看什么是增广矩阵）。<strong>下面是消元的具体步骤：</strong></p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\underbrace{\left[\begin{array}{cccc}1&2&1&2\\3&8&1&12\\0&4&1&2\end{array}\right]}_{A}
-\stackrel{E_{21}}{\longrightarrow}\underbrace{\left[\begin{array}{cccc}1&2&1&2\\0&2&-2&6\\0&4&1&2\end{array}\right]}_{B}
-\stackrel{E_{32}}{\longrightarrow}\underbrace{\left[\begin{array}{cccc}1&2&1&2\\0&2&-2&6\\0&0&5&-10\end{array}\right]}_{C}
-\end{aligned}</script><p>其中，上图中的第一个矩阵就是所说的增广矩阵，我们记作$A$，经过步骤$E<em>{21}$得到的矩阵为$B$，经过步骤$E</em>{32}$得到的矩阵为$C$。</p>
-<p>​    步骤$E<em>{21}$的目的是$A</em>{21}=0$，这里是指用第二行减去第一行的三倍</p>
-<p>​    步骤$E<em>{32}$的目的是使$A</em>{32}=0$，这里是指用第三行减去第二行的两倍</p>
-<p><strong>注：</strong>高斯消元的<strong>目的</strong>是使原矩阵(<strong>不要考虑最后一列，这一列是等式右边的，matlab是分别对左右两边进行消元的，我这里写在一起是为了方便</strong>)对角线下面的元素为0，变成上三角矩阵，<strong>在上面例子中本应该在步骤$E<em>{21}$和步骤$E</em>{32}$中还有步骤$E<em>{31}$,使得$A</em>{31}=0$。但是原矩阵的$A_{31}=0$，所以没有必要进行操作</strong>。尽管这一步骤没有必要，但matlab会进行操作（没有人机智）。</p>
-<p>​    通过消元得到的结果矩阵$C$（上图中的第三个矩阵），我们可以写出其方程组的形式：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-x+2y+z&=2\\
-0x+2y-2z&=6\\
-0x+0y+5z&=-10
-\end{aligned}</script><p>上面方程组可以直接看出，$z=-2$,然后代入第二个方程得到$y=1$,再代入第一个方程得到$x=2$。</p>
-<p>​    在上面的消元过程中，原始矩阵$A$经过步骤$E<em>{21}$得到矩阵$B$，矩阵$B$经过步骤$E</em>{32}$得到矩阵$C$，<strong>我们用矩阵来表示步骤$E<em>{21}$，步骤$E</em>{32}$</strong>，则可以得到：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\underbrace{\left[\begin{array}{ccc}1&0&0\\-3&1&0\\0&0&1\end{array}\right]}_{E_{21}}
-\underbrace{\left[\begin{array}{cccc}1&2&1&2\\3&8&1&12\\0&4&1&2\end{array}\right]}_{A}
-=\underbrace{\left[\begin{array}{cccc}1&2&1&2\\0&2&-2&6\\0&4&1&2\end{array}\right]}_{B}
-\end{aligned}</script><script type="math/tex; mode=display">
-\begin{aligned}
-\underbrace{\left[\begin{array}{ccc}1&0&0\\0&1&0\\0&-2&1\end{array}\right]}_{E_{32}}
-\underbrace{\left[\begin{array}{cccc}1&2&1&2\\0&2&-2&6\\0&4&1&2\end{array}\right]}_{B}
-=\underbrace{\left[\begin{array}{cccc}1&2&1&2\\0&2&-2&6\\0&0&5&-10\end{array}\right]}_{C}
-\end{aligned}</script><p>把这两步综合起来得到：</p>
-<script type="math/tex; mode=display">
-E_{32}(E_{21}A)=C\rightarrow EA=C</script><script type="math/tex; mode=display">
-E=E_{32}E_{21}=\underbrace{\left[\begin{array}{ccc}1&0&0\\0&1&0\\0&-2&1\end{array}\right]}_{E_{32}}\underbrace{\left[\begin{array}{ccc}1&0&0\\-3&1&0\\0&0&1\end{array}\right]}_{E_{21}}=
-\left[\begin{array}{ccc}1&0&0\\-3&1&0\\6&-2&1\end{array}\right]</script><p>总结，<strong>我们令方程组左边的矩阵为$D$，用初等矩阵$E$来表示消元操作，用上三角矩阵$U$表示消元得到的结果</strong>，则以上式为例：</p>
-<script type="math/tex; mode=display">
-D=\left[\begin{array}{ccc}1&2&1\\3&8&1\\0&4&1\end{array}\right],
-E=\left[\begin{array}{ccc}1&0&0\\-3&1&0\\6&-2&1\end{array}\right]</script><script type="math/tex; mode=display">
-U=ED=\left[\begin{array}{ccc}1&2&1\\0&2&-2\\0&0&5\end{array}\right]</script><hr>
-<h2 id="置换矩阵"><a href="#置换矩阵" class="headerlink" title="置换矩阵"></a>置换矩阵</h2><p>   <strong>1、行交换：左乘</strong></p>
-<script type="math/tex; mode=display">
-\left[\begin{array}{cc}0&1\\1&0\end{array}\right]\left[\begin{array}{cc}a&b\\c&d\end{array}\right]=\left[\begin{array}{cc}c&d\\a&b\end{array}\right]</script><p>   <strong>2、列交换：右乘</strong></p>
-<script type="math/tex; mode=display">
-\left[\begin{array}{cc}a&b\\c&d\end{array}\right]
-\left[\begin{array}{cc}0&1\\1&0\end{array}\right]
-=\left[\begin{array}{cc}b&a\\d&c\end{array}\right]</script><link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1363,14 +1159,14 @@ U=ED=\left[\begin{array}{ccc}1&2&1\\0&2&-2\\0&0&5\end{array}\right]</script><hr>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-count">186</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1419,12 +1215,12 @@ U=ED=\left[\begin{array}{ccc}1&2&1\\0&2&-2\\0&0&5\end{array}\right]</script><hr>
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">721k</span>
+    <span title="站点总字数">735k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">17:10</span>
+    <span title="站点阅读时长">17:31</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
   </div>

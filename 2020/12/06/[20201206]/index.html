@@ -49,25 +49,29 @@
   };
 </script>
 
-  <meta name="description" content="昨天实验室同学，直接使用西电官网的LaTeX模板](https:&#x2F;&#x2F;gr.xidian.edu.cn&#x2F;xwsy&#x2F;zlxz.htm，使用WinEdt环境，然后编译运行失败。由于我之前已经写过一篇关于在MacOS系统上的LaTeX模板文章，对于官方的模板有些经验：无非就是编码问题或者有些package过时。下面我们逐一排查这些错误。">
+  <meta name="description" content="前面文章《MacOS系统下西电硕\博士论文LaTeX模版》和《Windows系统下西电硕\博士论文LaTeX模版》中，我们介绍使得官网的LaTeX模板可以成功运行。但是，这只是最基础的版本，后面肯定需要添加许多东西。下面，我将用一系列文章来介绍在写毕业论文中的一些技巧和需要添加和修改的地方。注意：本系列文章只适用于西电硕博模板，本科毕设论文可以参考我多年前的相关系列文章《LaTeX论文模板》。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【LaTeX排版】Windows系统下西电硕\博士论文LaTeX模版">
-<meta property="og:url" content="http://tengweitw.com/2020/12/03/[20201203]/index.html">
+<meta property="og:title" content="【LaTeX排版】西电硕\博士论文LaTeX模版&lt;一&gt;">
+<meta property="og:url" content="http://tengweitw.com/2020/12/06/[20201206]/index.html">
 <meta property="og:site_name" content="青峰碧陋室">
-<meta property="og:description" content="昨天实验室同学，直接使用西电官网的LaTeX模板](https:&#x2F;&#x2F;gr.xidian.edu.cn&#x2F;xwsy&#x2F;zlxz.htm，使用WinEdt环境，然后编译运行失败。由于我之前已经写过一篇关于在MacOS系统上的LaTeX模板文章，对于官方的模板有些经验：无非就是编码问题或者有些package过时。下面我们逐一排查这些错误。">
+<meta property="og:description" content="前面文章《MacOS系统下西电硕\博士论文LaTeX模版》和《Windows系统下西电硕\博士论文LaTeX模版》中，我们介绍使得官网的LaTeX模板可以成功运行。但是，这只是最基础的版本，后面肯定需要添加许多东西。下面，我将用一系列文章来介绍在写毕业论文中的一些技巧和需要添加和修改的地方。注意：本系列文章只适用于西电硕博模板，本科毕设论文可以参考我多年前的相关系列文章《LaTeX论文模板》。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201203/20201203_fig001.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201203/20201203_fig002.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201203/20201203_fig003.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201203/20201203_fig004.jpg">
-<meta property="article:published_time" content="2020-12-03T12:55:52.000Z">
-<meta property="article:modified_time" content="2022-02-06T15:45:44.291Z">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201206/20201206_fig001.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201206/20201206_fig002.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201206/20201206_fig003.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201206/20201206_fig004.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201206/20201206_fig005.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201206/20201206_fig006.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201206/20201206_fig007.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201206/20201206_fig008.jpg">
+<meta property="article:published_time" content="2020-12-06T12:32:53.000Z">
+<meta property="article:modified_time" content="2020-12-06T12:44:08.000Z">
 <meta property="article:author" content="tengweitw">
 <meta property="article:tag" content="LaTeX Coding">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201203/20201203_fig001.jpg">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201206/20201206_fig001.jpg">
 
-<link rel="canonical" href="http://tengweitw.com/2020/12/03/[20201203]/">
+<link rel="canonical" href="http://tengweitw.com/2020/12/06/[20201206]/">
 
 
 <script id="page-configurations">
@@ -81,7 +85,7 @@
   };
 </script>
 
-  <title>【LaTeX排版】Windows系统下西电硕\博士论文LaTeX模版 | 青峰碧陋室</title>
+  <title>【LaTeX排版】西电硕\博士论文LaTeX模版<一> | 青峰碧陋室</title>
   
 
 
@@ -215,7 +219,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/12/03/%5B20201203%5D/">
+    <link itemprop="mainEntityOfPage" href="http://tengweitw.com/2020/12/06/%5B20201206%5D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/WeiTeng.jpg">
@@ -228,7 +232,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【LaTeX排版】Windows系统下西电硕\博士论文LaTeX模版
+          【LaTeX排版】西电硕\博士论文LaTeX模版<一>
         </h1>
 
         <div class="post-meta">
@@ -237,16 +241,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-12-03 20:55:52" itemprop="dateCreated datePublished" datetime="2020-12-03T20:55:52+08:00">2020-12-03</time>
+              <time title="创建时间：2020-12-06 20:32:53 / 修改时间：20:44:08" itemprop="dateCreated datePublished" datetime="2020-12-06T20:32:53+08:00">2020-12-06</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-06 23:45:44" itemprop="dateModified" datetime="2022-02-06T23:45:44+08:00">2022-02-06</time>
-              </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -261,14 +259,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>782</span>
+              <span>1.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -280,18 +278,33 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>昨天实验室同学，直接使用西电官网的<a href="https://gr.xidian.edu.cn/xwsy/zlxz.htm" target="_blank" rel="noopener">LaTeX模板](https://gr.xidian.edu.cn/xwsy/zlxz.htm</a>，使用WinEdt环境，然后编译运行失败。由于我之前已经写过一篇关于在MacOS系统上的LaTeX模板文章，对于官方的模板有些经验：无非就是编码问题或者有些package过时。下面我们逐一排查这些错误。</p>
+        <p>前面文章《<a href="http://www.tengweitw.com/2020/11/18/%5B20201118%5D/" target="_blank" rel="noopener">MacOS系统下西电硕\博士论文LaTeX模版</a>》和《<a href="http://www.tengweitw.com/2020/12/03/%5B20201203%5D/" target="_blank" rel="noopener">Windows系统下西电硕\博士论文LaTeX模版</a>》中，我们介绍使得官网的LaTeX模板可以成功运行。但是，这只是最基础的版本，后面肯定需要添加许多东西。下面，我将用一系列文章来介绍在写毕业论文中的一些技巧和需要添加和修改的地方。注意：本系列文章只适用于西电硕博模板，本科毕设论文可以参考我多年前的相关系列文章《<a href="http://www.tengweitw.com/2014/06/28/[20140628]/" target="_blank" rel="noopener">LaTeX论文模板</a>》。</p>
 <a id="more"></a>
-<p>当我们使用WinEdt打开官网的templet.tex文件并编译运行时，会出现如下图1所示错误：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201203/20201203_fig001.jpg" width="400" height="250" title="图1" alt="图1" ></p>
-<p>按着提示按键<code>H+Enter</code>后显示的是编码问题。想到之前在MacOS下也出现过编码问题(可以使用Sublime Text3 查看当前文件编码，具体方法可以自己网上搜索)，我们可以将所有文件的编码转换为UTF-8编码，转换方法在<a href="http://www.tengweitw.com/2020/11/18/%5B20201118%5D/" target="_blank" rel="noopener">文章</a>中已经介绍过，这里不再赘述。当全部转化为UTF-8编码后，再次尝试编译运行，出现如图2所示错误：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201203/20201203_fig002.jpg" width="400" height="300" title="图2" alt="图2" ></p>
-<p>显然是这里类文件XDUthesis.cls有问题。打开该文件，找到<code>\XDU@underline[#1]#2</code>这一句，在第154行如图3：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201203/20201203_fig003.jpg" width="600" height="450" title="图3" alt="图3" ></p>
-<p>当我把\CTEXunderline删除时，重新编译(XeLaTeX)可以成功编译。通过参考CTeX手册第11.3节可知，此命令已经过时，我们可以将其简单地使用<code>\underline</code>即可，修改后的内容如图4所示：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201203/20201203_fig004.jpg" width="600" height="450" title="图4" alt="图4" ></p>
-<p>至此，Windows下对应的西电硕、博士论文LaTeX模板完成，完整的可运行版本请见github地址：<a href="https://github.com/tengweitw/XDUThesis_Windows" target="_blank" rel="noopener">https://github.com/tengweitw/XDUThesis_Windows</a></p>
-<p>另外，推荐大家使用sublime + text live来作为编写大论文环境，个人感觉比WinEdt好太多，其安装方法见另一篇文章:<a href="http://www.tengweitw.com/2020/03/18/%5B20200318%5D/" target="_blank" rel="noopener">http://www.tengweitw.com/2020/03/18/%5B20200318%5D/</a> 。在该环境下，LaTeX模板也得到了验证，能成功运行。</p>
+<hr>
+<h4 id="英文字体改为Times-New-Roman"><a href="#英文字体改为Times-New-Roman" class="headerlink" title="英文字体改为Times New Roman"></a>英文字体改为Times New Roman</h4><p>如图1所示，英文字体不是所规定的Times New Roman。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201206/20201206_fig001.jpg" width="600" height="450" title="图1" alt="图1" ></p>
+<p>我们想要设置英文为Times New Roman，只需要在导言区加入如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\usepackage&#123;Times New Roman&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201206/20201206_fig002.jpg" width="600" height="450" title="图2" alt="图2" ></p>
+<hr>
+<h4 id="使用画子图宏包subcaption"><a href="#使用画子图宏包subcaption" class="headerlink" title="使用画子图宏包subcaption"></a>使用画子图宏包subcaption</h4><p>我画子图的过程中一般使用subcaption包，关于为啥选择该宏包，而不选择其它画子图的包，请见文章《<a href="http://www.tengweitw.com/2017/12/10/%5B20171210%5D/" target="_blank" rel="noopener">子图的多种画法</a>》。一般情况下，需要以下三条命令放在一起：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">\usepackage[hypcap&#x3D;true,labelsep&#x3D;none,font&#x3D;small]&#123;caption&#125;</span><br><span class="line"> \usepackage&#123;subcaption&#125;% for subfigs</span><br><span class="line"> \captionsetup&#123;compatibility&#x3D;false&#125;</span><br></pre></td></tr></table></figure>
+<p>其中，命令<code>\captionsetup{compatibility=false}</code>是为了是上述两个包兼容。否则会出现：The sub caption package does not work correctly in compatibility mode，即如图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201206/20201206_fig003.jpg" width="600" height="200" title="图3" alt="图3" ></p>
+<p>当使用上述3条命令后，还会出现错误： Package caption Error: You can’t use both, the (obsolete) caption2 <em>and</em> caption package，即如图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201206/20201206_fig004.jpg" width="600" height="200" title="图4" alt="图4" ></p>
+<p>这里，显然是XDUthesis.cls类中使用了过时的caption2包，为此，我们需要将其改为caption包，更改部分如图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201206/20201206_fig005.jpg" width="600" height="250" title="图5" alt="图5" ></p>
+<p>再次运行后，出现错误如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201206/20201206_fig006.jpg" width="600" height="200" title="图6" alt="图6" ></p>
+<p>此时，我们只需要直接在XDUThesis.cls找到该句（在第483行左右）删除即可，然后就可以没有错误成功运行了。但是会出现，插图索引中没有“图”，如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201206/20201206_fig007.jpg" width="600" height="250" title="图7" alt="图7" ></p>
+<p>猜想这可能是因为没有使用caption2包，而使用了caption包导致的，具体什么原因，我也懒得排查了。于是乎，我自己来重新生成插图索引和表格索引：</p>
+<p>首先，我们删除本身自带插图索引和表格，即在abstract.tex中删除命令<code>\XDUpremainmatter</code>（第21行左右）。然后，我们在该地方添加如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">\newcommand&#123;\loflabel&#125;&#123;图&#125; </span><br><span class="line">\renewcommand&#123;\numberline&#125;[1]&#123;\loflabel~#1\hspace*&#123;1em&#125;&#125;</span><br><span class="line">\listoffigures</span><br><span class="line"></span><br><span class="line">\newcommand&#123;\lotlabel&#125;&#123;表&#125;</span><br><span class="line">\renewcommand&#123;\numberline&#125;[1]&#123;\lotlabel~#1\hspace*&#123;1em&#125;&#125;</span><br><span class="line">\listoftables</span><br><span class="line"></span><br><span class="line">\renewcommand&#123;\numberline&#125;[1]&#123;#1\hspace*&#123;1em&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>最后运行结果如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tengweitw/FigureBed@latest/20201206/20201206_fig008.jpg" width="600" height="250" title="图8" alt="图8" ></p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -327,7 +340,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://tengweitw.com/2020/12/03/[20201203]/" title="【LaTeX排版】Windows系统下西电硕\博士论文LaTeX模版">http://tengweitw.com/2020/12/03/[20201203]/</a>
+    <a href="http://tengweitw.com/2020/12/06/[20201206]/" title="【LaTeX排版】西电硕\博士论文LaTeX模版&lt;一&gt;">http://tengweitw.com/2020/12/06/[20201206]/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -352,8 +365,8 @@
       <i class="fa fa-chevron-left"></i> 【CUDA编程】最常用的Bug Fixing方法
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/02/01/%5B20220201%5D/" rel="next" title="【妄言之言】2021总结：再见西安，你好杭州！">
-      【妄言之言】2021总结：再见西安，你好杭州！ <i class="fa fa-chevron-right"></i>
+    <a href="/2021/02/01/%5B20210201%5D/" rel="next" title="【Vim】中英文输入法切换">
+      【Vim】中英文输入法切换 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -392,6 +405,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#英文字体改为Times-New-Roman"><span class="nav-number">1.</span> <span class="nav-text">英文字体改为Times New Roman</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用画子图宏包subcaption"><span class="nav-number">2.</span> <span class="nav-text">使用画子图宏包subcaption</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -407,14 +421,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-count">186</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -463,12 +477,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">721k</span>
+    <span title="站点总字数">735k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">17:10</span>
+    <span title="站点阅读时长">17:31</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
   </div>
